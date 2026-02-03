@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { MainCTAButton } from "@/components/MainCTAButton";
+import { CTAButton } from "@/components/CTAButton";
 import NotFound from "@/pages/NotFound";
 import { categoryMetadata, getBlogPost } from "@/lib/blog-data";
 
@@ -123,9 +123,9 @@ const BlogPost = () => {
                     Join the Malaysian AI Residency and build alongside mentors and partners.
                   </p>
                 </div>
-                <MainCTAButton href="/book-demo" variant="primary" size="md" isExternal={false}>
+                <CTAButton href="/book-demo" variant="primary" size="md" isExternal={false}>
                   Apply now
-                </MainCTAButton>
+                </CTAButton>
               </div>
             </div>
 

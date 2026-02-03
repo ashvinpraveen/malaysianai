@@ -14,6 +14,7 @@ const Privacy = () => {
     { id: "collection", title: "Data Collection" },
     { id: "usage", title: "Data Usage" },
     { id: "sharing", title: "Data Sharing" },
+    { id: "media", title: "Photos & Media" },
     { id: "contact", title: "Contact" },
   ];
 
@@ -103,6 +104,18 @@ const Privacy = () => {
                   <p className="text-foreground/70 leading-relaxed">
                     We share information only with trusted partners and service
                     providers when required to deliver the program.
+                  </p>
+                </section>
+
+                <section id="media" className="space-y-4">
+                  <h2 className="text-2xl font-semibold text-foreground">Photos &amp; Media</h2>
+                  <p className="text-foreground/70 leading-relaxed">
+                    By attending our events or participating in the residency, you
+                    consent to being photographed, filmed, or recorded. We may use
+                    your image, likeness, and voice in our materials (including the
+                    website, social media, and other communications) without
+                    compensation. If you prefer not to be recorded, let us know in
+                    advance and we will do our best to accommodate.
                   </p>
                 </section>
 

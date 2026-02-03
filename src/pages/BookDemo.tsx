@@ -1,6 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import BookDemoForm from "@/components/BookDemoForm";
+import ApplicationForm from "@/components/ApplicationForm";
 
 const BookDemo = () => {
   return (
@@ -22,7 +22,7 @@ const BookDemo = () => {
         </div>
 
         <div className="w-full">
-          <BookDemoForm />
+          <ApplicationForm />
         </div>
       </main>
 

@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, Menu, X } from "lucide-react";
-import { MainCTAButton } from "./MainCTAButton";
+import { CTAButton } from "./CTAButton";
 
 const navItems = [
   { label: "Program", href: "/#program" },
-  { label: "Support", href: "/#support" },
-  { label: "Community", href: "/#community" },
+  { label: "Community", href: "/#community-partners" },
   { label: "Residents", href: "/#residents" },
-  { label: "Updates", href: "/blog" },
-  { label: "Apply", href: "/book-demo" },
+  { label: "Community directory", href: "/community" },
+  { label: "Residents directory", href: "/residents" },
 ];
 
 const Navbar = () => {
@@ -35,7 +34,7 @@ const Navbar = () => {
                 alt="Malaysian AI Residency logo"
                 className="w-8 h-8"
               />
-              <span className="text-lg font-bold tracking-tight text-foreground">
+              <span className="navbar-brand text-foreground">
                 Malaysian AI
               </span>
             </Link>
@@ -53,26 +52,22 @@ const Navbar = () => {
             </div>
 
             <div className="hidden lg:block">
-              <MainCTAButton href="/book-demo" variant="secondary" isExternal={false}>
-                Apply now
-              </MainCTAButton>
+              <CTAButton href="/book-demo" variant="secondary" isExternal={false}>
+                Apply
+              </CTAButton>
             </div>
 
             <div className="flex lg:hidden items-center gap-4 z-[60]">
-              <MainCTAButton href="/book-demo" variant="secondary" size="sm" isExternal={false}>
+              <CTAButton href="/book-demo" variant="secondary" size="sm" isExternal={false}>
                 Apply
-              </MainCTAButton>
+              </CTAButton>
 
               <button
                 className={`p-2 transition-colors duration-300 ${textColor}`}
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-label="Toggle menu"
               >
-                {isMenuOpen ? (
-                  <X className="w-6 h-6" />
-                ) : (
-                  <Menu className="w-6 h-6" />
-                )}
+                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
             </div>
           </div>
@@ -112,7 +107,11 @@ const Navbar = () => {
               isMenuOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
             }`}
           >
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pt-8 border-t border-border">
+            <div className="flex flex-col gap-6 pt-8 border-t border-border">
+              <CTAButton href="/book-demo" variant="secondary" isExternal={false}>
+                Apply
+              </CTAButton>
+
               <div className="flex flex-col gap-2">
                 <p className="label-default text-foreground/60 uppercase">Contact</p>
                 <span className="body-default text-foreground">hello@malaysianai.org</span>

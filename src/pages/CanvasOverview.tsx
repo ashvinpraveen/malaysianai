@@ -101,15 +101,14 @@ const CanvasOverview = () => {
       component: <Index />,
       sections: [
         { name: "Navbar", top: 0 },
-        { name: "HeroSection", top: 100 },
-        { name: "BenefitsSection", top: 800 },
-        { name: "AgenticActionsSection", top: 1400 },
-        { name: "AgenticIntelligenceSection", top: 2000 },
-        { name: "BuilderSection", top: 2600 },
-        { name: "DemoSection", top: 3200 },
-        { name: "TrustSection", top: 3800 },
-        { name: "CTASection", top: 4400 },
-        { name: "Footer", top: 5000 },
+        { name: "Hero", top: 100 },
+        { name: "Benefits", top: 900 },
+        { name: "Sponsor", top: 1500 },
+        { name: "Location", top: 2100 },
+        { name: "Residents", top: 2700 },
+        { name: "Community Partners", top: 3300 },
+        { name: "CTA", top: 3900 },
+        { name: "Footer", top: 4500 },
       ]
     },
     {

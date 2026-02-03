@@ -3,6 +3,9 @@ import type { SVGProps } from "react";
 export const ResidentImages = {
   bluebolt: "/blueboltlabs.webp",
   easybuzz: "/easybuzzai.webp",
+  seavoice: "/seavoice_icon.png",
+  kelassekejap: "/kelassekejaplogo.svg",
+  klovr: "/klovr_logo.webp",
 };
 
 export const ReplyrAI = (props: SVGProps<SVGSVGElement>) => (

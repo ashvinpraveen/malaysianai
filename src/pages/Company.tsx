@@ -1,6 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { MainCTAButton } from "@/components/MainCTAButton";
+import { CTAButton } from "@/components/CTAButton";
 
 const Company = () => {
   return (
@@ -45,20 +45,24 @@ const Company = () => {
 
         <div className="container mx-auto max-w-6xl">
           <div className="bg-card rounded-[2.5rem] p-8 md:p-16 border border-border shadow-sm overflow-hidden relative">
-            <div className="grid md:grid-cols-2 gap-12 items-center relative z-10">
+            <div className="grid gap-12 items-center relative z-10">
               <div className="space-y-6">
                 <div className="inline-flex items-center gap-2 text-foreground/70 font-medium">
                   <span>Partner with us</span>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-medium text-foreground tracking-tight">
-                  Bring a real-world brief to the cohort.
+                  Interested in sponsoring the residency or collaborating?
                 </h2>
                 <p className="text-foreground/70 text-lg leading-relaxed max-w-md">
-                  We work with companies, nonprofits, and public agencies to scope
-                  meaningful AI projects that residents can ship.
+                  Whether it&apos;s AI credits, mentorship, or benefits for residents, talk to
+                  us about how you want to support the cohort.
                 </p>
                 <ul className="space-y-3">
-                  {["Define a clear problem statement", "Provide domain access and feedback", "Attend demo day"].map((item) => (
+                  {[
+                    "Sponsor AI credits or compute",
+                    "Offer resident benefits or mentorship",
+                    "Co-design collaboration opportunities",
+                  ].map((item) => (
                     <li key={item} className="flex items-center gap-3 text-foreground/70">
                       <div className="w-1.5 h-1.5 rounded-full bg-foreground/70" />
                       {item}
@@ -66,13 +70,10 @@ const Company = () => {
                   ))}
                 </ul>
                 <div className="pt-4">
-                  <MainCTAButton variant="primary" size="lg" showArrow>
-                    Become a partner
-                  </MainCTAButton>
+                  <CTAButton variant="primary" size="lg" showArrow>
+                    Talk to us
+                  </CTAButton>
                 </div>
-              </div>
-              <div className="relative h-full min-h-[300px] bg-muted rounded-[2rem] flex items-center justify-center p-8 border border-border">
-                <div className="w-32 h-32 rounded-3xl border border-dashed border-border" />
               </div>
             </div>
           </div>

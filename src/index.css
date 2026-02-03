@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -128,6 +128,11 @@
     @apply text-muted-foreground hover:text-foreground transition-colors duration-200 text-sm font-medium;
   }
 
+  .navbar-brand {
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    @apply text-lg font-semibold tracking-tight;
+  }
+
   /* Typography - Headings (Serif Display) */
   .hero-title {
     font-family: 'Newsreader', Georgia, serif;
@@ -227,6 +232,10 @@
 
   .animate-scroll-left {
     animation: scroll-left 30s linear infinite;
+  }
+
+  .pause-animation {
+    animation-play-state: paused;
   }
 
   .animate-scroll-right {
@@ -416,10 +425,16 @@
   }
 }
 
-/* Scrollbar styling */
+/* Hide scrollbars */
+html,
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 0;
+  height: 0;
 }
 
 ::-webkit-scrollbar-track {
@@ -427,10 +442,5 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.2);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.4);
+  background: transparent;
 }

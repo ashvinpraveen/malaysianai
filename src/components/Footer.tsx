@@ -3,12 +3,12 @@ import { MainCTAButton } from "./MainCTAButton";
 const footerLinks = {
   Program: [
     { label: "Overview", href: "/#program" },
-    { label: "Curriculum", href: "/#curriculum" },
-    { label: "Studio", href: "/#studio" },
+    { label: "Support", href: "/#support" },
+    { label: "Community", href: "/#community" },
   ],
   Community: [
-    { label: "Mentors", href: "/#community" },
     { label: "Partners", href: "/#community" },
+    { label: "Residents", href: "/#residents" },
     { label: "Updates", href: "/blog" },
   ],
   Resources: [
@@ -30,11 +30,13 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-6 gap-8">
           <div className="col-span-2">
             <a href="/" className="flex items-center gap-2 mb-6 group">
-              <div className="w-9 h-9 rounded-full bg-background flex items-center justify-center">
-                <div className="w-3.5 h-3.5 rounded-sm bg-foreground" />
-              </div>
+              <img
+                src="/favicon.svg"
+                alt="Malaysian AI logo"
+                className="w-9 h-9"
+              />
               <span className="text-xl font-bold text-background tracking-tight">
-                Malaysian AI Residency
+                Malaysian AI
               </span>
             </a>
             <p className="body-small text-background/70 mb-6 max-w-xs">
@@ -77,7 +79,7 @@ const Footer = () => {
 
         <div className="mt-12 pt-8 border-t border-background/15 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="body-small text-background/60">
-            © {new Date().getFullYear()} The Malaysian AI Residency. All rights reserved.
+            © {new Date().getFullYear()} Malaysian AI. All rights reserved.
           </p>
           <div className="flex gap-2 items-center">
             <span className="w-2 h-2 rounded-full bg-background/70" />

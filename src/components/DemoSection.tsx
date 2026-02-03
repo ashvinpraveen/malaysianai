@@ -2,22 +2,22 @@ import { MainCTAButton } from "./MainCTAButton";
 
 const demoCards = [
   {
-    title: "Partner pilot",
-    subtitle: "Industry collaboration",
-    items: ["Problem framing", "Pilot metrics", "Deployment plan"],
-    duration: "6 weeks",
+    title: "Weekly show-and-tell",
+    subtitle: "Ship and share",
+    items: ["Live demo", "Feedback loops", "Next-week commitments"],
+    duration: "Weekly",
   },
   {
-    title: "Resident showcase",
-    subtitle: "Product build",
-    items: ["MVP walkthrough", "User feedback", "Go-to-market"],
-    duration: "8 weeks",
+    title: "Cohort midpoint",
+    subtitle: "Direction check",
+    items: ["Product clarity", "User insights", "GTM direction"],
+    duration: "Midpoint",
   },
   {
-    title: "Research demo",
-    subtitle: "Applied research",
-    items: ["Method overview", "Results", "Next experiment"],
-    duration: "10 weeks",
+    title: "Launch showcase",
+    subtitle: "Go public",
+    items: ["Story and traction", "Partner intros", "Global launch plan"],
+    duration: "Final week",
   },
 ];
 
@@ -27,17 +27,17 @@ const DemoSection = () => {
       <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
         <div className="mb-10 md:mb-12">
           <p className="label-default text-foreground/60 uppercase tracking-widest mb-4">
-            Showcase
+            Show and tell
           </p>
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
             <h2
               className="text-4xl md:text-5xl lg:text-6xl font-normal tracking-tight leading-[1.1] text-foreground max-w-2xl"
               style={{ textWrap: "balance" }}
             >
-              A residency that ends with a demo day.
+              Ship in public, capped by a launch showcase.
             </h2>
             <p className="body-large text-foreground/60 max-w-md lg:pb-2">
-              Each team ships a working product and shares the story with partners,
+              Each team ships weekly, then closes with a public launch for partners,
               investors, and the community.
             </p>
           </div>
@@ -89,7 +89,7 @@ const DemoSection = () => {
             Ready to present your work and keep building after the residency?
           </p>
           <MainCTAButton href="/book-demo" variant="primary" size="lg" isExternal={false}>
-            Apply to join the cohort
+            Apply for the next cohort
           </MainCTAButton>
         </div>
       </div>

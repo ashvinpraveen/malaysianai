@@ -13,9 +13,9 @@ const benefits = [
   },
 ];
 
-const BenefitsSection = () => {
+const LandingBenefitsSection = () => {
   return (
-    <section id="program" className="pt-32 md:pt-40 pb-16 md:pb-20 bg-background">
+    <section id="program" className="pt-28 md:pt-36 pb-16 md:pb-20 bg-background">
       <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
         <div className="mb-16 md:mb-20">
           <p className="label-default text-foreground/60 uppercase tracking-widest mb-3">
@@ -59,4 +59,4 @@ const BenefitsSection = () => {
   );
 };
 
-export default BenefitsSection;
+export default LandingBenefitsSection;

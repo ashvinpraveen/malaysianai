@@ -1,15 +1,15 @@
 const features = [
   {
-    title: "Prototype & validate",
-    description: "Turn your brief into a working prototype with clear user feedback loops.",
+    title: "Ship every week",
+    description: "Set tight milestones and use show-and-tells to keep momentum.",
   },
   {
-    title: "Pilot with partners",
-    description: "Run real-world pilots with data access and partner checkpoints.",
+    title: "Pilot fast",
+    description: "Get real user feedback and partner inputs to validate quickly.",
   },
   {
-    title: "Tell the story",
-    description: "Measure impact, refine positioning, and prepare for demo day.",
+    title: "Launch globally",
+    description: "Refine product, GTM, and story for a global audience.",
   },
 ];
 
@@ -19,14 +19,14 @@ const BuilderSection = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
           <p className="label-default text-foreground/60 uppercase tracking-widest mb-4">
-            Studio
+            Build
           </p>
           <h2 className="section-title text-foreground mb-6">
-            The project studio for your residency build.
+            A build environment that makes progress inevitable.
           </h2>
           <p className="body-default text-foreground/70 max-w-2xl mx-auto">
-            Everything you need to move from concept to pilot, with clear rituals
-            and feedback built in.
+            Focused coworking, clear rituals, and weekly accountability to help you
+            move fast and ship real products.
           </p>
         </div>
 

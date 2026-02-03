@@ -4,32 +4,32 @@ import { Zap, Users, Globe } from "lucide-react";
 
 const features = [
   {
-    id: "actions",
+    id: "show-and-tells",
     number: "01",
     icon: Zap,
-    title: "Showcase your skills",
-    description: "Share your work with collaborators, builders, and future teammates.",
+    title: "Weekly show-and-tells",
+    description: "Demo what you shipped, get sharp feedback, and borrow patterns from peers.",
   },
   {
-    id: "teams",
+    id: "coworking",
     number: "02",
     icon: Users,
-    title: "Learn and grow together",
-    description: "Residents exchange knowledge, solve problems, and push each other forward.",
+    title: "Focused coworking",
+    description: "It's like having colleagues while everyone independently builds their own thing.",
   },
   {
-    id: "multilingual",
+    id: "support",
     number: "03",
     icon: Globe,
-    title: "Spontaneous collaborations",
-    description: "Expect unexpected conversations and collaborations every week.",
+    title: "Support across the stack",
+    description: "Technical, product, GTM, fundraising, and content support from peers and mentors.",
   },
 ];
 
 const ActionsVisual = () => {
   const messages = [
-    { role: "user", text: "Can we review my demo flow today?" },
-    { role: "agent", text: "Yes. Let's do a quick walkthrough after standup." },
+    { role: "user", text: "Show-and-tell today: here is our new onboarding flow." },
+    { role: "agent", text: "Great. Let's do a quick feedback loop after standup." },
   ];
 
   return (
@@ -81,8 +81,8 @@ const ActionsVisual = () => {
 
 const EscalationVisual = () => {
   const messages = [
-    { role: "user", text: "I need a collaborator on this pipeline." },
-    { role: "agent", text: "Pairing you with another resident who shipped something similar." },
+    { role: "user", text: "We need help with GTM positioning." },
+    { role: "agent", text: "Pairing you with a resident who has launched in this space." },
   ];
 
   return (
@@ -137,16 +137,17 @@ const MultilingualVisual = () => (
     <div className="p-4 border-b border-border flex items-center justify-between">
       <div className="flex items-center gap-3">
         <div className="w-2 h-2 rounded-full bg-foreground/70" />
-        <span className="text-sm font-normal text-foreground">Cohort Snapshot</span>
+        <span className="text-sm font-normal text-foreground">Support Tracks</span>
       </div>
-      <span className="text-xs text-foreground/60">Tracks</span>
+      <span className="text-xs text-foreground/60">Focus</span>
     </div>
     <div className="p-5 space-y-3">
       {[
-        { lang: "Builders", flag: "BU", calls: "Residents", pct: 40 },
-        { lang: "Founders", flag: "FO", calls: "Residents", pct: 30 },
-        { lang: "Researchers", flag: "RS", calls: "Residents", pct: 20 },
-        { lang: "Hackers", flag: "HK", calls: "Residents", pct: 10 },
+        { lang: "Technical", flag: "TE", calls: "Support", pct: 30 },
+        { lang: "Product", flag: "PR", calls: "Support", pct: 25 },
+        { lang: "GTM", flag: "GT", calls: "Support", pct: 20 },
+        { lang: "Fundraising", flag: "FR", calls: "Support", pct: 15 },
+        { lang: "Content", flag: "CO", calls: "Support", pct: 10 },
       ].map((l) => (
         <div key={l.lang} className="p-3.5 rounded-xl bg-muted border border-border">
           <div className="flex items-center justify-between mb-2.5">
@@ -165,12 +166,12 @@ const MultilingualVisual = () => (
     <div className="px-5 pb-5">
       <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
         <div className="text-center">
-          <p className="text-xl font-light text-foreground mb-0.5">Cohort</p>
-          <p className="text-xs text-foreground/60">Small, focused</p>
+          <p className="text-xl font-light text-foreground mb-0.5">Weekly</p>
+          <p className="text-xs text-foreground/60">Show-and-tells</p>
         </div>
         <div className="text-center">
-          <p className="text-xl font-light text-foreground mb-0.5">Malaysia</p>
-          <p className="text-xs text-foreground/60">Nationwide</p>
+          <p className="text-xl font-light text-foreground mb-0.5">Focused</p>
+          <p className="text-xs text-foreground/60">Coworking</p>
         </div>
       </div>
     </div>
@@ -188,14 +189,14 @@ const AgenticActionsSection = () => {
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
           <div className="lg:w-[38%] flex flex-col">
             <div className="mb-12">
-              <p className="label-default text-foreground/60 uppercase tracking-widest mb-4">What to expect</p>
+              <p className="label-default text-foreground/60 uppercase tracking-widest mb-4">Cadence</p>
               <h2
                 className="text-4xl md:text-5xl lg:text-6xl font-normal tracking-tight leading-[1.1] text-foreground"
                 style={{ textWrap: "balance" }}
               >
-                What to expect
+                A weekly cadence
                 <br />
-                <span className="text-foreground/60">inside the residency.</span>
+                <span className="text-foreground/60">that keeps you shipping.</span>
               </h2>
             </div>
 

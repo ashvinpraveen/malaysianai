@@ -5,7 +5,7 @@ import { MainCTAButton } from "./MainCTAButton";
 
 const navItems = [
   { label: "Program", href: "/#program" },
-  { label: "Curriculum", href: "/#curriculum" },
+  { label: "Support", href: "/#support" },
   { label: "Community", href: "/#community" },
   { label: "Residents", href: "/#residents" },
   { label: "Updates", href: "/blog" },
@@ -26,15 +26,17 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-[60] bg-background border-b border-border">
+      <nav className="fixed top-0 left-0 right-0 z-[60] bg-background">
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-between h-16">
             <Link to="/" className="flex items-center gap-2.5 group z-[60]">
-              <div className="w-8 h-8 rounded-full bg-foreground flex items-center justify-center">
-                <div className="w-3 h-3 rounded-sm bg-background" />
-              </div>
+              <img
+                src="/favicon.svg"
+                alt="Malaysian AI Residency logo"
+                className="w-8 h-8"
+              />
               <span className="text-lg font-bold tracking-tight text-foreground">
-                Malaysian AI Residency
+                Malaysian AI
               </span>
             </Link>
 
@@ -43,7 +45,7 @@ const Navbar = () => {
                 <Link
                   key={item.label}
                   to={item.href}
-                  className="text-xs font-semibold uppercase tracking-[0.3em] text-foreground/70 hover:text-foreground transition-colors"
+                  className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors"
                 >
                   {item.label}
                 </Link>
@@ -96,7 +98,7 @@ const Navbar = () => {
                   className="flex items-center justify-between group"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <span className="text-2xl md:text-3xl font-light uppercase tracking-[0.2em] text-foreground group-hover:text-primary transition-colors">
+                  <span className="text-2xl md:text-3xl font-medium text-foreground group-hover:text-primary transition-colors">
                     {item.label}
                   </span>
                   <ChevronRight className="w-6 h-6 text-foreground/40 group-hover:text-primary transition-colors" />

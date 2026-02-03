@@ -4,77 +4,96 @@ import { BookOpen, Plug, TrendingUp } from "lucide-react";
 
 const features = [
   {
-    id: "trained",
+    id: "partners",
     number: "01",
     icon: BookOpen,
-    title: "Ambitious builders",
-    description: "A community of ambitious and innovative builders across Malaysia.",
+    title: "Community partners",
+    description:
+      "Build Club, Build with AI, AI Tinkerers, AI Hackerdorm, AI SEA, Rakan Tutor.",
   },
   {
-    id: "integrated",
+    id: "sponsor",
     number: "02",
     icon: Plug,
-    title: "Build in public",
-    description: "Share wins, create content, and build alongside peers every day.",
+    title: "Sponsored by 500 Global",
+    description: "Backed by operators and investors who know how to launch globally.",
   },
   {
-    id: "self-develops",
+    id: "location",
     number: "03",
     icon: TrendingUp,
-    title: "Real conversations",
-    description: "Connect through intros and real talk — builders helping builders.",
+    title: "Located at AICB",
+    description: "AICB - AI Community Builders, the hub for Malaysia's AI builders.",
   },
 ];
 
-const TrainingSourcesVisual = () => (
-  <div className="bg-card border border-border rounded-2xl w-full max-w-[500px] shadow-xl relative overflow-hidden">
-    <div className="p-6">
-      <div className="pb-4 border-b border-border">
-        <h3 className="text-lg font-normal text-foreground mb-1">Project Brief</h3>
-        <p className="text-xs text-foreground/60 tracking-wide">Share your problem statement</p>
-      </div>
+const TrainingSourcesVisual = () => {
+  const partnerNames = [
+    "Build Club",
+    "Build with AI",
+    "AI Tinkerers",
+    "AI Hackerdorm",
+    "AI SEA",
+    "Rakan Tutor",
+  ];
 
-      <div className="mt-6">
-        <div className="border-2 border-dashed border-border rounded-xl p-8 text-center bg-muted">
-          <div className="flex flex-col items-center gap-2">
-            <svg className="w-10 h-10 text-foreground/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-              />
-            </svg>
-            <p className="text-sm text-foreground/70">Upload your brief</p>
-            <p className="text-xs text-foreground/50">PDF, docs, or slides</p>
+  return (
+    <div className="bg-card border border-border rounded-2xl w-full max-w-[500px] shadow-xl relative overflow-hidden">
+      <div className="p-6">
+        <div className="pb-4 border-b border-border">
+          <h3 className="text-lg font-normal text-foreground mb-1">Community partners</h3>
+          <p className="text-xs text-foreground/60 tracking-wide">
+            Builders and orgs that show up every week
+          </p>
+        </div>
+
+        <div className="mt-6">
+          <div className="border-2 border-dashed border-border rounded-xl p-8 text-center bg-muted">
+            <div className="flex flex-col items-center gap-2">
+              <svg className="w-10 h-10 text-foreground/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                />
+              </svg>
+              <p className="text-sm text-foreground/70">Partner events</p>
+              <p className="text-xs text-foreground/50">Workshops, demos, build days</p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="mt-6 space-y-3">
-        <p className="text-xs uppercase tracking-widest text-foreground/50 mb-3">Included</p>
+        <div className="mt-6 space-y-3">
+          <p className="text-xs uppercase tracking-widest text-foreground/50 mb-3">Included</p>
 
-        {["Problem_Statement.pdf", "User_Research.docx", "Prototype_Notes.pdf"].map((file, index) => (
-          <div key={file} className="flex items-center gap-3 p-3 rounded-xl bg-muted border border-border">
-            <div className="w-8 h-8 rounded bg-background flex items-center justify-center flex-shrink-0 border border-border">
-              <div className="w-4 h-4 rounded bg-foreground/20" />
+          {partnerNames.map((partner) => (
+            <div key={partner} className="flex items-center gap-3 p-3 rounded-xl bg-muted border border-border">
+              <div className="w-8 h-8 rounded bg-background flex items-center justify-center flex-shrink-0 border border-border">
+                <div className="w-4 h-4 rounded bg-foreground/20" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-normal text-foreground truncate">{partner}</p>
+                <p className="text-xs text-foreground/60">Community partner</p>
+              </div>
+              <div className="w-5 h-5 rounded-full bg-foreground flex items-center justify-center flex-shrink-0">
+                <div className="w-3 h-3 rounded-full bg-background" />
+              </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-normal text-foreground truncate">{file}</p>
-              <p className="text-xs text-foreground/60">Brief - {index + 1}.0 MB</p>
-            </div>
-            <div className="w-5 h-5 rounded-full bg-foreground flex items-center justify-center flex-shrink-0">
-              <div className="w-3 h-3 rounded-full bg-background" />
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const IntegrationsVisual = () => (
   <div className="w-full max-w-[520px]">
+    <div className="mb-6 text-center">
+      <p className="text-xs uppercase tracking-widest text-foreground/60">Sponsored by</p>
+      <p className="text-xl font-normal text-foreground">500 Global</p>
+      <p className="text-xs text-foreground/60">Global investor and operator network</p>
+    </div>
     <div className="grid grid-cols-3 gap-6">
       {Array.from({ length: 6 }).map((_, index) => (
         <div key={`integration-${index}`} className="aspect-square flex items-center justify-center">
@@ -89,12 +108,12 @@ const SelfDevelopmentVisual = () => (
   <div className="bg-card border border-border rounded-2xl w-full max-w-[500px] shadow-xl relative overflow-hidden">
     <div className="p-6">
       <div className="pb-4 border-b border-border">
-        <h3 className="text-lg font-normal text-foreground mb-1">Milestone Progress</h3>
-        <p className="text-xs text-foreground/60 tracking-wide">Cohort outcomes over time</p>
+        <h3 className="text-lg font-normal text-foreground mb-1">Located at AICB</h3>
+        <p className="text-xs text-foreground/60 tracking-wide">AI Community Builders</p>
       </div>
 
       <div className="mt-6">
-        <p className="text-xs uppercase tracking-widest text-foreground/50 mb-4">Sprint Readiness</p>
+        <p className="text-xs uppercase tracking-widest text-foreground/50 mb-4">Workspace Access</p>
         <div className="relative h-32 overflow-hidden rounded-xl bg-muted border border-border">
           <div className="absolute inset-0 flex items-end gap-2 px-4 pb-4">
             {[25, 40, 35, 50, 60, 55, 70, 65, 80].map((height, index) => (
@@ -109,11 +128,11 @@ const SelfDevelopmentVisual = () => (
       </div>
 
       <div className="mt-6 grid grid-cols-3 gap-4">
-        {[
-          { label: "Mentor sessions", value: "Weekly" },
-          { label: "Partner check-ins", value: "Biweekly" },
-          { label: "Demo readiness", value: "Tracked" },
-        ].map((stat) => (
+          {[
+            { label: "Coworking desks", value: "Daily" },
+            { label: "Meeting rooms", value: "Bookable" },
+            { label: "Community events", value: "Weekly" },
+          ].map((stat) => (
           <div key={stat.label} className="p-3 rounded-xl bg-muted border border-border text-center">
             <p className="text-lg font-normal text-foreground mb-1">{stat.value}</p>
             <p className="text-xs text-foreground/60">{stat.label}</p>
@@ -135,14 +154,14 @@ const AgenticIntelligenceSection = () => {
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
           <div className="lg:w-[38%] flex flex-col">
             <div className="mb-12">
-              <p className="label-default text-foreground/60 uppercase tracking-widest mb-4">Community</p>
+              <p className="label-default text-foreground/60 uppercase tracking-widest mb-4">Network</p>
               <h2
                 className="text-4xl md:text-5xl lg:text-6xl font-normal tracking-tight leading-[1.1] text-foreground"
                 style={{ textWrap: "balance" }}
               >
-                Builders helping builders,
+                Backed by the community
                 <br />
-                <span className="text-foreground/60">every single day.</span>
+                <span className="text-foreground/60">that builds in Malaysia.</span>
               </h2>
             </div>
 

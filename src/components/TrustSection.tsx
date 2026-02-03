@@ -1,19 +1,23 @@
 const pillars = [
   {
-    title: "Responsible AI",
-    description: "Ethics, safety, and governance are embedded in every sprint.",
+    title: "Technical support",
+    description: "Debug with peers, architecture reviews, and model or infra help.",
   },
   {
-    title: "Data stewardship",
-    description: "Clear data agreements, privacy safeguards, and partner consent.",
+    title: "Product support",
+    description: "User research, positioning, and product decision making.",
   },
   {
-    title: "Partner alignment",
-    description: "Residency goals are tied to real partner needs and outcomes.",
+    title: "GTM support",
+    description: "Messaging, distribution, and early sales motion.",
   },
   {
-    title: "Operational support",
-    description: "Program staff help remove blockers so you can keep shipping.",
+    title: "Fundraising support",
+    description: "Pitch feedback, investor readiness, and warm intros.",
+  },
+  {
+    title: "Content support",
+    description: "Storytelling, launches, and community building.",
   },
 ];
 
@@ -29,15 +33,27 @@ const TrustSection = () => {
             className="text-4xl md:text-5xl lg:text-6xl font-normal tracking-tight leading-[1.1] text-foreground max-w-3xl"
             style={{ textWrap: "balance" }}
           >
-            Built on trust, safety, and real-world impact.
+            Support that clears the path to launch.
           </h2>
           <p className="body-large text-foreground/60 mt-6 max-w-2xl">
-            We prioritize responsible AI practices, strong partner alignment, and
-            long-term outcomes for the Malaysian ecosystem.
+            Technical, fundraising, product, GTM, and content support from peers and
+            mentors at the residency.
           </p>
+          <div className="mt-8 space-y-2 text-sm text-foreground/60">
+            <p>
+              <span className="font-semibold text-foreground">Community partners:</span>{" "}
+              Build Club, Build with AI, AI Tinkerers, AI Hackerdorm, AI SEA, Rakan Tutor
+            </p>
+            <p>
+              <span className="font-semibold text-foreground">Sponsored by:</span> 500 Global
+            </p>
+            <p>
+              <span className="font-semibold text-foreground">Located at:</span> AICB - AI Community Builders
+            </p>
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-0 border-t border-l border-border">
+        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-0 border-t border-l border-border">
           {pillars.map((pillar) => (
             <div
               key={pillar.title}

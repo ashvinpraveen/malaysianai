@@ -15,7 +15,7 @@ const benefits = [
 
 const BenefitsSection = () => {
   return (
-    <section id="program" className="pt-32 md:pt-40 pb-16 md:pb-20 bg-cream">
+    <section id="program" className="pt-32 md:pt-40 pb-16 md:pb-20 bg-background">
       <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
         <div className="mb-16 md:mb-20">
           <p className="label-default text-foreground/60 uppercase tracking-widest mb-3">
@@ -34,9 +34,9 @@ const BenefitsSection = () => {
           {benefits.map((benefit, index) => (
             <div
               key={benefit.title}
-              className="relative overflow-hidden rounded-2xl border border-dashed border-dark-teal/20 p-6 md:p-8 flex flex-col bg-cream-dark"
+              className="relative overflow-hidden rounded-2xl border border-dashed border-border p-6 md:p-8 flex flex-col bg-card"
             >
-              <div className="h-32 rounded-xl bg-cream border border-dark-teal/15 mb-6" />
+              <div className="h-32 rounded-xl bg-muted border border-border mb-6" />
               <h3 className="text-2xl md:text-3xl font-normal tracking-tight leading-[1.1] text-foreground mb-4">
                 {benefit.title}
               </h3>
@@ -47,7 +47,7 @@ const BenefitsSection = () => {
                 {Array.from({ length: 3 }).map((_, idx) => (
                   <span
                     key={`${index}-tag-${idx}`}
-                    className="h-2 w-10 rounded-full bg-dark-teal/10"
+                    className="h-2 w-10 rounded-full bg-border/60"
                   />
                 ))}
               </div>

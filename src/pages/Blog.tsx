@@ -42,8 +42,8 @@ function BlogNavigation({ mobile = false }: { mobile?: boolean }) {
             to={category.href}
             className={`py-2 px-4 label-default uppercase tracking-wide rounded-full transition-all duration-300 whitespace-nowrap ${
               isActive(category.value)
-                ? "text-cream bg-dark-teal"
-                : "text-foreground/60 bg-cream border border-dark-teal/15 hover:border-dark-teal/30 hover:text-foreground"
+                ? "text-primary-foreground bg-primary"
+                : "text-foreground/60 bg-background border border-border hover:border-foreground/30 hover:text-foreground"
             }`}
           >
             {category.label}
@@ -83,7 +83,7 @@ function CategoryHeader() {
   return (
     <div className="mb-12 pb-12 border-b border-border flex flex-col items-center text-center max-w-2xl mx-auto">
       <div
-        className={`mb-6 h-20 w-20 rounded-full bg-gradient-to-br ${metadata.accent} ring-1 ring-dark-teal/15 flex items-center justify-center bg-cream`}
+        className={`mb-6 h-20 w-20 rounded-full bg-gradient-to-br ${metadata.accent} ring-1 ring-border flex items-center justify-center bg-background`}
       >
         <span className="label-default font-normal text-foreground/80 tracking-[0.2em]">{metadata.badge}</span>
       </div>
@@ -170,10 +170,10 @@ function BlogPostsGrid({ posts }: { posts: BlogPost[] }) {
 
 const Blog = () => {
   return (
-    <div className="min-h-screen text-foreground relative bg-cream">
+    <div className="min-h-screen text-foreground relative bg-background">
       <div className="absolute inset-0 -z-10 pointer-events-none">
-        <div className="absolute top-0 left-0 right-0 h-80 bg-gradient-to-b from-cream via-cream/70 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 h-80 bg-gradient-to-t from-cream-dark/60 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-80 bg-gradient-to-b from-background via-background/70 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-80 bg-gradient-to-t from-muted/60 to-transparent" />
       </div>
 
       <Navbar />

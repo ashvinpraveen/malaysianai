@@ -2,12 +2,12 @@ import { MainCTAButton } from "./MainCTAButton";
 
 const HeroSection = () => {
   return (
-    <section className="relative h-[calc(100vh-78px)] flex flex-col overflow-hidden rounded-2xl bg-cream border border-dark-teal/20">
+    <section className="relative h-[calc(100vh-78px)] flex flex-col overflow-hidden rounded-2xl bg-background border border-border">
 
       <div className="relative z-10 flex-1 flex flex-col justify-center items-center mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px] w-full pt-32 pb-20 text-center">
         <div className="max-w-4xl">
           <div className="inline-flex items-center justify-center mb-6">
-            <div className="rounded-full bg-cream-dark border border-dark-teal/15 px-4 py-2">
+            <div className="rounded-full bg-muted border border-border px-4 py-2">
               <p className="text-xs md:text-sm text-foreground/70 tracking-[0.3em] uppercase">
                 Powered by The Global Social House
               </p>

@@ -23,7 +23,7 @@ const demoCards = [
 
 const DemoSection = () => {
   return (
-    <section id="showcase" className="py-16 md:py-20 bg-cream min-h-screen flex flex-col justify-center">
+    <section id="showcase" className="py-16 md:py-20 bg-background min-h-screen flex flex-col justify-center">
       <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
         <div className="mb-10 md:mb-12">
           <p className="label-default text-foreground/60 uppercase tracking-widest mb-4">
@@ -47,9 +47,9 @@ const DemoSection = () => {
           {demoCards.map((demo) => (
             <div
               key={demo.title}
-              className="group rounded-2xl border border-dark-teal/15 bg-cream-dark transition-all duration-300 hover:shadow-lg overflow-hidden"
+              className="group rounded-2xl border border-border bg-card transition-all duration-300 hover:shadow-lg overflow-hidden"
             >
-              <div className="relative aspect-[4/3] overflow-hidden bg-cream border-b border-dark-teal/15" />
+              <div className="relative aspect-[4/3] overflow-hidden bg-muted border-b border-border" />
 
               <div className="p-5">
                 <div className="mb-4">
@@ -68,12 +68,12 @@ const DemoSection = () => {
                   ))}
                 </ul>
 
-                <div className="w-full flex items-center gap-3 py-3 px-4 rounded-xl bg-cream border border-dark-teal/15">
-                  <div className="w-9 h-9 rounded-full bg-dark-teal flex items-center justify-center flex-shrink-0">
-                    <div className="w-3 h-3 rounded-sm bg-cream" />
+                <div className="w-full flex items-center gap-3 py-3 px-4 rounded-xl bg-background border border-border">
+                  <div className="w-9 h-9 rounded-full bg-foreground flex items-center justify-center flex-shrink-0">
+                    <div className="w-3 h-3 rounded-sm bg-background" />
                   </div>
                   <div className="flex-1">
-                    <div className="h-2 w-full bg-dark-teal/10 rounded-full" />
+                    <div className="h-2 w-full bg-border rounded-full" />
                   </div>
                   <span className="text-xs text-foreground/60 font-light flex-shrink-0">
                     {demo.duration}
@@ -84,7 +84,7 @@ const DemoSection = () => {
           ))}
         </div>
 
-        <div className="mt-20 flex flex-col md:flex-row items-center justify-between gap-6 pt-12 border-t border-dark-teal/15">
+        <div className="mt-20 flex flex-col md:flex-row items-center justify-between gap-6 pt-12 border-t border-border">
           <p className="text-base font-light text-foreground/60">
             Ready to present your work and keep building after the residency?
           </p>

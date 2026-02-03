@@ -4,12 +4,12 @@ import { MainCTAButton } from "@/components/MainCTAButton";
 
 const Company = () => {
   return (
-    <div className="min-h-screen bg-cream flex flex-col font-sans">
+    <div className="min-h-screen bg-background flex flex-col font-sans">
       <Navbar />
 
-      <main className="flex-grow w-full px-4 pt-32 pb-20 selection:bg-cream-dark">
+      <main className="flex-grow w-full px-4 pt-32 pb-20 selection:bg-muted">
         <div className="w-full max-w-4xl mx-auto mb-20 text-center space-y-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cream-dark border border-dark-teal/15 text-foreground/70 text-xs font-semibold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-muted border border-border text-foreground/70 text-xs font-semibold uppercase tracking-wider">
             About the Residency
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] leading-[1.1] font-medium text-foreground tracking-[-0.02em]">
@@ -31,10 +31,10 @@ const Company = () => {
             ].map((item) => (
               <div
                 key={item.title}
-                className="bg-cream rounded-[2rem] p-10 border border-dark-teal/15 shadow-[0_2px_40px_-12px_rgba(11,31,35,0.12)]"
+                className="bg-card rounded-[2rem] p-10 border border-border shadow-[0_2px_40px_-12px_rgba(11,31,35,0.12)]"
               >
-                <div className="w-12 h-12 bg-cream-dark rounded-2xl flex items-center justify-center mb-6 border border-dark-teal/15">
-                  <div className="w-5 h-5 rounded bg-dark-teal/30" />
+                <div className="w-12 h-12 bg-muted rounded-2xl flex items-center justify-center mb-6 border border-border">
+                  <div className="w-5 h-5 rounded bg-foreground/20" />
                 </div>
                 <h3 className="text-xl font-medium text-foreground mb-3">{item.title}</h3>
                 <p className="text-foreground/70 leading-relaxed">{item.description}</p>
@@ -44,7 +44,7 @@ const Company = () => {
         </div>
 
         <div className="container mx-auto max-w-6xl">
-          <div className="bg-cream rounded-[2.5rem] p-8 md:p-16 border border-dark-teal/15 shadow-sm overflow-hidden relative">
+          <div className="bg-card rounded-[2.5rem] p-8 md:p-16 border border-border shadow-sm overflow-hidden relative">
             <div className="grid md:grid-cols-2 gap-12 items-center relative z-10">
               <div className="space-y-6">
                 <div className="inline-flex items-center gap-2 text-foreground/70 font-medium">
@@ -60,7 +60,7 @@ const Company = () => {
                 <ul className="space-y-3">
                   {["Define a clear problem statement", "Provide domain access and feedback", "Attend demo day"].map((item) => (
                     <li key={item} className="flex items-center gap-3 text-foreground/70">
-                      <div className="w-1.5 h-1.5 rounded-full bg-dark-teal/70" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-foreground/70" />
                       {item}
                     </li>
                   ))}
@@ -71,8 +71,8 @@ const Company = () => {
                   </MainCTAButton>
                 </div>
               </div>
-              <div className="relative h-full min-h-[300px] bg-cream-dark rounded-[2rem] flex items-center justify-center p-8 border border-dark-teal/15">
-                <div className="w-32 h-32 rounded-3xl border border-dashed border-dark-teal/20" />
+              <div className="relative h-full min-h-[300px] bg-muted rounded-[2rem] flex items-center justify-center p-8 border border-border">
+                <div className="w-32 h-32 rounded-3xl border border-dashed border-border" />
               </div>
             </div>
           </div>

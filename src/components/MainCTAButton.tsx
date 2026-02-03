@@ -29,10 +29,10 @@ export const MainCTAButton = ({
     disabled = false,
 }: MainCTAButtonProps) => {
     const variantClasses = {
-        primary: "bg-dark-teal text-cream hover:bg-dark-teal/90 border border-dark-teal/10",
-        secondary: "border border-dark-teal/40 bg-transparent text-dark-teal hover:bg-dark-teal/10",
-        white: "bg-cream text-dark-teal hover:bg-cream/90 border border-dark-teal/15",
-        outline: "border border-dark-teal/30 bg-transparent text-dark-teal hover:bg-dark-teal/5",
+        primary: "bg-primary text-primary-foreground hover:bg-primary/90 border border-primary/10",
+        secondary: "border border-primary/40 bg-transparent text-primary hover:bg-primary/10",
+        white: "bg-background text-foreground hover:bg-background/90 border border-border",
+        outline: "border border-primary/30 bg-transparent text-foreground hover:bg-primary/5",
     };
 
     const sizeClasses = {

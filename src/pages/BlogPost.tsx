@@ -27,10 +27,10 @@ const BlogPost = () => {
   const category = post.category ? categoryMetadata[post.category] : null;
 
   return (
-    <div className="min-h-screen text-foreground relative bg-cream">
+    <div className="min-h-screen text-foreground relative bg-background">
       <div className="absolute inset-0 -z-10 pointer-events-none">
-        <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-cream via-cream/70 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-cream-dark/60 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-background via-background/70 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-muted/60 to-transparent" />
       </div>
 
       <Navbar />
@@ -40,7 +40,7 @@ const BlogPost = () => {
           <div className="mx-auto w-full max-w-[720px] px-6 sm:px-8">
             <Link
               to="/blog"
-              className="inline-flex items-center justify-center w-9 h-9 text-foreground/70 hover:text-foreground transition-colors group mb-6 rounded-full border border-dark-teal/15 hover:border-dark-teal/30 bg-cream"
+              className="inline-flex items-center justify-center w-9 h-9 text-foreground/70 hover:text-foreground transition-colors group mb-6 rounded-full border border-border hover:border-foreground/30 bg-background"
               aria-label="Back to Blog"
             >
               <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
@@ -50,7 +50,7 @@ const BlogPost = () => {
               {post.category ? (
                 <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-foreground/60 mb-4">
                   <span
-                    className={`h-2 w-2 rounded-full bg-gradient-to-r ${category?.accent ?? "from-cream-dark to-cream"}`}
+                    className={`h-2 w-2 rounded-full bg-gradient-to-r ${category?.accent ?? "from-muted to-background"}`}
                   />
                   {post.category.replace(/-/g, " ")}
                 </span>
@@ -67,9 +67,9 @@ const BlogPost = () => {
               </h1>
               {post.summary ? <p className="text-base md:text-lg text-foreground/70">{post.summary}</p> : null}
 
-              <div className="mt-6 flex flex-wrap items-center gap-4 border-b border-dark-teal/15 pb-6">
+              <div className="mt-6 flex flex-wrap items-center gap-4 border-b border-border pb-6">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-cream-dark border border-dark-teal/15" />
+                  <div className="h-10 w-10 rounded-full bg-muted border border-border" />
                   <div className="flex flex-col">
                     <span className="text-sm font-semibold text-foreground">{post.author ?? "Author"}</span>
                     <span className="text-xs text-foreground/60">Residency Team</span>
@@ -84,7 +84,7 @@ const BlogPost = () => {
 
             {post.cover ? (
               <div className="mb-10 -mx-6 sm:-mx-8 md:mx-0">
-                <div className="relative aspect-[16/9] w-full md:rounded-2xl overflow-hidden border border-dark-teal/15 bg-cream" />
+                <div className="relative aspect-[16/9] w-full md:rounded-2xl overflow-hidden border border-border bg-card" />
               </div>
             ) : null}
 
@@ -107,7 +107,7 @@ const BlogPost = () => {
                     </ul>
                   ) : null}
                   {block.quote ? (
-                    <blockquote className="border-l-2 border-dark-teal/20 pl-4 text-foreground/70 italic">
+                    <blockquote className="border-l-2 border-border pl-4 text-foreground/70 italic">
                       {block.quote}
                     </blockquote>
                   ) : null}
@@ -115,7 +115,7 @@ const BlogPost = () => {
               ))}
             </div>
 
-            <div className="mt-14 rounded-2xl border border-dark-teal/15 bg-cream p-6 md:p-8 shadow-sm">
+            <div className="mt-14 rounded-2xl border border-border bg-card p-6 md:p-8 shadow-sm">
               <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div>
                   <h3 className="text-xl font-bold text-foreground mb-2">Apply for the next cohort</h3>
@@ -129,7 +129,7 @@ const BlogPost = () => {
               </div>
             </div>
 
-            <footer className="mt-16 pt-8 border-t border-dark-teal/15">
+            <footer className="mt-16 pt-8 border-t border-border">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
                 <p className="text-sm text-foreground/60">Explore more updates from the residency.</p>
                 <Link

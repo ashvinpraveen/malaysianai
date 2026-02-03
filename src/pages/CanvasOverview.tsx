@@ -54,7 +54,7 @@ const PageCard = ({ title, route, component, sections, x, y, currentZoom }: Page
 
       {/* Page preview card */}
       <div
-        className="border-2 border-dark-teal/15 bg-cream shadow-lg rounded-lg overflow-hidden cursor-pointer hover:shadow-xl transition-shadow relative"
+        className="border-2 border-border bg-background shadow-lg rounded-lg overflow-hidden cursor-pointer hover:shadow-xl transition-shadow relative"
         onClick={() => navigate(route)}
       >
         <div
@@ -65,7 +65,7 @@ const PageCard = ({ title, route, component, sections, x, y, currentZoom }: Page
             pointerEvents: "none",
           }}
         >
-          <div style={{ width: `${fullWidth}px` }} className="bg-cream">
+          <div style={{ width: `${fullWidth}px` }} className="bg-background">
             {component}
           </div>
         </div>
@@ -231,7 +231,7 @@ const CanvasOverview = () => {
             </div>
 
             {/* Info */}
-            <div className="absolute bottom-6 left-6 z-50 bg-cream/95 backdrop-blur-sm px-4 py-2 rounded-lg shadow-md">
+            <div className="absolute bottom-6 left-6 z-50 bg-background/95 backdrop-blur-sm px-4 py-2 rounded-lg shadow-md">
               <p className="text-sm text-muted-foreground">
                 Click any page to navigate • Drag to pan • Scroll to zoom
               </p>

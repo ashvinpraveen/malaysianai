@@ -96,7 +96,7 @@ const ResidentContent = ({ resident }: { resident: Resident }) => {
 
 const ResidentsSection = () => {
   return (
-    <section id="residents" className="py-20 md:py-28 bg-cream">
+    <section id="residents" className="py-20 md:py-28 bg-background">
       <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
         <div className="text-center max-w-3xl mx-auto mb-12">
           <p className="label-default text-foreground/60 uppercase tracking-widest mb-4">
@@ -117,7 +117,7 @@ const ResidentsSection = () => {
               <a
                 key={resident.name}
                 aria-label={resident.name}
-                className="flex items-center justify-center rounded-2xl border border-dark-teal/15 bg-cream-dark p-6 text-foreground transition-opacity hover:opacity-70"
+                className="flex items-center justify-center rounded-2xl border border-border bg-card p-6 text-foreground transition-opacity hover:opacity-70"
                 href={resident.link}
                 rel={isExternal ? "noopener noreferrer" : undefined}
                 target={isExternal ? "_blank" : undefined}

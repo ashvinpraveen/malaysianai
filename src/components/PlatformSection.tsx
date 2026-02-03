@@ -1,6 +1,6 @@
 const PlatformSection = () => {
   return (
-    <section className="py-24 md:py-36 bg-cream">
+    <section className="py-24 md:py-36 bg-background">
       <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
@@ -13,7 +13,7 @@ const PlatformSection = () => {
               build through the residency.
             </p>
           </div>
-          <div className="rounded-2xl border border-dashed border-dark-teal/15 bg-cream-dark h-72" />
+          <div className="rounded-2xl border border-dashed border-border bg-muted h-72" />
         </div>
       </div>
     </section>

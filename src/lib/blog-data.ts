@@ -27,19 +27,19 @@ export const categoryMetadata: Record<
     title: "Announcements",
     description: "Program news, application windows, and key dates.",
     badge: "ANN",
-    accent: "from-dark-teal/80 via-dark-teal/40 to-transparent",
+    accent: "from-primary/80 via-primary/40 to-transparent",
   },
   "cohort-stories": {
     title: "Cohort Stories",
     description: "What residents are building across Malaysia.",
     badge: "COH",
-    accent: "from-dark-teal/70 via-dark-teal/30 to-transparent",
+    accent: "from-primary/70 via-primary/30 to-transparent",
   },
   curriculum: {
     title: "Curriculum",
     description: "How we teach, mentor, and ship applied AI projects.",
     badge: "CUR",
-    accent: "from-dark-teal/60 via-dark-teal/25 to-transparent",
+    accent: "from-primary/60 via-primary/25 to-transparent",
   },
 };
 

@@ -12,7 +12,7 @@ import ResidentsSection from "@/components/ResidentsSection";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-cream overflow-x-hidden">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
       <div className="px-3 md:px-4 lg:px-6 pt-16">
         <HeroSection />

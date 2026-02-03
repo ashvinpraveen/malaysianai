@@ -54,12 +54,12 @@ const ActionsVisual = () => {
                 <div className="max-w-[85%] shadow-[0_20px_35px_-28px_rgba(11,31,35,0.45)]">
                   <div
                     className={`rounded-2xl border px-5 py-4 text-base md:text-lg leading-relaxed ${
-                      isAgent ? "bg-cream border-dark-teal/15 text-foreground" : "bg-cream border-dark-teal/20 text-foreground"
+                      isAgent ? "bg-card border-border text-foreground" : "bg-card border-border text-foreground"
                     }`}
                   >
                     {isAgent && (
                       <div className="mb-2 flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-foreground/60">
-                        <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-cream-dark border border-dark-teal/20">
+                        <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-muted border border-border">
                           <svg viewBox="0 0 32 32" className="h-4 w-4 text-foreground" fill="currentColor" aria-hidden="true">
                             <path d="M16 2c-3.5 0-6.5 1.5-8.5 4C5.5 8.5 3 11 1 16c2 5 4.5 7.5 6.5 10 2 2.5 5 4 8.5 4s6.5-1.5 8.5-4c2-2.5 4.5-5 6.5-10-2-5-4.5-7.5-6.5-10C22.5 3.5 19.5 2 16 2zm0 4c2.5 0 4.5 1.2 5.8 3.1 1.3 1.9 3.3 3.1 5.8 3.1 0 2.5-1.2 4.5-3.1 5.8-1.9 1.3-3.1 3.3-3.1 5.8-2.5 0-4.5-1.2-5.8-3.1-1.3-1.9-3.3-3.1-5.8-3.1 0-2.5 1.2-4.5 3.1-5.8 1.9-1.3 3.1-3.3 3.1-5.8z" />
                           </svg>
@@ -107,12 +107,12 @@ const EscalationVisual = () => {
                 <div className="max-w-[85%] shadow-[0_20px_35px_-28px_rgba(11,31,35,0.45)]">
                   <div
                     className={`rounded-2xl border px-5 py-4 text-base md:text-lg leading-relaxed ${
-                      isAgent ? "bg-cream border-dark-teal/15 text-foreground" : "bg-cream border-dark-teal/20 text-foreground"
+                      isAgent ? "bg-card border-border text-foreground" : "bg-card border-border text-foreground"
                     }`}
                   >
                     {isAgent && (
                       <div className="mb-2 flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-foreground/60">
-                        <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-cream-dark border border-dark-teal/20">
+                        <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-muted border border-border">
                           <svg viewBox="0 0 32 32" className="h-4 w-4 text-foreground" fill="currentColor" aria-hidden="true">
                             <path d="M16 2c-3.5 0-6.5 1.5-8.5 4C5.5 8.5 3 11 1 16c2 5 4.5 7.5 6.5 10 2 2.5 5 4 8.5 4s6.5-1.5 8.5-4c2-2.5 4.5-5 6.5-10-2-5-4.5-7.5-6.5-10C22.5 3.5 19.5 2 16 2zm0 4c2.5 0 4.5 1.2 5.8 3.1 1.3 1.9 3.3 3.1 5.8 3.1 0 2.5-1.2 4.5-3.1 5.8-1.9 1.3-3.1 3.3-3.1 5.8-2.5 0-4.5-1.2-5.8-3.1-1.3-1.9-3.3-3.1-5.8-3.1 0-2.5 1.2-4.5 3.1-5.8 1.9-1.3 3.1-3.3 3.1-5.8z" />
                           </svg>
@@ -133,10 +133,10 @@ const EscalationVisual = () => {
 };
 
 const MultilingualVisual = () => (
-  <div className="bg-cream border border-dark-teal/15 rounded-2xl w-full max-w-[500px] shadow-xl relative overflow-hidden">
-    <div className="p-4 border-b border-dark-teal/15 flex items-center justify-between">
+  <div className="bg-card border border-border rounded-2xl w-full max-w-[500px] shadow-xl relative overflow-hidden">
+    <div className="p-4 border-b border-border flex items-center justify-between">
       <div className="flex items-center gap-3">
-        <div className="w-2 h-2 rounded-full bg-dark-teal/70" />
+        <div className="w-2 h-2 rounded-full bg-foreground/70" />
         <span className="text-sm font-normal text-foreground">Cohort Snapshot</span>
       </div>
       <span className="text-xs text-foreground/60">Tracks</span>
@@ -148,7 +148,7 @@ const MultilingualVisual = () => (
         { lang: "Researchers", flag: "RS", calls: "Residents", pct: 20 },
         { lang: "Hackers", flag: "HK", calls: "Residents", pct: 10 },
       ].map((l) => (
-        <div key={l.lang} className="p-3.5 rounded-xl bg-cream-dark border border-dark-teal/15">
+        <div key={l.lang} className="p-3.5 rounded-xl bg-muted border border-border">
           <div className="flex items-center justify-between mb-2.5">
             <div className="flex items-center gap-3">
               <span className="text-lg">{l.flag}</span>
@@ -156,14 +156,14 @@ const MultilingualVisual = () => (
             </div>
             <p className="text-sm text-foreground/60">{l.calls}</p>
           </div>
-          <div className="h-1.5 bg-cream rounded-full overflow-hidden">
-            <div className="h-full bg-dark-teal rounded-full transition-all duration-500" style={{ width: `${l.pct}%` }} />
+          <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+            <div className="h-full bg-foreground rounded-full transition-all duration-500" style={{ width: `${l.pct}%` }} />
           </div>
         </div>
       ))}
     </div>
     <div className="px-5 pb-5">
-      <div className="grid grid-cols-2 gap-4 pt-4 border-t border-dark-teal/15">
+      <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
         <div className="text-center">
           <p className="text-xl font-light text-foreground mb-0.5">Cohort</p>
           <p className="text-xs text-foreground/60">Small, focused</p>
@@ -183,7 +183,7 @@ const AgenticActionsSection = () => {
   const [activeStep, setActiveStep] = useState(0);
 
   return (
-    <section id="curriculum" className="py-24 md:py-36 bg-cream overflow-hidden">
+    <section id="curriculum" className="py-24 md:py-36 bg-background overflow-hidden">
       <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
           <div className="lg:w-[38%] flex flex-col">
@@ -203,7 +203,7 @@ const AgenticActionsSection = () => {
               {features.map((feature, index) => (
                 <div
                   key={feature.id}
-                  className={`relative py-6 cursor-pointer group ${index < features.length - 1 ? "border-b border-dark-teal/15" : ""}`}
+                  className={`relative py-6 cursor-pointer group ${index < features.length - 1 ? "border-b border-border" : ""}`}
                   onClick={() => setActiveStep(index)}
                 >
                   <div className="flex items-center justify-between">
@@ -236,8 +236,8 @@ const AgenticActionsSection = () => {
           </div>
 
           <div className="lg:w-[62%] flex">
-            <div className="relative rounded-2xl overflow-hidden bg-cream-dark flex-1 aspect-[4/3] border border-dark-teal/15">
-              <div className="absolute inset-0 bg-dark-teal/5" />
+            <div className="relative rounded-2xl overflow-hidden bg-muted flex-1 aspect-[4/3] border border-border">
+              <div className="absolute inset-0 bg-foreground/5" />
 
               <div className="absolute inset-0 flex items-center justify-center p-6 md:p-10">
                 <AnimatePresence mode="wait">

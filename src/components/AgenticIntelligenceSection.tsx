@@ -27,15 +27,15 @@ const features = [
 ];
 
 const TrainingSourcesVisual = () => (
-  <div className="bg-cream border border-dark-teal/15 rounded-2xl w-full max-w-[500px] shadow-xl relative overflow-hidden">
+  <div className="bg-card border border-border rounded-2xl w-full max-w-[500px] shadow-xl relative overflow-hidden">
     <div className="p-6">
-      <div className="pb-4 border-b border-dark-teal/15">
+      <div className="pb-4 border-b border-border">
         <h3 className="text-lg font-normal text-foreground mb-1">Project Brief</h3>
         <p className="text-xs text-foreground/60 tracking-wide">Share your problem statement</p>
       </div>
 
       <div className="mt-6">
-        <div className="border-2 border-dashed border-dark-teal/20 rounded-xl p-8 text-center bg-cream-dark">
+        <div className="border-2 border-dashed border-border rounded-xl p-8 text-center bg-muted">
           <div className="flex flex-col items-center gap-2">
             <svg className="w-10 h-10 text-foreground/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path
@@ -55,16 +55,16 @@ const TrainingSourcesVisual = () => (
         <p className="text-xs uppercase tracking-widest text-foreground/50 mb-3">Included</p>
 
         {["Problem_Statement.pdf", "User_Research.docx", "Prototype_Notes.pdf"].map((file, index) => (
-          <div key={file} className="flex items-center gap-3 p-3 rounded-xl bg-cream-dark border border-dark-teal/15">
-            <div className="w-8 h-8 rounded bg-cream flex items-center justify-center flex-shrink-0 border border-dark-teal/10">
-              <div className="w-4 h-4 rounded bg-dark-teal/40" />
+          <div key={file} className="flex items-center gap-3 p-3 rounded-xl bg-muted border border-border">
+            <div className="w-8 h-8 rounded bg-background flex items-center justify-center flex-shrink-0 border border-border">
+              <div className="w-4 h-4 rounded bg-foreground/20" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-normal text-foreground truncate">{file}</p>
               <p className="text-xs text-foreground/60">Brief - {index + 1}.0 MB</p>
             </div>
-            <div className="w-5 h-5 rounded-full bg-dark-teal flex items-center justify-center flex-shrink-0">
-              <div className="w-3 h-3 rounded-full bg-cream" />
+            <div className="w-5 h-5 rounded-full bg-foreground flex items-center justify-center flex-shrink-0">
+              <div className="w-3 h-3 rounded-full bg-background" />
             </div>
           </div>
         ))}
@@ -78,7 +78,7 @@ const IntegrationsVisual = () => (
     <div className="grid grid-cols-3 gap-6">
       {Array.from({ length: 6 }).map((_, index) => (
         <div key={`integration-${index}`} className="aspect-square flex items-center justify-center">
-          <div className="h-16 w-16 rounded-2xl border border-dashed border-dark-teal/20 bg-cream-dark" />
+          <div className="h-16 w-16 rounded-2xl border border-dashed border-border bg-muted" />
         </div>
       ))}
     </div>
@@ -86,21 +86,21 @@ const IntegrationsVisual = () => (
 );
 
 const SelfDevelopmentVisual = () => (
-  <div className="bg-cream border border-dark-teal/15 rounded-2xl w-full max-w-[500px] shadow-xl relative overflow-hidden">
+  <div className="bg-card border border-border rounded-2xl w-full max-w-[500px] shadow-xl relative overflow-hidden">
     <div className="p-6">
-      <div className="pb-4 border-b border-dark-teal/15">
+      <div className="pb-4 border-b border-border">
         <h3 className="text-lg font-normal text-foreground mb-1">Milestone Progress</h3>
         <p className="text-xs text-foreground/60 tracking-wide">Cohort outcomes over time</p>
       </div>
 
       <div className="mt-6">
         <p className="text-xs uppercase tracking-widest text-foreground/50 mb-4">Sprint Readiness</p>
-        <div className="relative h-32 overflow-hidden rounded-xl bg-cream-dark border border-dark-teal/15">
+        <div className="relative h-32 overflow-hidden rounded-xl bg-muted border border-border">
           <div className="absolute inset-0 flex items-end gap-2 px-4 pb-4">
             {[25, 40, 35, 50, 60, 55, 70, 65, 80].map((height, index) => (
               <div
                 key={`bar-${index}`}
-                className="flex-1 rounded-md bg-dark-teal/30"
+                className="flex-1 rounded-md bg-foreground/30"
                 style={{ height: `${height}%` }}
               />
             ))}
@@ -114,7 +114,7 @@ const SelfDevelopmentVisual = () => (
           { label: "Partner check-ins", value: "Biweekly" },
           { label: "Demo readiness", value: "Tracked" },
         ].map((stat) => (
-          <div key={stat.label} className="p-3 rounded-xl bg-cream-dark border border-dark-teal/15 text-center">
+          <div key={stat.label} className="p-3 rounded-xl bg-muted border border-border text-center">
             <p className="text-lg font-normal text-foreground mb-1">{stat.value}</p>
             <p className="text-xs text-foreground/60">{stat.label}</p>
           </div>
@@ -130,7 +130,7 @@ const AgenticIntelligenceSection = () => {
   const [activeStep, setActiveStep] = useState(0);
 
   return (
-    <section id="community" className="py-24 md:py-36 bg-cream-dark overflow-hidden">
+    <section id="community" className="py-24 md:py-36 bg-muted overflow-hidden">
       <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
           <div className="lg:w-[38%] flex flex-col">
@@ -150,7 +150,7 @@ const AgenticIntelligenceSection = () => {
               {features.map((feature, index) => (
                 <div
                   key={feature.id}
-                  className={`relative py-6 cursor-pointer group ${index < features.length - 1 ? "border-b border-dark-teal/15" : ""}`}
+                  className={`relative py-6 cursor-pointer group ${index < features.length - 1 ? "border-b border-border" : ""}`}
                   onClick={() => setActiveStep(index)}
                 >
                   <div className="flex items-center justify-between">
@@ -183,8 +183,8 @@ const AgenticIntelligenceSection = () => {
           </div>
 
           <div className="lg:w-[62%] flex">
-            <div className="relative rounded-2xl overflow-hidden bg-cream flex-1 aspect-[4/3] border border-dark-teal/15">
-              <div className="absolute inset-0 bg-dark-teal/5" />
+            <div className="relative rounded-2xl overflow-hidden bg-card flex-1 aspect-[4/3] border border-border">
+              <div className="absolute inset-0 bg-foreground/5" />
 
               <div className="absolute inset-0 flex items-center justify-center p-6 md:p-10">
                 <AnimatePresence mode="wait">

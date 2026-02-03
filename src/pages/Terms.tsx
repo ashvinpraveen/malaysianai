@@ -19,11 +19,11 @@ const Terms = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-cream font-sans selection:bg-cream-dark">
+    <div className="min-h-screen bg-background font-sans selection:bg-muted">
       <Navbar />
 
       <main className="relative">
-        <section className="relative min-h-[40vh] flex items-center justify-center pt-32 pb-20 px-4 md:px-6 overflow-hidden bg-cream-dark">
+        <section className="relative min-h-[40vh] flex items-center justify-center pt-32 pb-20 px-4 md:px-6 overflow-hidden bg-muted">
           <div className="container relative z-10 max-w-4xl mx-auto text-center space-y-6">
             <h1 className="text-4xl md:text-6xl font-medium text-foreground tracking-[-0.02em]">
               Terms of Service
@@ -44,7 +44,7 @@ const Terms = () => {
           <div className="container max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-16">
               <aside className="hidden lg:block">
-                <div className="sticky top-28 bg-cream p-8 rounded-[2rem] border border-dark-teal/15 shadow-[0_2px_40px_-12px_rgba(11,31,35,0.12)]">
+                <div className="sticky top-28 bg-card p-8 rounded-[2rem] border border-border shadow-[0_2px_40px_-12px_rgba(11,31,35,0.12)]">
                   <h3 className="font-bold text-xs uppercase tracking-[0.2em] text-foreground mb-6">
                     Contents
                   </h3>
@@ -103,7 +103,7 @@ const Terms = () => {
                   </p>
                 </section>
 
-                <section id="contact" className="space-y-4 border-t border-dark-teal/15 pt-12">
+                <section id="contact" className="space-y-4 border-t border-border pt-12">
                   <h2 className="text-2xl font-semibold text-foreground">Contact</h2>
                   <p className="text-foreground/70 leading-relaxed">
                     Reach out with questions about these terms or program agreements.

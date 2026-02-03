@@ -15,7 +15,7 @@ const features = [
 
 const BuilderSection = () => {
   return (
-    <section id="studio" className="py-24 md:py-36 bg-cream-dark overflow-hidden relative">
+    <section id="studio" className="py-24 md:py-36 bg-muted overflow-hidden relative">
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
           <p className="label-default text-foreground/60 uppercase tracking-widest mb-4">
@@ -34,12 +34,12 @@ const BuilderSection = () => {
           {features.map((feature) => (
             <div
               key={feature.title}
-              className="elevated-card rounded-3xl p-6 flex flex-col bg-cream backdrop-blur-sm"
+              className="elevated-card rounded-3xl p-6 flex flex-col bg-card backdrop-blur-sm"
             >
-              <div className="aspect-[4/3] w-full mb-6 rounded-2xl p-6 flex items-center justify-center relative overflow-hidden border border-dark-teal/15 bg-cream">
-                <div className="absolute inset-0 bg-gradient-to-br from-cream via-cream to-cream-dark" />
+              <div className="aspect-[4/3] w-full mb-6 rounded-2xl p-6 flex items-center justify-center relative overflow-hidden border border-border bg-background">
+                <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted" />
                 <div className="relative z-10 w-full h-full flex items-center justify-center">
-                  <div className="h-20 w-20 rounded-2xl border border-dark-teal/15 bg-cream-dark" />
+                  <div className="h-20 w-20 rounded-2xl border border-border bg-muted" />
                 </div>
               </div>
 

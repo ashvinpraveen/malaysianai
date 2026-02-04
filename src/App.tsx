@@ -15,6 +15,7 @@ import CanvasOverview from "./pages/CanvasOverview";
 import CommunityDirectory from "./pages/CommunityDirectory";
 import ResidentsDirectory from "./pages/ResidentsDirectory";
 import MalaysianAI from "./pages/MalaysianAI";
+import Contact from "./pages/Contact";
 import ErrorBoundary from "./components/ErrorBoundary";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -38,6 +39,7 @@ const App = () => (
             <Route path="/company" element={<Company />} />
             <Route path="/community" element={<CommunityDirectory />} />
             <Route path="/residents" element={<ResidentsDirectory />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

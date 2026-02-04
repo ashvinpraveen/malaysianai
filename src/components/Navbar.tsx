@@ -4,11 +4,10 @@ import { ChevronRight, Menu, X } from "lucide-react";
 import { CTAButton } from "./CTAButton";
 
 const navItems = [
-  { label: "Program", href: "/#program" },
-  { label: "Community", href: "/#community-partners" },
-  { label: "Residents", href: "/#residents" },
-  { label: "Community directory", href: "/community" },
-  { label: "Residents directory", href: "/residents" },
+  { label: "Residency", href: "/residency" },
+  { label: "Meet the residents", href: "/residents" },
+  { label: "Communities", href: "/community" },
+  { label: "Contact", href: "/contact" },
 ];
 
 const Navbar = () => {

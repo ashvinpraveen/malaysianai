@@ -18,10 +18,15 @@ const CTA = () => {
               className="section-title text-white mb-6"
               style={{ textWrap: "balance" }}
             >
-              Make insane progress
+              Get in touch with us
             </h2>
-            <CTAButton href="/book-demo" variant="white" size="lg" showArrow isExternal={false}>
-              Apply for the next cohort
+            <p className="mx-auto mb-8 max-w-3xl text-sm md:text-base text-white/80">
+              We&apos;re looking for partners, collaborators and to channel funding to drive
+              greater impact across all of the key initiatives driving Malaysia&apos;s future.
+              Reach out to us to have a chat.
+            </p>
+            <CTAButton href="/contact" variant="white" size="lg" showArrow isExternal={false}>
+              Contact us
             </CTAButton>
           </div>
         </div>

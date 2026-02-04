@@ -22,9 +22,6 @@ const focusAreas = [
   { label: "Education & mentoring", count: "Featured" },
 ];
 
-const partnerHighlight =
-  "Featured on the Malaysian AI landing page. Visit their site to learn more.";
-
 const CommunityDirectory = () => {
   return (
     <div className="min-h-screen bg-background text-foreground relative">
@@ -162,7 +159,7 @@ const CommunityDirectory = () => {
                 </div>
 
                 <p className="body-default text-foreground/70 mt-4">
-                  {partnerHighlight}
+                  {partner.summary}
                 </p>
 
                 <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-foreground/70">

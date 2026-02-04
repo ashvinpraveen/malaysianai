@@ -5,7 +5,6 @@ const footerSections = [
     title: "Program",
     links: [
       { label: "Residency", href: "/residency" },
-      { label: "Canvas", href: "/canvas" },
       { label: "Apply", href: "/book-demo" },
     ],
   },

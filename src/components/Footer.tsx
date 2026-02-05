@@ -84,8 +84,8 @@ const Footer = () => {
           ))}
         </div>
       </div>
-      <div className="mt-10 overflow-hidden w-screen relative left-1/2 -translate-x-1/2 px-0">
-        <div className="navbar-brand text-background/15 text-[clamp(4rem,18vw,18rem)] font-semibold tracking-[-0.06em] text-center leading-none whitespace-nowrap">
+      <div className="mt-10 pb-6 overflow-hidden w-screen relative left-1/2 -translate-x-1/2 px-0">
+        <div className="navbar-brand text-background/15 text-[clamp(4rem,18vw,18rem)] font-semibold tracking-[-0.06em] text-center leading-none whitespace-nowrap -translate-y-4">
           Malaysian AI
         </div>
       </div>

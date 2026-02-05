@@ -124,11 +124,11 @@ const MalaysianAI = () => {
         <div className="px-3 md:px-4 lg:px-6 pt-16">
           <section className="relative h-[calc(100vh-78px)] flex flex-col overflow-hidden rounded-2xl border border-border text-white">
             <div className="absolute inset-0 z-0">
-              <img
-                src="/batik_kl_night_sky_vast.png"
-                alt="Vast Batik night sky over distant Malaysian cities"
-                className="w-full h-full object-cover"
-              />
+                <img
+                  src="/batik_kl_night_sky_vast.png"
+                  alt="Vast Batik night sky over distant Malaysian cities"
+                  className="w-full h-full object-cover object-left-bottom"
+                />
               <div className="absolute inset-0 bg-black/10 bg-gradient-to-t from-black/40 via-black/10 to-black/20" />
             </div>
 
@@ -142,12 +142,26 @@ const MalaysianAI = () => {
                   so more Malaysian teams can ship real AI products and grow globally.
                 </p>
 
-                <div className="mt-8 flex flex-col items-center justify-center gap-4">
-                  <CTAButton href="#program" variant="white" size="lg" showArrow isExternal={false}>
+                <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                  <CTAButton
+                    href="#program"
+                    variant="white"
+                    size="lg"
+                    showArrow
+                    isExternal={false}
+                    className="w-64"
+                  >
                     Explore initiatives
                   </CTAButton>
-                  <CTAButton href="#community-partners" variant="secondary" size="lg" showArrow isExternal={false}>
-                    See the ecosystem
+                  <CTAButton
+                    href="/contact"
+                    variant="outline"
+                    size="lg"
+                    showArrow
+                    isExternal={false}
+                    className="w-64 text-white/90 border-white/50 hover:bg-white/10 hover:text-white"
+                  >
+                    Get in touch
                   </CTAButton>
                 </div>
               </div>
@@ -210,7 +224,7 @@ const MalaysianAI = () => {
                   key={initiative.title}
                   className="relative flex flex-col rounded-2xl border border-border/60 bg-background p-6"
                 >
-                  <div className="relative -mx-6 -mt-6 mb-5 h-44 overflow-hidden rounded-t-2xl">
+                  <div className="relative -mx-6 -mt-6 mb-5 h-[22rem] overflow-hidden rounded-t-2xl">
                     <img
                       src={initiative.image}
                       alt={`${initiative.title} batik illustration`}
@@ -363,8 +377,8 @@ const MalaysianAI = () => {
                   Partner with Malaysian AI, support the ecosystem, or join a program. We&apos;re ready
                   to collaborate.
                 </p>
-                <CTAButton href="mailto:hello@malaysianai.org" variant="white" size="lg" showArrow>
-                  Email Malaysian AI
+                <CTAButton href="/contact" variant="white" size="lg" showArrow isExternal={false}>
+                  Contact us
                 </CTAButton>
               </div>
             </div>

@@ -196,6 +196,56 @@
     @apply bg-foreground/95 backdrop-blur-sm text-background;
   }
 
+  .timer-display {
+    font-family: 'Newsreader', Georgia, serif;
+    @apply font-normal tracking-tight;
+  }
+
+  .timer-announcement {
+    font-family: 'Newsreader', Georgia, serif;
+    @apply text-4xl md:text-6xl font-semibold tracking-tight;
+  }
+
+  .timer-phase {
+    font-family: 'Newsreader', Georgia, serif;
+    @apply text-[24vw] sm:text-[18vw] lg:text-[12vw] font-black uppercase tracking-[0.18em] leading-[0.85];
+  }
+
+  /* Timer */
+  .timer-backdrop {
+    background-image:
+      radial-gradient(circle at 12% 18%, hsl(var(--dark-teal) / 0.12), transparent 45%),
+      radial-gradient(circle at 82% 12%, hsl(var(--dark-teal) / 0.08), transparent 40%),
+      radial-gradient(circle at 60% 80%, hsl(var(--dark-teal) / 0.06), transparent 48%),
+      linear-gradient(160deg,
+        hsl(var(--cream)) 0%,
+        hsl(var(--cream-dark)) 55%,
+        hsl(var(--sand)) 100%);
+  }
+
+  .timer-backdrop::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(90deg, rgba(6, 38, 44, 0.08) 1px, transparent 1px),
+      linear-gradient(0deg, rgba(6, 38, 44, 0.06) 1px, transparent 1px);
+    background-size: 140px 140px;
+    opacity: 0.2;
+    pointer-events: none;
+  }
+
+  .timer-backdrop::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center,
+      rgba(255, 255, 255, 0.8) 0%,
+      rgba(255, 255, 255, 0.4) 35%,
+      rgba(0, 0, 0, 0.12) 100%);
+    pointer-events: none;
+  }
+
   /* Chat Bubbles */
   .chat-bubble-agent {
     @apply rounded-2xl border bg-white/15 border-white/25 text-white px-5 py-4 text-base md:text-lg leading-relaxed;

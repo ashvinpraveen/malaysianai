@@ -6,6 +6,7 @@ import CommunityPartners from "@/components/CommunityPartners";
 import Sponsor from "@/components/Sponsor";
 import Location from "@/components/Location";
 import Residents from "@/components/Residents";
+import ShowAndTell from "@/components/ShowAndTell";
 import CTA from "@/components/CTA";
 
 const Index = () => {
@@ -18,6 +19,7 @@ const Index = () => {
       <Benefits />
       <Sponsor />
       <Location />
+      <ShowAndTell />
       <Residents />
       <CommunityPartners />
       <CTA />

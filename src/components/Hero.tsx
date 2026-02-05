@@ -16,7 +16,8 @@ const Hero = () => {
       <div className="relative z-10 flex-1 flex flex-col justify-center items-center mx-auto bg-transparent px-6 md:px-10 lg:px-16 max-w-[1440px] w-full pt-32 pb-20 text-center">
         <div className="max-w-4xl">
           <h1 className="hero-title text-white mb-6 drop-shadow-lg">
-            Build in Malaysia. Ship for the world.
+            <span className="block">Build in Malaysia.</span>
+            <span className="block mt-2 md:mt-3">Ship for the World.</span>
           </h1>
           <p className="text-base md:text-xl font-normal leading-relaxed text-white/90 max-w-2xl mx-auto drop-shadow-md">
             A residency for Malaysia&apos;s AI-native builders to go all-in, make insane

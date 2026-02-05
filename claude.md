@@ -77,6 +77,38 @@ This document outlines the design system for the Placeholder website. All compon
 - Usage: Footnotes, compact descriptions
 ```
 
+### Display
+
+```css
+/* Timer Display - Oversized numerals */
+.timer-display
+- Font: Newsreader, Georgia, serif
+- Weight: font-normal
+- Tracking: tracking-tight
+- Usage: Timer numeral display
+```
+
+```css
+/* Timer Announcement - Status callout */
+.timer-announcement
+- Font: Newsreader, Georgia, serif
+- Size: text-4xl md:text-6xl
+- Weight: font-semibold
+- Tracking: tracking-tight
+- Usage: Timer completion headline
+```
+
+```css
+/* Timer Phase - Oversized phase label */
+.timer-phase
+- Font: Newsreader, Georgia, serif
+- Size: text-[24vw] sm:text-[18vw] lg:text-[12vw]
+- Weight: font-black
+- Tracking: tracking-[0.18em]
+- Leading: leading-[0.85]
+- Usage: Share / Q&A phase label on timer screen
+```
+
 ### Labels & Captions
 
 ```css
@@ -161,6 +193,15 @@ This document outlines the design system for the Placeholder website. All compon
 - Backdrop: backdrop-blur-sm
 - Text: text-white
 - Usage: Modals, popovers on dark backgrounds
+```
+
+### Backgrounds
+
+```css
+/* Timer Backdrop - Full-bleed timer screen */
+.timer-backdrop
+- Layers: Cream gradient + teal glows + subtle grid + soft vignette
+- Usage: Timer/Start screen background
 ```
 
 ### Chat Bubbles

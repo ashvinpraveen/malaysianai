@@ -16,6 +16,8 @@ import CommunityDirectory from "./pages/CommunityDirectory";
 import ResidentsDirectory from "./pages/ResidentsDirectory";
 import MalaysianAI from "./pages/MalaysianAI";
 import Contact from "./pages/Contact";
+import ShowAndTell from "./pages/ShowAndTell";
+import Start from "./pages/Start";
 import ErrorBoundary from "./components/ErrorBoundary";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -40,6 +42,8 @@ const App = () => (
             <Route path="/community" element={<CommunityDirectory />} />
             <Route path="/residents" element={<ResidentsDirectory />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/showandtell" element={<ShowAndTell />} />
+            <Route path="/start" element={<Start />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

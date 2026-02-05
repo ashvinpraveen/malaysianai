@@ -1,7 +1,13 @@
 import Link from "next/link";
 import { CTAButton } from "./CTAButton";
 
-const footerSections = [
+type FooterSection = {
+  title: string;
+  links: Array<{ label: string; href: string }>;
+  footerNote?: string;
+};
+
+const footerSections: FooterSection[] = [
   {
     title: "Program",
     links: [
@@ -32,7 +38,7 @@ const footerSections = [
     ],
     footerNote: `© ${new Date().getFullYear()} Malaysian AI`,
   },
-] as const;
+];
 
 const Footer = () => {
   return (

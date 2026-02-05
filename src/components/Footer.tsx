@@ -1,6 +1,13 @@
+import Link from "next/link";
 import { CTAButton } from "./CTAButton";
 
-const footerSections = [
+type FooterSection = {
+  title: string;
+  links: Array<{ label: string; href: string }>;
+  footerNote?: string;
+};
+
+const footerSections: FooterSection[] = [
   {
     title: "Program",
     links: [
@@ -31,7 +38,7 @@ const footerSections = [
     ],
     footerNote: `© ${new Date().getFullYear()} Malaysian AI`,
   },
-] as const;
+];
 
 const Footer = () => {
   return (
@@ -39,7 +46,7 @@ const Footer = () => {
       <div className="container mx-auto px-6 py-16">
         <div className="grid grid-cols-2 md:grid-cols-6 gap-8">
           <div className="col-span-2">
-            <a href="/" className="flex items-center gap-2 mb-6 group">
+            <Link href="/" className="flex items-center gap-2 mb-6 group">
               <img
                 src="/favicon.svg"
                 alt="Malaysian AI logo"
@@ -48,7 +55,7 @@ const Footer = () => {
               <span className="navbar-brand text-xl text-background">
                 Malaysian AI
               </span>
-            </a>
+            </Link>
             <p className="body-small text-background/70 mb-6 max-w-xs">
               A residency for Malaysia&apos;s AI-native builders to go all-in, make insane
               progress and launch globally.
@@ -68,12 +75,12 @@ const Footer = () => {
               <ul className="space-y-3">
                 {section.links.map((link) => (
                   <li key={link.label}>
-                    <a
+                    <Link
                       href={link.href}
                       className="text-sm text-background/70 hover:text-background transition-colors duration-200"
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

@@ -1,11 +1,11 @@
-import { createClient } from '@supabase/supabase-js';
-import type { Database } from './types';
+import { createClient } from "@supabase/supabase-js";
+import type { Database } from "./types";
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
 
 if (!supabaseUrl || !supabaseAnonKey) {
-    console.warn('Supabase credentials missing. Forms will not work.');
+  console.warn("Supabase credentials missing. Forms will not work.");
 }
 
-export const supabase = createClient<Database>(supabaseUrl || '', supabaseAnonKey || '');
+export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);

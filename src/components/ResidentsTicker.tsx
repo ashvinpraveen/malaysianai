@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { residents as defaultResidents, type Resident } from "@/lib/residents";
 import {

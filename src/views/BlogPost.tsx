@@ -1,10 +1,9 @@
-import { Link, useParams } from "react-router-dom";
+import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { CTAButton } from "@/components/CTAButton";
-import NotFound from "@/pages/NotFound";
-import { categoryMetadata, getBlogPost } from "@/lib/blog-data";
+import { categoryMetadata, type BlogPost as BlogPostType } from "@/lib/blog-data";
 
 function formatDate(date: string): string {
   return new Intl.DateTimeFormat("en-US", {
@@ -16,14 +15,7 @@ function formatDate(date: string): string {
     .toUpperCase();
 }
 
-const BlogPost = () => {
-  const { slug } = useParams<{ slug: string }>();
-  const post = getBlogPost(slug);
-
-  if (!post) {
-    return <NotFound />;
-  }
-
+const BlogPost = ({ post }: { post: BlogPostType }) => {
   const category = post.category ? categoryMetadata[post.category] : null;
 
   return (
@@ -39,7 +31,7 @@ const BlogPost = () => {
         <article className="py-12 md:py-16 lg:py-20 pt-36">
           <div className="mx-auto w-full max-w-[720px] px-6 sm:px-8">
             <Link
-              to="/blog"
+              href="/blog"
               className="inline-flex items-center justify-center w-9 h-9 text-foreground/70 hover:text-foreground transition-colors group mb-6 rounded-full border border-border hover:border-foreground/30 bg-background"
               aria-label="Back to Blog"
             >
@@ -133,7 +125,7 @@ const BlogPost = () => {
               <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
                 <p className="text-sm text-foreground/60">Explore more updates from the residency.</p>
                 <Link
-                  to="/blog"
+                  href="/blog"
                   className="inline-flex items-center gap-2 text-sm font-semibold text-foreground/70 hover:text-foreground transition-colors"
                 >
                   Read More Posts

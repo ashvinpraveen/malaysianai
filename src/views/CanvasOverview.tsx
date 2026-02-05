@@ -1,16 +1,10 @@
+"use client";
+
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Button } from "@/components/ui/button";
 import { ZoomIn, ZoomOut, Maximize2, Home } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { useRef, useState } from "react";
-
-// Import all page versions
-import Index from "./Index";
-import BookDemo from "./BookDemo";
-import Blog from "./Blog";
-import Company from "./Company";
-import Privacy from "./Privacy";
-import Terms from "./Terms";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface SectionLabel {
   name: string;
@@ -20,19 +14,18 @@ interface SectionLabel {
 interface PageCardProps {
   title: string;
   route: string;
-  component: React.ReactNode;
+  previewSrc: string;
   sections: SectionLabel[];
   x: number;
   y: number;
   currentZoom: number;
+  onNavigate: (route: string) => void;
 }
 
-const PageCard = ({ title, route, component, sections, x, y, currentZoom }: PageCardProps) => {
-  const navigate = useNavigate();
+const PageCard = ({ title, route, previewSrc, sections, x, y, currentZoom, onNavigate }: PageCardProps) => {
   const zoom = 0.15;
   const fullWidth = 1440;
-  const contentRef = useRef<HTMLDivElement>(null);
-
+  const fullHeight = 4800;
   // Show labels when zoom is above 0.8
   const showLabels = currentZoom > 0.8;
 
@@ -55,18 +48,24 @@ const PageCard = ({ title, route, component, sections, x, y, currentZoom }: Page
       {/* Page preview card */}
       <div
         className="border-2 border-border bg-background shadow-lg rounded-lg overflow-hidden cursor-pointer hover:shadow-xl transition-shadow relative"
-        onClick={() => navigate(route)}
+        onClick={() => onNavigate(route)}
       >
         <div
-          ref={contentRef}
           className="relative overflow-hidden w-fit"
           style={{
-            zoom: `${zoom}`,
+            transform: `scale(${zoom})`,
+            transformOrigin: "top left",
             pointerEvents: "none",
           }}
         >
-          <div style={{ width: `${fullWidth}px` }} className="bg-background">
-            {component}
+          <div style={{ width: `${fullWidth}px`, height: `${fullHeight}px` }} className="bg-background">
+            <iframe
+              title={`${title} preview`}
+              src={previewSrc}
+              className="h-full w-full border-0"
+              loading="lazy"
+              style={{ pointerEvents: "none" }}
+            />
           </div>
         </div>
 
@@ -91,14 +90,14 @@ const PageCard = ({ title, route, component, sections, x, y, currentZoom }: Page
 };
 
 const CanvasOverview = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [currentZoom, setCurrentZoom] = useState(0.6);
 
-  const pages: Omit<PageCardProps, "x" | "y" | "currentZoom">[] = [
+  const pages: Omit<PageCardProps, "x" | "y" | "currentZoom" | "onNavigate">[] = [
     {
       title: "Home",
       route: "/",
-      component: <Index />,
+      previewSrc: "/",
       sections: [
         { name: "Navbar", top: 0 },
         { name: "Hero", top: 100 },
@@ -114,7 +113,7 @@ const CanvasOverview = () => {
     {
       title: "Apply",
       route: "/book-demo",
-      component: <BookDemo />,
+      previewSrc: "/book-demo",
       sections: [
         { name: "Navbar", top: 0 },
         { name: "ApplicationForm", top: 100 },
@@ -123,7 +122,7 @@ const CanvasOverview = () => {
     {
       title: "Updates",
       route: "/blog",
-      component: <Blog />,
+      previewSrc: "/blog",
       sections: [
         { name: "Navbar", top: 0 },
         { name: "BlogList", top: 100 },
@@ -132,7 +131,7 @@ const CanvasOverview = () => {
     {
       title: "Company",
       route: "/company",
-      component: <Company />,
+      previewSrc: "/company",
       sections: [
         { name: "Navbar", top: 0 },
         { name: "CompanyContent", top: 100 },
@@ -141,7 +140,7 @@ const CanvasOverview = () => {
     {
       title: "Privacy Policy",
       route: "/privacy",
-      component: <Privacy />,
+      previewSrc: "/privacy",
       sections: [
         { name: "Navbar", top: 0 },
         { name: "PrivacyContent", top: 100 },
@@ -150,7 +149,7 @@ const CanvasOverview = () => {
     {
       title: "Terms of Service",
       route: "/terms",
-      component: <Terms />,
+      previewSrc: "/terms",
       sections: [
         { name: "Navbar", top: 0 },
         { name: "TermsContent", top: 100 },
@@ -171,6 +170,7 @@ const CanvasOverview = () => {
     x: index * (cardWidth + gap) + gap,
     y: startY,
     currentZoom,
+    onNavigate: (route: string) => router.push(route),
   }));
 
   return (
@@ -192,7 +192,7 @@ const CanvasOverview = () => {
             {/* Controls */}
             <div className="absolute top-6 left-6 z-50 flex gap-2">
               <Button
-                onClick={() => navigate("/")}
+                onClick={() => router.push("/")}
                 variant="default"
                 size="sm"
                 className="shadow-md"

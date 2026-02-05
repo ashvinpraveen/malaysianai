@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { CTAButton } from "@/components/CTAButton";
 import Navbar from "@/components/Navbar";

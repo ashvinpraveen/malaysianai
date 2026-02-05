@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const ShowAndTell = () => {
   return (
@@ -20,7 +20,7 @@ const ShowAndTell = () => {
             <p className="body-default text-foreground/70 mt-4">
               (
               <Link
-                to="/showandtell"
+                href="/showandtell"
                 className="underline underline-offset-4 hover:text-foreground transition-colors"
               >
                 Join a show and tell session

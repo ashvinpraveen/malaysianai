@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from "react-router-dom";
+import Link from "next/link";
 import { BookOpen } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -26,9 +26,13 @@ function getInitials(name: string): string {
     .toUpperCase();
 }
 
-function BlogNavigation({ mobile = false }: { mobile?: boolean }) {
-  const [searchParams] = useSearchParams();
-  const categoryFilter = searchParams.get("category");
+function BlogNavigation({
+  mobile = false,
+  categoryFilter,
+}: {
+  mobile?: boolean;
+  categoryFilter: BlogCategory | null;
+}) {
 
   const isActive = (value: BlogCategory | null) =>
     value === null ? !categoryFilter : categoryFilter === value;
@@ -39,7 +43,7 @@ function BlogNavigation({ mobile = false }: { mobile?: boolean }) {
         {categories.map((category) => (
           <Link
             key={category.label}
-            to={category.href}
+            href={category.href}
             className={`py-2 px-4 label-default uppercase tracking-wide rounded-full transition-all duration-300 whitespace-nowrap ${
               isActive(category.value)
                 ? "text-primary-foreground bg-primary"
@@ -58,7 +62,7 @@ function BlogNavigation({ mobile = false }: { mobile?: boolean }) {
       {categories.map((category) => (
         <Link
           key={category.label}
-          to={category.href}
+          href={category.href}
           className={`block py-2 label-default uppercase tracking-wide transition-colors duration-300 ${
             isActive(category.value) ? "text-foreground" : "text-muted-foreground/70 hover:text-foreground"
           }`}
@@ -70,9 +74,7 @@ function BlogNavigation({ mobile = false }: { mobile?: boolean }) {
   );
 }
 
-function CategoryHeader() {
-  const [searchParams] = useSearchParams();
-  const categoryFilter = searchParams.get("category") as BlogCategory | null;
+function CategoryHeader({ categoryFilter }: { categoryFilter: BlogCategory | null }) {
 
   if (!categoryFilter || !(categoryFilter in categoryMetadata)) {
     return null;
@@ -93,9 +95,13 @@ function CategoryHeader() {
   );
 }
 
-function BlogPostsGrid({ posts }: { posts: BlogPost[] }) {
-  const [searchParams] = useSearchParams();
-  const categoryFilter = searchParams.get("category") as BlogCategory | null;
+function BlogPostsGrid({
+  posts,
+  categoryFilter,
+}: {
+  posts: BlogPost[];
+  categoryFilter: BlogCategory | null;
+}) {
 
   const filteredPosts =
     categoryFilter && categoryFilter in categoryMetadata
@@ -118,7 +124,7 @@ function BlogPostsGrid({ posts }: { posts: BlogPost[] }) {
       {filteredPosts.map((post) => (
         <Link
           key={post.slug}
-          to={`/blog/${post.slug}`}
+          href={`/blog/${post.slug}`}
           className="block h-full group w-full"
           aria-label={`Read: ${post.title}`}
         >
@@ -168,7 +174,12 @@ function BlogPostsGrid({ posts }: { posts: BlogPost[] }) {
   );
 }
 
-const Blog = () => {
+const Blog = ({ categoryFilter = null }: { categoryFilter?: string | null }) => {
+  const activeCategory =
+    categoryFilter && categoryFilter in categoryMetadata
+      ? (categoryFilter as BlogCategory)
+      : null;
+
   return (
     <div className="min-h-screen text-foreground relative bg-background">
       <div className="absolute inset-0 -z-10 pointer-events-none">
@@ -188,7 +199,7 @@ const Blog = () => {
                   <p className="body-default text-muted-foreground/80 mb-8">
                     Residency updates, cohort stories, and program announcements.
                   </p>
-                  <BlogNavigation />
+                  <BlogNavigation categoryFilter={activeCategory} />
                 </div>
               </aside>
 
@@ -198,11 +209,11 @@ const Blog = () => {
                   <p className="body-default text-muted-foreground/80 mb-8">
                     Residency updates, cohort stories, and program announcements.
                   </p>
-                  <BlogNavigation mobile />
+                  <BlogNavigation mobile categoryFilter={activeCategory} />
                 </div>
 
-                <CategoryHeader />
-                <BlogPostsGrid posts={blogPosts} />
+                <CategoryHeader categoryFilter={activeCategory} />
+                <BlogPostsGrid posts={blogPosts} categoryFilter={activeCategory} />
               </div>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { ResidentsTicker } from "@/components/ResidentsTicker";
 
 const Residents = () => {
@@ -11,7 +11,7 @@ const Residents = () => {
             <h2 className="section-title text-foreground">You're in great company</h2>
           </div>
           <Link
-            to="/residents"
+            href="/residents"
             className="inline-flex items-center justify-center rounded-full border border-foreground/20 bg-transparent px-4 py-2 text-sm font-medium text-foreground/80 transition-all hover:border-foreground/40 hover:text-foreground hover:bg-foreground/5"
           >
             View all residents -&gt;

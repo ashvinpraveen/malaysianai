@@ -16,20 +16,20 @@ Malaysia’s AI Residency and Hub website. It promotes the Malaysian AI initiati
 - `src/App.tsx`: Router, providers, global UI (toasters, tooltips, error boundary).
 
 ## Routes Map
-- `/` -> `src/pages/MalaysianAI.tsx`
-- `/residency` -> `src/pages/Index.tsx`
-- `/canvas` -> `src/pages/CanvasOverview.tsx`
-- `/book-demo` -> `src/pages/BookDemo.tsx`
-- `/blog` -> `src/pages/Blog.tsx`
-- `/blog/:slug` -> `src/pages/BlogPost.tsx`
-- `/company` -> `src/pages/Company.tsx`
-- `/community` -> `src/pages/CommunityDirectory.tsx`
-- `/residents` -> `src/pages/ResidentsDirectory.tsx`
-- `/contact` -> `src/pages/Contact.tsx`
-- `/showandtell` -> `src/pages/ShowAndTell.tsx`
-- `/privacy` -> `src/pages/Privacy.tsx`
-- `/terms` -> `src/pages/Terms.tsx`
-- `*` -> `src/pages/NotFound.tsx`
+- `/` -> `src/app/page.tsx` (renders `src/views/MalaysianAI.tsx`)
+- `/residency` -> `src/app/residency/page.tsx` (renders `src/views/Index.tsx`)
+- `/canvas` -> `src/app/canvas/page.tsx` (renders `src/views/CanvasOverview.tsx`)
+- `/book-demo` -> `src/app/book-demo/page.tsx` (renders `src/views/BookDemo.tsx`)
+- `/blog` -> `src/app/blog/page.tsx` (renders `src/views/Blog.tsx`)
+- `/blog/:slug` -> `src/app/blog/[slug]/page.tsx` (renders `src/views/BlogPost.tsx`)
+- `/company` -> `src/app/company/page.tsx` (renders `src/views/Company.tsx`)
+- `/community` -> `src/app/community/page.tsx` (renders `src/views/CommunityDirectory.tsx`)
+- `/residents` -> `src/app/residents/page.tsx` (renders `src/views/ResidentsDirectory.tsx`)
+- `/contact` -> `src/app/contact/page.tsx` (renders `src/views/Contact.tsx`)
+- `/showandtell` -> `src/app/showandtell/page.tsx` (renders `src/views/ShowAndTell.tsx`)
+- `/privacy` -> `src/app/privacy/page.tsx` (renders `src/views/Privacy.tsx`)
+- `/terms` -> `src/app/terms/page.tsx` (renders `src/views/Terms.tsx`)
+- `*` -> `src/app/not-found.tsx`
 
 ## Key Content Sources
 - Blog content and categories: `src/lib/blog-data.ts`
@@ -37,12 +37,12 @@ Malaysia’s AI Residency and Hub website. It promotes the Malaysian AI initiati
 - Community partner directory data: `src/data/communityPartners.ts`
 
 ## Core Page Files
-- Main landing and initiative overview: `src/pages/MalaysianAI.tsx`
-- Residency landing: `src/pages/Index.tsx`
-- Blog list and filtering: `src/pages/Blog.tsx`
-- Blog detail view: `src/pages/BlogPost.tsx`
-- Residents directory: `src/pages/ResidentsDirectory.tsx`
-- Community directory: `src/pages/CommunityDirectory.tsx`
+- Main landing and initiative overview: `src/views/MalaysianAI.tsx`
+- Residency landing: `src/views/Index.tsx`
+- Blog list and filtering: `src/views/Blog.tsx`
+- Blog detail view: `src/views/BlogPost.tsx`
+- Residents directory: `src/views/ResidentsDirectory.tsx`
+- Community directory: `src/views/CommunityDirectory.tsx`
 
 ## Important Components
 - Global layout: `src/components/Navbar.tsx`, `src/components/Footer.tsx`
@@ -90,7 +90,7 @@ Malaysia’s AI Residency and Hub website. It promotes the Malaysian AI initiati
 - `npm run test:watch`
 
 ## How To Find Things Fast
-- For a route or page: check `src/App.tsx`, then open the referenced file in `src/pages`.
+- For a route or page: check `src/app`, then open the referenced file in `src/views`.
 - For a section on a page: search within the page file for the section heading or component name.
 - For data displayed on a page: check `src/lib/*` and `src/data/*`.
 - For reusable UI: look in `src/components` and `src/components/ui`.

@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
@@ -41,18 +42,14 @@ export const CTAButton = ({
         lg: "px-8 h-12 md:h-14 text-sm md:text-base",
     };
 
-    const buttonElement = (
-        <Button
-            type={type}
-            disabled={disabled}
-            className={cn(
-                "group rounded-md font-medium transition-all shadow-none h-auto",
-                variantClasses[variant],
-                sizeClasses[size],
-                className
-            )}
-            onClick={onClick}
-        >
+    const buttonClassName = cn(
+        "group rounded-md font-medium transition-all shadow-none h-auto",
+        variantClasses[variant],
+        sizeClasses[size],
+        className
+    );
+    const buttonContent = (
+        <>
             {children}
             {showArrow && (
                 <ArrowRight
@@ -63,21 +60,33 @@ export const CTAButton = ({
                     )}
                 />
             )}
-        </Button>
+        </>
     );
 
     if (href) {
         return (
-            <a
-                href={href}
-                target={isExternal ? "_blank" : undefined}
-                rel={isExternal ? "noopener noreferrer" : undefined}
-                className="inline-block"
-            >
-                {buttonElement}
-            </a>
+            <Button asChild className={buttonClassName} onClick={onClick}>
+                {isExternal ? (
+                    <a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex">
+                        {buttonContent}
+                    </a>
+                ) : (
+                    <Link href={href} className="inline-flex">
+                        {buttonContent}
+                    </Link>
+                )}
+            </Button>
         );
     }
 
-    return buttonElement;
+    return (
+        <Button
+            type={type}
+            disabled={disabled}
+            className={buttonClassName}
+            onClick={onClick}
+        >
+            {buttonContent}
+        </Button>
+    );
 };

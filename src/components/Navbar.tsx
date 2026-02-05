@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { ChevronRight, Menu, X } from "lucide-react";
 import { CTAButton } from "./CTAButton";
 
@@ -27,7 +29,7 @@ const Navbar = () => {
       <nav className="fixed top-0 left-0 right-0 z-[60] bg-background">
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-between h-16">
-            <Link to="/" className="flex items-center gap-2.5 group z-[60]">
+            <Link href="/" className="flex items-center gap-2.5 group z-[60]">
               <img
                 src="/favicon.svg"
                 alt="Malaysian AI Residency logo"
@@ -42,7 +44,7 @@ const Navbar = () => {
               {navItems.map((item) => (
                 <Link
                   key={item.label}
-                  to={item.href}
+                  href={item.href}
                   className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors"
                 >
                   {item.label}
@@ -88,7 +90,7 @@ const Navbar = () => {
                 }ms] ${isMenuOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
               >
                 <Link
-                  to={item.href}
+                  href={item.href}
                   className="flex items-center justify-between group"
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -117,7 +119,7 @@ const Navbar = () => {
               </div>
 
               <div className="flex gap-4">
-                <Link to="/#curriculum" className="text-foreground/70 hover:text-foreground font-light">
+                <Link href="/#curriculum" className="text-foreground/70 hover:text-foreground font-light">
                   View curriculum
                 </Link>
               </div>

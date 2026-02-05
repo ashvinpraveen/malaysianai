@@ -1,3 +1,5 @@
+"use client";
+
 import type { FormEvent } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";

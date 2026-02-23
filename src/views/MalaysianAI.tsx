@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { cn } from "@/lib/utils";
 import { ResidentsTicker } from "@/components/ResidentsTicker";
+import Sponsor from "@/components/Sponsor";
 
 const highlights = [
   {
@@ -129,9 +130,12 @@ const MalaysianAI = () => {
                 <img
                   src="/batik_kl_night_sky_vast.png"
                   alt="Vast Batik night sky over distant Malaysian cities"
-                  className="w-full h-full object-cover object-left-bottom"
+                  className="w-full h-full object-cover object-left-bottom saturate-[2.5] contrast-[1.2] brightness-[1.08]"
                 />
-              <div className="absolute inset-0 bg-black/10 bg-gradient-to-t from-black/40 via-black/10 to-black/20" />
+              {/* Warm gold overlay to make city lights glow */}
+              <div className="absolute inset-0 bg-gradient-to-t from-amber-800/35 via-transparent to-blue-700/25 mix-blend-overlay" />
+              {/* Readability gradient at bottom */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/5" />
             </div>
 
             <div className="relative z-10 flex-1 flex flex-col justify-center items-center mx-auto bg-transparent px-6 md:px-10 lg:px-16 max-w-[1440px] w-full pt-32 pb-20 text-center">
@@ -207,6 +211,8 @@ const MalaysianAI = () => {
             </div>
           </div>
         </section>
+
+        <Sponsor />
 
         <section id="program" className="py-20 md:py-28 bg-muted">
           <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">

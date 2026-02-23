@@ -4,7 +4,7 @@ const Sponsor = () => {
       <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
         <div className="flex flex-col md:grid md:grid-cols-[minmax(0,360px)_minmax(0,1fr)] md:items-start md:gap-16 gap-8">
           <div>
-            <p className="label-default text-foreground/60 mb-6">Sponsored &amp; Initiated by</p>
+            <p className="label-default text-foreground/60 mb-6">Host &amp; Initiator</p>
             <a
               href="https://500.co"
               target="_blank"
@@ -28,9 +28,10 @@ const Sponsor = () => {
               >
                 500 Global
               </a>{" "}
-              is a venture capital firm that invests early in founders building fast-growing
-              technology companies. They focus on markets where technology, innovation, and
-              capital can unlock long-term value and drive economic growth.
+              is a venture capital firm backing AI-native companies and the founders building on
+              frontier models. As the host and initiator of the Malaysian AI Residency, they
+              provide the permanent space, capital, networks, and global reach that gives
+              Malaysia&apos;s best builders an unfair advantage.
             </p>
           </div>
         </div>

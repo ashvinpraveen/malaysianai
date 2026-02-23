@@ -31,9 +31,9 @@ const Navbar = () => {
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex items-center gap-2.5 group z-[60]">
               <img
-                src="/favicon.svg"
+                src="/logo-ai-residency.png"
                 alt="Malaysian AI Residency logo"
-                className="w-8 h-8"
+                className="h-8 w-auto"
               />
               <span className="navbar-brand text-foreground">
                 Malaysian AI

@@ -7,11 +7,11 @@ export const contentType = "image/png";
 // Dynamic so the server is running when images are fetched by Satori
 export const dynamic = "force-dynamic";
 
-async function fetchNewsreader(): Promise<ArrayBuffer | null> {
+async function fetchFont(family: string, weight = 400): Promise<ArrayBuffer | null> {
   try {
     // Use an old UA so Google Fonts returns TTF (Satori doesn't support woff2)
     const css = await fetch(
-      "https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400&display=swap",
+      `https://fonts.googleapis.com/css2?family=${encodeURIComponent(family)}:wght@${weight}&display=swap`,
       { headers: { "User-Agent": "Mozilla/4.0" } }
     ).then((r) => r.text());
 
@@ -25,12 +25,20 @@ async function fetchNewsreader(): Promise<ArrayBuffer | null> {
 }
 
 export default async function Image() {
-  // Resolve base URL: custom domain → Vercel deployment URL → localhost
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ??
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
-  const fontData = await fetchNewsreader();
+  const [newsreaderData, interData, spaceGroteskData] = await Promise.all([
+    fetchFont("Newsreader", 400),
+    fetchFont("Inter", 300),
+    fetchFont("Space Grotesk", 500),
+  ]);
+
+  const fonts: ConstructorParameters<typeof ImageResponse>[1]["fonts"] = [];
+  if (newsreaderData) fonts.push({ name: "Newsreader", data: newsreaderData, style: "normal", weight: 400 });
+  if (interData) fonts.push({ name: "Inter", data: interData, style: "normal", weight: 300 });
+  if (spaceGroteskData) fonts.push({ name: "Space Grotesk", data: spaceGroteskData, style: "normal", weight: 500 });
 
   const CARD_W = 1160;
   const CARD_H = 590;
@@ -59,9 +67,9 @@ export default async function Image() {
             backgroundColor: "#0a1628",
           }}
         >
-          {/* Background image — URL fetched by Satori directly */}
+          {/* Background image */}
           <img
-            src={`${baseUrl}/batik_kl_night_sky_vast.png`}
+            src={`${baseUrl}/batik_kl_city_sunrise.png`}
             width={CARD_W}
             height={CARD_H}
             style={{
@@ -69,7 +77,7 @@ export default async function Image() {
               top: 0,
               left: 0,
               objectFit: "cover",
-              objectPosition: "0% 65%",
+              objectPosition: "50% 60%",
             }}
           />
 
@@ -108,17 +116,14 @@ export default async function Image() {
                 marginBottom: "36px",
               }}
             >
-              <img
-                src={`${baseUrl}/logo-ai-residency.png`}
-                width={48}
-                height={48}
-              />
+              <img src={`${baseUrl}/logo-ai-residency.png`} width={48} height={48} />
               <span
                 style={{
                   color: "white",
                   fontSize: 22,
-                  fontFamily: fontData ? "Newsreader" : "Georgia, serif",
-                  letterSpacing: "0.02em",
+                  fontFamily: spaceGroteskData ? "Space Grotesk" : "system-ui, sans-serif",
+                  fontWeight: 500,
+                  letterSpacing: "-0.01em",
                 }}
               >
                 Malaysian AI
@@ -130,7 +135,7 @@ export default async function Image() {
               style={{
                 color: "white",
                 fontSize: 84,
-                fontFamily: fontData ? "Newsreader" : "Georgia, serif",
+                fontFamily: newsreaderData ? "Newsreader" : "Georgia, serif",
                 fontWeight: 400,
                 lineHeight: 1.06,
                 letterSpacing: "-0.025em",
@@ -146,12 +151,12 @@ export default async function Image() {
             <p
               style={{
                 color: "rgba(255,255,255,0.85)",
-                fontSize: 20,
-                fontFamily: "system-ui, sans-serif",
+                fontSize: 26,
+                fontFamily: interData ? "Inter" : "system-ui, sans-serif",
                 fontWeight: 300,
-                lineHeight: 1.55,
+                lineHeight: 1.5,
                 margin: 0,
-                maxWidth: "640px",
+                maxWidth: "700px",
                 textAlign: "center",
               }}
             >
@@ -162,11 +167,6 @@ export default async function Image() {
         </div>
       </div>
     ),
-    {
-      ...size,
-      fonts: fontData
-        ? [{ name: "Newsreader", data: fontData, style: "normal", weight: 400 }]
-        : [],
-    }
+    { ...size, fonts }
   );
 }

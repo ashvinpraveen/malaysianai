@@ -128,9 +128,9 @@ const MalaysianAI = () => {
           <section className="relative h-[calc(100vh-78px)] flex flex-col overflow-hidden rounded-2xl border border-border text-white">
             <div className="absolute inset-0 z-0">
                 <img
-                  src="/batik_kl_night_sky_vast.png"
-                  alt="Vast Batik night sky over distant Malaysian cities"
-                  className="w-full h-full object-cover object-[0%_65%] saturate-[1.7] contrast-[1.2] brightness-[1.08]"
+                  src="/batik_kl_city_sunrise.png"
+                  alt="Batik KL city sunrise"
+                  className="w-full h-full object-cover object-[50%_60%]"
                 />
               {/* Warm gold overlay to make city lights glow */}
               <div className="absolute inset-0 bg-gradient-to-t from-amber-800/35 via-transparent to-pink-500/50 mix-blend-overlay" />

@@ -108,21 +108,10 @@ const Navbar = () => {
               isMenuOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
             }`}
           >
-            <div className="flex flex-col gap-6 pt-8 border-t border-border">
+            <div className="flex flex-col gap-6 pt-8">
               <CTAButton href="/book-demo" variant="secondary" isExternal={false}>
                 Apply
               </CTAButton>
-
-              <div className="flex flex-col gap-2">
-                <p className="label-default text-foreground/60 uppercase">Contact</p>
-                <span className="body-default text-foreground">hello@malaysianai.org</span>
-              </div>
-
-              <div className="flex gap-4">
-                <Link href="/#curriculum" className="text-foreground/70 hover:text-foreground font-light">
-                  View curriculum
-                </Link>
-              </div>
             </div>
           </div>
         </div>

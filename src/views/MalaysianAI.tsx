@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { cn } from "@/lib/utils";
 import { ResidentsTicker } from "@/components/ResidentsTicker";
+import Sponsor from "@/components/Sponsor";
 
 const highlights = [
   {
@@ -359,6 +360,8 @@ const MalaysianAI = () => {
             <ResidentsTicker />
           </div>
         </section>
+
+        <Sponsor />
 
         <section id="contact" className="relative overflow-hidden bg-background py-20 md:py-28">
           <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">

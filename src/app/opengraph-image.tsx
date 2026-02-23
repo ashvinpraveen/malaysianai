@@ -1,19 +1,18 @@
 import { ImageResponse } from "next/og";
-import { readFileSync } from "fs";
-import { join } from "path";
 
 export const alt = "Driving Malaysia's AI progress";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
+// Dynamic so the server is running when images are fetched by Satori
+export const dynamic = "force-dynamic";
 
 async function fetchNewsreader(): Promise<ArrayBuffer | null> {
   try {
     // Use an old UA so Google Fonts returns TTF (Satori doesn't support woff2)
     const css = await fetch(
       "https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400&display=swap",
-      {
-        headers: { "User-Agent": "Mozilla/4.0" },
-      }
+      { headers: { "User-Agent": "Mozilla/4.0" } }
     ).then((r) => r.text());
 
     const match = css.match(/src: url\((.+?)\) format\('(?:opentype|truetype)'\)/);
@@ -26,15 +25,13 @@ async function fetchNewsreader(): Promise<ArrayBuffer | null> {
 }
 
 export default async function Image() {
-  const bgData = readFileSync(join(process.cwd(), "public/batik_kl_night_sky_vast.png"));
-  const bgSrc = `data:image/png;base64,${bgData.toString("base64")}`;
-
-  const logoData = readFileSync(join(process.cwd(), "public/logo-ai-residency.png"));
-  const logoSrc = `data:image/png;base64,${logoData.toString("base64")}`;
+  // Resolve base URL: custom domain → Vercel deployment URL → localhost
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
   const fontData = await fetchNewsreader();
 
-  // Inner card dimensions (outer 1200×630 minus 20px padding on each side)
   const CARD_W = 1160;
   const CARD_H = 590;
 
@@ -48,29 +45,29 @@ export default async function Image() {
           height: "100%",
           backgroundColor: "#faf8f5",
           padding: "20px",
+          alignItems: "stretch",
         }}
       >
-        {/* Rounded card — matches the hero section on the site */}
+        {/* Rounded card */}
         <div
           style={{
             display: "flex",
+            flex: 1,
             position: "relative",
-            width: CARD_W,
-            height: CARD_H,
             borderRadius: "20px",
             overflow: "hidden",
             backgroundColor: "#0a1628",
           }}
         >
-          {/* Background image — explicit px dimensions required by Satori */}
+          {/* Background image — URL fetched by Satori directly */}
           <img
-            src={bgSrc}
+            src={`${baseUrl}/batik_kl_night_sky_vast.png`}
+            width={CARD_W}
+            height={CARD_H}
             style={{
               position: "absolute",
               top: 0,
               left: 0,
-              width: CARD_W,
-              height: CARD_H,
               objectFit: "cover",
               objectPosition: "0% 65%",
             }}
@@ -111,7 +108,11 @@ export default async function Image() {
                 marginBottom: "36px",
               }}
             >
-              <img src={logoSrc} style={{ width: 48, height: 48 }} />
+              <img
+                src={`${baseUrl}/logo-ai-residency.png`}
+                width={48}
+                height={48}
+              />
               <span
                 style={{
                   color: "white",

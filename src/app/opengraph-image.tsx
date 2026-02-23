@@ -34,112 +34,130 @@ export default async function Image() {
 
   const fontData = await fetchNewsreader();
 
+  // Inner card dimensions (outer 1200×630 minus 20px padding on each side)
+  const CARD_W = 1160;
+  const CARD_H = 590;
+
   return new ImageResponse(
     (
+      // Cream outer background — matches the site's page background
       <div
         style={{
           display: "flex",
           width: "100%",
           height: "100%",
-          position: "relative",
-          backgroundColor: "#0a1628",
+          backgroundColor: "#faf8f5",
+          padding: "20px",
         }}
       >
-        {/* Background image */}
-        <img
-          src={bgSrc}
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "0% 65%",
-          }}
-        />
-
-        {/* Dark gradient overlay */}
+        {/* Rounded card — matches the hero section on the site */}
         <div
           style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background:
-              "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.2) 100%)",
-          }}
-        />
-
-        {/* Content */}
-        <div
-          style={{
-            position: "relative",
             display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "100%",
-            height: "100%",
-            padding: "0 100px",
+            position: "relative",
+            width: CARD_W,
+            height: CARD_H,
+            borderRadius: "20px",
+            overflow: "hidden",
+            backgroundColor: "#0a1628",
           }}
         >
-          {/* Logo + wordmark */}
+          {/* Background image — explicit px dimensions required by Satori */}
+          <img
+            src={bgSrc}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: CARD_W,
+              height: CARD_H,
+              objectFit: "cover",
+              objectPosition: "0% 65%",
+            }}
+          />
+
+          {/* Dark readability gradient */}
           <div
             style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background:
+                "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.15) 100%)",
+            }}
+          />
+
+          {/* Content */}
+          <div
+            style={{
+              position: "relative",
               display: "flex",
+              flexDirection: "column",
               alignItems: "center",
-              gap: "14px",
-              marginBottom: "40px",
+              justifyContent: "center",
+              width: "100%",
+              height: "100%",
+              padding: "0 90px",
             }}
           >
-            <img src={logoSrc} style={{ width: 52, height: 52 }} />
-            <span
+            {/* Logo + wordmark */}
+            <div
               style={{
-                color: "white",
-                fontSize: 24,
-                fontFamily: fontData ? "Newsreader" : "Georgia, serif",
-                letterSpacing: "0.02em",
+                display: "flex",
+                alignItems: "center",
+                gap: "14px",
+                marginBottom: "36px",
               }}
             >
-              Malaysian AI
-            </span>
+              <img src={logoSrc} style={{ width: 48, height: 48 }} />
+              <span
+                style={{
+                  color: "white",
+                  fontSize: 22,
+                  fontFamily: fontData ? "Newsreader" : "Georgia, serif",
+                  letterSpacing: "0.02em",
+                }}
+              >
+                Malaysian AI
+              </span>
+            </div>
+
+            {/* Headline */}
+            <h1
+              style={{
+                color: "white",
+                fontSize: 84,
+                fontFamily: fontData ? "Newsreader" : "Georgia, serif",
+                fontWeight: 400,
+                lineHeight: 1.06,
+                letterSpacing: "-0.025em",
+                margin: 0,
+                marginBottom: "24px",
+                textAlign: "center",
+              }}
+            >
+              Driving Malaysia&apos;s AI progress
+            </h1>
+
+            {/* Subtitle */}
+            <p
+              style={{
+                color: "rgba(255,255,255,0.85)",
+                fontSize: 20,
+                fontFamily: "system-ui, sans-serif",
+                fontWeight: 300,
+                lineHeight: 1.55,
+                margin: 0,
+                maxWidth: "640px",
+                textAlign: "center",
+              }}
+            >
+              Backing grassroots builders with visibility, learning, and
+              resources to ship real AI products globally.
+            </p>
           </div>
-
-          {/* Headline */}
-          <h1
-            style={{
-              color: "white",
-              fontSize: 90,
-              fontFamily: fontData ? "Newsreader" : "Georgia, serif",
-              fontWeight: 400,
-              lineHeight: 1.06,
-              letterSpacing: "-0.025em",
-              margin: 0,
-              marginBottom: "28px",
-              textAlign: "center",
-            }}
-          >
-            Driving Malaysia&apos;s AI progress
-          </h1>
-
-          {/* Subtitle */}
-          <p
-            style={{
-              color: "rgba(255,255,255,0.85)",
-              fontSize: 22,
-              fontFamily: "system-ui, sans-serif",
-              fontWeight: 300,
-              lineHeight: 1.55,
-              margin: 0,
-              maxWidth: "680px",
-              textAlign: "center",
-            }}
-          >
-            Backing grassroots builders with visibility, learning, and resources
-            to ship real AI products globally.
-          </p>
         </div>
       </div>
     ),

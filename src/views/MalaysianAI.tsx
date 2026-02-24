@@ -75,42 +75,42 @@ const communityPartners = [
     href: "https://www.buildclub.ai",
     logo: "/build-club-logo-navbar.webp",
     summary:
-      "A collaborative AI learning community focused on learning through building, with AI-native courses, role tracks, and certifications. It brings together young professionals, AI evangelists, agencies, and solopreneurs who want to grow their skills with a builder community.",
+      "One of the largest AI communities in Asia-Pacific with 5,000+ members. Offers bite-sized courses, role-based learning tracks, and a bounty marketplace — great for anyone wanting to learn AI by actually building things.",
   },
   {
     name: "Build with AI",
     href: "https://buildwithai.my/",
     logo: "/build_with_ai_logo.jpeg",
     summary:
-      "A project showcase for the Build With AI Malaysia community, featuring AI projects built by Malaysian builders across many categories. It helps people discover what locals are creating and invites builders to explore projects or join the community.",
+      "Malaysia's home for developers and non-technical builders creating AI projects. Hosts regular meetups, showcases 65+ member projects, and welcomes everyone from total beginners to experienced devs.",
   },
   {
     name: "AI Tinkerers",
     href: "https://aitinkerers.org",
     logo: "/ai_tinkerers_logo.png",
     summary:
-      "A global community of AI engineers and researchers building real systems and sharing unfinished work. It runs local meetups centered on demos, code, and technical insights while connecting builders through a global network.",
+      "A global network of 86,000+ AI engineers across 203 cities. KL chapter runs monthly meetups with live demos and technical deep-dives — no pitches, just builders sharing real work.",
   },
   {
     name: "AI Hackerdorm",
     href: "https://aihackerdorm.com",
     logo: "/ai_hackerdorm.webp",
     summary:
-      "A student-first community that hosts regular builder sessions with project showcases, co-building time, and mentorship. It welcomes coders, designers, entrepreneurs, and curious makers who want to build and learn together.",
+      "Student-first community for coders, designers, and entrepreneurs building AI projects together. Runs weekly sprints, hackathons, and mentorship sessions open to all skill levels.",
   },
   {
     name: "AI SEA",
     href: "https://www.aisea.builders",
     logo: "/aisea_logo.png",
     summary:
-      "A Southeast Asia grassroots builder movement and network for people shipping AI that connects local communities into a coalition. They run hackathons, co-build sessions, and sprints while sharing infrastructure for cross-border collaboration.",
+      "A 10,000+ builder network across Southeast Asia shipping real AI products. Organises regional hackathons, co-build sprints, and the flagship AI.SEA Week conference connecting engineers across the region.",
   },
   {
     name: "Rakan Tutor",
     href: "https://rakantutor.org",
     logo: "/rakan-tutor-logo.png",
     summary:
-      "An organization providing free, hybrid AI programs for ASEAN youth through hands-on workshops and a digital learning platform. Its mission is to equip secondary school students with the skills and confidence for an AI-powered future.",
+      "Non-profit bringing free AI education to underserved secondary school students in Malaysia. Runs hands-on workshops and an online learning platform to prepare young Malaysians for an AI-driven future.",
   },
 ];
 
@@ -270,10 +270,16 @@ const MalaysianAI = () => {
                 Meet Malaysia&apos;s AI communities
               </h2>
               <p className="body-default text-foreground/70 mt-4 max-w-3xl">
-                These are the organisations that are championing AI with us - they run hundreds of
-                events across Malaysia, hackathons, and workshops each year, upskilling Malaysian
-                talent, stimulating startups, and building fluency in AI across ages.
+                The best way to get started is by joining an event and meeting like-minded people.
+                There&apos;s communities for everyone — from people totally new to coding, students,
+                to technical ones for devs looking to go deeper into AI. Find your tribe and join
+                an event. Many are free and very friendly!
               </p>
+              <div className="mt-8">
+                <CTAButton href="/book-demo" variant="default" size="lg" showArrow isExternal={false}>
+                  Join the next AI event
+                </CTAButton>
+              </div>
             </div>
 
             <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

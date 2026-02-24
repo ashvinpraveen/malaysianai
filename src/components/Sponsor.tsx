@@ -28,10 +28,10 @@ const Sponsor = () => {
               >
                 500 Global
               </a>{" "}
-              is a venture capital firm backing AI-native companies and the founders building on
-              frontier models. As the host and initiator of the Malaysian AI Residency, they
-              provide the permanent space, capital, networks, and global reach that gives
-              Malaysia&apos;s best builders an unfair advantage.
+              is a global venture capital firm with $2.3B under management, backing founders
+              across 80+ countries since 2010. Early investors in Credit Karma, Twilio, Canva,
+              Grab, and Udemy — with 2,500+ companies in their portfolio, 38 unicorns, and
+              27 IPOs to date.
             </p>
           </div>
         </div>

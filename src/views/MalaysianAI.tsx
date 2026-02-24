@@ -148,14 +148,14 @@ const MalaysianAI = () => {
 
                 <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
                   <CTAButton
-                    href="#program"
+                    href="/book-demo"
                     variant="white"
                     size="lg"
                     showArrow
                     isExternal={false}
                     className="w-64"
                   >
-                    Explore initiatives
+                    Join the next AI event
                   </CTAButton>
                   <CTAButton
                     href="/contact"

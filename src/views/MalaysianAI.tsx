@@ -1,10 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { CTAButton } from "@/components/CTAButton";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { cn } from "@/lib/utils";
 import { ResidentsTicker } from "@/components/ResidentsTicker";
 import Sponsor from "@/components/Sponsor";
 
@@ -117,7 +115,6 @@ const communityPartners = [
 ];
 
 const MalaysianAI = () => {
-  const [activePartner, setActivePartner] = useState(communityPartners[0]);
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
@@ -279,68 +276,33 @@ const MalaysianAI = () => {
               </p>
             </div>
 
-            <div className="mt-10 grid grid-cols-1 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)] gap-6 lg:gap-8">
-              <div className="rounded-2xl border border-border/60 bg-card/60 p-5">
-                <p className="text-xs uppercase tracking-[0.3em] text-foreground/50">
-                  Communities
-                </p>
-                <div className="mt-4 space-y-3">
-                  {communityPartners.map((partner) => (
-                    <button
-                      key={partner.name}
-                      type="button"
-                      onClick={() => setActivePartner(partner)}
-                      className={cn(
-                        "group flex w-full items-center gap-3 rounded-2xl border border-transparent bg-background/70 px-4 py-3 text-left transition-all duration-200 hover:-translate-y-0.5 hover:bg-background",
-                        activePartner.name === partner.name && "border-primary/50 bg-background"
-                      )}
-                      aria-pressed={activePartner.name === partner.name}
-                      aria-label={`Select ${partner.name}`}
-                    >
-                      <div className="flex h-12 w-16 items-center justify-center rounded-xl bg-background/80 border border-border/60">
-                        <img
-                          src={partner.logo}
-                          alt={`${partner.name} logo`}
-                          className="max-h-8 w-full object-contain opacity-75 transition-opacity duration-200 group-hover:opacity-100"
-                          loading="lazy"
-                        />
-                      </div>
-                      <span className="text-sm font-medium text-foreground">{partner.name}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="rounded-2xl border border-border/60 bg-card/60 p-6">
-                <div className="flex flex-col gap-6">
-                  <div className="flex w-full items-center justify-center rounded-2xl bg-background/70 border border-border/60 px-10 py-12">
+            <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {communityPartners.map((partner) => (
+                <div
+                  key={partner.name}
+                  className="flex flex-col rounded-2xl border border-border/60 bg-card/40 overflow-hidden"
+                >
+                  {/* Logo area */}
+                  <div className="flex items-center justify-center bg-background border-b border-border/60 px-10 py-10">
                     <img
-                      src={activePartner.logo}
-                      alt={`${activePartner.name} logo`}
-                      className="h-24 sm:h-28 md:h-32 lg:h-36 w-auto max-w-[420px] object-contain"
+                      src={partner.logo}
+                      alt={`${partner.name} logo`}
+                      className="h-16 w-auto max-w-[180px] object-contain"
                       loading="lazy"
                     />
                   </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-foreground">{activePartner.name}</h3>
-                    <p className="mt-3 text-sm text-foreground/70">{activePartner.summary}</p>
+                  {/* Content */}
+                  <div className="flex flex-col flex-1 p-6">
+                    <h3 className="card-title text-foreground">{partner.name}</h3>
+                    <p className="body-small text-foreground/60 mt-2 flex-1">{partner.summary}</p>
+                    <div className="mt-5">
+                      <CTAButton href={partner.href} variant="outline" size="sm" showArrow>
+                        Visit website
+                      </CTAButton>
+                    </div>
                   </div>
                 </div>
-                <div className="mt-6 flex flex-wrap items-center gap-3">
-                  <CTAButton
-                    href="/community"
-                    variant="outline"
-                    size="sm"
-                    isExternal={false}
-                    showArrow={false}
-                  >
-                    Learn more
-                  </CTAButton>
-                  <CTAButton href={activePartner.href} variant="outline" size="sm" showArrow={false}>
-                    Visit website
-                  </CTAButton>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>

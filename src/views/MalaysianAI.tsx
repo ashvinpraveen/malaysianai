@@ -130,12 +130,13 @@ const MalaysianAI = () => {
                 <img
                   src="/batik_kl_city_sunrise.png"
                   alt="Batik KL city sunrise"
-                  className="w-full h-full object-cover object-[50%_60%]"
+                  className="w-full h-full object-cover object-[50%_60%] saturate-[1.3]"
                 />
               {/* Warm gold overlay to make city lights glow */}
               <div className="absolute inset-0 bg-gradient-to-t from-amber-800/35 via-transparent to-pink-500/50 mix-blend-overlay" />
-              {/* Readability gradient at bottom */}
+              {/* Readability gradient + overall darkening */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/5" />
+              <div className="absolute inset-0 bg-black/10" />
             </div>
 
             <div className="relative z-10 flex-1 flex flex-col justify-center items-center mx-auto bg-transparent px-6 md:px-10 lg:px-16 max-w-[1440px] w-full pt-32 pb-20 text-center">

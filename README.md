@@ -21,7 +21,7 @@ The website for Malaysia's AI Residency and Hub — [malaysianai.org](https://ma
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/ashvindcruz/malaysianai.git
+   git clone https://github.com/ashvinpraveen/malaysianai.git
    cd malaysianai
    ```
 

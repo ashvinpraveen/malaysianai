@@ -51,10 +51,3 @@ See [`.env.example`](.env.example) for all required variables.
 | `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anonymous (public) key |
 
-## Contributing
-
-Contributions are welcome. Please open an issue first to discuss what you'd like to change.
-
-## License
-
-[MIT](LICENSE)

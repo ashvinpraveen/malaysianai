@@ -1,6 +1,6 @@
 # Malaysian AI
 
-The website for Malaysia's AI Residency and Hub — [malaysianai.org](https://malaysianai.org).
+The website for Malaysia's AI Residency and Hub — [malaysian.ai](https://malaysian.ai).
 
 ## Tech Stack
 

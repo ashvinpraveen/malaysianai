@@ -6,10 +6,9 @@ import { ChevronRight, Menu, X } from "lucide-react";
 import { CTAButton } from "./CTAButton";
 
 const navItems = [
-  { label: "Residency", href: "/residency" },
-  { label: "Meet the residents", href: "/residents" },
+  { label: "Events", href: "/book-demo" },
   { label: "Communities", href: "/community" },
-  { label: "Contact", href: "/contact" },
+  { label: "Residency", href: "/residency" },
 ];
 
 const Navbar = () => {
@@ -54,13 +53,13 @@ const Navbar = () => {
 
             <div className="hidden lg:block">
               <CTAButton href="/book-demo" variant="secondary" isExternal={false}>
-                Apply
+                Join the next AI event
               </CTAButton>
             </div>
 
             <div className="flex lg:hidden items-center gap-4 z-[60]">
               <CTAButton href="/book-demo" variant="secondary" size="sm" isExternal={false}>
-                Apply
+                Join the next AI event
               </CTAButton>
 
               <button
@@ -110,7 +109,7 @@ const Navbar = () => {
           >
             <div className="flex flex-col gap-6 pt-8">
               <CTAButton href="/book-demo" variant="secondary" isExternal={false}>
-                Apply
+                Join the next AI event
               </CTAButton>
             </div>
           </div>

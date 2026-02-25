@@ -211,10 +211,10 @@ const MalaysianAI = () => {
           <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
             <div className="max-w-4xl">
               <h2 className="section-title text-foreground">
-                Your first step into AI starts here
+                Your first step into AI starts here.
               </h2>
-              <p className="body-default text-foreground/70 mt-4">
-                Malaysian AI connects you to workshops, events, and a community of people figuring out AI together — whether you're just curious or ready to go deep.
+              <p className="section-title text-foreground/40 mt-2">
+                Malaysian AI connects you to workshops, events, and a community of people figuring out AI together - from beginners to serious builders.
               </p>
             </div>
           </div>

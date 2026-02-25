@@ -31,25 +31,21 @@ type Initiative = {
   cta?: {
     label: string;
     href: string;
+    isExternal: boolean;
   };
 };
 
 const initiatives: Initiative[] = [
   {
-    title: "AI residency",
-    description:
-      "A structured residency that gives AI-native teams space, mentorship, and launch support.",
-    image: "/batik-paddy-clean.png",
-    cta: {
-      label: "Learn more",
-      href: "#residents",
-    },
-  },
-  {
     title: "Events and talks",
     description:
       "Demo days, founder stories, and practitioner deep-dives that translate frontier AI into products.",
     image: "/batik_kl_night_wide.png",
+    cta: {
+      label: "Join an event",
+      href: "https://luma.com/malaysianai",
+      isExternal: true,
+    },
   },
   {
     title: "Connecting communities",
@@ -59,6 +55,18 @@ const initiatives: Initiative[] = [
     cta: {
       label: "Learn more",
       href: "#community-partners",
+      isExternal: false,
+    },
+  },
+  {
+    title: "AI residency",
+    description:
+      "A structured residency that gives AI-native teams space, mentorship, and launch support.",
+    image: "/batik-paddy-clean.png",
+    cta: {
+      label: "Learn more",
+      href: "#residents",
+      isExternal: false,
     },
   },
   {
@@ -66,6 +74,11 @@ const initiatives: Initiative[] = [
     description:
       "Playbooks, courses, and learning tracks that upskill talent at every stage of their career.",
     image: "/batik_robot_hero.png",
+    cta: {
+      label: "Learn more",
+      href: "https://www.aitakeover.co/",
+      isExternal: true,
+    },
   },
 ];
 
@@ -201,13 +214,12 @@ const MalaysianAI = () => {
         <section id="program" className="py-20 md:py-28 bg-muted">
           <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
             <div className="mb-12">
-              <p className="label-default text-foreground/60 mb-3">Our Initiatives</p>
+              <p className="label-default text-foreground/60 mb-3">What We Do</p>
               <h2 className="section-title text-foreground">
                 Backing the people who build Malaysia&apos;s AI
               </h2>
               <p className="body-default text-foreground/70 mt-3 max-w-2xl">
-                We partner with top communities, run acceleration events, and operate a residency
-                that helps teams go from idea to product.
+                We partner with top communities, run acceleration events, and operate a residency that helps serious teams turn their ideas into global companies.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -216,7 +228,7 @@ const MalaysianAI = () => {
                   key={initiative.title}
                   className="relative flex flex-col rounded-2xl border border-border/60 bg-background p-6"
                 >
-                  <div className="relative -mx-6 -mt-6 mb-5 h-[22rem] overflow-hidden rounded-t-2xl">
+                  <div className="relative -mx-6 -mt-6 mb-5 h-[14rem] overflow-hidden rounded-t-2xl">
                     <img
                       src={initiative.image}
                       alt={`${initiative.title} batik illustration`}
@@ -237,7 +249,7 @@ const MalaysianAI = () => {
                         variant="outline"
                         size="sm"
                         showArrow
-                        isExternal={false}
+                        isExternal={initiative.cta.isExternal}
                       >
                         {initiative.cta.label}
                       </CTAButton>
@@ -275,11 +287,11 @@ const MalaysianAI = () => {
                   className="flex flex-col rounded-2xl border border-border/60 bg-card/40 overflow-hidden"
                 >
                   {/* Logo area */}
-                  <div className="flex items-center justify-center bg-background border-b border-border/60 px-10 py-10">
+                  <div className="flex items-center justify-center bg-background border-b border-border/60 px-6 py-6">
                     <img
                       src={partner.logo}
                       alt={`${partner.name} logo`}
-                      className="h-16 w-auto max-w-[180px] object-contain"
+                      className="h-24 w-auto max-w-[220px] object-contain"
                       loading="lazy"
                     />
                   </div>

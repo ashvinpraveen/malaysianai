@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { ResidentsTicker } from "@/components/ResidentsTicker";
 import Sponsor from "@/components/Sponsor";
 
+
 const highlights = [
   {
     title: "Government investment momentum",
@@ -176,6 +177,16 @@ const MalaysianAI = () => {
                     className="w-64"
                   >
                     Join the next AI event
+                  </CTAButton>
+                  <CTAButton
+                    href="https://wa.me/60103341501?text=Hey%2C%20I%27d%20like%20to%20stay%20updated%20about%20local%20AI%20community%20events"
+                    variant="primary"
+                    size="lg"
+                    showArrow={true}
+                    isExternal={true}
+                    className="w-64 bg-foreground text-white hover:bg-foreground/90 border-foreground/10"
+                  >
+                    Chat with our AI agent
                   </CTAButton>
                 </div>
               </div>

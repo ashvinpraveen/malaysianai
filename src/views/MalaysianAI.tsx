@@ -112,6 +112,13 @@ const communityPartners = [
     summary:
       "Non-profit bringing free AI education to underserved secondary school students in Malaysia. Runs hands-on workshops and an online learning platform to prepare young Malaysians for an AI-driven future.",
   },
+  {
+    name: "Coder Puffs",
+    href: "https://coderpuffs.com",
+    logo: "/coder-puffs-logo.png",
+    summary:
+      "A beginner-friendly community for Malaysians taking their first steps into coding and AI. Runs approachable workshops and events designed to make tech feel welcoming for everyone.",
+  },
 ];
 
 const MalaysianAI = () => {
@@ -156,16 +163,6 @@ const MalaysianAI = () => {
                     className="w-64"
                   >
                     Join the next AI event
-                  </CTAButton>
-                  <CTAButton
-                    href="/contact"
-                    variant="outline"
-                    size="lg"
-                    showArrow
-                    isExternal={false}
-                    className="w-64 text-white/90 border-white/50 hover:bg-white/10 hover:text-white"
-                  >
-                    Get in touch
                   </CTAButton>
                 </div>
               </div>
@@ -337,14 +334,13 @@ const MalaysianAI = () => {
               </div>
               <div className="relative z-10 py-20 md:py-28 text-center px-6 md:px-10">
                 <h2 className="section-title text-white mb-6" style={{ textWrap: "balance" }}>
-                  Get in touch with us
+                  Join the next AI event
                 </h2>
                 <p className="mx-auto mb-8 max-w-2xl text-sm md:text-base text-white/80">
-                  Partner with Malaysian AI, support the ecosystem, or join a program. We&apos;re ready
-                  to collaborate.
+                  Whether you're just curious or ready to go deep — come to an event and start meeting like-minded people &amp; starting to learn how you can make awesome things with AI.
                 </p>
-                <CTAButton href="/contact" variant="white" size="lg" showArrow isExternal={false}>
-                  Contact us
+                <CTAButton href="https://luma.com/malaysianai" variant="white" size="lg" showArrow isExternal={true}>
+                  View events
                 </CTAButton>
               </div>
             </div>

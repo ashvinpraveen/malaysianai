@@ -7,34 +7,34 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "The Malaysian AI Residency",
-    template: "%s | The Malaysian AI Residency",
+    default: "Malaysian AI",
+    template: "%s | Malaysian AI",
   },
   description:
-    "A cohort-based residency helping builders and researchers ship real AI products in Malaysia.",
+    "The home of AI builders in Malaysia. Join workshops, events, and a community of people figuring out AI together — from beginners to serious builders.",
   keywords: [
+    "AI Malaysia",
+    "AI community",
+    "AI events",
+    "AI workshops",
+    "Malaysian AI",
+    "AI builders",
     "AI residency",
-    "Malaysia",
-    "cohort",
-    "mentorship",
-    "applied AI",
-    "product",
-    "research",
   ],
-  authors: [{ name: "The Malaysian AI Residency" }],
+  authors: [{ name: "Malaysian AI" }],
   openGraph: {
-    title: "The Malaysian AI Residency",
+    title: "Malaysian AI",
     description:
-      "A cohort-based residency helping builders and researchers ship real AI products in Malaysia.",
+      "The home of AI builders in Malaysia. Join workshops, events, and a community of people figuring out AI together — from beginners to serious builders.",
     url: siteUrl,
-    siteName: "The Malaysian AI Residency",
+    siteName: "Malaysian AI",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "The Malaysian AI Residency",
+    title: "Malaysian AI",
     description:
-      "A cohort-based residency helping builders and researchers ship real AI products in Malaysia.",
+      "The home of AI builders in Malaysia. Join workshops, events, and a community of people figuring out AI together — from beginners to serious builders.",
   },
   icons: {
     icon: "/favicon.svg",

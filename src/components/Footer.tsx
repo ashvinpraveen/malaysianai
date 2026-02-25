@@ -3,24 +3,25 @@ import { CTAButton } from "./CTAButton";
 
 type FooterSection = {
   title: string;
-  links: Array<{ label: string; href: string }>;
+  links: Array<{ label: string; href: string; isExternal?: boolean }>;
   footerNote?: string;
 };
 
 const footerSections: FooterSection[] = [
   {
-    title: "Program",
+    title: "Get involved",
     links: [
+      { label: "View events", href: "https://luma.com/malaysianai", isExternal: true },
+      { label: "Communities", href: "/community" },
       { label: "Residency", href: "/residency" },
-      { label: "Apply", href: "/book-demo" },
     ],
   },
   {
-    title: "Community",
+    title: "Learn",
     links: [
-      { label: "Meet the residents", href: "/residents" },
-      { label: "Communities", href: "/community" },
+      { label: "AI Takeover", href: "https://www.aitakeover.co/", isExternal: true },
       { label: "Blog", href: "/blog" },
+      { label: "Residents", href: "/residents" },
     ],
   },
   {
@@ -48,21 +49,20 @@ const Footer = () => {
           <div className="col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-6 group">
               <img
-                src="/favicon.svg"
+                src="/logo-ai-residency.png"
                 alt="Malaysian AI logo"
-                className="w-9 h-9 brightness-0 invert"
+                className="h-8 w-auto"
               />
               <span className="navbar-brand text-xl text-background">
                 Malaysian AI
               </span>
             </Link>
             <p className="body-small text-background/70 mb-6 max-w-xs">
-              A residency for Malaysia&apos;s AI-native builders to go all-in, make insane
-              progress and launch globally.
+              The home of AI builders in Malaysia. Join workshops, events, and a community figuring out AI together.
             </p>
             <div className="mb-8">
-              <CTAButton href="/book-demo" variant="white" size="sm" showArrow isExternal={false}>
-                Apply for the next cohort
+              <CTAButton href="https://luma.com/malaysianai" variant="white" size="sm" showArrow isExternal={true}>
+                View events
               </CTAButton>
             </div>
           </div>
@@ -77,6 +77,8 @@ const Footer = () => {
                   <li key={link.label}>
                     <Link
                       href={link.href}
+                      target={link.isExternal ? "_blank" : undefined}
+                      rel={link.isExternal ? "noopener noreferrer" : undefined}
                       className="text-sm text-background/70 hover:text-background transition-colors duration-200"
                     >
                       {link.label}

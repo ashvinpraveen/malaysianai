@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Driving Malaysia's AI progress";
+export const alt = "Malaysian AI — The home of AI builders in Malaysia";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -160,8 +160,7 @@ export default async function Image() {
                 textAlign: "center",
               }}
             >
-              Backing grassroots builders with visibility, learning, and
-              resources to ship real AI products globally.
+              Join workshops, events, and a community of people figuring out AI together — from beginners to serious builders.
             </p>
           </div>
         </div>

@@ -59,7 +59,7 @@ const Navbar = () => {
 
             <div className="flex lg:hidden items-center gap-4 z-[60]">
               <CTAButton href="/book-demo" variant="secondary" size="sm" isExternal={false}>
-                Join the next AI event
+                View events
               </CTAButton>
 
               <button

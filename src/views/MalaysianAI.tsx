@@ -113,11 +113,11 @@ const communityPartners = [
       "Non-profit bringing free AI education to underserved secondary school students in Malaysia. Runs hands-on workshops and an online learning platform to prepare young Malaysians for an AI-driven future.",
   },
   {
-    name: "Coder Puffs",
-    href: "https://coderpuffs.com",
-    logo: "/coder-puffs-logo.png",
+    name: "CoderPuffs",
+    href: "https://luma.com/calendar/cal-GfEevCO5iGF9vbu?period=past",
+    logo: "/coderpuffs_logo.png",
     summary:
-      "A beginner-friendly community for Malaysians taking their first steps into coding and AI. Runs approachable workshops and events designed to make tech feel welcoming for everyone.",
+      "A women-first initiative hosting hands-on café-based build sessions that make coding and AI more welcoming and accessible for all levels. Runs monthly meetups at various cafés across KL.",
   },
 ];
 

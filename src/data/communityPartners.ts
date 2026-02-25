@@ -48,4 +48,11 @@ export const communityPartners: CommunityPartner[] = [
     summary:
       "An organization providing free, hybrid AI programs for ASEAN youth through hands-on workshops and a digital learning platform. Its mission is to equip secondary school students with the skills and confidence for an AI-powered future.",
   },
+  {
+    name: "CoderPuffs",
+    href: "https://luma.com/calendar/cal-GfEevCO5iGF9vbu?period=past",
+    logo: "/coderpuffs_logo.png",
+    summary:
+      "A women-first initiative hosting hands-on café-based build sessions that make coding and AI more welcoming and accessible for all levels. Runs monthly meetups at various cafés across KL.",
+  },
 ];

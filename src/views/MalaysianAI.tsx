@@ -142,8 +142,8 @@ const MalaysianAI = () => {
                   Driving Malaysia&apos;s AI progress
                 </h1>
                 <p className="text-base md:text-xl font-normal leading-relaxed text-white/90 max-w-2xl mx-auto drop-shadow-md">
-                  Malaysian AI backs grassroots builders with visibility, learning, and resources
-                  so more Malaysian teams can ship real AI products and grow globally.
+                  The home of AI builders in Malaysia. Join workshops, events and get to know the
+                  communities that help you get started and get going with AI.
                 </p>
 
                 <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -196,15 +196,6 @@ const MalaysianAI = () => {
                 Malaysia is scaling AI across government, industry, and society. Malaysian AI makes
                 sure that momentum reaches the people who build: students breaking in,
                 practitioners leveling up, and founders turning prototypes into companies.
-              </p>
-              <p className="body-default text-foreground/70 mt-4">
-                We help Malaysians in AI succeed in their goals by attracting attention,
-                accelerating learning, and unlocking resources. That means demo days and talks
-                that put builders in front of the right rooms, playbooks and learning tracks that
-                translate frontier AI into practical skills, and a residency that provides space,
-                mentorship, and launch support. We also strengthen grassroots communities across
-                Malaysia so builders can find collaborators, customers, and partners, and keep
-                shipping toward globally competitive outcomes.
               </p>
             </div>
           </div>

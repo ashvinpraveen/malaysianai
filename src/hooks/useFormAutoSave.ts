@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { UseFormWatch } from "react-hook-form";
 
-export function useFormAutoSave<T extends Record<string, any>>(
+export function useFormAutoSave<T extends Record<string, unknown>>(
   watch: UseFormWatch<T>,
   storageKey: string = "registration-form-draft"
 ) {

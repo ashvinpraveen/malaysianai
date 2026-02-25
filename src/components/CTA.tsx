@@ -18,15 +18,14 @@ const CTA = () => {
               className="section-title text-white mb-6"
               style={{ textWrap: "balance" }}
             >
-              Get in touch with us
+              Join the residency
             </h2>
             <p className="mx-auto mb-8 max-w-3xl text-sm md:text-base text-white/80">
-              We&apos;re looking for partners, collaborators and to channel funding to drive
-              greater impact across all of the key initiatives driving Malaysia&apos;s future.
-              Reach out to us to have a chat.
+              Apply for the next cohort and build your AI startup surrounded by ambitious
+              founders, mentors, and partners across Malaysia.
             </p>
-            <CTAButton href="/contact" variant="white" size="lg" showArrow isExternal={false}>
-              Contact us
+            <CTAButton href="/residency/apply" variant="white" size="lg" showArrow isExternal={false}>
+              Apply now
             </CTAButton>
           </div>
         </div>

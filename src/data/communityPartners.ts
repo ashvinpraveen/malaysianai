@@ -55,4 +55,11 @@ export const communityPartners: CommunityPartner[] = [
     summary:
       "A women-first initiative hosting hands-on café-based build sessions that make coding and AI more welcoming and accessible for all levels. Runs monthly meetups at various cafés across KL.",
   },
+  {
+    name: "Cursor Community",
+    href: "https://www.cursor.com",
+    logo: "/cursor-community-logo.png",
+    summary:
+      "Co-organised the Cursor Malaysia hackathon with 1000+ signups and the official community for Cursor in KL. Join hackathons, workshops and chat with builders.",
+  },
 ];

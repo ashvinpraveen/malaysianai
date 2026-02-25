@@ -112,8 +112,8 @@ const CanvasOverview = () => {
     },
     {
       title: "Apply",
-      route: "/book-demo",
-      previewSrc: "/book-demo",
+      route: "/residency/apply",
+      previewSrc: "/residency/apply",
       sections: [
         { name: "Navbar", top: 0 },
         { name: "ApplicationForm", top: 100 },
@@ -126,15 +126,6 @@ const CanvasOverview = () => {
       sections: [
         { name: "Navbar", top: 0 },
         { name: "BlogList", top: 100 },
-      ]
-    },
-    {
-      title: "Company",
-      route: "/company",
-      previewSrc: "/company",
-      sections: [
-        { name: "Navbar", top: 0 },
-        { name: "CompanyContent", top: 100 },
       ]
     },
     {

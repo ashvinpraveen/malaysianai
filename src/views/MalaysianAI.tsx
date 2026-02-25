@@ -40,10 +40,10 @@ const initiatives: Initiative[] = [
   {
     title: "Events and talks",
     description:
-      "Demo days, founder stories, and practitioner deep-dives that translate frontier AI into products.",
+      "Join events, panels, hackathons, and workshops to meet the community and learn.",
     image: "/batik_kl_night_wide.png",
     cta: {
-      label: "Join an event",
+      label: "View events",
       href: "https://luma.com/malaysianai",
       isExternal: true,
     },
@@ -51,7 +51,7 @@ const initiatives: Initiative[] = [
   {
     title: "Connecting communities",
     description:
-      "Strengthening grassroots builder networks across Malaysia with shared infrastructure and partners.",
+      "Be a part of Malaysia's thriving AI communities and meet like-minded people to build with.",
     image: "/batik_kl_city_sunset.png",
     cta: {
       label: "Learn more",
@@ -62,7 +62,7 @@ const initiatives: Initiative[] = [
   {
     title: "AI residency",
     description:
-      "A structured residency that gives AI-native teams space, mentorship, and launch support.",
+      "Accelerate your progress in building your startup, surrounded by builders like you.",
     image: "/batik-paddy-clean.png",
     cta: {
       label: "Learn more",
@@ -73,11 +73,11 @@ const initiatives: Initiative[] = [
   {
     title: "Content and education",
     description:
-      "Playbooks, courses, and learning tracks that upskill talent at every stage of their career.",
+      "Watch videos, hear stories from builders and learn from the community.",
     image: "/batik_robot_hero.png",
     cta: {
       label: "Learn more",
-      href: "https://www.aitakeover.co/",
+      href: "https://instagram.com/aitakeover.co",
       isExternal: true,
     },
   },
@@ -132,6 +132,79 @@ const communityPartners = [
     logo: "/coderpuffs_logo.png",
     summary:
       "A women-first initiative hosting hands-on café-based build sessions that make coding and AI more welcoming and accessible for all levels. Runs monthly meetups at various cafés across KL.",
+  },
+  {
+    name: "Cursor Community",
+    href: "https://www.cursor.com",
+    logo: "/cursor-community-logo.png",
+    summary:
+      "Co-organised the Cursor Malaysia hackathon with 1000+ signups and the official community for Cursor in KL. Join hackathons, workshops and chat with builders.",
+  },
+];
+
+type TestimonialFragment = {
+  text: string;
+  accent?: boolean;
+};
+
+type CommunityTestimonial = {
+  fragments: TestimonialFragment[];
+};
+
+const communityTestimonials: CommunityTestimonial[] = [
+  {
+    fragments: [
+      { text: "\"SF vibes and atmosphere,", accent: true },
+      { text: " one-of-a-kind place in Malaysia\"" },
+    ],
+  },
+  {
+    fragments: [
+      { text: "\"You guys brought all the big guns.", accent: true },
+      {
+        text: " That was insanely good to see the perspectives, hopes and dreams the way you guys prop up builders. ",
+      },
+      { text: "F***ing Awesome! A+\"", accent: true },
+    ],
+  },
+  {
+    fragments: [
+      { text: "\"I felt the pulse of the community.", accent: true },
+      { text: " It inspired me to build with AI. " },
+      { text: "I went home and learnt Claude Code.", accent: true },
+      {
+        text: " I loved how supportive the community is to newbies. I felt very safe, heard and seen.\"",
+      },
+    ],
+  },
+  {
+    fragments: [
+      { text: "\"One of the few sessions where we had a ", accent: false },
+      { text: "serious discussion about AI", accent: true },
+      {
+        text: " and its implications for our companies, society, and the country as a whole. ",
+      },
+      {
+        text: "It gave me the sense that people outside our builders' bubble genuinely care about our nation's future.\"",
+        accent: true,
+      },
+    ],
+  },
+  {
+    fragments: [
+      { text: "\"Gave me hope about the state of Malaysian youth and builders", accent: true },
+      { text: " - it was so refreshing!\"" },
+    ],
+  },
+  {
+    fragments: [
+      { text: "\"Gave me the idea that ", accent: false },
+      { text: "I should create", accent: true },
+      { text: " similar programme where " },
+      { text: "I can provide opportunity for the school students to learn vibe coding", accent: true },
+      { text: " and start building something, and also for myself to " },
+      { text: "try build something on my own.\"", accent: true },
+    ],
   },
 ];
 
@@ -227,13 +300,10 @@ const MalaysianAI = () => {
         <section id="program" className="py-20 md:py-28 bg-muted">
           <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
             <div className="mb-12">
-              <p className="label-default text-foreground/60 mb-3">What We Do</p>
+              <p className="label-default text-foreground/60 mb-3">How We Support</p>
               <h2 className="section-title text-foreground">
-                Backing the people who build Malaysia&apos;s AI
+                Join an event, a community, or join the residency to accelerate your AI journey.
               </h2>
-              <p className="body-default text-foreground/70 mt-3 max-w-2xl">
-                We partner with top communities, run acceleration events, and operate a residency that helps serious teams turn their ideas into global companies.
-              </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {initiatives.map((initiative, index) => (
@@ -304,7 +374,7 @@ const MalaysianAI = () => {
                     <img
                       src={partner.logo}
                       alt={`${partner.name} logo`}
-                      className="h-24 w-auto max-w-[220px] object-contain"
+                      className={`h-24 w-auto max-w-[220px] object-contain ${partner.name === "Cursor Community" ? "rounded-2xl" : "rounded-lg"}`}
                       loading="lazy"
                     />
                   </div>
@@ -325,17 +395,20 @@ const MalaysianAI = () => {
         </section>
 
         <section id="residents" className="py-20 md:py-28 bg-muted overflow-hidden">
-          <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
-              <div>
-                <p className="label-default text-foreground/60 mb-3">Residency</p>
-                <h2 className="section-title text-foreground">
-                  Our residency is home to exceptional builders in AI
-                </h2>
-                <p className="body-default text-foreground/70 mt-3 max-w-2xl">
-                  Get to know some of the startups building in Malaysia in the current cohorts.
-                </p>
-              </div>
+          <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px] mb-10">
+            <div className="max-w-3xl">
+              <p className="label-default text-foreground/60 mb-3">Residency</p>
+              <h2 className="section-title text-foreground">
+                Home to ambitious Malaysian AI Startups.
+              </h2>
+              <p className="body-default text-foreground/70 mt-3">
+                Be surrounded by a community of ambitious founders like you, who go on to win hackathons, organise major regional movements, raise VC and work at the edge of the technology.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-3 mt-6">
+              <CTAButton href="/residency" variant="primary" size="md" showArrow isExternal={false}>
+                Learn more
+              </CTAButton>
               <CTAButton href="/residents" variant="outline" size="md" showArrow isExternal={false}>
                 View resident directory
               </CTAButton>
@@ -343,6 +416,33 @@ const MalaysianAI = () => {
           </div>
           <div className="px-6 md:px-10 lg:px-16">
             <ResidentsTicker />
+          </div>
+        </section>
+
+        <section id="community-voices" className="bg-muted py-20 md:py-28">
+          <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
+            <div className="max-w-3xl">
+              <p className="label-default text-foreground/60 mb-3">Community Voices</p>
+              <h2 className="section-title text-foreground">What the community has to say</h2>
+            </div>
+
+            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12">
+              {communityTestimonials.map((testimonial, index) => (
+                <blockquote
+                  key={index}
+                  className="rounded-2xl border border-border/60 bg-background/85 p-6 md:p-7 text-base md:text-lg font-light leading-relaxed tracking-tight text-foreground"
+                >
+                  {testimonial.fragments.map((fragment, fragmentIndex) => (
+                    <span
+                      key={`${index}-${fragmentIndex}`}
+                      className={fragment.accent ? "text-lime-700 font-semibold" : "text-foreground/95"}
+                    >
+                      {fragment.text}
+                    </span>
+                  ))}
+                </blockquote>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -359,13 +459,13 @@ const MalaysianAI = () => {
               </div>
               <div className="relative z-10 py-20 md:py-28 text-center px-6 md:px-10">
                 <h2 className="section-title text-white mb-6" style={{ textWrap: "balance" }}>
-                  Join the next AI event
+                  Start building today
                 </h2>
                 <p className="mx-auto mb-8 max-w-2xl text-sm md:text-base text-white/80">
-                  Whether you're just curious or ready to go deep — come to an event and start meeting like-minded people &amp; starting to learn how you can make awesome things with AI.
+                  The best place to start is by signing up for an event. You&apos;ll get to know people, meet the community and get an immersive experience to accelerate your AI journey.
                 </p>
                 <CTAButton href="https://luma.com/malaysianai" variant="white" size="lg" showArrow isExternal={true}>
-                  View events
+                  Join the next AI event
                 </CTAButton>
               </div>
             </div>

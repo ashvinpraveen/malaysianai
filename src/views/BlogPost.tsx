@@ -115,7 +115,7 @@ const BlogPost = ({ post }: { post: BlogPostType }) => {
                     Join the Malaysian AI Residency and build alongside mentors and partners.
                   </p>
                 </div>
-                <CTAButton href="/book-demo" variant="primary" size="md" isExternal={false}>
+                <CTAButton href="/residency/apply" variant="primary" size="md" isExternal={false}>
                   Apply now
                 </CTAButton>
               </div>

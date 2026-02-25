@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import { CleveAI, DocuAsk, ReplyrAI, ResidentImages, Robin } from "@/components/ResidentLogos";
+import { CleveAI, DocuAsk, ReplyrAI, ResidentImages } from "@/components/ResidentLogos";
 
 export type Resident = {
   name: string;
@@ -18,7 +18,7 @@ export const residents: Resident[] = [
   {
     name: "ReplyrAI",
     description:
-      "Conversational AI tooling for fast-moving support teams. Automates triage, drafts, and QA so agents close tickets faster with consistent quality.",
+      "AI growth platform for clinics that turns inbound chats into booked patients. It combines AI chat, lead follow-up, and appointment workflows to help teams convert more enquiries.",
     focus: "Customer Experience",
     location: "Kuala Lumpur",
     cohort: "Cohort 02",
@@ -30,7 +30,7 @@ export const residents: Resident[] = [
   {
     name: "Cleve",
     description:
-      "Knowledge workflows that turn messy data into decisions. Connects internal docs, data, and conversations so teams can search, cite, and act with confidence.",
+      "Personal AI content assistant that learns from your notes, emails, and social profiles. Cleve helps users capture ideas and turn them into posts, blogs, and scripts in their own voice.",
     focus: "Knowledge Systems",
     location: "Penang",
     cohort: "Cohort 01",
@@ -40,21 +40,9 @@ export const residents: Resident[] = [
     href: "https://cleve.ai",
   },
   {
-    name: "Robin",
-    description:
-      "AI copilots built for compliance-heavy workstreams. Streamlines contract review and approvals while keeping audit trails and policy controls intact.",
-    focus: "Legal & Compliance",
-    location: "Kuala Lumpur",
-    cohort: "Cohort 01",
-    status: "Active",
-    tags: ["Contracts", "Enterprise", "Trust"],
-    component: Robin,
-    href: "https://robinai.com",
-  },
-  {
     name: "DocuAsk",
     description:
-      "Document intelligence with audit-ready insights. Extracts, compares, and summarizes complex files for faster reviews and reporting.",
+      "No-code document chatbot platform that turns company files into searchable AI assistants. Teams can upload manuals, PDFs, and internal content so customers and staff can chat with their knowledge base.",
     focus: "Document AI",
     location: "Johor Bahru",
     cohort: "Cohort 02",
@@ -66,7 +54,7 @@ export const residents: Resident[] = [
   {
     name: "Blue Bolt Labs",
     description:
-      "Applied AI for next-generation industry operations. Delivers predictive maintenance, optimization, and frontline tools for factories and field teams.",
+      "MVP studio for solo founders that ships launch-ready products in a focused 21-day sprint. Blue Bolt Labs handles scoping, build, and handover so founders can validate ideas quickly with real users.",
     focus: "Industry 4.0",
     location: "Shah Alam",
     cohort: "Cohort 02",
@@ -78,7 +66,7 @@ export const residents: Resident[] = [
   {
     name: "Seavoice",
     description:
-      "Voice-driven interfaces for high-stakes workflows. Turns spoken input into structured actions for operations, care, and safety teams.",
+      "Enterprise voice AI platform for customer support, outbound sales, and appointment booking. Seavoice deploys human-like call agents with CRM and telephony integrations, including local-language conversations.",
     focus: "Voice & Speech",
     location: "Kota Kinabalu",
     cohort: "Cohort 01",
@@ -90,7 +78,7 @@ export const residents: Resident[] = [
   {
     name: "Klovr",
     description:
-      "AI-powered guidance for career and learning journeys. Matches users to pathways, mentors, and resources with personalized next steps.",
+      "AI assistant for real estate sales teams that runs directly inside WhatsApp. Klovr captures top-agent playbooks from chat activity and gives junior agents instant reply guidance to improve conversions.",
     focus: "Education",
     location: "Petaling Jaya",
     cohort: "Cohort 02",
@@ -102,7 +90,7 @@ export const residents: Resident[] = [
   {
     name: "Kelas Sekejap",
     description:
-      "Learning experiences designed for modern teams. Blends short-form content, cohorts, and hands-on projects for practical upskilling.",
+      "Malaysia-first AI English app focused on learning by speaking, not memorisation. Kelas Sekejap uses guided real-world conversations and instant feedback to build practical confidence.",
     focus: "Education",
     location: "Kuala Lumpur",
     cohort: "Cohort 01",

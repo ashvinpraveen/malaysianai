@@ -27,15 +27,7 @@ const footerSections: FooterSection[] = [
   {
     title: "Company",
     links: [
-      { label: "About", href: "/company" },
       { label: "Contact", href: "/contact" },
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
-      { label: "Privacy", href: "/privacy" },
-      { label: "Terms", href: "/terms" },
     ],
     footerNote: `© ${new Date().getFullYear()} Malaysian AI`,
   },

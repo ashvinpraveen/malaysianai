@@ -9,7 +9,7 @@ import {
 const stats = [
   { label: "Builders learning AI", value: "10,000" },
   { label: "Events run in 2024-2025", value: "30" },
-  { label: "Partner organizations", value: "6" },
+  { label: "Partner organizations", value: "8" },
 ];
 
 const CommunityDirectory = () => {
@@ -105,7 +105,7 @@ const CommunityDirectory = () => {
                 >
                   Start a chapter
                 </CTAButton>
-                <CTAButton href="/book-demo" variant="outline" size="lg" showArrow={false} isExternal={false}>
+                <CTAButton href="/residency/apply" variant="outline" size="lg" showArrow={false} isExternal={false}>
                   Apply to the residency
                 </CTAButton>
               </div>

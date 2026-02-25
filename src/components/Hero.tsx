@@ -25,7 +25,7 @@ const Hero = () => {
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <CTAButton href="/book-demo" variant="white" size="lg" showArrow isExternal={false}>
+            <CTAButton href="/residency/apply" variant="white" size="lg" showArrow isExternal={false}>
               Apply for the next cohort
             </CTAButton>
           </div>

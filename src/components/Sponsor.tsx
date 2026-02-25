@@ -28,10 +28,9 @@ const Sponsor = () => {
               >
                 500 Global
               </a>{" "}
-              is a global venture capital firm with $2.3B under management, backing founders
-              across 80+ countries since 2010. Early investors in Credit Karma, Twilio, Canva,
-              Grab, and Udemy — with 2,500+ companies in their portfolio, 38 unicorns, and
-              27 IPOs to date.
+              is a global venture capital firm with $2.1B+ assets under management, backing founders
+              across 80+ countries since 2010. Early investors in Grab, Carsome, Carousell, Canva
+              and Udemy — with 3000+ companies in their portfolio, 35+ unicorns, and 270+ exits to date.
             </p>
           </div>
         </div>

@@ -58,11 +58,8 @@ const ResidentsDirectory = () => {
                 the teams shaping the local AI ecosystem.
               </p>
               <div className="flex flex-wrap gap-4">
-                <CTAButton href="/book-demo" variant="primary" size="lg" showArrow isExternal={false}>
+                <CTAButton href="/residency/apply" variant="primary" size="lg" showArrow isExternal={false}>
                   Apply for residency
-                </CTAButton>
-                <CTAButton href="/company" variant="secondary" size="lg" showArrow isExternal={false}>
-                  Partner with residents
                 </CTAButton>
               </div>
             </div>
@@ -149,11 +146,8 @@ const ResidentsDirectory = () => {
               Join the cohort or partner with residents to pilot and ship applied AI products.
             </p>
             <div className="mt-6 flex flex-wrap gap-4">
-              <CTAButton href="/book-demo" variant="primary" size="lg" showArrow isExternal={false}>
+              <CTAButton href="/residency/apply" variant="primary" size="lg" showArrow isExternal={false}>
                 Apply for residency
-              </CTAButton>
-              <CTAButton href="/company" variant="secondary" size="lg" showArrow isExternal={false}>
-                Partner with residents
               </CTAButton>
             </div>
           </div>

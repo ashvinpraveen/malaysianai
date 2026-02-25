@@ -12,22 +12,26 @@ const ShowAndTell = () => {
 
     const name = String(formData.get("name") ?? "").trim();
     const email = String(formData.get("email") ?? "").trim();
+    const referral = String(formData.get("referral") ?? "").trim();
+    const social = String(formData.get("social") ?? "").trim();
     const project = String(formData.get("project") ?? "").trim();
     const learn = String(formData.get("learn") ?? "").trim();
 
-    const bodyLines = [
+    const messageLines = [
       name ? `Name: ${name}` : null,
       email ? `Email: ${email}` : null,
+      social ? `Social: ${social}` : null,
+      referral ? `Referral: ${referral}` : null,
       "",
       project ? `What I am working on: ${project}` : null,
-      learn ? `What I am learning: ${learn}` : null,
+      learn ? `What's something I learned this week: ${learn}` : null,
     ].filter((line): line is string => line !== null);
 
-    const mailtoLink = `mailto:hello@malaysianai.org?subject=${encodeURIComponent(
-      "Show and Tell Thursday RSVP"
-    )}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
+    const whatsappLink = `https://wa.me/60109847954?text=${encodeURIComponent(
+      messageLines.join("\n")
+    )}`;
 
-    window.location.href = mailtoLink;
+    window.location.href = whatsappLink;
   };
 
   return (
@@ -97,21 +101,65 @@ const ShowAndTell = () => {
           </div>
 
           <div className="space-y-2">
+            <label htmlFor="show-social" className="text-sm font-medium text-foreground/70">
+              Share your LinkedIn link (or other social media links)
+            </label>
+            <input
+              id="show-social"
+              name="social"
+              type="text"
+              required
+              placeholder="linkedin.com/in/yourname"
+              className="w-full rounded-xl border border-foreground/10 bg-background px-4 py-3 text-sm text-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="show-referral" className="text-sm font-medium text-foreground/70">
+              Did anyone refer you?
+            </label>
+            <input
+              id="show-referral"
+              name="referral"
+              type="text"
+              placeholder="Full name of the person who referred you"
+              className="w-full rounded-xl border border-foreground/10 bg-background px-4 py-3 text-sm text-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
+            />
+          </div>
+
+          <div className="space-y-2">
             <label htmlFor="show-learn" className="text-sm font-medium text-foreground/70">
-              What are you learning?
+              What&apos;s something you learned this week?
             </label>
             <textarea
               id="show-learn"
               name="learn"
               rows={3}
-              placeholder="Anything you want feedback on?"
+              required
+              placeholder="Share anything that you learned recently. It could be related to GTM, technology, tools."
               className="w-full rounded-xl border border-foreground/10 bg-background px-4 py-3 text-sm text-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
             />
           </div>
 
+          <div className="flex items-start gap-3 rounded-xl border border-foreground/10 bg-background px-4 py-3">
+            <input
+              id="show-understanding"
+              name="understanding"
+              type="checkbox"
+              required
+              className="mt-1 h-4 w-4 rounded border-foreground/20 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
+            />
+            <label htmlFor="show-understanding" className="text-sm leading-relaxed text-foreground/80">
+              I understand this is not a pitch. This is a builder sharing session
+              where I share what I&apos;m tinkering with, learn from other builders,
+              and contribute to the community. I also consent to my pictures /
+              videos being taken during the session for media purposes.
+            </label>
+          </div>
+
           <div className="flex flex-wrap items-center gap-4 pt-2">
             <CTAButton type="submit" variant="primary" size="lg">
-              Join a show and tell session
+              Apply to join a show and tell session
             </CTAButton>
           </div>
         </form>

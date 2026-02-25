@@ -15,18 +15,19 @@ const Contact = () => {
     const subject = String(formData.get("subject") ?? "").trim();
     const message = String(formData.get("message") ?? "").trim();
 
-    const bodyLines = [
+    const messageLines = [
       name ? `Name: ${name}` : null,
       email ? `Email: ${email}` : null,
+      subject ? `Subject: ${subject}` : null,
       "",
       message,
     ].filter((line): line is string => line !== null);
 
-    const mailtoLink = `mailto:hello@malaysianai.org?subject=${encodeURIComponent(
-      subject || "Malaysian AI contact"
-    )}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
+    const whatsappLink = `https://wa.me/60109847954?text=${encodeURIComponent(
+      messageLines.join("\n")
+    )}`;
 
-    window.location.href = mailtoLink;
+    window.location.href = whatsappLink;
   };
 
   return (
@@ -132,7 +133,7 @@ const Contact = () => {
                   For residency applications, use the apply page.
                 </p>
                 <div className="mt-4">
-                  <CTAButton href="/book-demo" variant="secondary" size="sm" showArrow isExternal={false}>
+                  <CTAButton href="/residency/apply" variant="secondary" size="sm" showArrow isExternal={false}>
                     Apply for residency
                   </CTAButton>
                 </div>

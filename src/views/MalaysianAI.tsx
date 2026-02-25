@@ -148,11 +148,11 @@ const MalaysianAI = () => {
 
                 <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
                   <CTAButton
-                    href="/book-demo"
+                    href="https://luma.com/malaysianai"
                     variant="white"
                     size="lg"
                     showArrow
-                    isExternal={false}
+                    isExternal={true}
                     className="w-64"
                   >
                     Join the next AI event
@@ -265,7 +265,7 @@ const MalaysianAI = () => {
                 an event. Many are free and very friendly!
               </p>
               <div className="mt-8">
-                <CTAButton href="/book-demo" variant="primary" size="lg" showArrow isExternal={false}>
+                <CTAButton href="https://luma.com/malaysianai" variant="primary" size="lg" showArrow isExternal={true}>
                   Join the next AI event
                 </CTAButton>
               </div>

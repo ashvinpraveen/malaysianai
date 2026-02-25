@@ -265,7 +265,7 @@ const MalaysianAI = () => {
                 an event. Many are free and very friendly!
               </p>
               <div className="mt-8">
-                <CTAButton href="/book-demo" variant="default" size="lg" showArrow isExternal={false}>
+                <CTAButton href="/book-demo" variant="primary" size="lg" showArrow isExternal={false}>
                   Join the next AI event
                 </CTAButton>
               </div>

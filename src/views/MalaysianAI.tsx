@@ -1,10 +1,55 @@
 "use client";
 
+import { useRef, useEffect, useState } from "react";
 import { CTAButton } from "@/components/CTAButton";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ResidentsTicker } from "@/components/ResidentsTicker";
 import Sponsor from "@/components/Sponsor";
+
+const ScrollRevealText = ({ text, className }: { text: string; className?: string }) => {
+  const ref = useRef<HTMLParagraphElement>(null);
+  const [progress, setProgress] = useState(0);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const words = text.split(" ");
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    setIsDesktop(mq.matches);
+
+    const onScroll = () => {
+      if (!mq.matches) return;
+      const el = ref.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      setProgress(Math.max(0, Math.min(1, (vh * 0.85 - rect.top) / (vh * 0.65))));
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <p ref={ref} className={className}>
+      {words.map((word, i) => {
+        const wordProgress = isDesktop
+          ? Math.max(0, Math.min(1, progress * words.length - i))
+          : null;
+        return (
+          <span
+            key={i}
+            className="transition-colors duration-150"
+            style={wordProgress !== null ? { color: `hsl(var(--foreground) / ${0.3 + wordProgress * 0.7})` } : undefined}
+          >
+            {word}{" "}
+          </span>
+        );
+      })}
+    </p>
+  );
+};
 
 
 const highlights = [
@@ -288,9 +333,10 @@ const MalaysianAI = () => {
               <h2 className="section-title text-foreground">
                 Your first step into AI starts here.
               </h2>
-              <p className="section-title text-foreground/40 mt-2">
-                Malaysian AI connects you to workshops, events, and a community of people figuring out AI together - from beginners to serious builders.
-              </p>
+              <ScrollRevealText
+                className="section-title mt-2 text-foreground/40"
+                text="Malaysian AI connects you to workshops, events, and a community of people figuring out AI together - from beginners to serious builders."
+              />
             </div>
           </div>
         </section>

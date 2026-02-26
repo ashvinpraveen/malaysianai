@@ -261,7 +261,7 @@ const MalaysianAI = () => {
 
       <main>
         <div className="px-3 md:px-4 lg:px-6 pt-16">
-          <section className="relative min-h-[calc(100vh-78px)] flex flex-col overflow-hidden rounded-2xl border border-border text-white">
+          <section className="relative md:min-h-[calc(100vh-78px)] flex flex-col overflow-hidden rounded-2xl border border-border text-white">
             <div className="absolute inset-0 z-0">
                 <img
                   src="/batik_kl_city_sunrise.png"

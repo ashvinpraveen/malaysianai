@@ -2,7 +2,7 @@ import { CTAButton } from "./CTAButton";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-[calc(100vh-78px)] flex flex-col overflow-hidden rounded-2xl border border-border text-white">
+    <section className="relative md:min-h-[calc(100vh-78px)] flex flex-col overflow-hidden rounded-2xl border border-border text-white">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img

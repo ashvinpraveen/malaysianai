@@ -296,7 +296,6 @@ const MalaysianAI = () => {
                   >
                     Join the next AI event
                   </CTAButton>
-                  {/* Chat with our AI agent button — commented out for now
                   <CTAButton
                     href="https://wa.me/60103341501?text=Hey%2C%20I%27d%20like%20to%20stay%20updated%20about%20local%20AI%20community%20events"
                     variant="primary"
@@ -307,7 +306,6 @@ const MalaysianAI = () => {
                   >
                     Chat with our AI agent
                   </CTAButton>
-                  */}
                 </div>
               </div>
             </div>

@@ -22,11 +22,11 @@ const CommunityDirectory = () => {
           <div className="mx-auto w-full max-w-[1240px] px-6 md:px-10 lg:px-16">
             <div className="max-w-3xl space-y-6">
               <h1 className="text-4xl md:text-6xl lg:text-7xl leading-[1.05] text-foreground">
-                Malaysia&apos;s AI communities.
+                Find your tribe.
               </h1>
               <p className="text-lg md:text-xl text-foreground/70 leading-relaxed">
-                Explore the communities powering Malaysia&apos;s AI momentum, join their events, and
-                learn how to use AI better or contribute towards their efforts.
+                There&apos;s a community for everyone — from total beginners to developers going deep into AI.
+                Join events, meet like-minded people, and start building. Many are free and very friendly.
               </p>
               <div className="flex flex-wrap gap-10 pt-2">
                 {stats.map((stat) => (

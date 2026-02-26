@@ -18,7 +18,7 @@ const CommunityDirectory = () => {
       <Navbar />
 
       <main className="flex-grow">
-        <section className="relative overflow-hidden pt-28 pb-12">
+        <section className="relative overflow-hidden pt-28">
           <div className="mx-auto w-full max-w-[1240px] px-6 md:px-10 lg:px-16">
             <div className="max-w-3xl space-y-6">
               <h1 className="text-4xl md:text-6xl lg:text-7xl leading-[1.05] text-foreground">

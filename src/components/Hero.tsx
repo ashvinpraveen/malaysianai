@@ -2,7 +2,7 @@ import { CTAButton } from "./CTAButton";
 
 const Hero = () => {
   return (
-    <section className="relative h-[calc(100vh-78px)] flex flex-col overflow-hidden rounded-2xl border border-border text-white">
+    <section className="relative min-h-[calc(100vh-78px)] flex flex-col overflow-hidden rounded-2xl border border-border text-white">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img
@@ -13,7 +13,7 @@ const Hero = () => {
         <div className="absolute inset-0 bg-black/20 bg-gradient-to-t from-black/60 via-black/20 to-black/30" />
       </div>
 
-      <div className="relative z-10 flex-1 flex flex-col justify-center items-center mx-auto bg-transparent px-6 md:px-10 lg:px-16 max-w-[1440px] w-full pt-32 pb-20 text-center">
+      <div className="relative z-10 flex-1 flex flex-col justify-center items-center mx-auto bg-transparent px-6 md:px-10 lg:px-16 max-w-[1440px] w-full pt-20 pb-16 [@media(min-height:800px)]:pt-32 [@media(min-height:800px)]:pb-20 text-center">
         <div className="max-w-4xl">
           <h1 className="hero-title text-white mb-6 drop-shadow-lg">
             <span className="block">Build in Malaysia.</span>

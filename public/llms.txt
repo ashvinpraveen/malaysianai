@@ -1,0 +1,26 @@
+# Malaysian AI
+
+> The home of AI builders in Malaysia. Join workshops, events, and a community of people figuring out AI together — from beginners to serious builders.
+
+Malaysian AI is an initiative started by 500 Global to drive AI progress in Malaysia. We connect people to events, communities, and structured programmes to help them get started and get serious with AI.
+
+## Pages
+
+- [Home](https://malaysianai.org/): Overview of what Malaysian AI does — events, communities, and the residency.
+- [Residency](https://malaysianai.org/residency): The Malaysian AI Residency — a structured programme for founders building AI startups.
+- [Apply](https://malaysianai.org/residency/apply): Apply to join the Malaysian AI Residency.
+- [Show and Tell Thursdays](https://malaysianai.org/residency/showandtell): Weekly open builder sessions every Thursday. Share what you're building, learn from others.
+- [Residents](https://malaysianai.org/residents): Directory of companies and teams in the residency.
+- [Community Partners](https://malaysianai.org/community): Malaysian AI communities — Build Club, Build with AI, AI Tinkerers, AI Hackerdorm, AI SEA, Rakan Tutor, CoderPuffs, Cursor Community.
+- [Our Space — Blok71 KL](https://malaysianai.org/venue): The permanent home of Malaysian AI in Kuala Lumpur.
+- [Blog](https://malaysianai.org/blog): Updates, cohort stories, and programme announcements.
+- [Contact](https://malaysianai.org/contact): Get in touch about partnerships, residency questions, or collaborations.
+
+## Blog Posts
+
+- [Applications open for the 2026 cohort](https://malaysianai.org/blog/applications-open-2026): We're now accepting applications for the next Malaysian AI Residency cohort.
+- [Inside the residency curriculum](https://malaysianai.org/blog/inside-the-curriculum): A closer look at the sprint cadence, mentor touchpoints, and deliverables.
+
+## About
+
+Malaysian AI is initiated by [500 Global](https://500.co), one of the most active venture capital firms in the world. The programme backs communities and builders with resources to build valuable, export-ready AI companies.

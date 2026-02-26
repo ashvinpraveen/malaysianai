@@ -261,7 +261,7 @@ const MalaysianAI = () => {
 
       <main>
         <div className="px-3 md:px-4 lg:px-6 pt-16">
-          <section className="relative md:min-h-[calc(100vh-78px)] flex flex-col overflow-hidden rounded-2xl border border-border text-white">
+          <section className="relative h-[calc(100dvh-78px)] flex flex-col overflow-hidden rounded-2xl border border-border text-white">
             <div className="absolute inset-0 z-0">
                 <img
                   src="/batik_kl_city_sunrise.png"
@@ -285,14 +285,14 @@ const MalaysianAI = () => {
                   communities that help you get started and get going with AI.
                 </p>
 
-                <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
                   <CTAButton
                     href="https://luma.com/malaysianai"
                     variant="white"
                     size="lg"
                     showArrow
                     isExternal={true}
-                    className="w-64"
+                    className="w-full sm:w-64"
                   >
                     Join the next AI event
                   </CTAButton>
@@ -302,7 +302,7 @@ const MalaysianAI = () => {
                     size="lg"
                     showArrow={true}
                     isExternal={true}
-                    className="w-64 bg-foreground text-white hover:bg-foreground/90 border-foreground/10"
+                    className="w-full sm:w-64 bg-foreground text-white hover:bg-foreground/90 border-foreground/10"
                   >
                     Chat with our AI agent
                   </CTAButton>

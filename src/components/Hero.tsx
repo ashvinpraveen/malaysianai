@@ -2,7 +2,7 @@ import { CTAButton } from "./CTAButton";
 
 const Hero = () => {
   return (
-    <section className="relative md:min-h-[calc(100vh-78px)] flex flex-col overflow-hidden rounded-2xl border border-border text-white">
+    <section className="relative h-[calc(100dvh-78px)] flex flex-col overflow-hidden rounded-2xl border border-border text-white">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img
@@ -24,8 +24,8 @@ const Hero = () => {
             progress and launch globally.
           </p>
 
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <CTAButton href="/residency/apply" variant="white" size="lg" showArrow isExternal={false}>
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+            <CTAButton href="/residency/apply" variant="white" size="lg" showArrow isExternal={false} className="w-full sm:w-64">
               Apply for the next cohort
             </CTAButton>
           </div>

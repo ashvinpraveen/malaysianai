@@ -57,7 +57,7 @@ export const communityPartners: CommunityPartner[] = [
   },
   {
     name: "Cursor Community",
-    href: "https://www.cursor.com",
+    href: "https://www.instagram.com/cursor.my/",
     logo: "/cursor-community-logo.png",
     summary:
       "Co-organised the Cursor Malaysia hackathon with 1000+ signups and the official community for Cursor in KL. Join hackathons, workshops and chat with builders.",

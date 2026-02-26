@@ -12,7 +12,7 @@ Malaysian AI is an initiative started by 500 Global to drive AI progress in Mala
 - [Show and Tell Thursdays](https://malaysianai.org/residency/showandtell): Weekly open builder sessions every Thursday. Share what you're building, learn from others.
 - [Residents](https://malaysianai.org/residents): Directory of companies and teams in the residency.
 - [Community Partners](https://malaysianai.org/community): Malaysian AI communities — Build Club, Build with AI, AI Tinkerers, AI Hackerdorm, AI SEA, Rakan Tutor, CoderPuffs, Cursor Community.
-- [Our Space — Blok71 KL](https://malaysianai.org/venue): The permanent home of Malaysian AI in Kuala Lumpur.
+- [Our Space](https://malaysianai.org/venue): The permanent home of Malaysian AI in Kuala Lumpur.
 - [Blog](https://malaysianai.org/blog): Updates, cohort stories, and programme announcements.
 - [Contact](https://malaysianai.org/contact): Get in touch about partnerships, residency questions, or collaborations.
 

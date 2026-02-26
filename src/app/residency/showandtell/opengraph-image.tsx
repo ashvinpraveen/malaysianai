@@ -1,13 +1,13 @@
 import { generateOgImage, ogSize, ogContentType } from "@/lib/og-image";
 
-export const alt = "Malaysian AI — The home of AI builders in Malaysia";
+export const alt = "Show and Tell Thursdays — Malaysian AI";
 export const size = ogSize;
 export const contentType = ogContentType;
 export const dynamic = "force-dynamic";
 
 export default function Image() {
   return generateOgImage(
-    "Driving Malaysia's AI progress",
-    "Join workshops, events, and a community of people figuring out AI together — from beginners to serious builders."
+    "Show and Tell Thursdays",
+    "Share what you're building and learn from other builders. Every Thursday at Malaysian AI."
   );
 }

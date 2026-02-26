@@ -1,13 +1,13 @@
 import { generateOgImage, ogSize, ogContentType } from "@/lib/og-image";
 
-export const alt = "Malaysian AI — The home of AI builders in Malaysia";
+export const alt = "Apply — Malaysian AI Residency";
 export const size = ogSize;
 export const contentType = ogContentType;
 export const dynamic = "force-dynamic";
 
 export default function Image() {
   return generateOgImage(
-    "Driving Malaysia's AI progress",
-    "Join workshops, events, and a community of people figuring out AI together — from beginners to serious builders."
+    "Apply to the Residency",
+    "Join a community of ambitious Malaysian AI founders and accelerate your startup."
   );
 }

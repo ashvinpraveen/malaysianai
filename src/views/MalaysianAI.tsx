@@ -325,7 +325,7 @@ const MalaysianAI = () => {
           </div>
         </div>
 
-        <section id="mission" className="py-20 md:py-28 bg-background">
+        <section id="mission" className="pt-20 md:pt-28 bg-background">
           <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
             <div className="max-w-4xl">
               <h2 className="section-title text-foreground">

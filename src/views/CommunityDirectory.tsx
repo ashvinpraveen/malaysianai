@@ -42,7 +42,7 @@ const CommunityDirectory = () => {
           </div>
         </section>
 
-        <section className="mx-auto mt-16 w-full max-w-[1240px] px-6 md:px-10 lg:px-16">
+        <section className="mx-auto mt-16 pb-24 w-full max-w-[1240px] px-6 md:px-10 lg:px-16">
           <div className="grid gap-6 md:grid-cols-2">
             {communityPartners.map((partner) => {
               const Wrapper = partner.href ? "a" : "div";
@@ -84,62 +84,6 @@ const CommunityDirectory = () => {
           </div>
         </section>
 
-        <section className="mx-auto mt-20 w-full max-w-[1240px] px-6 pb-24 md:px-10 lg:px-16">
-          <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr] items-center rounded-[2.5rem] border border-border bg-card px-8 py-12 md:px-12">
-            <div className="space-y-5">
-              <p className="text-sm text-foreground/60">Start a chapter</p>
-              <h2 className="section-title text-foreground">
-                Launch a local circle with Malaysian AI support.
-              </h2>
-              <p className="body-default text-foreground/70 max-w-xl">
-                We provide facilitator playbooks, speaker matchmaking, and access to resident
-                mentors. Bring the community, we&apos;ll help you scale it.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <CTAButton
-                  href="mailto:hello@malaysianai.org"
-                  variant="secondary"
-                  size="lg"
-                  showArrow
-                  isExternal={false}
-                >
-                  Start a chapter
-                </CTAButton>
-                <CTAButton href="/residency/apply" variant="outline" size="lg" showArrow={false} isExternal={false}>
-                  Apply to the residency
-                </CTAButton>
-              </div>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {[
-                {
-                  title: "Host playbooks",
-                  description: "Run build nights, office hours, or research salons with proven templates.",
-                },
-                {
-                  title: "Speaker pipeline",
-                  description: "Tap into our mentor network for firesides, workshops, and AMAs.",
-                },
-                {
-                  title: "Project matching",
-                  description: "Pair member ideas with local partners and residency demo days.",
-                },
-                {
-                  title: "Community fund",
-                  description: "Micro-grants for venue, logistics, and experimentation costs.",
-                },
-              ].map((item) => (
-                <div
-                  key={item.title}
-                  className="rounded-2xl border border-border/70 bg-background/70 p-5"
-                >
-                  <h3 className="text-base font-semibold text-foreground mb-2">{item.title}</h3>
-                  <p className="text-sm text-foreground/70 leading-relaxed">{item.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
       </main>
 
       <Footer />

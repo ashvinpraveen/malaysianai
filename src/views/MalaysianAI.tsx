@@ -148,7 +148,7 @@ const communityPartners = [
     href: "https://aitinkerers.org",
     logo: "/ai_tinkerers_logo.png",
     summary:
-      "A global network of 86,000+ AI engineers across 203 cities. KL chapter runs monthly meetups with live demos and technical deep-dives — no pitches, just builders sharing real work.",
+      "A global network of 86,000+ AI engineers across 203 cities. KL chapter runs monthly meetups with live demos and technical deep-dives.",
   },
   {
     name: "AI Hackerdorm",

@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import BlogPost from "@/views/BlogPost";
 import { blogPosts, getBlogPost } from "@/lib/blog-data";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 export function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
 }
@@ -40,5 +42,34 @@ export default function Page({ params }: { params: { slug: string } }) {
     notFound();
   }
 
-  return <BlogPost post={post} />;
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.summary ?? "Residency updates from Malaysian AI.",
+    datePublished: post.date,
+    author: {
+      "@type": "Organization",
+      name: post.author ?? "Malaysian AI",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Malaysian AI",
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteUrl}/favicon.svg`,
+      },
+    },
+    url: `${siteUrl}/blog/${post.slug}`,
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <BlogPost post={post} />
+    </>
+  );
 }

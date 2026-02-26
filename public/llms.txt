@@ -6,20 +6,20 @@ Malaysian AI is an initiative started by 500 Global to drive AI progress in Mala
 
 ## Pages
 
-- [Home](https://malaysianai.org/): Overview of what Malaysian AI does — events, communities, and the residency.
-- [Residency](https://malaysianai.org/residency): The Malaysian AI Residency — a structured programme for founders building AI startups.
-- [Apply](https://malaysianai.org/residency/apply): Apply to join the Malaysian AI Residency.
-- [Show and Tell Thursdays](https://malaysianai.org/residency/showandtell): Weekly open builder sessions every Thursday. Share what you're building, learn from others.
-- [Residents](https://malaysianai.org/residents): Directory of companies and teams in the residency.
-- [Community Partners](https://malaysianai.org/community): Malaysian AI communities — Build Club, Build with AI, AI Tinkerers, AI Hackerdorm, AI SEA, Rakan Tutor, CoderPuffs, Cursor Community.
-- [Our Space](https://malaysianai.org/venue): The permanent home of Malaysian AI in Kuala Lumpur.
-- [Blog](https://malaysianai.org/blog): Updates, cohort stories, and programme announcements.
-- [Contact](https://malaysianai.org/contact): Get in touch about partnerships, residency questions, or collaborations.
+- [Home](https://malaysian.ai/): Overview of what Malaysian AI does — events, communities, and the residency.
+- [Residency](https://malaysian.ai/residency): The Malaysian AI Residency — a structured programme for founders building AI startups.
+- [Apply](https://malaysian.ai/residency/apply): Apply to join the Malaysian AI Residency.
+- [Show and Tell Thursdays](https://malaysian.ai/residency/showandtell): Weekly open builder sessions every Thursday. Share what you're building, learn from others.
+- [Residents](https://malaysian.ai/residents): Directory of companies and teams in the residency.
+- [Community Partners](https://malaysian.ai/community): Malaysian AI communities — Build Club, Build with AI, AI Tinkerers, AI Hackerdorm, AI SEA, Rakan Tutor, CoderPuffs, Cursor Community.
+- [Our Space](https://malaysian.ai/venue): The permanent home of Malaysian AI in Kuala Lumpur.
+- [Blog](https://malaysian.ai/blog): Updates, cohort stories, and programme announcements.
+- [Contact](https://malaysian.ai/contact): Get in touch about partnerships, residency questions, or collaborations.
 
 ## Blog Posts
 
-- [Applications open for the 2026 cohort](https://malaysianai.org/blog/applications-open-2026): We're now accepting applications for the next Malaysian AI Residency cohort.
-- [Inside the residency curriculum](https://malaysianai.org/blog/inside-the-curriculum): A closer look at the sprint cadence, mentor touchpoints, and deliverables.
+- [Applications open for the 2026 cohort](https://malaysian.ai/blog/applications-open-2026): We're now accepting applications for the next Malaysian AI Residency cohort.
+- [Inside the residency curriculum](https://malaysian.ai/blog/inside-the-curriculum): A closer look at the sprint cadence, mentor touchpoints, and deliverables.
 
 ## About
 

@@ -254,6 +254,9 @@ const communityTestimonials: CommunityTestimonial[] = [
 ];
 
 const MalaysianAI = () => {
+  const amaRecordingWhatsappLink = `https://wa.me/60103341501?text=${encodeURIComponent(
+    "Hey, I'd like to get notified when the full recording of the AMA AI Edition is up!"
+  )}`;
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
@@ -297,7 +300,7 @@ const MalaysianAI = () => {
                     Join the next AI event
                   </CTAButton>
                   <CTAButton
-                    href="https://wa.me/60103341501?text=Hey%2C%20I%27d%20like%20to%20stay%20updated%20about%20local%20AI%20community%20events"
+                    href={amaRecordingWhatsappLink}
                     variant="primary"
                     size="lg"
                     showArrow={true}

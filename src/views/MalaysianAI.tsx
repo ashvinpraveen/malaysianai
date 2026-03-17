@@ -324,6 +324,16 @@ const MalaysianAI = () => {
               >
                 500 Global
               </a>
+              . Managed by{" "}
+              <a
+                href="https://www.aisea.builders/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-foreground/80 underline underline-offset-4 hover:text-foreground"
+              >
+                AI SEA
+              </a>
+              .
             </p>
           </div>
         </div>

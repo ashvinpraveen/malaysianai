@@ -1,6 +1,10 @@
 import { CTAButton } from "./CTAButton";
 
 const Hero = () => {
+  const whatsappLink = `https://wa.me/60109847954?text=${encodeURIComponent(
+    "Hey, I'd like to get notified when the full recording of the AMA AI Edition is up!"
+  )}`;
+
   return (
     <section className="relative h-[calc(100dvh-78px)] flex flex-col overflow-hidden rounded-2xl border border-border text-white">
       {/* Background Image with Overlay */}
@@ -25,8 +29,8 @@ const Hero = () => {
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
-            <CTAButton href="/residency/apply" variant="white" size="lg" showArrow isExternal={false} className="w-full sm:w-64">
-              Apply for the next cohort
+            <CTAButton href={whatsappLink} variant="white" size="lg" showArrow className="w-full sm:w-72">
+              Notify me when it&apos;s up
             </CTAButton>
           </div>
         </div>

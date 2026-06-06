@@ -7,6 +7,9 @@ import Footer from "@/components/Footer";
 import { ResidentsTicker } from "@/components/ResidentsTicker";
 import Sponsor from "@/components/Sponsor";
 
+const LUMA_EVENTS_URL = "https://luma.com/malaysianai";
+const LUMA_EVENTS_EMBED_URL = "https://luma.com/embed/calendar/cal-pPgkuwCFrycSv1Z/events";
+
 const ScrollRevealText = ({ text, className }: { text: string; className?: string }) => {
   const ref = useRef<HTMLParagraphElement>(null);
   const [progress, setProgress] = useState(0);
@@ -89,7 +92,7 @@ const initiatives: Initiative[] = [
     image: "/batik_kl_night_wide.png",
     cta: {
       label: "View events",
-      href: "https://luma.com/malaysianai",
+      href: "#events",
       isExternal: true,
     },
   },
@@ -290,11 +293,11 @@ const MalaysianAI = () => {
 
                 <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
                   <CTAButton
-                    href="https://luma.com/malaysianai"
+                    href="#events"
                     variant="white"
                     size="lg"
                     showArrow
-                    isExternal={true}
+                    isExternal={false}
                     className="w-full sm:w-64"
                   >
                     Join the next AI event
@@ -337,6 +340,43 @@ const MalaysianAI = () => {
             </p>
           </div>
         </div>
+
+        <section id="events" className="py-20 md:py-28 bg-background">
+          <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
+            <div className="grid grid-cols-1 lg:grid-cols-[0.82fr_1.18fr] gap-8 lg:gap-12 items-start">
+              <div className="lg:sticky lg:top-24">
+                <p className="label-default text-foreground/60 mb-3">Upcoming Events</p>
+                <h2 className="section-title text-foreground">
+                  See what&apos;s happening next.
+                </h2>
+                <p className="body-default text-foreground/70 mt-4 max-w-xl">
+                  Browse Malaysian AI workshops, builder sessions, community runs, and meetups
+                  directly from Lu.ma. Pick what fits your week and register in a few clicks.
+                </p>
+                <div className="mt-8 flex flex-col sm:flex-row gap-3">
+                  <CTAButton href={LUMA_EVENTS_URL} variant="primary" size="lg" showArrow isExternal={true}>
+                    Open full calendar
+                  </CTAButton>
+                  <CTAButton href="#community-partners" variant="outline" size="lg" showArrow isExternal={false}>
+                    Meet the communities
+                  </CTAButton>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-border/60 bg-card/50 p-2 shadow-sm">
+                <div className="overflow-hidden rounded-xl border border-border/60 bg-background">
+                  <iframe
+                    src={LUMA_EVENTS_EMBED_URL}
+                    title="Malaysian AI upcoming events on Lu.ma"
+                    className="h-[720px] w-full"
+                    loading="lazy"
+                    allow="clipboard-write; payment"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <section id="mission" className="pt-20 md:pt-28 bg-background">
           <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
@@ -389,7 +429,7 @@ const MalaysianAI = () => {
                         variant="outline"
                         size="sm"
                         showArrow
-                        isExternal={initiative.cta.isExternal}
+                        isExternal={initiative.cta.href.startsWith("#") ? false : initiative.cta.isExternal}
                       >
                         {initiative.cta.label}
                       </CTAButton>

@@ -11,7 +11,7 @@ const footerSections: FooterSection[] = [
   {
     title: "Get involved",
     links: [
-      { label: "View events", href: "https://luma.com/malaysianai", isExternal: true },
+      { label: "View events", href: "/#events" },
       { label: "Communities", href: "/community" },
       { label: "Residency", href: "/residency" },
     ],
@@ -53,7 +53,7 @@ const Footer = () => {
               The home of AI builders in Malaysia. Join workshops, events, and a community figuring out AI together.
             </p>
             <div className="mb-8">
-              <CTAButton href="https://luma.com/malaysianai" variant="white" size="sm" showArrow isExternal={true}>
+              <CTAButton href="/#events" variant="white" size="sm" showArrow isExternal={false}>
                 View events
               </CTAButton>
             </div>

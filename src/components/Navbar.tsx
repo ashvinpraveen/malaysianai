@@ -6,7 +6,7 @@ import { ChevronRight, Menu, X } from "lucide-react";
 import { CTAButton } from "./CTAButton";
 
 const navItems = [
-  { label: "Events", href: "https://luma.com/malaysianai" },
+  { label: "Events", href: "/#events" },
   { label: "Communities", href: "/community" },
   { label: "Residency", href: "/residency" },
 ];
@@ -58,7 +58,7 @@ const Navbar = () => {
             </div>
 
             <div className="flex lg:hidden items-center gap-4 z-[60]">
-              <CTAButton href="https://luma.com/malaysianai" variant="secondary" size="sm" isExternal={true}>
+              <CTAButton href="/#events" variant="secondary" size="sm" isExternal={false}>
                 View events
               </CTAButton>
 

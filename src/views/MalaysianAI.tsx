@@ -10,6 +10,66 @@ import Sponsor from "@/components/Sponsor";
 const LUMA_EVENTS_URL = "https://luma.com/malaysianai";
 const LUMA_EVENTS_EMBED_URL = "https://luma.com/embed/calendar/cal-pPgkuwCFrycSv1Z/events";
 
+const LumaEventsEmbed = () => {
+  const frameRef = useRef<HTMLDivElement>(null);
+  const [shouldLoadFrame, setShouldLoadFrame] = useState(false);
+
+  useEffect(() => {
+    const frame = frameRef.current;
+    if (!frame || shouldLoadFrame) return;
+
+    let timeoutId: number | undefined;
+    const loadFrame = () => {
+      timeoutId = window.setTimeout(() => setShouldLoadFrame(true), 400);
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        loadFrame();
+      },
+      { rootMargin: "120px 0px", threshold: 0.01 }
+    );
+
+    observer.observe(frame);
+
+    return () => {
+      observer.disconnect();
+      if (timeoutId) window.clearTimeout(timeoutId);
+    };
+  }, [shouldLoadFrame]);
+
+  return (
+    <div
+      ref={frameRef}
+      className="overflow-hidden rounded-xl border border-border/60 bg-background [content-visibility:auto] [contain-intrinsic-size:720px]"
+    >
+      {shouldLoadFrame ? (
+        <iframe
+          src={LUMA_EVENTS_EMBED_URL}
+          title="Malaysian AI upcoming events on Lu.ma"
+          className="h-[720px] w-full"
+          loading="lazy"
+          allow="clipboard-write; payment"
+        />
+      ) : (
+        <div className="flex min-h-[420px] flex-col items-center justify-center px-6 text-center md:min-h-[720px]">
+          <p className="label-default text-foreground/50">Live Lu.ma Calendar</p>
+          <p className="body-default mt-3 max-w-md text-foreground/70">
+            Upcoming Malaysian AI events will load here as you reach this section.
+          </p>
+          <div className="mt-6">
+            <CTAButton href={LUMA_EVENTS_URL} variant="outline" size="sm" showArrow isExternal={true}>
+              Open full calendar
+            </CTAButton>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const ScrollRevealText = ({ text, className }: { text: string; className?: string }) => {
   const ref = useRef<HTMLParagraphElement>(null);
   const [progress, setProgress] = useState(0);
@@ -364,15 +424,7 @@ const MalaysianAI = () => {
               </div>
 
               <div className="rounded-2xl border border-border/60 bg-card/50 p-2 shadow-sm">
-                <div className="overflow-hidden rounded-xl border border-border/60 bg-background">
-                  <iframe
-                    src={LUMA_EVENTS_EMBED_URL}
-                    title="Malaysian AI upcoming events on Lu.ma"
-                    className="h-[720px] w-full"
-                    loading="lazy"
-                    allow="clipboard-write; payment"
-                  />
-                </div>
+                <LumaEventsEmbed />
               </div>
             </div>
           </div>

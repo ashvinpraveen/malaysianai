@@ -185,7 +185,7 @@ const initiatives: Initiative[] = [
     image: "/batik_robot_hero.png",
     cta: {
       label: "Learn more",
-      href: "https://instagram.com/aitakeover.co",
+      href: "https://instagram.com/malaysianai",
       isExternal: true,
     },
   },

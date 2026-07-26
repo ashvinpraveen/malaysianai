@@ -317,10 +317,6 @@ const communityTestimonials: CommunityTestimonial[] = [
 ];
 
 const MalaysianAI = () => {
-  const amaRecordingWhatsappLink = `https://wa.me/60103341501?text=${encodeURIComponent(
-    "Hey, I'd like to get notified when the full recording of the AMA AI Edition is up!"
-  )}`;
-
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
@@ -361,16 +357,6 @@ const MalaysianAI = () => {
                     className="w-full sm:w-64"
                   >
                     Join the next AI event
-                  </CTAButton>
-                  <CTAButton
-                    href={amaRecordingWhatsappLink}
-                    variant="primary"
-                    size="lg"
-                    showArrow={true}
-                    isExternal={true}
-                    className="w-full sm:w-64 bg-foreground text-white hover:bg-foreground/90 border-foreground/10"
-                  >
-                    Chat with our AI agent
                   </CTAButton>
                 </div>
               </div>
@@ -416,9 +402,6 @@ const MalaysianAI = () => {
                 <div className="mt-8 flex flex-col sm:flex-row gap-3">
                   <CTAButton href={LUMA_EVENTS_URL} variant="primary" size="lg" showArrow isExternal={true}>
                     Open full calendar
-                  </CTAButton>
-                  <CTAButton href="#community-partners" variant="outline" size="lg" showArrow isExternal={false}>
-                    Meet the communities
                   </CTAButton>
                 </div>
               </div>

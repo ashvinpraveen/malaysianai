@@ -5,7 +5,6 @@ import { CTAButton } from "@/components/CTAButton";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ResidentsTicker } from "@/components/ResidentsTicker";
-import Sponsor from "@/components/Sponsor";
 
 const LUMA_EVENTS_URL = "https://luma.com/malaysianai";
 const LUMA_EVENTS_EMBED_URL = "https://luma.com/embed/calendar/cal-pPgkuwCFrycSv1Z/events";
@@ -163,7 +162,7 @@ const initiatives: Initiative[] = [
     image: "/batik_kl_city_sunset.png",
     cta: {
       label: "Learn more",
-      href: "#community-partners",
+      href: "/community",
       isExternal: false,
     },
   },
@@ -191,259 +190,108 @@ const initiatives: Initiative[] = [
   },
 ];
 
-const communityPartners = [
-  {
-    name: "Build Club",
-    href: "https://www.buildclub.ai",
-    logo: "/build-club-logo-navbar.webp",
-    summary:
-      "One of the largest AI communities in Asia-Pacific with 5,000+ members. Offers bite-sized courses, role-based learning tracks, and a bounty marketplace — great for anyone wanting to learn AI by actually building things.",
-  },
-  {
-    name: "Build with AI",
-    href: "https://buildwithai.my/",
-    logo: "/build_with_ai_logo.jpeg",
-    summary:
-      "Malaysia's home for developers and non-technical builders creating AI projects. Hosts regular meetups, showcases 65+ member projects, and welcomes everyone from total beginners to experienced devs.",
-  },
-  {
-    name: "AI Tinkerers",
-    href: "https://aitinkerers.org",
-    logo: "/ai_tinkerers_logo.png",
-    summary:
-      "A global network of 86,000+ AI engineers across 203 cities. KL chapter runs monthly meetups with live demos and technical deep-dives.",
-  },
-  {
-    name: "AI Hackerdorm",
-    href: "https://aihackerdorm.com",
-    logo: "/ai_hackerdorm.webp",
-    summary:
-      "Student-first community for coders, designers, and entrepreneurs building AI projects together. Runs weekly sprints, hackathons, and mentorship sessions open to all skill levels.",
-  },
-  {
-    name: "AI SEA",
-    href: "https://www.aisea.builders",
-    logo: "/aisea_logo.png",
-    summary:
-      "A 10,000+ builder network across Southeast Asia shipping real AI products. Organises regional hackathons, co-build sprints, and the flagship AI.SEA Week conference connecting engineers across the region.",
-  },
-  {
-    name: "Rakan Tutor",
-    href: "https://rakantutor.org",
-    logo: "/rakan-tutor-logo.png",
-    summary:
-      "Non-profit bringing free AI education to underserved secondary school students in Malaysia. Runs hands-on workshops and an online learning platform to prepare young Malaysians for an AI-driven future.",
-  },
-  {
-    name: "CoderPuffs",
-    href: "https://luma.com/calendar/cal-GfEevCO5iGF9vbu?period=past",
-    logo: "/coderpuffs_logo.png",
-    summary:
-      "A women-first initiative hosting hands-on café-based build sessions that make coding and AI more welcoming and accessible for all levels. Runs monthly meetups at various cafés across KL.",
-  },
-  {
-    name: "Cursor Community",
-    href: "https://www.instagram.com/cursor.my/",
-    logo: "/cursor-community-logo.png",
-    summary:
-      "Co-organised the Cursor Malaysia hackathon with 1000+ signups and the official community for Cursor in KL. Join hackathons, workshops and chat with builders.",
-  },
-];
-
-type TestimonialFragment = {
-  text: string;
-  accent?: boolean;
-};
-
-type CommunityTestimonial = {
-  fragments: TestimonialFragment[];
-};
-
-const communityTestimonials: CommunityTestimonial[] = [
-  {
-    fragments: [
-      { text: "\"SF vibes and atmosphere,", accent: true },
-      { text: " one-of-a-kind place in Malaysia\"" },
-    ],
-  },
-  {
-    fragments: [
-      { text: "\"You guys brought all the big guns.", accent: true },
-      {
-        text: " That was insanely good to see the perspectives, hopes and dreams the way you guys prop up builders. ",
-      },
-      { text: "F***ing Awesome! A+\"", accent: true },
-    ],
-  },
-  {
-    fragments: [
-      { text: "\"I felt the pulse of the community.", accent: true },
-      { text: " It inspired me to build with AI. " },
-      { text: "I went home and learnt Claude Code.", accent: true },
-      {
-        text: " I loved how supportive the community is to newbies. I felt very safe, heard and seen.\"",
-      },
-    ],
-  },
-  {
-    fragments: [
-      { text: "\"One of the few sessions where we had a ", accent: false },
-      { text: "serious discussion about AI", accent: true },
-      {
-        text: " and its implications for our companies, society, and the country as a whole. ",
-      },
-      {
-        text: "It gave me the sense that people outside our builders' bubble genuinely care about our nation's future.\"",
-        accent: true,
-      },
-    ],
-  },
-  {
-    fragments: [
-      { text: "\"Gave me hope about the state of Malaysian youth and builders", accent: true },
-      { text: " - it was so refreshing!\"" },
-    ],
-  },
-  {
-    fragments: [
-      { text: "\"Gave me the idea that ", accent: false },
-      { text: "I should create", accent: true },
-      { text: " similar programme where " },
-      { text: "I can provide opportunity for the school students to learn vibe coding", accent: true },
-      { text: " and start building something, and also for myself to " },
-      { text: "try build something on my own.\"", accent: true },
-    ],
-  },
-];
-
 const MalaysianAI = () => {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
 
       <main>
-        <div className="px-3 md:px-4 lg:px-6 pt-16">
-          <section className="relative h-[calc(100dvh-78px)] flex flex-col overflow-hidden rounded-2xl border border-border text-white">
-            <div className="absolute inset-0 z-0">
-                <img
-                  src="/batik_kl_city_sunrise.png"
-                  alt="Batik KL city sunrise"
-                  className="w-full h-full object-cover object-[50%_60%] saturate-[1.3]"
-                />
-              {/* Warm gold overlay to make city lights glow */}
-              <div className="absolute inset-0 bg-gradient-to-t from-amber-800/35 via-transparent to-pink-500/50 mix-blend-overlay" />
-              {/* Readability gradient + overall darkening */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/5" />
-              <div className="absolute inset-0 bg-black/10" />
-            </div>
+        <section id="events" className="relative overflow-hidden border-b border-foreground/10 bg-[#fbf8f2] pb-14 pt-28 md:pb-20 md:pt-32">
+          <div className="pointer-events-none absolute inset-0 opacity-70 [background-image:radial-gradient(hsl(var(--foreground)/0.13)_1px,transparent_1px)] [background-size:20px_20px]" />
+          <div className="relative mx-auto grid max-w-[1440px] grid-cols-1 items-start gap-10 px-6 md:px-10 lg:grid-cols-[0.78fr_1.22fr] lg:gap-14 lg:px-16">
+            <div className="pt-2 lg:sticky lg:top-24">
+              <p className="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-foreground/55">
+                Malaysian AI &amp; friends
+              </p>
+              <h1 className="hero-title max-w-2xl text-foreground">
+                AI things worth<br className="hidden lg:block" /> leaving the house for.
+              </h1>
+              <p className="mt-6 max-w-xl text-base font-medium leading-relaxed text-foreground/70 md:text-lg">
+                Runs, show &amp; tells, workshops, hackathons and the people making them happen.
+                Come curious — you don&apos;t need to know everything already.
+              </p>
 
-            <div className="relative z-10 flex-1 flex flex-col justify-center items-center mx-auto bg-transparent px-6 md:px-10 lg:px-16 max-w-[1440px] w-full pt-20 pb-16 [@media(min-height:800px)]:pt-32 [@media(min-height:800px)]:pb-20 text-center">
-              <div className="max-w-4xl">
-                <h1 className="hero-title text-white mb-6 drop-shadow-lg">
-                  Driving Malaysia&apos;s AI progress
-                </h1>
-                <p className="text-base md:text-xl font-normal leading-relaxed text-white/90 max-w-2xl mx-auto drop-shadow-md">
-                  The home of AI builders in Malaysia. Join workshops, events and get to know the
-                  communities that help you get started and get going with AI.
-                </p>
-
-                <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
-                  <CTAButton
-                    href="#events"
-                    variant="white"
-                    size="lg"
-                    showArrow
-                    isExternal={false}
-                    className="w-full sm:w-64"
-                  >
-                    Join the next AI event
-                  </CTAButton>
-                </div>
-              </div>
-            </div>
-          </section>
-          <div className="mt-6 text-center">
-            <p className="text-xs uppercase tracking-[0.3em] text-foreground/60">
-              Initiated by{" "}
-              <a
-                href="https://500.co"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-foreground/80 underline underline-offset-4 hover:text-foreground"
-              >
-                500 Global
-              </a>
-              . Managed by{" "}
-              <a
-                href="https://www.aisea.builders/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-foreground/80 underline underline-offset-4 hover:text-foreground"
-              >
-                AI SEA
-              </a>
-              .
-            </p>
-          </div>
-        </div>
-
-        <section id="events" className="py-20 md:py-28 bg-background">
-          <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
-            <div className="grid grid-cols-1 lg:grid-cols-[0.82fr_1.18fr] gap-8 lg:gap-12 items-start">
-              <div className="lg:sticky lg:top-24">
-                <p className="label-default text-foreground/60 mb-3">Upcoming Events</p>
-                <h2 className="section-title text-foreground">
-                  See what&apos;s happening next.
-                </h2>
-                <p className="body-default text-foreground/70 mt-4 max-w-xl">
-                  Browse Malaysian AI workshops, builder sessions, community runs, and meetups
-                  directly from Lu.ma. Pick what fits your week and register in a few clicks.
-                </p>
-                <div className="mt-8 flex flex-col sm:flex-row gap-3">
-                  <CTAButton href={LUMA_EVENTS_URL} variant="primary" size="lg" showArrow isExternal={true}>
-                    Open full calendar
-                  </CTAButton>
-                </div>
+              <div className="mt-7 flex flex-wrap gap-2 text-sm font-semibold text-foreground">
+                <span className="rounded-full border border-foreground/15 bg-background/70 px-3 py-1.5">Build stuff</span>
+                <span className="rounded-full border border-foreground/15 bg-background/70 px-3 py-1.5">Meet people</span>
+                <span className="rounded-full bg-[#ffdc67] px-3 py-1.5">Learn out loud</span>
               </div>
 
-              <div className="rounded-2xl border border-border/60 bg-card/50 p-2 shadow-sm">
+              <div className="mt-9 hidden rounded-[1.5rem] border border-foreground/10 bg-white/80 p-5 shadow-[0_6px_0_hsl(var(--foreground)/0.08)] lg:block">
+                <p className="text-sm font-bold text-foreground">New around here?</p>
+                <p className="mt-1 text-sm leading-relaxed text-foreground/65">
+                  Start with a show &amp; tell or a community run. They&apos;re free, low-pressure and full of people happy to say hello.
+                </p>
+              </div>
+
+              <div className="mt-7 lg:mt-8">
+                <CTAButton href={LUMA_EVENTS_URL} variant="primary" size="lg" showArrow isExternal={true}>
+                  See all upcoming events
+                </CTAButton>
+              </div>
+
+            </div>
+
+            <div className="relative lg:pt-2">
+              <p className="mb-3 flex items-center gap-2 text-sm font-bold text-foreground">
+                <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[#f35b84]" /> Happening next
+              </p>
+              <div className="rounded-[1.75rem] border border-foreground/10 bg-white p-2 shadow-[0_10px_0_hsl(var(--foreground)/0.1)]">
                 <LumaEventsEmbed />
               </div>
+              <p className="mt-4 text-center text-xs font-medium text-foreground/50">
+                Find a thing. Bring a friend. Make a little trouble.
+              </p>
             </div>
           </div>
         </section>
 
         <section id="mission" className="pt-20 md:pt-28 bg-background">
-          <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
+          <div className="mx-auto grid max-w-[1440px] grid-cols-1 items-end gap-10 px-6 md:px-10 lg:grid-cols-[1fr_0.78fr] lg:gap-16 lg:px-16">
             <div className="max-w-4xl">
+              <p className="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-foreground/55">No gatekeeping</p>
               <h2 className="section-title text-foreground">
-                Your first step into AI starts here.
+                A good place to start is with other people.
               </h2>
               <ScrollRevealText
                 className="section-title mt-2 text-foreground/40"
                 text="Malaysian AI connects you to workshops, events, and a community of people figuring out AI together - from beginners to serious builders."
               />
             </div>
+            <figure className="relative overflow-hidden rounded-[1.75rem] border border-foreground/10 bg-foreground shadow-[0_8px_0_hsl(var(--foreground)/0.1)]">
+              <img
+                src="/show-and-tell.jpg"
+                alt="Builders sharing work at a Malaysian AI Show and Tell"
+                loading="lazy"
+                className="h-full w-full object-cover"
+              />
+              <figcaption className="absolute bottom-4 left-4 rounded-full bg-background/95 px-3 py-2 text-xs font-bold text-foreground shadow-sm">
+                Show &amp; Tell Thursdays at the residency
+              </figcaption>
+            </figure>
           </div>
         </section>
 
-        <Sponsor />
-
-        <section id="program" className="py-20 md:py-28 bg-muted">
+        <section id="program" className="py-20 md:py-28 bg-muted/80">
           <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
             <div className="mb-12">
-              <p className="label-default text-foreground/60 mb-3">How We Support</p>
+              <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-foreground/55">Pick your adventure</p>
               <h2 className="section-title text-foreground">
-                Join an event, a community, or join the residency to accelerate your AI journey.
+                There&apos;s more than one way in.
               </h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-12">
               {initiatives.map((initiative, index) => (
                 <div
                   key={initiative.title}
-                  className="relative flex flex-col rounded-2xl border border-border/60 bg-background p-6"
+                  className={`playful-card group relative flex flex-col overflow-hidden rounded-[1.75rem] border border-foreground/10 bg-background p-6 md:p-7 ${[
+                    "lg:col-span-7",
+                    "lg:col-span-5",
+                    "lg:col-span-5",
+                    "lg:col-span-7",
+                  ][index]}`}
                 >
-                  <div className="relative -mx-6 -mt-6 mb-5 h-[14rem] overflow-hidden rounded-t-2xl">
+                  <div className={`relative -mx-6 -mt-6 mb-5 overflow-hidden rounded-t-[1.75rem] md:-mx-7 md:-mt-7 ${index === 0 || index === 3 ? "h-[17rem] lg:h-[20rem]" : "h-[14rem] lg:h-[16rem]"}`}>
                     <img
                       src={initiative.image}
                       alt={`${initiative.title} batik illustration`}
@@ -455,7 +303,7 @@ const MalaysianAI = () => {
                       <h3 className="subsection-title text-white">{initiative.title}</h3>
                     </div>
                   </div>
-                  <p className="label-default text-foreground/50">0{index + 1}</p>
+                  <p className="flex h-8 w-8 items-center justify-center rounded-full bg-foreground text-xs font-bold text-background">0{index + 1}</p>
                   <p className="body-default text-foreground/70 mt-3">{initiative.description}</p>
                   {initiative.cta ? (
                     <div className="mt-5">
@@ -476,129 +324,66 @@ const MalaysianAI = () => {
           </div>
         </section>
 
-        <section id="community-partners" className="py-20 md:py-28 bg-background">
-          <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
-            <div>
-              <h2 className="section-title text-foreground">
-                Meet Malaysia&apos;s AI communities
-              </h2>
-              <p className="body-default text-foreground/70 mt-4 max-w-3xl">
-                The best way to get started is by joining an event and meeting like-minded people.
-                There&apos;s communities for everyone — from people totally new to coding, students,
-                to technical ones for devs looking to go deeper into AI. Find your tribe and join
-                an event. Many are free and very friendly!
-              </p>
-              <div className="mt-8">
-                <CTAButton href="https://luma.com/malaysianai" variant="primary" size="lg" showArrow isExternal={true}>
-                  Join the next AI event
-                </CTAButton>
-              </div>
-            </div>
-
-            <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {communityPartners.map((partner) => (
-                <div
-                  key={partner.name}
-                  className="flex flex-col rounded-2xl border border-border/60 bg-card/40 overflow-hidden"
-                >
-                  {/* Logo area */}
-                  <div className="flex items-center justify-center bg-background border-b border-border/60 px-6 py-6">
-                    <img
-                      src={partner.logo}
-                      alt={`${partner.name} logo`}
-                      className={`h-24 w-auto max-w-[220px] object-contain ${partner.name === "Cursor Community" ? "rounded-2xl" : "rounded-lg"}`}
-                      loading="lazy"
-                    />
-                  </div>
-                  {/* Content */}
-                  <div className="flex flex-col flex-1 p-6">
-                    <h3 className="card-title text-foreground">{partner.name}</h3>
-                    <p className="body-small text-foreground/60 mt-2 flex-1">{partner.summary}</p>
-                    <div className="mt-5">
-                      <CTAButton href={partner.href} variant="outline" size="sm" showArrow>
-                        Visit website
-                      </CTAButton>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="residents" className="py-20 md:py-28 bg-muted overflow-hidden">
-          <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px] mb-10">
+        <section id="residents" className="py-20 md:py-28 bg-muted/80 overflow-hidden">
+          <div className="mx-auto grid max-w-[1440px] grid-cols-1 items-center gap-10 px-6 md:px-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16 lg:px-16">
             <div className="max-w-3xl">
-              <p className="label-default text-foreground/60 mb-3">Residency</p>
+              <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-foreground/55">The residency</p>
               <h2 className="section-title text-foreground">
-                Home to ambitious Malaysian AI Startups.
+                A home for Malaysian AI startups.
               </h2>
               <p className="body-default text-foreground/70 mt-3">
                 Be surrounded by a community of ambitious founders like you, who go on to win hackathons, organise major regional movements, raise VC and work at the edge of the technology.
               </p>
+              <div className="flex flex-wrap items-center gap-3 mt-6">
+                <CTAButton href="/residency" variant="primary" size="md" showArrow isExternal={false}>
+                  Learn more
+                </CTAButton>
+                <CTAButton href="/residents" variant="outline" size="md" showArrow isExternal={false}>
+                  View resident directory
+                </CTAButton>
+              </div>
             </div>
-            <div className="flex flex-wrap items-center gap-3 mt-6">
-              <CTAButton href="/residency" variant="primary" size="md" showArrow isExternal={false}>
-                Learn more
-              </CTAButton>
-              <CTAButton href="/residents" variant="outline" size="md" showArrow isExternal={false}>
-                View resident directory
-              </CTAButton>
+            <div className="relative overflow-hidden rounded-[1.75rem] border border-foreground/10 bg-foreground shadow-[0_8px_0_hsl(var(--foreground)/0.1)]">
+              <img
+                src="/batik-paddy-clean.png"
+                alt="Malaysian paddy fields in batik style"
+                loading="lazy"
+                className="aspect-[4/3] h-full w-full object-cover"
+              />
+              <div className="absolute inset-x-4 bottom-4 rounded-2xl bg-foreground/90 px-4 py-3 text-sm font-medium text-white backdrop-blur-sm">
+                Build in Malaysia. Ship for the world.
+              </div>
             </div>
           </div>
-          <div className="px-6 md:px-10 lg:px-16">
+          <div className="mt-10 px-6 md:px-10 lg:px-16">
             <ResidentsTicker />
-          </div>
-        </section>
-
-        <section id="community-voices" className="bg-muted py-20 md:py-28">
-          <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
-            <div className="max-w-3xl">
-              <p className="label-default text-foreground/60 mb-3">Community Voices</p>
-              <h2 className="section-title text-foreground">What the community has to say</h2>
-            </div>
-
-            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12">
-              {communityTestimonials.map((testimonial, index) => (
-                <blockquote
-                  key={index}
-                  className="rounded-2xl border border-border/60 bg-background/85 p-6 md:p-7 text-base md:text-lg font-light leading-relaxed tracking-tight text-foreground"
-                >
-                  {testimonial.fragments.map((fragment, fragmentIndex) => (
-                    <span
-                      key={`${index}-${fragmentIndex}`}
-                      className={fragment.accent ? "text-lime-700 font-semibold" : "text-foreground/95"}
-                    >
-                      {fragment.text}
-                    </span>
-                  ))}
-                </blockquote>
-              ))}
-            </div>
           </div>
         </section>
 
         <section id="contact" className="relative overflow-hidden bg-background py-20 md:py-28">
           <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
-            <div className="relative overflow-hidden rounded-2xl border border-border bg-background text-white">
-              <div className="absolute inset-0 z-0">
+            <div className="grid overflow-hidden rounded-[2rem] border border-foreground/15 bg-foreground text-white shadow-[0_10px_0_hsl(var(--foreground)/0.12)] lg:grid-cols-[0.82fr_1.18fr]">
+              <div className="relative overflow-hidden px-7 py-16 md:px-12 md:py-24">
+                <div className="pointer-events-none absolute inset-0 opacity-20 [background-image:radial-gradient(rgba(255,255,255,0.7)_1px,transparent_1px)] [background-size:20px_20px]" />
+                <div className="relative z-10 max-w-xl">
+                  <h2 className="section-title mb-6 text-white" style={{ textWrap: "balance" }}>
+                    Bring the thing you&apos;re working on.
+                  </h2>
+                  <p className="mb-8 max-w-2xl text-sm leading-relaxed text-white/75 md:text-base">
+                    A half-formed idea, a question, a side project — it all counts. Find an event, say hello, and see what happens when you put it in a room with other builders.
+                  </p>
+                  <CTAButton href="https://luma.com/malaysianai" variant="white" size="lg" showArrow isExternal={true}>
+                    Find an event this week
+                  </CTAButton>
+                </div>
+              </div>
+              <div className="relative min-h-[280px] overflow-hidden md:min-h-[380px]">
                 <img
                   src="/batik-kinabalu-hero.png"
                   alt="Mount Kinabalu in Batik style"
-                  className="w-full h-full object-cover opacity-100"
+                  className="absolute inset-0 h-full w-full object-cover"
                 />
-                <div className="absolute inset-0 bg-black/55" />
-              </div>
-              <div className="relative z-10 py-20 md:py-28 text-center px-6 md:px-10">
-                <h2 className="section-title text-white mb-6" style={{ textWrap: "balance" }}>
-                  Start building today
-                </h2>
-                <p className="mx-auto mb-8 max-w-2xl text-sm md:text-base text-white/80">
-                  The best place to start is by signing up for an event. You&apos;ll get to know people, meet the community and get an immersive experience to accelerate your AI journey.
-                </p>
-                <CTAButton href="https://luma.com/malaysianai" variant="white" size="lg" showArrow isExternal={true}>
-                  Join the next AI event
-                </CTAButton>
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent lg:bg-gradient-to-r" />
               </div>
             </div>
           </div>

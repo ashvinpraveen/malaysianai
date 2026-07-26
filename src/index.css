@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -105,18 +105,13 @@
   }
 
   h1,
-  h2 {
-    font-family: 'Newsreader', Georgia, serif;
-    @apply tracking-tight font-normal;
-    text-wrap: balance;
-  }
-
+  h2,
   h3,
   h4,
   h5,
   h6 {
-    font-family: 'Inter', system-ui, sans-serif;
-    @apply tracking-tight font-bold;
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    @apply font-semibold tracking-[-0.045em];
     text-wrap: balance;
   }
 }
@@ -133,24 +128,25 @@
     @apply text-lg font-semibold tracking-tight;
   }
 
-  /* Typography - Headings (Serif Display) */
+  /* Typography - Headings (Builder-first sans display) */
   .hero-title {
-    font-family: 'Newsreader', Georgia, serif;
-    @apply text-5xl md:text-7xl lg:text-8xl font-normal tracking-tight leading-[1.08];
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    @apply text-5xl md:text-7xl lg:text-8xl font-bold tracking-[-0.07em] leading-[0.96];
   }
 
   .section-title {
-    font-family: 'Newsreader', Georgia, serif;
-    @apply text-3xl md:text-5xl lg:text-6xl font-normal tracking-tight leading-[1.1];
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    @apply text-3xl md:text-5xl lg:text-6xl font-semibold tracking-[-0.06em] leading-[1.01];
   }
 
   .subsection-title {
-    font-family: 'Newsreader', Georgia, serif;
-    @apply text-2xl md:text-3xl lg:text-4xl font-normal tracking-tight leading-[1.15];
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    @apply text-2xl md:text-3xl lg:text-4xl font-semibold tracking-[-0.055em] leading-[1.06];
   }
 
   .card-title {
-    @apply text-xl md:text-2xl font-medium tracking-tight leading-[1.35];
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    @apply text-xl md:text-2xl font-semibold tracking-[-0.04em] leading-[1.15];
   }
 
   /* Typography - Body Text */
@@ -196,19 +192,29 @@
     @apply bg-foreground/95 backdrop-blur-sm text-background;
   }
 
+  /* Playful community accents: use around event-led sections to soften the formal base system. */
+  .playful-dot-grid {
+    background-image: radial-gradient(hsl(var(--foreground) / 0.13) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .playful-card {
+    @apply transition duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_10px_0_hsl(var(--foreground)/0.1)];
+  }
+
   .timer-display {
-    font-family: 'Newsreader', Georgia, serif;
-    @apply font-normal tracking-tight;
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    @apply font-semibold tracking-[-0.06em];
   }
 
   .timer-announcement {
-    font-family: 'Newsreader', Georgia, serif;
-    @apply text-4xl md:text-6xl font-semibold tracking-tight;
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    @apply text-4xl md:text-6xl font-bold tracking-[-0.06em];
   }
 
   .timer-phase {
-    font-family: 'Newsreader', Georgia, serif;
-    @apply text-[24vw] sm:text-[18vw] lg:text-[12vw] font-black uppercase tracking-[0.18em] leading-[0.85];
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    @apply text-[24vw] sm:text-[18vw] lg:text-[12vw] font-black uppercase tracking-[0.12em] leading-[0.85];
   }
 
   /* Timer */

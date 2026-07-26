@@ -30,10 +30,10 @@ export const CTAButton = ({
     disabled = false,
 }: CTAButtonProps) => {
     const variantClasses = {
-        primary: "bg-primary text-primary-foreground hover:bg-primary/90 border border-primary/10",
-        secondary: "border border-primary/40 bg-transparent text-primary hover:bg-primary/10",
-        white: "bg-background text-foreground hover:bg-background/90 border border-border",
-        outline: "border border-primary/30 bg-transparent text-foreground hover:bg-primary/5",
+        primary: "bg-primary text-primary-foreground border border-primary shadow-[0_5px_0_hsl(var(--foreground)/0.2)] hover:-translate-y-0.5 hover:shadow-[0_7px_0_hsl(var(--foreground)/0.2)]",
+        secondary: "border border-primary/35 bg-background/80 text-primary shadow-[0_3px_0_hsl(var(--foreground)/0.1)] hover:-translate-y-0.5 hover:bg-[#fff7e8] hover:shadow-[0_5px_0_hsl(var(--foreground)/0.12)]",
+        white: "bg-background text-foreground border border-white/60 shadow-[0_5px_0_rgba(0,0,0,0.18)] hover:-translate-y-0.5 hover:bg-[#fff8eb] hover:shadow-[0_7px_0_rgba(0,0,0,0.16)]",
+        outline: "border border-primary/25 bg-background/65 text-foreground hover:-translate-y-0.5 hover:border-primary/45 hover:bg-[#fff8eb]",
     };
 
     const sizeClasses = {
@@ -43,7 +43,7 @@ export const CTAButton = ({
     };
 
     const buttonClassName = cn(
-        "group rounded-md font-medium transition-all shadow-none h-auto",
+        "group rounded-full font-semibold tracking-tight transition-all duration-200 h-auto",
         variantClasses[variant],
         sizeClasses[size],
         className

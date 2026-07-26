@@ -9,6 +9,7 @@ const navItems = [
   { label: "Events", href: "/#events" },
   { label: "Communities", href: "/community" },
   { label: "Residency", href: "/residency" },
+  { label: "About", href: "/about" },
 ];
 
 const Navbar = () => {

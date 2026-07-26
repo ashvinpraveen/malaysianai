@@ -24,16 +24,14 @@ export async function generateOgImage(title: string, subtitle: string): Promise<
     process.env.NEXT_PUBLIC_SITE_URL ??
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
-  const [newsreaderData, interData, spaceGroteskData] = await Promise.all([
-    fetchFont("Newsreader", 400),
+  const [interData, spaceGroteskData] = await Promise.all([
     fetchFont("Inter", 300),
-    fetchFont("Space Grotesk", 500),
+    fetchFont("Space Grotesk", 700),
   ]);
 
   const fonts: ConstructorParameters<typeof ImageResponse>[1]["fonts"] = [];
-  if (newsreaderData) fonts.push({ name: "Newsreader", data: newsreaderData, style: "normal", weight: 400 });
   if (interData) fonts.push({ name: "Inter", data: interData, style: "normal", weight: 300 });
-  if (spaceGroteskData) fonts.push({ name: "Space Grotesk", data: spaceGroteskData, style: "normal", weight: 500 });
+  if (spaceGroteskData) fonts.push({ name: "Space Grotesk", data: spaceGroteskData, style: "normal", weight: 700 });
 
   const CARD_W = 1160;
   const CARD_H = 590;
@@ -115,7 +113,7 @@ export async function generateOgImage(title: string, subtitle: string): Promise<
                   color: "white",
                   fontSize: 22,
                   fontFamily: spaceGroteskData ? "Space Grotesk" : "system-ui, sans-serif",
-                  fontWeight: 500,
+                  fontWeight: 700,
                   letterSpacing: "-0.01em",
                 }}
               >
@@ -128,10 +126,10 @@ export async function generateOgImage(title: string, subtitle: string): Promise<
               style={{
                 color: "white",
                 fontSize: 84,
-                fontFamily: newsreaderData ? "Newsreader" : "Georgia, serif",
-                fontWeight: 400,
-                lineHeight: 1.06,
-                letterSpacing: "-0.025em",
+                fontFamily: spaceGroteskData ? "Space Grotesk" : "system-ui, sans-serif",
+                fontWeight: 700,
+                lineHeight: 0.98,
+                letterSpacing: "-0.06em",
                 margin: 0,
                 marginBottom: "24px",
                 textAlign: "center",
@@ -159,6 +157,8 @@ export async function generateOgImage(title: string, subtitle: string): Promise<
         </div>
       </div>
     ),
-    { ...ogSize, fonts }
+    // Passing an empty array makes the image renderer fail during static export when
+    // Google Fonts is unavailable. Omit the option so it can use its bundled fallback.
+    { ...ogSize, ...(fonts.length > 0 ? { fonts } : {}) }
   );
 }

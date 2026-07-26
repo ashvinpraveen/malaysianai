@@ -5,50 +5,49 @@ This document outlines the design system for the Placeholder website. All compon
 ## Typography
 
 ### Font Family
-- Body: `Inter` (Google Fonts) — sans-serif for body text, labels, UI elements
-- Headings: `Newsreader` (Google Fonts) — serif display font for all headings (h1–h6)
-- Fallback body: `system-ui, sans-serif`
-- Fallback headings: `Georgia, 'Times New Roman', serif`
+- Body: `Inter` (Google Fonts) — readable, relaxed sans-serif for body text, labels, and UI elements.
+- Headings: `Space Grotesk` (Google Fonts) — compact, expressive sans-serif for all headings (h1–h6).
+- Fallback: `system-ui, sans-serif`
 
 ### Heading Styles
 
 ```css
-/* All headings use Newsreader serif font */
+/* All headings use Space Grotesk sans-serif */
 
 /* Hero Title - Main landing page headline */
 .hero-title
-- Font: Newsreader, Georgia, serif
+- Font: Space Grotesk, Inter, sans-serif
 - Size: text-4xl md:text-6xl lg:text-7xl
-- Weight: font-normal
-- Tracking: tracking-tight
-- Line Height: leading-[1.08]
+- Weight: font-bold
+- Tracking: tracking-[-0.07em]
+- Line Height: leading-[0.96]
 - Usage: Primary hero headlines only
 
 /* Section Title - Major section headings */
 .section-title
-- Font: Newsreader, Georgia, serif
+- Font: Space Grotesk, Inter, sans-serif
 - Size: text-3xl md:text-5xl lg:text-6xl
-- Weight: font-normal
-- Tracking: tracking-tight
-- Line Height: leading-[1.1]
+- Weight: font-semibold
+- Tracking: tracking-[-0.06em]
+- Line Height: leading-[1.01]
 - Usage: Main section titles throughout the site
 
 /* Subsection Title - Secondary headings */
 .subsection-title
-- Font: Newsreader, Georgia, serif
+- Font: Space Grotesk, Inter, sans-serif
 - Size: text-2xl md:text-3xl lg:text-4xl
-- Weight: font-normal
-- Tracking: tracking-tight
-- Line Height: leading-[1.15]
+- Weight: font-semibold
+- Tracking: tracking-[-0.055em]
+- Line Height: leading-[1.06]
 - Usage: Subsection headings, feature titles
 
 /* Card Title - Component headings */
 .card-title
-- Font: Newsreader, Georgia, serif
+- Font: Space Grotesk, Inter, sans-serif
 - Size: text-xl md:text-2xl
-- Weight: font-normal
-- Tracking: tracking-tight
-- Line Height: leading-[1.2]
+- Weight: font-semibold
+- Tracking: tracking-[-0.04em]
+- Line Height: leading-[1.15]
 - Usage: Card headings, small component titles
 ```
 
@@ -82,29 +81,29 @@ This document outlines the design system for the Placeholder website. All compon
 ```css
 /* Timer Display - Oversized numerals */
 .timer-display
-- Font: Newsreader, Georgia, serif
-- Weight: font-normal
-- Tracking: tracking-tight
+- Font: Space Grotesk, Inter, sans-serif
+- Weight: font-semibold
+- Tracking: tracking-[-0.06em]
 - Usage: Timer numeral display
 ```
 
 ```css
 /* Timer Announcement - Status callout */
 .timer-announcement
-- Font: Newsreader, Georgia, serif
+- Font: Space Grotesk, Inter, sans-serif
 - Size: text-4xl md:text-6xl
-- Weight: font-semibold
-- Tracking: tracking-tight
+- Weight: font-bold
+- Tracking: tracking-[-0.06em]
 - Usage: Timer completion headline
 ```
 
 ```css
 /* Timer Phase - Oversized phase label */
 .timer-phase
-- Font: Newsreader, Georgia, serif
+- Font: Space Grotesk, Inter, sans-serif
 - Size: text-[24vw] sm:text-[18vw] lg:text-[12vw]
 - Weight: font-black
-- Tracking: tracking-[0.18em]
+- Tracking: tracking-[0.12em]
 - Leading: leading-[0.85]
 - Usage: Share / Q&A phase label on timer screen
 ```
@@ -162,6 +161,13 @@ This document outlines the design system for the Placeholder website. All compon
 - Very muted text on light: `text-muted-foreground/70`
 
 ## Components
+
+### Community Calendar Accents
+
+Keep the homepage grounded in real activity rather than decorative branding. Card surfaces should stay warm-neutral; event posters, logos, and a small yellow/pink accent system carry the colour and energy.
+
+- `playful-card`: softly coloured card surface with a small lift on hover; keep real content and controls legible rather than using decoration alone.
+- `playful-dot-grid`: low-contrast dot texture for large light sections; avoid pairing with other busy patterns.
 
 ### Cards & Surfaces
 

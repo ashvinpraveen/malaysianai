@@ -27,6 +27,7 @@ const footerSections: FooterSection[] = [
   {
     title: "Company",
     links: [
+      { label: "About", href: "/about" },
       { label: "Contact", href: "/contact" },
     ],
     footerNote: `© ${new Date().getFullYear()} Malaysian AI`,

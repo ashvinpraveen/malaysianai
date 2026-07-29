@@ -107,7 +107,7 @@
 }
 
 .navLinks > a,
-.navGroup summary,
+.navMenuButton,
 .navDropdown a,
 .navCta,
 .textLink,
@@ -121,13 +121,13 @@
 }
 
 .navLinks > a,
-.navGroup summary {
+.navMenuButton {
   color: rgba(255, 255, 255, 0.78);
   transition: color 180ms ease;
 }
 
 .navLinks > a:hover,
-.navGroup summary:hover {
+.navMenuButton:hover {
   color: var(--white);
 }
 
@@ -135,27 +135,34 @@
   position: relative;
 }
 
-.navGroup summary {
+.navMenuButton {
   align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: inherit;
   cursor: pointer;
   display: flex;
-  gap: 7px;
-  list-style: none;
+  gap: 9px;
+  padding: 0;
   white-space: nowrap;
 }
 
-.navGroup summary::-webkit-details-marker {
-  display: none;
-}
-
-.navGroup summary span {
-  font-size: 16px;
-  line-height: 0.7;
+.navChevron {
+  border-bottom: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+  display: block;
+  flex: 0 0 auto;
+  height: 6px;
+  position: relative;
+  top: -1px;
+  transform: rotate(45deg);
   transition: transform 180ms ease;
+  width: 6px;
 }
 
-.navGroup[open] summary span {
-  transform: rotate(180deg);
+.navMenuButton[aria-expanded="true"] .navChevron {
+  transform: rotate(225deg);
 }
 
 .navDropdown {
@@ -181,9 +188,7 @@
   top: -18px;
 }
 
-.navGroup[open] .navDropdown,
-.navGroup:hover .navDropdown,
-.navGroup:focus-within .navDropdown {
+.navDropdownOpen {
   display: grid;
 }
 

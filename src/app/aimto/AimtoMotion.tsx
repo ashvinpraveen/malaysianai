@@ -11,6 +11,15 @@ export default function AimtoMotion({ rootId }: AimtoMotionProps) {
     const root = document.getElementById(rootId);
     if (!root) return;
 
+    const previousDocumentBackground =
+      document.documentElement.style.backgroundColor;
+    const previousBodyBackground = document.body.style.backgroundColor;
+    const previousColorScheme = document.documentElement.style.colorScheme;
+
+    document.documentElement.style.backgroundColor = "#070707";
+    document.documentElement.style.colorScheme = "dark";
+    document.body.style.backgroundColor = "#070707";
+
     const motionQuery = window.matchMedia(
       "(min-width: 769px) and (prefers-reduced-motion: no-preference)",
     );
@@ -64,6 +73,10 @@ export default function AimtoMotion({ rootId }: AimtoMotionProps) {
       observer?.disconnect();
       motionQuery.removeEventListener("change", setUpReveals);
       delete root.dataset.motion;
+      document.documentElement.style.backgroundColor =
+        previousDocumentBackground;
+      document.documentElement.style.colorScheme = previousColorScheme;
+      document.body.style.backgroundColor = previousBodyBackground;
     };
   }, [rootId]);
 

@@ -64,6 +64,17 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
     };
   }, [mobileOpen]);
 
+  useEffect(() => {
+    if (!mobileOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [mobileOpen]);
+
   const toggleMenu = (menu: MenuId) => {
     setActiveMenu((currentMenu) => (currentMenu === menu ? null : menu));
   };

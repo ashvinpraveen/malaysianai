@@ -22,8 +22,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/aimto-assets/og-image.png",
-        width: 1535,
-        height: 1024,
+        width: 1200,
+        height: 630,
         alt: "AI Malaysia Takeover 2026, 11–12 August at The Campus Kuala Lumpur",
       },
     ],

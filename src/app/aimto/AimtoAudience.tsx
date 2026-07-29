@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import styles from "./page.module.css";
 
 const audiencePaths = [
@@ -36,33 +35,21 @@ export default function AimtoAudience() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section className={styles.communitySection}>
-      <div className={styles.communityGallery} data-reveal="stagger">
-        <Image
-          src="/aimto-assets/gallery-top-1.jpg"
-          alt="AI Malaysia community gathered at the 2025 event"
-          width={900}
-          height={520}
-          sizes="(max-width: 1000px) 60vw, 30vw"
-        />
-        <Image
-          src="/aimto-assets/gallery-mid-2.jpg"
-          alt="Attendees connecting at the 2025 AI event"
-          width={390}
-          height={460}
-          sizes="(max-width: 1000px) 40vw, 20vw"
-        />
-        <Image
-          src="/aimto-assets/gallery-top-2.jpg"
-          alt="Builders and participants at the 2025 AI event"
-          width={600}
-          height={460}
-          sizes="(max-width: 1000px) 40vw, 20vw"
-        />
-      </div>
+    <section
+      className={styles.communitySection}
+      aria-labelledby="aimto-audience-title"
+    >
       <div className={styles.communityCopy} data-reveal="up">
-        <div className={styles.sectionLabel}>WHO THIS IS FOR_</div>
-        <h2>AI for everyone</h2>
+        <div className={styles.communityHeading}>
+          <div>
+            <div className={styles.sectionLabel}>WHO THIS IS FOR_</div>
+            <h2 id="aimto-audience-title">AI for everyone</h2>
+          </div>
+          <p>
+            Start wherever you are. The event is designed to move with you from
+            first use to confident building.
+          </p>
+        </div>
         <div className={styles.audienceList} aria-label="Who this event is for">
           {audiencePaths.map((path, index) => {
             const isActive = activeIndex === index;
@@ -75,6 +62,8 @@ export default function AimtoAudience() {
                 key={path.quote}
                 type="button"
                 aria-pressed={isActive}
+                aria-controls="aimto-audience-detail"
+                aria-label={`${index + 1}. ${path.quote}`}
                 onClick={() => setActiveIndex(index)}
                 onFocus={() => setActiveIndex(index)}
                 onPointerEnter={() => setActiveIndex(index)}
@@ -82,11 +71,18 @@ export default function AimtoAudience() {
                 <span className={styles.stageMarker} aria-hidden="true">
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <strong>“{path.quote}”</strong>
-                <p>{path.answer}</p>
               </button>
             );
           })}
+        </div>
+        <div
+          className={styles.audienceDetail}
+          id="aimto-audience-detail"
+          aria-live="polite"
+        >
+          <span>{String(activeIndex + 1).padStart(2, "0")}_</span>
+          <strong>“{audiencePaths[activeIndex].quote}”</strong>
+          <p>{audiencePaths[activeIndex].answer}</p>
         </div>
       </div>
     </section>

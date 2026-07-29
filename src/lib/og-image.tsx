@@ -3,41 +3,10 @@ import { ImageResponse } from "next/og";
 export const ogSize = { width: 1200, height: 630 };
 export const ogContentType = "image/png";
 
-async function fetchFont(family: string, weight = 400): Promise<ArrayBuffer | null> {
-  try {
-    const css = await fetch(
-      `https://fonts.googleapis.com/css2?family=${encodeURIComponent(family)}:wght@${weight}&display=swap`,
-      { headers: { "User-Agent": "Mozilla/4.0" } }
-    ).then((r) => r.text());
-
-    const match = css.match(/src: url\((.+?)\) format\('(?:opentype|truetype)'\)/);
-    if (!match) return null;
-
-    return fetch(match[1]).then((r) => r.arrayBuffer());
-  } catch {
-    return null;
-  }
-}
-
-export async function generateOgImage(title: string, subtitle: string): Promise<ImageResponse> {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ??
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
-
-  const [newsreaderData, interData, spaceGroteskData] = await Promise.all([
-    fetchFont("Newsreader", 400),
-    fetchFont("Inter", 300),
-    fetchFont("Space Grotesk", 500),
-  ]);
-
-  const fonts: ConstructorParameters<typeof ImageResponse>[1]["fonts"] = [];
-  if (newsreaderData) fonts.push({ name: "Newsreader", data: newsreaderData, style: "normal", weight: 400 });
-  if (interData) fonts.push({ name: "Inter", data: interData, style: "normal", weight: 300 });
-  if (spaceGroteskData) fonts.push({ name: "Space Grotesk", data: spaceGroteskData, style: "normal", weight: 500 });
-
-  const CARD_W = 1160;
-  const CARD_H = 590;
-
+export async function generateOgImage(
+  title: string,
+  subtitle: string,
+): Promise<ImageResponse> {
   return new ImageResponse(
     (
       <div
@@ -57,33 +26,23 @@ export async function generateOgImage(title: string, subtitle: string): Promise<
             position: "relative",
             borderRadius: "20px",
             overflow: "hidden",
-            backgroundColor: "#0a1628",
+            background:
+              "radial-gradient(circle at 80% 25%, rgba(148, 97, 255, 0.72) 0%, rgba(47, 52, 166, 0.2) 30%, transparent 52%), radial-gradient(circle at 18% 82%, rgba(36, 203, 198, 0.28) 0%, transparent 38%), linear-gradient(135deg, #070d1e 0%, #101b3d 48%, #180d37 100%)",
           }}
         >
-          {/* Background image */}
-          <img
-            src={`${baseUrl}/batik_kl_city_sunrise.png`}
-            width={CARD_W}
-            height={CARD_H}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              objectFit: "cover",
-              objectPosition: "50% 60%",
-            }}
-          />
-
-          {/* Dark readability gradient */}
+          {/* Decorative light field, kept self-contained so builds never depend on
+              a running dev server or a remote font/image host. */}
           <div
             style={{
               position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
+              width: 520,
+              height: 520,
+              right: -70,
+              top: 30,
+              borderRadius: 999,
+              border: "1px solid rgba(255,255,255,0.18)",
               background:
-                "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.15) 100%)",
+                "radial-gradient(circle, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.03) 44%, transparent 70%)",
             }}
           />
 
@@ -109,12 +68,20 @@ export async function generateOgImage(title: string, subtitle: string): Promise<
                 marginBottom: "36px",
               }}
             >
-              <img src={`${baseUrl}/logo-ai-residency.png`} width={48} height={48} />
+              <div
+                style={{
+                  width: 42,
+                  height: 42,
+                  borderRadius: 12,
+                  background:
+                    "linear-gradient(135deg, #d7ff36 0%, #8e6cff 100%)",
+                }}
+              />
               <span
                 style={{
                   color: "white",
                   fontSize: 22,
-                  fontFamily: spaceGroteskData ? "Space Grotesk" : "system-ui, sans-serif",
+                  fontFamily: "sans-serif",
                   fontWeight: 500,
                   letterSpacing: "-0.01em",
                 }}
@@ -128,7 +95,7 @@ export async function generateOgImage(title: string, subtitle: string): Promise<
               style={{
                 color: "white",
                 fontSize: 84,
-                fontFamily: newsreaderData ? "Newsreader" : "Georgia, serif",
+                fontFamily: "sans-serif",
                 fontWeight: 400,
                 lineHeight: 1.06,
                 letterSpacing: "-0.025em",
@@ -145,7 +112,7 @@ export async function generateOgImage(title: string, subtitle: string): Promise<
               style={{
                 color: "rgba(255,255,255,0.85)",
                 fontSize: 26,
-                fontFamily: interData ? "Inter" : "system-ui, sans-serif",
+                fontFamily: "sans-serif",
                 fontWeight: 300,
                 lineHeight: 1.5,
                 margin: 0,
@@ -159,6 +126,6 @@ export async function generateOgImage(title: string, subtitle: string): Promise<
         </div>
       </div>
     ),
-    { ...ogSize, fonts }
+    ogSize,
   );
 }

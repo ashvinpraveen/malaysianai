@@ -70,25 +70,25 @@ const experienceZones = [
     image: "/aimto-assets/learnathon-builder-floor.jpg",
   },
   {
-    label: "KEYNOTES + PANELS_",
+    label: "THE WAR ROOM_",
     days: ["DAY 1", "DAY 2"],
     title: "Keynotes & Panels",
     body: "Hear from Malaysia’s top tech architects, policymakers and global AI leaders as they discuss and map the nation’s digital future.",
     image: "/aimto-assets/the-war-room.jpg",
   },
   {
-    label: "WORKSHOPS + LIVE DEMOS_",
+    label: "THE SANDBOX_",
     days: ["DAY 1", "DAY 2"],
     title: "Workshops & Live Demos",
     body: "Catch up on the latest AI developments shaping the industry. Learn what’s working from leading practitioners, then take home ideas and skills you can apply in your life.",
     image: "/aimto-assets/the-sandbox.jpg",
   },
   {
-    label: "DISCOVER SOLUTIONS_",
+    label: "EXHIBITION + ACTIVATIONS_",
     days: ["DAY 1", "DAY 2"],
     title: "Pasar AI",
     body: "Discover AI solutions, products and experiences from leading institutions. Pasar AI brings exhibitors and participants together to explore how AI is changing work, business, creativity and everyday life in Malaysia.",
-    image: "/aimto-assets/pasar-ai-booths.jpg",
+    image: "/aimto-assets/pasar-ai-booths-wide.jpg",
   },
 ];
 
@@ -301,12 +301,7 @@ export default function AiMalaysiaTakeoverPage() {
           </div>
           <div className={styles.zonesGrid} data-reveal="stagger">
             {experienceZones.map((zone, index) => (
-              <article
-                className={`${styles.zoneCard} ${
-                  zone.ctaLabel ? styles.zoneCardHasCta : ""
-                }`}
-                key={zone.label}
-              >
+              <article className={styles.zoneCard} key={zone.label}>
                 <Image
                   src={zone.image}
                   alt=""
@@ -314,8 +309,10 @@ export default function AiMalaysiaTakeoverPage() {
                   height={520}
                   sizes="(max-width: 680px) 100vw, 50vw"
                 />
-                <div>
-                  <span>{String(index + 1).padStart(2, "0")}_</span>
+                <div className={styles.zoneMeta}>
+                  <span className={styles.zoneIndex}>
+                    {String(index + 1).padStart(2, "0")}_
+                  </span>
                   <span className={styles.zoneProperties}>
                     <span className={styles.zoneDays}>
                       {zone.days.map((day) => (
@@ -327,14 +324,6 @@ export default function AiMalaysiaTakeoverPage() {
                 </div>
                 <h3>{zone.title}</h3>
                 <p>{zone.body}</p>
-                {zone.ctaLabel ? (
-                  <AimtoButton
-                    className={styles.zoneCta}
-                    href={registrationUrl}
-                  >
-                    {zone.ctaLabel} <span aria-hidden="true">↗</span>
-                  </AimtoButton>
-                ) : null}
               </article>
             ))}
           </div>

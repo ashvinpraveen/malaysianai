@@ -4,7 +4,7 @@ The website for Malaysia's AI Residency and Hub — [malaysian.ai](https://malay
 
 ## Tech Stack
 
-- [Next.js 14](https://nextjs.org/) — React framework
+- [Next.js 16](https://nextjs.org/) — React framework
 - [Tailwind CSS](https://tailwindcss.com/) — styling
 - [Supabase](https://supabase.com/) — backend / database
 - [Radix UI](https://www.radix-ui.com/) — accessible component primitives
@@ -14,7 +14,7 @@ The website for Malaysia's AI Residency and Hub — [malaysian.ai](https://malay
 
 ### Prerequisites
 
-- [Bun](https://bun.sh/) (recommended) or Node.js 18+
+- [Bun](https://bun.sh/) (recommended) or Node.js 20.9+
 - A [Supabase](https://supabase.com/) project (for form submissions)
 
 ### Setup
@@ -50,4 +50,3 @@ See [`.env.example`](.env.example) for all required variables.
 |---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anonymous (public) key |
-

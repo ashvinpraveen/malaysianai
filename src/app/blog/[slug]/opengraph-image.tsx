@@ -10,8 +10,13 @@ export function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
 }
 
-export default function Image({ params }: { params: { slug: string } }) {
-  const post = getBlogPost(params.slug);
+export default async function Image({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const post = getBlogPost(slug);
   return generateOgImage(
     post?.title ?? "Updates",
     post?.summary ?? "Residency updates from Malaysian AI."

@@ -20,7 +20,11 @@ export default function AimtoStats() {
     const section = sectionRef.current;
     if (!section) return;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (
+      window.matchMedia(
+        "(max-width: 680px), (prefers-reduced-motion: reduce)",
+      ).matches
+    ) {
       setProgress(1);
       return;
     }
@@ -60,6 +64,7 @@ export default function AimtoStats() {
       ref={sectionRef}
       className={styles.proof}
       aria-label="Event at a glance"
+      data-reveal="up"
     >
       {stats.map((stat) => (
         <div className={styles.proofStat} key={stat.label}>

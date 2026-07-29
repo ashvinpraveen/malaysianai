@@ -19,6 +19,77 @@
   width: 100%;
 }
 
+.site[data-motion="ready"] [data-reveal="up"],
+.site[data-motion="ready"] [data-reveal="soft"],
+.site[data-motion="ready"] [data-reveal="stagger"] {
+  opacity: 0;
+  transition:
+    opacity 680ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 680ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 680ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform, filter;
+}
+
+.site[data-motion="ready"] [data-reveal="fade"] {
+  opacity: 0;
+  transition: opacity 680ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity;
+}
+
+.site[data-motion="ready"] [data-reveal="up"] {
+  filter: blur(12px);
+  transform: translate3d(0, 28px, 0);
+}
+
+.site[data-motion="ready"] [data-reveal="soft"],
+.site[data-motion="ready"] [data-reveal="stagger"] {
+  filter: blur(10px);
+  transform: scale(0.985);
+}
+
+.site[data-motion="ready"] [data-reveal="stagger"] > * {
+  opacity: 0;
+  transition: opacity 520ms ease;
+}
+
+.site[data-motion="ready"] [data-reveal="up"][data-revealed="true"],
+.site[data-motion="ready"] [data-reveal="soft"][data-revealed="true"],
+.site[data-motion="ready"] [data-reveal="stagger"][data-revealed="true"] {
+  filter: none;
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+.site[data-motion="ready"] [data-reveal="fade"][data-revealed="true"] {
+  opacity: 1;
+  will-change: auto;
+}
+
+.site[data-motion="ready"]
+  [data-reveal="stagger"][data-revealed="true"]
+  > * {
+  opacity: 1;
+}
+
+.site[data-motion="ready"]
+  [data-reveal="stagger"][data-revealed="true"]
+  > :nth-child(2) {
+  transition-delay: 70ms;
+}
+
+.site[data-motion="ready"]
+  [data-reveal="stagger"][data-revealed="true"]
+  > :nth-child(3) {
+  transition-delay: 140ms;
+}
+
+.site[data-motion="ready"]
+  [data-reveal="stagger"][data-revealed="true"]
+  > :nth-child(4) {
+  transition-delay: 210ms;
+}
+
 .site *,
 .site *::before,
 .site *::after {
@@ -517,6 +588,56 @@
 @keyframes ticker {
   to {
     transform: translateX(-50%);
+  }
+}
+
+@keyframes aimtoBlurFadeIn {
+  from {
+    filter: blur(16px);
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+  }
+
+  to {
+    filter: blur(0);
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes aimtoGridIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.6;
+  }
+}
+
+@media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
+  .heroGrid {
+    animation: aimtoGridIn 900ms 80ms ease-out both;
+  }
+
+  .heroContent h1 {
+    animation: aimtoBlurFadeIn 780ms 100ms cubic-bezier(0.22, 1, 0.36, 1)
+      both;
+  }
+
+  .heroEventMeta {
+    animation: aimtoBlurFadeIn 720ms 260ms cubic-bezier(0.22, 1, 0.36, 1)
+      both;
+  }
+
+  .heroActions {
+    animation: aimtoBlurFadeIn 720ms 390ms cubic-bezier(0.22, 1, 0.36, 1)
+      both;
+  }
+
+  .heroOrganisers {
+    animation: aimtoBlurFadeIn 680ms 480ms cubic-bezier(0.22, 1, 0.36, 1)
+      both;
   }
 }
 
@@ -1263,25 +1384,101 @@
 }
 
 .audienceList {
+  position: relative;
+}
+
+.audienceList::before {
+  background: rgba(0, 0, 0, 0.2);
+  bottom: 26px;
+  content: "";
+  left: 17px;
+  position: absolute;
+  top: 26px;
+  width: 1px;
+}
+
+.audienceStage {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  color: inherit;
+  cursor: pointer;
+  display: grid;
+  font: inherit;
+  gap: 24px;
+  grid-template-columns: 36px minmax(0, 0.9fr) minmax(0, 1.1fr);
+  padding: 20px 14px 20px 0;
+  position: relative;
+  text-align: left;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease;
+  width: 100%;
+}
+
+.audienceStage:first-child {
   border-top: 1px solid rgba(0, 0, 0, 0.25);
 }
 
-.audienceList > div {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
-  display: grid;
-  gap: 24px;
-  grid-template-columns: 0.9fr 1.1fr;
-  padding: 22px 0;
+.audienceStage:hover {
+  background: rgba(122, 92, 255, 0.06);
 }
 
-.audienceList strong {
+.audienceStage:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: -2px;
+}
+
+.audienceStageActive {
+  background: rgba(122, 92, 255, 0.11);
+  border-color: rgba(122, 92, 255, 0.42);
+}
+
+.stageMarker {
+  align-items: center;
+  align-self: start;
+  background: var(--paper);
+  border: 1px solid rgba(0, 0, 0, 0.34);
+  border-radius: 50%;
+  display: flex;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 9px;
+  font-weight: 700;
+  height: 34px;
+  justify-content: center;
+  position: relative;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+  width: 34px;
+  z-index: 1;
+}
+
+.audienceStageActive .stageMarker {
+  background: var(--black);
+  border-color: var(--black);
+  color: var(--lime);
+  transform: scale(1.08);
+}
+
+.audienceStage strong {
+  align-self: center;
   font-size: 17px;
 }
 
-.audienceList p {
+.audienceStage p {
+  align-self: center;
   color: rgba(0, 0, 0, 0.6);
   font-size: 14px;
   line-height: 1.45;
+  transition: color 180ms ease;
+}
+
+.audienceStageActive p {
+  color: rgba(0, 0, 0, 0.78);
 }
 
 .partnersSection {
@@ -1570,6 +1767,11 @@
     padding: 6px 10px 6px 18px;
   }
 
+  .navScrolled {
+    backdrop-filter: none;
+    background: rgba(14, 14, 18, 0.98);
+  }
+
   .brand {
     font-size: 14px;
   }
@@ -1655,6 +1857,14 @@
 
   .ticker {
     padding-block: 12px;
+  }
+
+  .tickerTrack {
+    animation: none;
+  }
+
+  .tickerGroup:nth-child(2) {
+    display: none;
   }
 
   .proof {
@@ -1870,8 +2080,18 @@
     padding: 14px;
   }
 
-  .audienceList > div {
-    grid-template-columns: 1fr;
+  .audienceStage {
+    gap: 8px 14px;
+    grid-template-columns: 36px 1fr;
+    padding-right: 10px;
+  }
+
+  .audienceStage strong {
+    align-self: center;
+  }
+
+  .audienceStage p {
+    grid-column: 2;
   }
 
   .faqList summary {
@@ -1909,14 +2129,25 @@
 @media (prefers-reduced-motion: reduce) {
   .tickerTrack {
     animation: none;
+    transform: none;
   }
 
+  .tickerGroup:nth-child(2) {
+    display: none;
+  }
+
+  .nav,
+  .navChevron,
+  .navDropdown a,
   .navCta,
   .primaryButton,
   .darkButton,
+  .introGallery img,
   .stepCard,
-  .zoneCard {
-    transition: none;
+  .zoneCard,
+  .audienceStage,
+  .stageMarker,
+  .faqList summary i {
+    transition-duration: 0.01ms;
   }
-
 }

@@ -5,6 +5,7 @@ import {
   useRef,
   useState,
 } from "react";
+import Image from "next/image";
 import styles from "./page.module.css";
 
 type AimtoNavProps = {
@@ -70,9 +71,13 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
           href="#top"
           aria-label="AI Malaysia Takeover home"
         >
-          <img
+          <Image
             src="/aimto-assets/logo-white.png"
             alt="AI Malaysia Takeover 2026"
+            width={600}
+            height={113}
+            sizes="188px"
+            priority
           />
         </a>
         <div className={styles.navLinks}>

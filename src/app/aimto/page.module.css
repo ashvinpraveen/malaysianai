@@ -525,7 +525,10 @@
   display: grid;
   gap: clamp(28px, 5vw, 88px);
   grid-template-columns: repeat(4, 1fr);
-  padding: clamp(64px, 7vw, 110px) clamp(28px, 6vw, 96px);
+  padding:
+    clamp(64px, 7vw, 110px)
+    clamp(28px, 6vw, 96px)
+    clamp(36px, 3.5vw, 52px);
 }
 
 .proofStat {
@@ -582,6 +585,10 @@
   padding: clamp(88px, 11vw, 160px) clamp(24px, 6vw, 96px);
 }
 
+.introSection {
+  padding-top: clamp(48px, 4vw, 64px);
+}
+
 .sectionLabel {
   color: rgba(255, 255, 255, 0.54);
 }
@@ -590,7 +597,7 @@
   display: grid;
   gap: clamp(50px, 10vw, 160px);
   grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
-  margin-top: 68px;
+  margin-top: clamp(38px, 4vw, 52px);
 }
 
 .introLayout h2,
@@ -599,7 +606,7 @@
 .communityCopy h2,
 .faqIntro h2 {
   font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: clamp(42px, 6.2vw, 94px);
+  font-size: clamp(36px, 5.2vw, 72px);
   font-weight: 500;
   letter-spacing: -0.075em;
   line-height: 0.94;
@@ -628,6 +635,30 @@
   line-height: 1.18;
 }
 
+.introGallery {
+  display: grid;
+  gap: 1px;
+  grid-template-columns: 1.35fr 0.65fr 0.9fr;
+  height: clamp(260px, 28vw, 430px);
+  margin-top: clamp(48px, 6vw, 88px);
+  overflow: hidden;
+}
+
+.introGallery img {
+  filter: saturate(0.82) contrast(1.06);
+  height: 100%;
+  object-fit: cover;
+  transition:
+    filter 220ms ease,
+    transform 450ms ease;
+  width: 100%;
+}
+
+.introGallery img:hover {
+  filter: saturate(1.08) contrast(1.02);
+  transform: scale(1.02);
+}
+
 .filmSection {
   background: var(--black);
   padding: 0 clamp(24px, 6vw, 96px) clamp(88px, 11vw, 160px);
@@ -643,7 +674,7 @@
 
 .filmHeader h2 {
   font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: clamp(38px, 5.2vw, 78px);
+  font-size: clamp(34px, 4.2vw, 60px);
   font-weight: 500;
   letter-spacing: -0.075em;
   line-height: 0.96;
@@ -1006,34 +1037,40 @@
 }
 
 .zonesSection {
-  background: var(--paper);
-  color: var(--black);
+  background:
+    radial-gradient(circle at 82% 12%, rgba(122, 92, 255, 0.16), transparent 32%),
+    var(--black);
+  color: var(--white);
 }
 
 .zonesSection .sectionLabel {
-  color: rgba(0, 0, 0, 0.55);
+  color: rgba(255, 255, 255, 0.54);
 }
 
 .zonesGrid {
-  border-left: 1px solid rgba(0, 0, 0, 0.25);
-  border-top: 1px solid rgba(0, 0, 0, 0.25);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   margin-top: 78px;
 }
 
 .zoneCard {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
-  border-right: 1px solid rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0.025);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
   min-height: 320px;
   overflow: hidden;
   padding: 0;
   position: relative;
-  transition: background 180ms ease;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease;
 }
 
 .zoneCard:hover {
-  background: #ffffff;
+  background: rgba(122, 92, 255, 0.12);
+  border-color: rgba(160, 142, 255, 0.52);
 }
 
 .zoneCard > div {
@@ -1052,7 +1089,7 @@
 }
 
 .zoneCard em {
-  color: var(--violet);
+  color: var(--lime);
   font-style: normal;
 }
 
@@ -1065,14 +1102,13 @@
 }
 
 .zoneCard p {
-  color: rgba(0, 0, 0, 0.62);
+  color: rgba(255, 255, 255, 0.64);
   font-size: 15px;
   line-height: 1.5;
   margin: 20px clamp(24px, 3vw, 40px) 0;
   padding-bottom: 42px;
 }
 
-.campusSection,
 .communitySection {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1080,103 +1116,123 @@
 }
 
 .campusSection {
-  min-height: 560px;
-}
-
-.campusVisual {
-  background:
-    radial-gradient(circle at 24% 18%, rgba(255, 139, 220, 0.75), transparent 25%),
-    radial-gradient(circle at 70% 74%, rgba(105, 228, 255, 0.72), transparent 30%),
-    linear-gradient(135deg, #4822ef, #785bff 58%, #ff8f4f);
-  border-right: 1px solid rgba(255, 255, 255, 0.3);
-  min-height: 560px;
-  overflow: hidden;
-  padding: clamp(34px, 5vw, 72px);
-  position: relative;
-}
-
-.campusVisual::before {
-  background: repeating-linear-gradient(
-    90deg,
-    transparent 0,
-    rgba(255, 255, 255, 0.16) 14%,
-    transparent 30%
-  );
-  content: "";
-  inset: 0;
-  mix-blend-mode: overlay;
-  position: absolute;
-}
-
-.campusGlow {
-  background: rgba(255, 255, 255, 0.16);
-  filter: blur(40px);
-  height: 110%;
-  left: 45%;
-  position: absolute;
-  top: -5%;
-  transform: rotate(-8deg);
-  width: 20%;
-}
-
-.campusLabel {
-  position: relative;
-}
-
-.campusLabel span,
-.campusLabel strong {
-  display: block;
-  font-family: "JetBrains Mono", ui-monospace, monospace;
-}
-
-.campusLabel span {
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.campusLabel strong {
-  font-size: clamp(46px, 7vw, 104px);
-  letter-spacing: -0.1em;
-  line-height: 0.88;
-  margin-top: 12px;
-  max-width: 680px;
+  background: var(--black);
+  border-block: 1px solid rgba(255, 255, 255, 0.18);
+  padding-bottom: clamp(62px, 7vw, 96px);
 }
 
 .campusCopy {
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  padding: clamp(64px, 8vw, 120px) clamp(34px, 6vw, 90px);
+  align-items: end;
+  display: grid;
+  gap: clamp(48px, 8vw, 132px);
+  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+  padding:
+    clamp(76px, 8vw, 118px)
+    clamp(24px, 6vw, 96px)
+    clamp(52px, 6vw, 82px);
 }
 
 .campusCopy h2,
 .communityCopy h2,
 .faqIntro h2 {
-  font-size: clamp(38px, 5vw, 74px);
+  font-size: clamp(34px, 4.2vw, 60px);
+}
+
+.communityCopy h2,
+.faqIntro h2 {
   margin: 54px 0 38px;
 }
 
-.campusCopy > p {
-  margin-bottom: 22px;
+.campusIntro {
+  display: grid;
+  gap: 28px;
 }
 
-.campusCopy address {
+.campusIntro h2 {
+  font-size: clamp(42px, 5.2vw, 72px);
+  margin: 0;
+  max-width: 900px;
+}
+
+.campusIntro p {
+  color: rgba(255, 255, 255, 0.66);
+  font-size: clamp(16px, 1.55vw, 20px);
+  line-height: 1.55;
+  max-width: 720px;
+}
+
+.campusMeta {
+  display: grid;
+  gap: 24px;
+}
+
+.campusMeta address {
   border-top: 1px solid rgba(255, 255, 255, 0.22);
   font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: 12px;
+  font-size: clamp(12px, 1.2vw, 16px);
   font-style: normal;
   line-height: 1.65;
-  margin-top: 12px;
   padding-top: 24px;
 }
 
-.campusCopy .textLink {
-  margin-top: 22px;
+.campusMeta .textLink {
   width: max-content;
+}
+
+.campusGallery {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.55fr);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  height: clamp(360px, 38vw, 500px);
+  margin-inline: auto;
+  overflow: hidden;
+  width: min(calc(100% - 48px), 1180px);
+}
+
+.campusGallery img {
+  display: block;
+  filter: saturate(0.82) contrast(1.04);
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.campusExterior {
+  grid-column: 1;
+  grid-row: 1 / -1;
+  object-position: center 44%;
+}
+
+.campusCourtyard,
+.campusSteps {
+  min-height: 0;
+}
+
+.campusCourtyard {
+  object-position: center 38%;
+}
+
+.campusCredit {
+  color: rgba(255, 255, 255, 0.48);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10px;
+  line-height: 1.5;
+  margin-inline: auto;
+  padding-top: 14px;
+  width: min(calc(100% - 48px), 1180px);
+}
+
+.campusCredit a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.35);
+  text-underline-offset: 3px;
 }
 
 .communitySection {
   background: var(--paper);
+  border-top: 1px solid rgba(0, 0, 0, 0.22);
   color: var(--black);
 }
 
@@ -1248,7 +1304,7 @@
 
 .partnersHeading h2 {
   font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: clamp(38px, 5.4vw, 82px);
+  font-size: clamp(34px, 4.3vw, 62px);
   font-weight: 500;
   letter-spacing: -0.075em;
   line-height: 0.94;
@@ -1389,7 +1445,7 @@
 
 .finalCta h2 {
   font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: clamp(56px, 8vw, 126px);
+  font-size: clamp(46px, 6.2vw, 96px);
   font-weight: 600;
   letter-spacing: -0.1em;
   line-height: 0.86;
@@ -1450,7 +1506,6 @@
   .learnathonHeader,
   .learnathonFeature,
   .daysGrid,
-  .campusSection,
   .communitySection,
   .faqSection {
     grid-template-columns: 1fr;
@@ -1471,9 +1526,8 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  .campusVisual {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    border-right: 0;
+  .campusCopy {
+    grid-template-columns: 1fr;
   }
 
   .communityPhoto {
@@ -1631,6 +1685,21 @@
     margin-top: 44px;
   }
 
+  .introGallery {
+    grid-template-columns: 1fr 1fr;
+    height: auto;
+    margin-top: 48px;
+  }
+
+  .introGallery img {
+    aspect-ratio: 4 / 3;
+  }
+
+  .introGallery img:first-child {
+    aspect-ratio: 16 / 9;
+    grid-column: 1 / -1;
+  }
+
   .filmSection {
     padding-bottom: 88px;
   }
@@ -1640,7 +1709,7 @@
   }
 
   .filmHeader h2 {
-    font-size: clamp(36px, 11vw, 50px);
+    font-size: clamp(32px, 9.2vw, 42px);
     margin-top: 28px;
   }
 
@@ -1663,7 +1732,7 @@
   .campusCopy h2,
   .communityCopy h2,
   .faqIntro h2 {
-    font-size: clamp(36px, 12vw, 54px);
+    font-size: clamp(32px, 9.5vw, 44px);
   }
 
   .learnathonHeader {
@@ -1729,14 +1798,45 @@
     flex-direction: column;
   }
 
-  .campusVisual {
-    min-height: 380px;
-    padding: 34px 20px;
-  }
-
   .campusCopy,
   .communityCopy {
     padding: 74px 20px;
+  }
+
+  .campusCopy {
+    gap: 34px;
+  }
+
+  .campusIntro {
+    gap: 22px;
+  }
+
+  .campusIntro h2 {
+    font-size: clamp(38px, 11vw, 54px);
+  }
+
+  .campusGallery {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    height: auto;
+    width: calc(100% - 40px);
+  }
+
+  .campusExterior {
+    aspect-ratio: 16 / 10;
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+
+  .campusCourtyard,
+  .campusSteps {
+    aspect-ratio: 1 / 1;
+    height: auto;
+  }
+
+  .campusCredit {
+    padding-top: 12px;
+    width: calc(100% - 40px);
   }
 
   .communityPhoto {
@@ -1758,7 +1858,7 @@
   }
 
   .partnersHeading h2 {
-    font-size: clamp(36px, 11vw, 50px);
+    font-size: clamp(32px, 9.2vw, 44px);
   }
 
   .partnerGrid {
@@ -1790,7 +1890,7 @@
   }
 
   .finalCta h2 {
-    font-size: clamp(46px, 14vw, 70px);
+    font-size: clamp(38px, 11vw, 56px);
     max-width: 90%;
   }
 

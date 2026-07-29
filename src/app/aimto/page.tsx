@@ -27,50 +27,18 @@ export const metadata: Metadata = {
 const registrationUrl =
   "https://event.aimto.my/concierge-menu/registration";
 
-const dayTwoSessions = [
-  {
-    time: "10:30",
-    title: "Learn-A-Thon kickoff",
-    body: "What you can build, how the day works and where to get support.",
-  },
-  {
-    time: "11:00",
-    title: "From prompt to prototype",
-    body: "Turn a rough idea into a functional first build.",
-  },
-  {
-    time: "11:30",
-    title: "AI APIs without the intimidation",
-    body: "Understand how tools connect without getting lost in technical jargon.",
-  },
-  {
-    time: "12:00",
-    title: "Launch a tool in 20 minutes",
-    body: "A fast, practical live build from idea to working output.",
-  },
-  {
-    time: "12:30",
-    title: "Build Sprint 01",
-    body: "Start building with mentors and technical facilitators nearby.",
-  },
-  {
-    time: "14:30",
-    title: "Build Sprint 02",
-    body: "Refine, improve or extend what you started.",
-  },
-  {
-    time: "15:00",
-    title: "Show & Tell finale",
-    body: "Selected builders share what they made and what they would do next.",
-  },
-];
-
 const experienceZones = [
   {
     label: "THE WAR ROOM_",
     title: "Keynotes",
     body: "Big conversations, challenging perspectives and the people shaping what AI means for Malaysia.",
     image: "/aimto-assets/the-war-room.jpg",
+  },
+  {
+    label: "PUBLIC AI LEARNING_",
+    title: "Learnathon",
+    body: "Malaysia’s largest public AI learning gathering. Bring your laptop or vibe-coded project, learn to build with AI and get support from industry mentors and builders.",
+    image: "/aimto-assets/learnathon-builder-floor.jpg",
   },
   {
     label: "THE SANDBOX_",
@@ -168,20 +136,24 @@ export default function AiMalaysiaTakeoverPage() {
                 <strong>
                   11—12
                   <br />
-                  AUG. 2026
+                  AUG 2026
                 </strong>
               </div>
               <div className={styles.heroPlace}>
                 <span>VENUE_</span>
-                <strong>THE CAMPUS AMPANG</strong>
+                <strong>
+                  THE CAMPUS
+                  <br />
+                  KUALA LUMPUR
+                </strong>
               </div>
               </div>
               <div className={styles.heroActions}>
-                <a className={styles.primaryButton} href={registrationUrl}>
+              <a className={styles.primaryButton} href={registrationUrl}>
                 Secure your seats now <span aria-hidden="true">↗</span>
               </a>
-              <a className={styles.textLink} href="#programme">
-                Explore the programme <span aria-hidden="true">↓</span>
+              <a className={styles.textLink} href="#experience">
+                Explore the event <span aria-hidden="true">↓</span>
               </a>
             </div>
           </div>
@@ -240,6 +212,20 @@ export default function AiMalaysiaTakeoverPage() {
               </p>
             </div>
           </div>
+          <div className={styles.introGallery} aria-label="Scenes from the 2025 event">
+            <img
+              src="/aimto-assets/gallery-bottom.jpg"
+              alt="The 2025 AI Malaysia event stage"
+            />
+            <img
+              src="/aimto-assets/gallery-mid-1.jpg"
+              alt="A packed session at the 2025 event"
+            />
+            <img
+              src="/aimto-assets/enterprise-ecosystem-leaders.jpg"
+              alt="Attendees trying an AI experience at the 2025 event"
+            />
+          </div>
         </section>
 
         <section className={styles.filmSection} aria-labelledby="event-film-title">
@@ -273,125 +259,80 @@ export default function AiMalaysiaTakeoverPage() {
           </div>
         </section>
 
-        <div className={styles.sectionSwap}>
-          <section className={styles.zonesSection} id="experience">
-            <div className={styles.sectionHeading}>
-              <div className={styles.sectionLabel}>02 / EXPERIENCE_</div>
-              <h2>See AI in action.</h2>
-            </div>
-            <div className={styles.zonesGrid}>
-              {experienceZones.map((zone, index) => (
-                <article className={styles.zoneCard} key={zone.label}>
-                  <img src={zone.image} alt="" />
-                  <div>
-                    <span>{String(index + 1).padStart(2, "0")}_</span>
-                    <em>{zone.label}</em>
-                  </div>
-                  <h3>{zone.title}</h3>
-                  <p>{zone.body}</p>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <section className={styles.programme} id="programme">
-            <div className={styles.sectionHeading}>
-              <div className={styles.sectionLabel}>03 / PROGRAMME_</div>
-              <h2>Two days. Build your own experience.</h2>
-              <p>
-                Move between practical training, live builds, useful ideas,
-                founder stories and community conversations.
-              </p>
-            </div>
-
-            <div className={styles.daysGrid}>
-              <article className={styles.dayOne}>
-                <div className={styles.dayHeader}>
-                  <span>DAY 01_</span>
-                  <strong>SEE WHAT AI CAN DO FOR YOU</strong>
+        <section className={styles.zonesSection} id="experience">
+          <div className={styles.sectionHeading}>
+            <div className={styles.sectionLabel}>02 / EXPERIENCE_</div>
+            <h2>See AI in action.</h2>
+          </div>
+          <div className={styles.zonesGrid}>
+            {experienceZones.map((zone, index) => (
+              <article className={styles.zoneCard} key={zone.label}>
+                <img src={zone.image} alt="" />
+                <div>
+                  <span>{String(index + 1).padStart(2, "0")}_</span>
+                  <em>{zone.label}</em>
                 </div>
-                <ul>
-                  <li>
-                    <span>WORK_</span>
-                    <strong>Build a useful AI workflow for a real workday</strong>
-                  </li>
-                  <li>
-                    <span>PROMPT_</span>
-                    <strong>Prompt like an operator, not a tourist</strong>
-                  </li>
-                  <li>
-                    <span>LIVE_</span>
-                    <strong>Watch builders tackle and rescue live challenges</strong>
-                  </li>
-                  <li>
-                    <span>DISCOVER_</span>
-                    <strong>Explore the AI tools changing how Malaysians work</strong>
-                  </li>
-                </ul>
-                <p>
-                  Leave with practical ideas you can use—not just predictions
-                  about the future.
-                </p>
+                <h3>{zone.title}</h3>
+                <p>{zone.body}</p>
               </article>
-
-              <article className={styles.dayTwo}>
-                <div className={styles.dayHeader}>
-                  <span>DAY 02_</span>
-                  <strong>BUILD SOMETHING OF YOUR OWN</strong>
-                </div>
-                <div className={styles.timeline}>
-                  {dayTwoSessions.map((session) => (
-                    <div className={styles.timelineRow} key={session.time}>
-                      <time>{session.time}</time>
-                      <div>
-                        <strong>{session.title}</strong>
-                        <p>{session.body}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <p className={styles.scheduleNote}>
-                  Mini workshops, mentor support and rolling Show & Tell continue
-                  around the main programme.
-                </p>
-              </article>
-            </div>
-
-            <div className={styles.programmeCta}>
-              <p>
-                Bring a laptop and charger if you want to build. Bring your
-                curiosity either way.
-              </p>
-              <a className={styles.primaryButton} href={registrationUrl}>
-                Secure your seats now <span aria-hidden="true">↗</span>
-              </a>
-            </div>
-          </section>
-        </div>
+            ))}
+          </div>
+        </section>
 
         <section className={styles.campusSection} id="campus">
-          <div className={styles.campusVisual}>
-            <div className={styles.campusGlow} aria-hidden="true" />
-            <div className={styles.campusLabel}>
-              <span>VENUE_</span>
-              <strong>THE CAMPUS AMPANG</strong>
+          <div className={styles.campusCopy}>
+            <div className={styles.campusIntro}>
+              <div className={styles.sectionLabel}>VENUE_</div>
+              <h2>The Campus Ampang</h2>
+              <p>
+                A former school reimagined as an open-air community hub, with
+                courtyards, halls and shared spaces made for people to gather.
+                For two days, the whole campus becomes the home of AI Malaysia
+                Takeover.
+              </p>
+            </div>
+            <div className={styles.campusMeta}>
+              <address>
+                Jalan Kolam Air Lama
+                <br />
+                Ampang, Kuala Lumpur
+              </address>
+              <a
+                className={styles.textLink}
+                href="https://maps.google.com/?q=The+Campus+Ampang"
+              >
+                Open in maps <span aria-hidden="true">↗</span>
+              </a>
             </div>
           </div>
-          <div className={styles.campusCopy}>
-            <div className={styles.sectionLabel}>04 / THE VENUE_</div>
-            <h2>The Campus Ampang.</h2>
-            <address>
-              Jalan Kolam Air Lama
-              <br />
-              Ampang, Kuala Lumpur
-            </address>
-            <a
-              className={styles.textLink}
-              href="https://maps.google.com/?q=The+Campus+Ampang"
-            >
-              Open in maps <span aria-hidden="true">↗</span>
-            </a>
+          <div className={styles.campusGallery}>
+            <img
+              className={styles.campusExterior}
+              src="/aimto-assets/campus-exterior.jpg"
+              alt="The Campus Ampang exterior"
+            />
+            <img
+              className={styles.campusCourtyard}
+              src="/aimto-assets/campus-courtyard.jpg"
+              alt="The Campus Ampang open-air courtyard"
+            />
+            <img
+              className={styles.campusSteps}
+              src="/aimto-assets/campus-steps.jpg"
+              alt="The Campus Ampang amphitheatre steps"
+            />
           </div>
+          <p className={styles.campusCredit}>
+            Photography: H. Lin Ho Photography and Amran Bin Yahaya. Images via{" "}
+            <a
+              href="https://architecturemalaysia.my/2026/06/24/the-campus-ampang/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Architecture Malaysia
+            </a>
+            .
+          </p>
         </section>
 
         <section className={styles.communitySection}>
@@ -410,7 +351,7 @@ export default function AiMalaysiaTakeoverPage() {
             />
           </div>
           <div className={styles.communityCopy}>
-            <div className={styles.sectionLabel}>05 / YOU BELONG HERE_</div>
+            <div className={styles.sectionLabel}>03 / YOU BELONG HERE_</div>
             <h2>Come as you are.</h2>
             <div className={styles.audienceList}>
               {audiencePaths.map((path) => (
@@ -443,7 +384,7 @@ export default function AiMalaysiaTakeoverPage() {
 
         <section className={styles.faqSection} id="faq">
           <div className={styles.faqIntro}>
-            <div className={styles.sectionLabel}>06 / FAQ_</div>
+            <div className={styles.sectionLabel}>04 / FAQ_</div>
             <h2>Before you come.</h2>
             <p>
               The useful details—especially if this is your first AI event.

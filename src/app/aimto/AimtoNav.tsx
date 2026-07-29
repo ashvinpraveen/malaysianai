@@ -93,7 +93,7 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
               }`}
               id="aimto-menu-program"
             >
-              <a href="#programme" onClick={() => setActiveMenu(null)}>
+              <a href="#experience" onClick={() => setActiveMenu(null)}>
                 Event Programme
               </a>
               <a

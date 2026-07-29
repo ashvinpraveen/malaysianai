@@ -5,49 +5,49 @@ This document outlines the design system for the Placeholder website. All compon
 ## Typography
 
 ### Font Family
-- Body: `Inter` (Google Fonts) — readable, relaxed sans-serif for body text, labels, and UI elements.
-- Headings: `Space Grotesk` (Google Fonts) — compact, expressive sans-serif for all headings (h1–h6).
+- Body: `Space Grotesk` (Google Fonts) — friendly, readable sans-serif for body text, labels, and UI elements.
+- Headings: `Barlow Condensed` (Google Fonts) — bold event-poster display face for all headings (h1–h6).
 - Fallback: `system-ui, sans-serif`
 
 ### Heading Styles
 
 ```css
-/* All headings use Space Grotesk sans-serif */
+/* All headings use Barlow Condensed sans-serif */
 
 /* Hero Title - Main landing page headline */
 .hero-title
-- Font: Space Grotesk, Inter, sans-serif
-- Size: text-4xl md:text-6xl lg:text-7xl
+- Font: Barlow Condensed, Space Grotesk, sans-serif
+- Size: text-5xl md:text-6xl lg:text-7xl
 - Weight: font-bold
-- Tracking: tracking-[-0.07em]
-- Line Height: leading-[0.96]
+- Tracking: tracking-[0.005em]
+- Line Height: leading-[0.86]
 - Usage: Primary hero headlines only
 
 /* Section Title - Major section headings */
 .section-title
-- Font: Space Grotesk, Inter, sans-serif
+- Font: Barlow Condensed, Space Grotesk, sans-serif
 - Size: text-3xl md:text-5xl lg:text-6xl
 - Weight: font-semibold
-- Tracking: tracking-[-0.06em]
-- Line Height: leading-[1.01]
+- Tracking: tracking-[0.005em]
+- Line Height: leading-[0.88]
 - Usage: Main section titles throughout the site
 
 /* Subsection Title - Secondary headings */
 .subsection-title
-- Font: Space Grotesk, Inter, sans-serif
+- Font: Barlow Condensed, Space Grotesk, sans-serif
 - Size: text-2xl md:text-3xl lg:text-4xl
 - Weight: font-semibold
-- Tracking: tracking-[-0.055em]
-- Line Height: leading-[1.06]
+- Tracking: tracking-[0.005em]
+- Line Height: leading-[0.92]
 - Usage: Subsection headings, feature titles
 
 /* Card Title - Component headings */
 .card-title
-- Font: Space Grotesk, Inter, sans-serif
+- Font: Barlow Condensed, Space Grotesk, sans-serif
 - Size: text-xl md:text-2xl
 - Weight: font-semibold
-- Tracking: tracking-[-0.04em]
-- Line Height: leading-[1.15]
+- Tracking: tracking-[0.005em]
+- Line Height: leading-[0.95]
 - Usage: Card headings, small component titles
 ```
 

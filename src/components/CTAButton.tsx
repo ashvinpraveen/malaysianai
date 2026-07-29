@@ -30,7 +30,7 @@ export const CTAButton = ({
     disabled = false,
 }: CTAButtonProps) => {
     const variantClasses = {
-        primary: "bg-primary text-primary-foreground border border-primary shadow-[0_5px_0_hsl(var(--foreground)/0.2)] hover:-translate-y-0.5 hover:shadow-[0_7px_0_hsl(var(--foreground)/0.2)]",
+        primary: "border border-[#8e6100] bg-[#b78300] text-[#1f1405] shadow-[0_5px_0_hsl(var(--foreground)/0.2)] hover:-translate-y-0.5 hover:bg-[#c89100] hover:shadow-[0_7px_0_hsl(var(--foreground)/0.2)]",
         secondary: "border border-primary/35 bg-background/80 text-primary shadow-[0_3px_0_hsl(var(--foreground)/0.1)] hover:-translate-y-0.5 hover:bg-[#fff7e8] hover:shadow-[0_5px_0_hsl(var(--foreground)/0.12)]",
         white: "bg-background text-foreground border border-white/60 shadow-[0_5px_0_rgba(0,0,0,0.18)] hover:-translate-y-0.5 hover:bg-[#fff8eb] hover:shadow-[0_7px_0_rgba(0,0,0,0.16)]",
         outline: "border border-primary/25 bg-background/65 text-foreground hover:-translate-y-0.5 hover:border-primary/45 hover:bg-[#fff8eb]",

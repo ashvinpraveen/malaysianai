@@ -184,7 +184,7 @@ const initiatives: Initiative[] = [
     image: "/batik_robot_hero.png",
     cta: {
       label: "Learn more",
-      href: "https://instagram.com/aitakeover.co",
+      href: "https://instagram.com/malaysianai",
       isExternal: true,
     },
   },
@@ -196,35 +196,21 @@ const MalaysianAI = () => {
       <Navbar />
 
       <main>
-        <section id="events" className="relative overflow-hidden border-b border-foreground/10 bg-[#fbf8f2] pb-14 pt-28 md:pb-20 md:pt-32">
-          <div className="pointer-events-none absolute inset-0 opacity-70 [background-image:radial-gradient(hsl(var(--foreground)/0.13)_1px,transparent_1px)] [background-size:20px_20px]" />
-          <div className="relative mx-auto grid max-w-[1440px] grid-cols-1 items-start gap-10 px-6 md:px-10 lg:grid-cols-[0.78fr_1.22fr] lg:gap-14 lg:px-16">
+        <section id="events" className="poster-wash relative overflow-hidden border-b border-foreground/15 pb-14 pt-28 md:pb-20 md:pt-32">
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#f4e6c7] to-transparent" />
+          <div className="relative mx-auto grid max-w-[1440px] grid-cols-1 items-start gap-10 px-6 md:px-10 lg:grid-cols-[1fr_1fr] lg:gap-14 lg:px-16">
             <div className="pt-2 lg:sticky lg:top-24">
-              <p className="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-foreground/55">
-                Malaysian AI &amp; friends
+              <p className="poster-kicker mb-5 text-sm text-foreground/70">
+                Malaysian AI meetups
               </p>
-              <h1 className="hero-title max-w-2xl text-foreground">
-                AI things worth<br className="hidden lg:block" /> leaving the house for.
+              <h1 className="hero-title poster-title max-w-2xl text-foreground lg:text-[4.2rem]">
+                <span className="lg:whitespace-nowrap">AI things worth</span><br /> <span className="lg:whitespace-nowrap">leaving the house for.</span>
               </h1>
               <p className="mt-6 max-w-xl text-base font-medium leading-relaxed text-foreground/70 md:text-lg">
                 Runs, show &amp; tells, workshops, hackathons and the people making them happen.
-                Come curious — you don&apos;t need to know everything already.
               </p>
 
-              <div className="mt-7 flex flex-wrap gap-2 text-sm font-semibold text-foreground">
-                <span className="rounded-full border border-foreground/15 bg-background/70 px-3 py-1.5">Build stuff</span>
-                <span className="rounded-full border border-foreground/15 bg-background/70 px-3 py-1.5">Meet people</span>
-                <span className="rounded-full bg-[#ffdc67] px-3 py-1.5">Learn out loud</span>
-              </div>
-
-              <div className="mt-9 hidden rounded-[1.5rem] border border-foreground/10 bg-white/80 p-5 shadow-[0_6px_0_hsl(var(--foreground)/0.08)] lg:block">
-                <p className="text-sm font-bold text-foreground">New around here?</p>
-                <p className="mt-1 text-sm leading-relaxed text-foreground/65">
-                  Start with a show &amp; tell or a community run. They&apos;re free, low-pressure and full of people happy to say hello.
-                </p>
-              </div>
-
-              <div className="mt-7 lg:mt-8">
+              <div className="mt-8">
                 <CTAButton href={LUMA_EVENTS_URL} variant="primary" size="lg" showArrow isExternal={true}>
                   See all upcoming events
                 </CTAButton>
@@ -233,10 +219,10 @@ const MalaysianAI = () => {
             </div>
 
             <div className="relative lg:pt-2">
-              <p className="mb-3 flex items-center gap-2 text-sm font-bold text-foreground">
+              <p className="poster-kicker mb-3 flex items-center gap-2 text-sm text-foreground">
                 <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[#f35b84]" /> Happening next
               </p>
-              <div className="rounded-[1.75rem] border border-foreground/10 bg-white p-2 shadow-[0_10px_0_hsl(var(--foreground)/0.1)]">
+              <div className="rounded-[1.25rem] border border-foreground/20 bg-white p-2 shadow-[0_10px_0_hsl(var(--foreground)/0.14)]">
                 <LumaEventsEmbed />
               </div>
               <p className="mt-4 text-center text-xs font-medium text-foreground/50">
@@ -246,19 +232,19 @@ const MalaysianAI = () => {
           </div>
         </section>
 
-        <section id="mission" className="pt-20 md:pt-28 bg-background">
-          <div className="mx-auto grid max-w-[1440px] grid-cols-1 items-end gap-10 px-6 md:px-10 lg:grid-cols-[1fr_0.78fr] lg:gap-16 lg:px-16">
-            <div className="max-w-4xl">
+        <section id="mission" className="bg-background py-16 md:py-20 lg:py-24">
+          <div className="mx-auto grid max-w-[1440px] grid-cols-1 items-center gap-10 px-6 md:px-10 lg:grid-cols-[1.06fr_0.94fr] lg:gap-14 lg:px-16">
+            <div className="max-w-2xl">
               <p className="mb-5 text-xs font-bold uppercase tracking-[0.18em] text-foreground/55">No gatekeeping</p>
-              <h2 className="section-title text-foreground">
+              <h2 className="section-title text-foreground lg:text-6xl">
                 A good place to start is with other people.
               </h2>
               <ScrollRevealText
-                className="section-title mt-2 text-foreground/40"
+                className="mt-5 max-w-xl text-lg font-medium leading-[1.3] text-foreground/55 md:text-xl"
                 text="Malaysian AI connects you to workshops, events, and a community of people figuring out AI together - from beginners to serious builders."
               />
             </div>
-            <figure className="relative overflow-hidden rounded-[1.75rem] border border-foreground/10 bg-foreground shadow-[0_8px_0_hsl(var(--foreground)/0.1)]">
+            <figure className="relative aspect-[16/10] w-full overflow-hidden rounded-[1.5rem] border border-foreground/10 bg-foreground shadow-[0_8px_0_hsl(var(--foreground)/0.1)]">
               <img
                 src="/show-and-tell.jpg"
                 alt="Builders sharing work at a Malaysian AI Show and Tell"

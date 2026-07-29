@@ -164,11 +164,12 @@
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.38);
   display: none;
   gap: 2px;
-  left: -16px;
+  left: 50%;
   min-width: 190px;
   padding: 8px;
   position: absolute;
   top: calc(100% + 18px);
+  transform: translateX(-50%);
 }
 
 .navDropdown::before {
@@ -232,9 +233,10 @@
 .hero {
   align-items: stretch;
   background:
-    linear-gradient(90deg, rgba(5, 4, 24, 0.94) 0%, rgba(11, 7, 54, 0.76) 38%, rgba(7, 5, 29, 0.16) 72%),
-    linear-gradient(180deg, rgba(25, 8, 102, 0.03) 45%, rgba(7, 7, 7, 0.54) 100%),
-    url("/aimto-hero-texture.jpg") center / cover no-repeat;
+    radial-gradient(circle at 75% 30%, transparent 0 15%, rgba(5, 4, 20, 0.2) 38%, rgba(5, 4, 20, 0.46) 100%),
+    linear-gradient(90deg, rgba(4, 4, 19, 0.96) 0%, rgba(9, 7, 40, 0.8) 38%, rgba(9, 6, 33, 0.3) 66%, rgba(5, 4, 20, 0.08) 100%),
+    linear-gradient(180deg, rgba(7, 5, 27, 0.12) 32%, rgba(5, 4, 18, 0.7) 100%),
+    url("/aimto-hero-portrait.jpg") right center / cover no-repeat;
   border-bottom: 1px solid rgba(255, 255, 255, 0.38);
   display: flex;
   height: min(100svh, 960px);
@@ -277,38 +279,6 @@
   mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.7), transparent 58%);
   opacity: 0.6;
   position: absolute;
-}
-
-.heroGlow {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.28),
-    rgba(255, 255, 255, 0) 16%,
-    rgba(255, 255, 255, 0.12) 45%,
-    transparent 74%
-  );
-  filter: blur(32px);
-  height: 120%;
-  left: 66%;
-  position: absolute;
-  top: -10%;
-  transform: rotate(8deg);
-  width: 14%;
-}
-
-.heroWau {
-  filter:
-    saturate(1.08)
-    drop-shadow(0 30px 70px rgba(18, 7, 82, 0.58));
-  height: auto;
-  max-width: none;
-  pointer-events: none;
-  position: absolute;
-  right: -6%;
-  top: 49%;
-  transform: translateY(-50%);
-  width: min(75vw, 1240px);
-  z-index: 1;
 }
 
 .heroContent,
@@ -419,10 +389,27 @@
   align-items: center;
   bottom: 94px;
   display: flex;
-  gap: clamp(22px, 3vw, 44px);
+  flex-direction: column;
+  gap: 12px;
   position: absolute;
   right: clamp(24px, 5vw, 80px);
   z-index: 4;
+}
+
+.heroOrganisers > span {
+  color: rgba(255, 255, 255, 0.58);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: center;
+  width: 100%;
+}
+
+.heroOrganisers > div {
+  align-items: center;
+  display: flex;
+  gap: clamp(12px, 1.25vw, 20px);
 }
 
 .heroOrganisers img {
@@ -430,6 +417,10 @@
   height: clamp(24px, 2.2vw, 34px);
   object-fit: contain;
   width: auto;
+}
+
+.heroOrganisers img:first-child {
+  height: clamp(36px, 3.25vw, 50px);
 }
 
 .heroSignal {
@@ -526,65 +517,56 @@
 
 .proof {
   background: var(--black);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   display: grid;
+  gap: clamp(28px, 5vw, 88px);
   grid-template-columns: repeat(4, 1fr);
+  padding: clamp(64px, 7vw, 110px) clamp(28px, 6vw, 96px);
 }
 
-.proof > div {
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
+.proofStat {
   display: flex;
   flex-direction: column;
-  min-height: 210px;
-  padding: 32px;
-}
-
-.proof > div:last-child {
-  border-right: 0;
+  gap: 14px;
+  min-width: 0;
 }
 
 .proof strong {
+  align-items: baseline;
+  display: flex;
   font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: clamp(42px, 5vw, 74px);
+  font-size: clamp(50px, 6vw, 92px);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
   letter-spacing: -0.08em;
-  line-height: 1;
+  line-height: 0.88;
+  white-space: nowrap;
 }
 
-.proof span {
+.proof strong span {
+  color: var(--lime);
+  font-size: 0.62em;
+  letter-spacing: -0.05em;
+}
+
+.proof p {
   color: rgba(255, 255, 255, 0.62);
-  font-size: 15px;
-  margin-top: auto;
-  max-width: 180px;
+  font-size: clamp(14px, 1.3vw, 18px);
+  line-height: 1.35;
+  margin: 0;
+  max-width: 230px;
 }
 
-.organiserStrip {
-  align-items: center;
-  background: var(--paper);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.18);
-  color: var(--black);
+.sectionSwap {
   display: flex;
-  gap: 32px;
-  justify-content: space-between;
-  padding: 24px clamp(24px, 6vw, 96px);
+  flex-direction: column;
 }
 
-.organiserStrip > span {
-  font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: 10px;
-  font-weight: 700;
+.sectionSwap .zonesSection {
+  order: 1;
 }
 
-.organiserStrip > div {
-  align-items: center;
-  display: flex;
-  gap: clamp(28px, 5vw, 72px);
-}
-
-.organiserStrip img {
-  display: block;
-  height: clamp(24px, 2.4vw, 34px);
-  object-fit: contain;
-  width: auto;
+.sectionSwap .programme {
+  order: 2;
 }
 
 .introSection,
@@ -908,19 +890,19 @@
 .daysGrid {
   border: 1px solid rgba(255, 255, 255, 0.22);
   display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   margin-top: 84px;
 }
 
 .dayOne,
 .dayTwo {
+  background:
+    radial-gradient(circle at 20% 15%, rgba(105, 81, 255, 0.14), transparent 38%),
+    rgba(255, 255, 255, 0.018);
   padding: clamp(26px, 4vw, 56px);
 }
 
 .dayOne {
-  background:
-    radial-gradient(circle at 20% 15%, rgba(255, 139, 220, 0.38), transparent 33%),
-    linear-gradient(135deg, #4f24ff, #2f16b7);
   border-right: 1px solid rgba(255, 255, 255, 0.24);
 }
 
@@ -1092,13 +1074,17 @@
   min-height: 780px;
 }
 
+.campusSection {
+  min-height: 560px;
+}
+
 .campusVisual {
   background:
     radial-gradient(circle at 24% 18%, rgba(255, 139, 220, 0.75), transparent 25%),
     radial-gradient(circle at 70% 74%, rgba(105, 228, 255, 0.72), transparent 30%),
     linear-gradient(135deg, #4822ef, #785bff 58%, #ff8f4f);
   border-right: 1px solid rgba(255, 255, 255, 0.3);
-  min-height: 720px;
+  min-height: 560px;
   overflow: hidden;
   padding: clamp(34px, 5vw, 72px);
   position: relative;
@@ -1128,8 +1114,7 @@
   width: 20%;
 }
 
-.campusLabel,
-.campusNodes {
+.campusLabel {
   position: relative;
 }
 
@@ -1145,27 +1130,11 @@
 }
 
 .campusLabel strong {
-  font-size: clamp(58px, 9vw, 140px);
+  font-size: clamp(46px, 7vw, 104px);
   letter-spacing: -0.1em;
-  line-height: 0.85;
+  line-height: 0.88;
   margin-top: 12px;
-}
-
-.campusNodes {
-  bottom: 52px;
-  display: grid;
-  gap: 12px;
-  left: clamp(34px, 5vw, 72px);
-  position: absolute;
-}
-
-.campusNodes span {
-  background: rgba(7, 7, 7, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: 10px;
-  padding: 12px 16px;
-  width: max-content;
+  max-width: 680px;
 }
 
 .campusCopy {
@@ -1192,7 +1161,7 @@
   font-size: 12px;
   font-style: normal;
   line-height: 1.65;
-  margin-top: auto;
+  margin-top: 12px;
   padding-top: 24px;
 }
 
@@ -1374,39 +1343,53 @@
 
 .finalCta {
   background:
-    radial-gradient(circle at 20% 20%, rgba(255, 139, 220, 0.65), transparent 24%),
-    radial-gradient(circle at 82% 70%, rgba(105, 228, 255, 0.55), transparent 30%),
-    linear-gradient(125deg, #3c18df, #704fff 58%, #4f24ff);
-  min-height: 88svh;
+    linear-gradient(90deg, rgba(5, 4, 24, 0.94) 0%, rgba(11, 7, 54, 0.7) 48%, rgba(7, 5, 29, 0.16) 78%),
+    linear-gradient(180deg, rgba(25, 8, 102, 0.03) 45%, rgba(7, 7, 7, 0.54) 100%),
+    url("/aimto-hero-texture.jpg") center / cover no-repeat;
+  min-height: 72svh;
   overflow: hidden;
   padding: clamp(90px, 12vw, 180px) clamp(24px, 6vw, 96px);
   position: relative;
 }
 
 .finalCta::before {
-  background: repeating-linear-gradient(
-    90deg,
-    transparent 0,
-    rgba(255, 255, 255, 0.14) 12%,
-    transparent 28%
-  );
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 56px 56px;
   content: "";
   inset: 0;
-  mix-blend-mode: overlay;
+  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.75), transparent 62%);
+  opacity: 0.58;
   position: absolute;
 }
 
-.finalCta > *:not(.finalGlow) {
+.finalCta > *:not(.finalGlow, .finalWau) {
   position: relative;
+  z-index: 2;
+}
+
+.finalWau {
+  filter:
+    saturate(1.08)
+    drop-shadow(0 30px 70px rgba(18, 7, 82, 0.58));
+  pointer-events: none;
+  position: absolute;
+  right: -13%;
+  top: 51%;
+  transform: translateY(-50%);
+  width: min(74vw, 1180px);
+  z-index: 1;
 }
 
 .finalCta h2 {
   font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: clamp(48px, 9.4vw, 150px);
+  font-size: clamp(56px, 8vw, 126px);
   font-weight: 600;
   letter-spacing: -0.1em;
   line-height: 0.86;
-  margin: 54px 0 40px;
+  margin: 54px 0 46px;
+  max-width: 58%;
   text-transform: uppercase;
 }
 
@@ -1414,18 +1397,13 @@
   color: var(--lime);
 }
 
-.finalCta > p:not(.eyebrow) {
-  font-size: clamp(18px, 2vw, 26px);
-  margin-bottom: 36px;
-}
-
 .footer {
   align-items: center;
   background: var(--black);
   border-top: 1px solid rgba(255, 255, 255, 0.22);
-  display: grid;
+  display: flex;
   gap: 24px;
-  grid-template-columns: 1fr auto 1fr;
+  justify-content: space-between;
   padding: 32px clamp(24px, 5vw, 80px);
 }
 
@@ -1438,12 +1416,6 @@
 
 .footer p {
   color: rgba(255, 255, 255, 0.45);
-}
-
-.footer > div {
-  display: flex;
-  gap: 22px;
-  justify-self: end;
 }
 
 @media (max-width: 1000px) {
@@ -1460,25 +1432,12 @@
     max-width: 58%;
   }
 
-  .heroWau {
-    right: -18%;
-    width: 92vw;
-  }
-
   .heroSignal {
     max-width: 620px;
   }
 
   .proof {
     grid-template-columns: 1fr 1fr;
-  }
-
-  .proof > div:nth-child(2) {
-    border-right: 0;
-  }
-
-  .proof > div:nth-child(-n + 2) {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   }
 
   .introLayout,
@@ -1533,7 +1492,7 @@
   }
 
   .footer {
-    grid-template-columns: 1fr 1fr;
+    justify-content: space-between;
   }
 
   .footer p {
@@ -1569,9 +1528,10 @@
   .hero {
     align-items: stretch;
     background:
-      linear-gradient(90deg, rgba(5, 4, 24, 0.92) 0%, rgba(11, 7, 54, 0.7) 58%, rgba(7, 5, 29, 0.18) 100%),
-      linear-gradient(180deg, rgba(25, 8, 102, 0.02) 48%, rgba(7, 7, 7, 0.58) 100%),
-      url("/aimto-hero-texture.jpg") 62% center / cover no-repeat;
+      radial-gradient(circle at 62% 27%, transparent 0 13%, rgba(5, 4, 20, 0.18) 36%, rgba(5, 4, 20, 0.44) 100%),
+      linear-gradient(90deg, rgba(4, 4, 19, 0.94) 0%, rgba(9, 7, 40, 0.7) 52%, rgba(5, 4, 20, 0.16) 100%),
+      linear-gradient(180deg, rgba(7, 5, 27, 0.14) 30%, rgba(5, 4, 18, 0.8) 100%),
+      url("/aimto-hero-portrait-mobile.jpg") right center / cover no-repeat;
     height: 100svh;
     min-height: 760px;
     padding: 84px 20px 124px;
@@ -1581,13 +1541,6 @@
     flex-basis: auto;
     max-width: 100%;
     width: 100%;
-  }
-
-  .heroWau {
-    opacity: 0.68;
-    right: -72%;
-    top: 49%;
-    width: 156vw;
   }
 
   .heroContent h1 {
@@ -1626,6 +1579,7 @@
   }
 
   .heroOrganisers {
+    align-items: center;
     bottom: 62px;
     gap: 20px;
     left: 20px;
@@ -1636,28 +1590,26 @@
     height: 22px;
   }
 
+  .heroOrganisers img:first-child {
+    height: 32px;
+  }
+
   .ticker {
     padding-block: 12px;
   }
 
   .proof {
+    gap: 42px 24px;
     grid-template-columns: 1fr;
+    padding: 64px 20px 72px;
   }
 
-  .proof > div {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    border-right: 0;
-    min-height: 170px;
-    padding: 24px;
+  .proofStat {
+    gap: 10px;
   }
 
-  .proof > div:last-child {
-    border-bottom: 0;
-  }
-
-  .organiserStrip {
-    align-items: flex-start;
-    flex-direction: column;
+  .proof p {
+    max-width: none;
   }
 
   .introSection,
@@ -1773,13 +1725,8 @@
   }
 
   .campusVisual {
-    min-height: 560px;
+    min-height: 380px;
     padding: 34px 20px;
-  }
-
-  .campusNodes {
-    bottom: 30px;
-    left: 20px;
   }
 
   .campusCopy,
@@ -1839,17 +1786,18 @@
 
   .finalCta h2 {
     font-size: clamp(46px, 14vw, 70px);
+    max-width: 90%;
+  }
+
+  .finalWau {
+    opacity: 0.55;
+    right: -70%;
+    width: 160vw;
   }
 
   .footer {
-    align-items: start;
-    grid-template-columns: 1fr;
+    align-items: center;
     padding: 28px 20px;
-  }
-
-  .footer > div {
-    flex-wrap: wrap;
-    justify-self: start;
   }
 }
 

@@ -69,7 +69,7 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
           </a>
         </div>
         <a className={styles.navCta} href={registrationUrl}>
-          Get tickets <span aria-hidden="true">↗</span>
+          Secure your seats now <span aria-hidden="true">↗</span>
         </a>
       </nav>
     </header>

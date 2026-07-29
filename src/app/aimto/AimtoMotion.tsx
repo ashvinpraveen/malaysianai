@@ -20,8 +20,33 @@ export default function AimtoMotion({ rootId }: AimtoMotionProps) {
     document.documentElement.style.colorScheme = "dark";
     document.body.style.backgroundColor = "#070707";
 
+    const hero = root.querySelector<HTMLElement>("#top");
+    const canTrackPointer = window.matchMedia(
+      "(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
+    );
+    let pointerFrame = 0;
+
+    const updateHeroSignal = (event: PointerEvent) => {
+      if (!hero || !canTrackPointer.matches) return;
+
+      cancelAnimationFrame(pointerFrame);
+      pointerFrame = requestAnimationFrame(() => {
+        const bounds = hero.getBoundingClientRect();
+        hero.style.setProperty("--hero-x", `${event.clientX - bounds.left}px`);
+        hero.style.setProperty("--hero-y", `${event.clientY - bounds.top}px`);
+        hero.style.setProperty("--hero-signal-opacity", "1");
+      });
+    };
+
+    const hideHeroSignal = () => {
+      hero?.style.setProperty("--hero-signal-opacity", "0");
+    };
+
+    hero?.addEventListener("pointermove", updateHeroSignal);
+    hero?.addEventListener("pointerleave", hideHeroSignal);
+
     const motionQuery = window.matchMedia(
-      "(min-width: 769px) and (prefers-reduced-motion: no-preference)",
+      "(prefers-reduced-motion: no-preference)",
     );
     let observer: IntersectionObserver | null = null;
 
@@ -70,6 +95,9 @@ export default function AimtoMotion({ rootId }: AimtoMotionProps) {
     motionQuery.addEventListener("change", setUpReveals);
 
     return () => {
+      cancelAnimationFrame(pointerFrame);
+      hero?.removeEventListener("pointermove", updateHeroSignal);
+      hero?.removeEventListener("pointerleave", hideHeroSignal);
       observer?.disconnect();
       motionQuery.removeEventListener("change", setUpReveals);
       delete root.dataset.motion;

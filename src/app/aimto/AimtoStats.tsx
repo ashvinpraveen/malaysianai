@@ -20,11 +20,7 @@ export default function AimtoStats() {
     const section = sectionRef.current;
     if (!section) return;
 
-    if (
-      window.matchMedia(
-        "(max-width: 680px), (prefers-reduced-motion: reduce)",
-      ).matches
-    ) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setProgress(1);
       return;
     }

@@ -43,7 +43,9 @@ export default function AimtoAudience() {
         <div className={styles.communityHeading}>
           <div>
             <div className={styles.sectionLabel}>WHO THIS IS FOR_</div>
-            <h2 id="aimto-audience-title">AI for everyone</h2>
+            <h2 id="aimto-audience-title">
+              Supporting you along your journey.
+            </h2>
           </div>
           <p>
             Start wherever you are. The event is designed to move with you from
@@ -80,7 +82,6 @@ export default function AimtoAudience() {
           id="aimto-audience-detail"
           aria-live="polite"
         >
-          <span>{String(activeIndex + 1).padStart(2, "0")}_</span>
           <strong>“{audiencePaths[activeIndex].quote}”</strong>
           <p>{audiencePaths[activeIndex].answer}</p>
         </div>

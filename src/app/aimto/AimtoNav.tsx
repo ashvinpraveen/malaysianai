@@ -105,7 +105,11 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
           />
         </a>
         <div className={styles.navLinks}>
-          <div className={styles.navGroup}>
+          <div
+            className={styles.navGroup}
+            onPointerEnter={() => setActiveMenu("program")}
+            onPointerLeave={() => setActiveMenu(null)}
+          >
             <button
               className={styles.navMenuButton}
               type="button"
@@ -113,6 +117,7 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
               aria-expanded={activeMenu === "program"}
               aria-controls="aimto-menu-program"
               onClick={() => toggleMenu("program")}
+              onFocus={() => setActiveMenu("program")}
             >
               Program <span className={styles.navChevron} aria-hidden="true" />
             </button>
@@ -139,7 +144,11 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
               </a>
             </div>
           </div>
-          <div className={styles.navGroup}>
+          <div
+            className={styles.navGroup}
+            onPointerEnter={() => setActiveMenu("attend")}
+            onPointerLeave={() => setActiveMenu(null)}
+          >
             <button
               className={styles.navMenuButton}
               type="button"
@@ -147,6 +156,7 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
               aria-expanded={activeMenu === "attend"}
               aria-controls="aimto-menu-attend"
               onClick={() => toggleMenu("attend")}
+              onFocus={() => setActiveMenu("attend")}
             >
               Attend <span className={styles.navChevron} aria-hidden="true" />
             </button>
@@ -167,7 +177,11 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
               </a>
             </div>
           </div>
-          <div className={styles.navGroup}>
+          <div
+            className={styles.navGroup}
+            onPointerEnter={() => setActiveMenu("about")}
+            onPointerLeave={() => setActiveMenu(null)}
+          >
             <button
               className={styles.navMenuButton}
               type="button"
@@ -175,6 +189,7 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
               aria-expanded={activeMenu === "about"}
               aria-controls="aimto-menu-about"
               onClick={() => toggleMenu("about")}
+              onFocus={() => setActiveMenu("about")}
             >
               About <span className={styles.navChevron} aria-hidden="true" />
             </button>

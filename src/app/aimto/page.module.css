@@ -183,8 +183,7 @@
 .navDropdown a,
 .navCta,
 .textLink,
-.primaryButton,
-.darkButton {
+.ctaButton {
   font-family: "JetBrains Mono", ui-monospace, monospace;
   font-size: 11px;
   font-weight: 600;
@@ -281,17 +280,17 @@
   outline: none;
 }
 
-.navCta,
-.primaryButton,
-.darkButton {
+.ctaButton {
   align-items: center;
+  background: var(--white);
   border: 1px solid transparent;
   border-radius: 999px;
+  color: var(--black) !important;
   display: inline-flex;
   gap: 12px;
   justify-content: center;
-  min-height: 44px;
-  padding: 0 20px;
+  min-height: 52px;
+  padding: 0 26px;
   transition:
     background 180ms ease,
     border-color 180ms ease,
@@ -299,45 +298,28 @@
     color 180ms ease;
 }
 
-.navCta,
-.primaryButton {
-  background: var(--white);
-  color: var(--black) !important;
-}
-
-.navCta:hover,
-.primaryButton:hover,
-.navCta:focus-visible,
-.primaryButton:focus-visible {
-  background: #f3ffd0;
-  border-color: var(--lime);
-  box-shadow: 0 0 0 3px rgba(215, 255, 54, 0.18);
-  outline: none;
-}
-
-.darkButton:hover,
-.darkButton:focus-visible {
+.ctaButton:hover,
+.ctaButton:focus-visible {
   background: var(--lime);
   border-color: var(--lime);
   box-shadow: 0 0 0 3px rgba(215, 255, 54, 0.14);
   color: var(--black) !important;
   outline: none;
+  transform: none;
 }
 
-.mobileMenuToggle,
+.mobileNavActions,
 .mobileMenu {
   display: none;
 }
 
 .hero {
-  --hero-signal-opacity: 0;
-  --hero-x: 72%;
-  --hero-y: 42%;
   align-items: stretch;
   background:
-    radial-gradient(circle at 75% 30%, transparent 0 15%, rgba(5, 4, 20, 0.2) 38%, rgba(5, 4, 20, 0.46) 100%),
-    linear-gradient(90deg, rgba(4, 4, 19, 0.96) 0%, rgba(9, 7, 40, 0.8) 38%, rgba(9, 6, 33, 0.3) 66%, rgba(5, 4, 20, 0.08) 100%),
-    linear-gradient(180deg, rgba(7, 5, 27, 0.12) 32%, rgba(5, 4, 18, 0.7) 100%),
+    radial-gradient(circle at 81% 27%, rgba(255, 239, 226, 0.22) 0 7%, rgba(255, 221, 218, 0.1) 14%, transparent 27%),
+    radial-gradient(circle at 75% 30%, transparent 0 15%, rgba(5, 4, 20, 0.1) 38%, rgba(5, 4, 20, 0.28) 100%),
+    linear-gradient(90deg, rgba(4, 4, 19, 0.78) 0%, rgba(9, 7, 40, 0.58) 38%, rgba(9, 6, 33, 0.18) 66%, rgba(5, 4, 20, 0.03) 100%),
+    linear-gradient(180deg, rgba(7, 5, 27, 0.06) 32%, rgba(5, 4, 18, 0.48) 100%),
     url("/aimto-hero-portrait.jpg") right center / cover no-repeat;
   border-bottom: 1px solid rgba(255, 255, 255, 0.38);
   display: flex;
@@ -346,48 +328,6 @@
   overflow: hidden;
   padding: 108px clamp(24px, 5vw, 80px) 92px;
   position: relative;
-}
-
-.heroHoverField {
-  background:
-    radial-gradient(
-      circle 3px at calc(var(--hero-x) - 62px) calc(var(--hero-y) - 34px),
-      rgba(215, 255, 54, 0.98) 0 45%,
-      transparent 60%
-    ),
-    radial-gradient(
-      circle 2px at calc(var(--hero-x) + 54px) calc(var(--hero-y) - 48px),
-      rgba(215, 255, 54, 0.86) 0 45%,
-      transparent 65%
-    ),
-    radial-gradient(
-      circle 4px at calc(var(--hero-x) + 78px) calc(var(--hero-y) + 30px),
-      rgba(105, 228, 255, 0.78) 0 38%,
-      transparent 60%
-    ),
-    radial-gradient(
-      circle 2px at calc(var(--hero-x) - 34px) calc(var(--hero-y) + 72px),
-      rgba(215, 255, 54, 0.72) 0 42%,
-      transparent 65%
-    ),
-    radial-gradient(
-      circle 170px at var(--hero-x) var(--hero-y),
-      rgba(146, 122, 255, 0.22),
-      rgba(105, 228, 255, 0.08) 42%,
-      transparent 72%
-    ),
-    radial-gradient(
-      circle 95px at var(--hero-x) var(--hero-y),
-      rgba(255, 255, 255, 0.12),
-      transparent 72%
-    );
-  inset: 0;
-  mix-blend-mode: screen;
-  opacity: var(--hero-signal-opacity);
-  pointer-events: none;
-  position: absolute;
-  transition: opacity 260ms ease;
-  z-index: 1;
 }
 
 .hero::before {
@@ -401,13 +341,13 @@
   content: "";
   inset: 0;
   mix-blend-mode: overlay;
-  opacity: 0.85;
+  opacity: 0.68;
   pointer-events: none;
   position: absolute;
 }
 
 .hero::after {
-  background: linear-gradient(180deg, transparent 58%, rgba(7, 7, 7, 0.35));
+  background: linear-gradient(180deg, transparent 58%, rgba(7, 7, 7, 0.2));
   content: "";
   inset: 0;
   pointer-events: none;
@@ -516,7 +456,7 @@
   margin-top: 28px;
 }
 
-.primaryButton {
+.heroActions .ctaButton {
   min-height: 52px;
   padding-inline: 26px;
 }
@@ -1031,10 +971,7 @@
   margin-top: 34px;
 }
 
-.darkButton {
-  background: var(--white);
-  border: 1px solid var(--white);
-  color: var(--black) !important;
+.finalCta .ctaButton {
   min-height: 52px;
   padding-inline: 26px;
 }
@@ -1288,10 +1225,11 @@
 }
 
 .zoneProperties {
-  align-items: flex-end;
+  align-items: center;
   display: flex;
-  flex-direction: column;
-  gap: 9px;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
 }
 
 .zoneDays {
@@ -1597,7 +1535,7 @@
 
 .countdown {
   align-items: center;
-  background: #0d1f40;
+  background: var(--black);
   border-block: 1px solid rgba(215, 255, 54, 0.5);
   display: flex;
   gap: 48px;
@@ -1613,7 +1551,8 @@
 
 .countdown .sectionLabel {
   color: rgba(255, 255, 255, 0.58);
-  max-width: 150px;
+  max-width: none;
+  white-space: nowrap;
 }
 
 .countdownUnits {
@@ -1652,12 +1591,13 @@
 .participationIntro {
   align-items: end;
   display: grid;
-  gap: 22px clamp(40px, 8vw, 120px);
+  gap: clamp(40px, 8vw, 120px);
   grid-template-columns: minmax(0, 1fr) minmax(280px, 0.62fr);
 }
 
-.participationIntro .sectionLabel {
-  grid-column: 1 / -1;
+.headingTitleGroup {
+  display: grid;
+  gap: clamp(24px, 3vw, 42px);
 }
 
 .participationIntro h2,
@@ -1684,20 +1624,55 @@
 }
 
 .participationGrid a {
+  --participation-accent: 215, 255, 54;
+
   border: 1px solid rgba(255, 255, 255, 0.16);
-  display: grid;
-  gap: 14px;
-  min-height: 170px;
-  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  min-height: 360px;
+  overflow: hidden;
   transition:
     background 180ms ease,
     border-color 180ms ease;
 }
 
+.participationGrid a:nth-child(2) {
+  --participation-accent: 167, 118, 255;
+}
+
+.participationGrid a:nth-child(3) {
+  --participation-accent: 255, 202, 54;
+}
+
+.participationGrid a:nth-child(4) {
+  --participation-accent: 74, 210, 255;
+}
+
+.participationGrid img {
+  aspect-ratio: 4 / 3;
+  display: block;
+  filter: saturate(0.78) contrast(1.05);
+  object-fit: cover;
+  transition: filter 180ms ease;
+  width: 100%;
+}
+
+.participationCardBody {
+  display: grid;
+  flex: 1;
+  gap: 14px;
+  padding: 24px;
+}
+
 .participationGrid a:hover,
 .participationGrid a:focus-visible {
-  background: rgba(215, 255, 54, 0.08);
-  border-color: rgba(215, 255, 54, 0.62);
+  background: rgba(var(--participation-accent), 0.07);
+  border-color: rgba(var(--participation-accent), 0.62);
+}
+
+.participationGrid a:hover img,
+.participationGrid a:focus-visible img {
+  filter: saturate(1) contrast(1.05);
 }
 
 .participationGrid span,
@@ -1705,6 +1680,10 @@
   color: rgba(255, 255, 255, 0.5);
   font-family: "JetBrains Mono", ui-monospace, monospace;
   font-size: 10px;
+}
+
+.participationGrid .participationCardBody > span:first-child {
+  color: rgb(var(--participation-accent));
 }
 
 .participationGrid strong {
@@ -1715,6 +1694,23 @@
 
 .participationGrid small {
   line-height: 1.5;
+}
+
+.participationGrid .participationCardLink {
+  align-self: start;
+  color: rgb(var(--participation-accent));
+  font-size: 11px;
+  margin-top: auto;
+  padding-top: 10px;
+  text-decoration: underline;
+  text-decoration-color: rgba(var(--participation-accent), 0.45);
+  text-underline-offset: 5px;
+  text-transform: uppercase;
+}
+
+.participationGrid a:hover .participationCardLink,
+.participationGrid a:focus-visible .participationCardLink {
+  text-decoration-color: rgb(var(--participation-accent));
 }
 
 .eventGallery {
@@ -1731,18 +1727,13 @@
 .galleryGrid {
   display: grid;
   gap: 10px;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .galleryGrid figure {
-  grid-column: span 2;
   margin: 0;
   overflow: hidden;
   position: relative;
-}
-
-.galleryGrid figure:nth-child(-n + 2) {
-  grid-column: span 3;
 }
 
 .galleryGrid img {
@@ -1759,14 +1750,20 @@
 }
 
 .galleryGrid figcaption {
-  background: linear-gradient(transparent, rgba(5, 5, 10, 0.92));
-  bottom: 0;
-  font-size: 16px;
-  font-weight: 600;
-  left: 0;
-  padding: 52px 24px 22px;
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  background: rgba(5, 5, 8, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  bottom: 14px;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 15px;
+  font-weight: 500;
+  left: 14px;
+  line-height: 1.4;
+  max-width: calc(100% - 28px);
+  padding: 14px 16px;
   position: absolute;
-  right: 0;
+  width: max-content;
 }
 
 .partnersSection {
@@ -1778,13 +1775,9 @@
 .partnersHeading {
   align-items: end;
   display: grid;
-  gap: 30px clamp(40px, 8vw, 120px);
+  gap: clamp(40px, 8vw, 120px);
   grid-template-columns: minmax(0, 1fr) minmax(280px, 0.5fr);
   margin-bottom: 62px;
-}
-
-.partnersHeading .sectionLabel {
-  grid-column: 1 / -1;
 }
 
 .partnersHeading h2 {
@@ -1922,6 +1915,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
+  gap: clamp(28px, 3vw, 40px);
   max-width: 920px;
 }
 
@@ -1931,7 +1925,7 @@
   font-weight: 600;
   letter-spacing: -0.1em;
   line-height: 0.86;
-  margin: 54px 0 46px;
+  margin: 0;
   text-transform: uppercase;
 }
 
@@ -1939,11 +1933,17 @@
   color: var(--lime);
 }
 
+.finalDescription {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: clamp(16px, 1.55vw, 21px);
+  line-height: 1.45;
+  margin: 0;
+}
+
 .footer {
   background:
     radial-gradient(circle at 88% 12%, rgba(79, 36, 255, 0.18), transparent 32%),
     #070707;
-  border-top: 1px solid rgba(255, 255, 255, 0.22);
   padding: clamp(56px, 7vw, 100px) clamp(24px, 6vw, 96px) 32px;
 }
 
@@ -1985,29 +1985,10 @@
 }
 
 .footerCta {
-  align-items: center;
-  background: var(--lime);
-  border-radius: 999px;
-  color: var(--black) !important;
-  display: inline-flex;
   flex: 0 0 auto;
-  font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: 11px;
-  font-weight: 700;
   gap: 32px;
-  justify-content: center;
-  letter-spacing: -0.04em;
   min-height: 58px;
   padding: 0 28px;
-  text-transform: uppercase;
-  transition:
-    background 180ms ease,
-    transform 180ms ease;
-}
-
-.footerCta:hover {
-  background: var(--white);
-  transform: translateY(-2px);
 }
 
 .footerNav {
@@ -2107,6 +2088,19 @@
     border-bottom-color: rgba(255, 255, 255, 0.1);
   }
 
+  .mobileNavActions {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+  }
+
+  .mobileJoinCta {
+    gap: 8px;
+    min-height: 38px;
+    padding-inline: 16px;
+  }
+
   .mobileMenuToggle {
     align-items: center;
     appearance: none;
@@ -2118,7 +2112,6 @@
     gap: 5px;
     height: 44px;
     justify-content: center;
-    margin-left: auto;
     padding: 0;
     width: 44px;
   }
@@ -2213,33 +2206,8 @@
   }
 
   .mobileMenuCta {
-    align-items: center;
-    background: var(--white);
-    border: 1px solid transparent;
-    border-radius: 999px;
-    color: var(--black) !important;
-    display: inline-flex;
-    font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 11px;
-    font-weight: 600;
-    gap: 12px;
     grid-column: 1 / -1;
-    justify-content: center;
     min-height: 48px;
-    padding: 0 20px;
-    text-transform: uppercase;
-    transition:
-      background 180ms ease,
-      border-color 180ms ease,
-      box-shadow 180ms ease;
-  }
-
-  .mobileMenuCta:hover,
-  .mobileMenuCta:focus-visible {
-    background: #f3ffd0;
-    border-color: var(--lime);
-    box-shadow: 0 0 0 3px rgba(215, 255, 54, 0.18);
-    outline: none;
   }
 
   .hero {
@@ -2340,7 +2308,7 @@
     font-size: clamp(28px, 10vw, 42px);
   }
 
-  .countdown .primaryButton {
+  .countdown .ctaButton {
     width: 100%;
   }
 
@@ -2353,16 +2321,12 @@
   }
 
   .galleryGrid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
   }
 
   .galleryGrid figure,
   .galleryGrid figure:nth-child(-n + 2) {
-    grid-column: span 1;
-  }
-
-  .galleryGrid figure:first-child {
-    grid-column: 1 / -1;
+    grid-column: auto;
   }
 
   .navWrap {
@@ -2407,9 +2371,9 @@
   .hero {
     align-items: stretch;
     background:
-      radial-gradient(circle at 62% 27%, transparent 0 13%, rgba(5, 4, 20, 0.18) 36%, rgba(5, 4, 20, 0.44) 100%),
-      linear-gradient(90deg, rgba(4, 4, 19, 0.94) 0%, rgba(9, 7, 40, 0.7) 52%, rgba(5, 4, 20, 0.16) 100%),
-      linear-gradient(180deg, rgba(7, 5, 27, 0.14) 30%, rgba(5, 4, 18, 0.8) 100%),
+      radial-gradient(circle at 62% 27%, transparent 0 13%, rgba(5, 4, 20, 0.1) 36%, rgba(5, 4, 20, 0.28) 100%),
+      linear-gradient(90deg, rgba(4, 4, 19, 0.78) 0%, rgba(9, 7, 40, 0.54) 52%, rgba(5, 4, 20, 0.08) 100%),
+      linear-gradient(180deg, rgba(7, 5, 27, 0.08) 30%, rgba(5, 4, 18, 0.58) 100%),
       url("/aimto-hero-mobile-portal.jpg") 70% center / cover no-repeat;
     height: 100svh;
     min-height: 760px;
@@ -2840,8 +2804,7 @@
   .mobileMenuToggle span,
   .mobileMenuGroup a,
   .mobileMenuCta,
-  .primaryButton,
-  .darkButton,
+  .ctaButton,
   .introGallery img,
   .stepCard,
   .zoneCard,

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import AimtoAudience from "./AimtoAudience";
+import AimtoButton from "./AimtoButton";
 import AimtoCountdown from "./AimtoCountdown";
 import AimtoMotion from "./AimtoMotion";
 import AimtoNav from "./AimtoNav";
@@ -62,12 +63,11 @@ const tickerItems = [
 
 const experienceZones = [
   {
-    label: "LEARN-A-THON_",
+    label: "BUILD AI_",
     days: ["DAY 2"],
     title: "Learn-a-thon",
     body: "Get hands-on with AI. Vibe-code your first website or app, set up personal AI agents, meet Malaysia’s AI builder community and get help from mentors and AI engineers.",
     image: "/aimto-assets/learnathon-builder-floor.jpg",
-    ctaLabel: "Secure your spot now",
   },
   {
     label: "KEYNOTES + PANELS_",
@@ -88,7 +88,7 @@ const experienceZones = [
     days: ["DAY 1", "DAY 2"],
     title: "Pasar AI",
     body: "Discover AI solutions, products and experiences from leading institutions. Pasar AI brings exhibitors and participants together to explore how AI is changing work, business, creativity and everyday life in Malaysia.",
-    image: "/aimto-assets/the-mainframe.jpg",
+    image: "/aimto-assets/pasar-ai-booths.jpg",
   },
 ];
 
@@ -139,7 +139,6 @@ export default function AiMalaysiaTakeoverPage() {
       <main>
         <section className={styles.hero} id="top">
           <div className={styles.heroGrid} aria-hidden="true" />
-          <div className={styles.heroHoverField} aria-hidden="true" />
           <div className={styles.heroContent}>
             <h1>
               Learn, Build
@@ -166,9 +165,9 @@ export default function AiMalaysiaTakeoverPage() {
               </div>
             </div>
             <div className={styles.heroActions}>
-              <a className={styles.primaryButton} href={registrationUrl}>
+              <AimtoButton href={registrationUrl}>
                 Secure your seats now <span aria-hidden="true">↗</span>
-              </a>
+              </AimtoButton>
               <a className={styles.textLink} href="#overview">
                 Explore the event <span aria-hidden="true">↓</span>
               </a>
@@ -212,7 +211,6 @@ export default function AiMalaysiaTakeoverPage() {
         </section>
 
         <AimtoStats />
-        <AimtoCountdown />
 
         <section className={styles.introSection} id="overview">
           <div className={styles.sectionLabel} data-reveal="up">
@@ -330,17 +328,19 @@ export default function AiMalaysiaTakeoverPage() {
                 <h3>{zone.title}</h3>
                 <p>{zone.body}</p>
                 {zone.ctaLabel ? (
-                  <a
-                    className={`${styles.primaryButton} ${styles.zoneCta}`}
+                  <AimtoButton
+                    className={styles.zoneCta}
                     href={registrationUrl}
                   >
                     {zone.ctaLabel} <span aria-hidden="true">↗</span>
-                  </a>
+                  </AimtoButton>
                 ) : null}
               </article>
             ))}
           </div>
         </section>
+
+        <AimtoCountdown />
 
         <section className={styles.campusSection} id="campus">
           <div className={styles.campusCopy} data-reveal="up">
@@ -414,33 +414,81 @@ export default function AiMalaysiaTakeoverPage() {
 
         <section className={styles.participationSection}>
           <div className={styles.participationIntro} data-reveal="up">
-            <div className={styles.sectionLabel}>PARTICIPATION MATRIX_</div>
-            <h2>Join the takeover.</h2>
+            <div className={styles.headingTitleGroup}>
+              <div className={styles.sectionLabel}>GET INVOLVED_</div>
+              <h2>Be a part of the 2026 Takeover.</h2>
+            </div>
             <p>
-              Whether you are building the future, sharing what you know or
-              backing the ecosystem, there is a place for you here.
+              Whether you are building the future or funding it, there is a
+              place for you inside Malaysia&apos;s AI ecosystem.
             </p>
           </div>
           <div className={styles.participationGrid} data-reveal="stagger">
             <a href={registrationUrl}>
-              <span>01_</span>
-              <strong>Attend</strong>
-              <small>Learn, build and meet the community.</small>
+              <Image
+                src="/aimto-assets/gallery-top-1.jpg"
+                alt="Attendees gathering at AI Malaysia"
+                width={720}
+                height={480}
+                sizes="(max-width: 680px) 100vw, (max-width: 980px) 50vw, 25vw"
+              />
+              <div className={styles.participationCardBody}>
+                <span>01_</span>
+                <strong>Attend</strong>
+                <small>Learn, build and meet the community.</small>
+                <span className={styles.participationCardLink}>Sign up ↗</span>
+              </div>
             </a>
             <a href="mailto:hello@ludic.asia?subject=AIMTO%202026%20contribution">
-              <span>02_</span>
-              <strong>Contribute</strong>
-              <small>Share a talk, workshop or practical demo.</small>
+              <Image
+                src="/aimto-assets/for-thinkers-builders.jpg"
+                alt="Speakers sharing ideas on stage at AI Malaysia"
+                width={720}
+                height={480}
+                sizes="(max-width: 680px) 100vw, (max-width: 980px) 50vw, 25vw"
+              />
+              <div className={styles.participationCardBody}>
+                <span>02_</span>
+                <strong>Speak</strong>
+                <small>Share your ideas, experience and perspective.</small>
+                <span className={styles.participationCardLink}>
+                  Apply to speak ↗
+                </span>
+              </div>
             </a>
             <a href="mailto:hello@ludic.asia?subject=AIMTO%202026%20exhibitor">
-              <span>03_</span>
-              <strong>Showcase</strong>
-              <small>Put your AI product or experience in the room.</small>
+              <Image
+                src="/aimto-assets/enterprise-ecosystem-leaders.jpg"
+                alt="Participants discovering AI products and experiences"
+                width={720}
+                height={480}
+                sizes="(max-width: 680px) 100vw, (max-width: 980px) 50vw, 25vw"
+              />
+              <div className={styles.participationCardBody}>
+                <span>03_</span>
+                <strong>Showcase</strong>
+                <small>Put your AI product or experience in the room.</small>
+                <span className={styles.participationCardLink}>
+                  Reach out to us ↗
+                </span>
+              </div>
             </a>
             <a href="mailto:hello@ludic.asia?subject=AIMTO%202026%20partnership">
-              <span>04_</span>
-              <strong>Partner</strong>
-              <small>Help make Malaysia&apos;s largest AI gathering happen.</small>
+              <Image
+                src="/aimto-assets/gallery-bottom.jpg"
+                alt="Industry and community leaders at AI Malaysia"
+                width={720}
+                height={480}
+                sizes="(max-width: 680px) 100vw, (max-width: 980px) 50vw, 25vw"
+              />
+              <div className={styles.participationCardBody}>
+                <span>04_</span>
+                <strong>Partner</strong>
+                <small>Help make Malaysia&apos;s largest AI gathering happen.</small>
+                <span className={styles.participationCardLink}>
+                  Let&apos;s talk ↗
+                </span>
+              </div>
             </a>
           </div>
         </section>
@@ -477,8 +525,9 @@ export default function AiMalaysiaTakeoverPage() {
                 alt="A keynote stage at AI Malaysia in 2025"
                 width={900}
                 height={900}
-                sizes="(max-width: 680px) 50vw, 25vw"
+                sizes="(max-width: 680px) 100vw, 50vw"
               />
+              <figcaption>Connecting minds. Building the future.</figcaption>
             </figure>
             <figure>
               <Image
@@ -486,8 +535,9 @@ export default function AiMalaysiaTakeoverPage() {
                 alt="Community members connecting at AI Malaysia in 2025"
                 width={900}
                 height={900}
-                sizes="(max-width: 680px) 50vw, 25vw"
+                sizes="(max-width: 680px) 100vw, 50vw"
               />
+              <figcaption>Ideas shared. Connections made.</figcaption>
             </figure>
             <figure>
               <Image
@@ -495,16 +545,29 @@ export default function AiMalaysiaTakeoverPage() {
                 alt="An AI Malaysia speaker presenting in 2025"
                 width={900}
                 height={900}
-                sizes="(max-width: 680px) 50vw, 25vw"
+                sizes="(max-width: 680px) 100vw, 50vw"
               />
+              <figcaption>Stronger together for real impact.</figcaption>
+            </figure>
+            <figure>
+              <Image
+                src="/aimto-assets/gallery-bottom.jpg"
+                alt="Leaders gathering on stage at AI Malaysia in 2025"
+                width={1200}
+                height={900}
+                sizes="(max-width: 680px) 100vw, 50vw"
+              />
+              <figcaption>A platform for builders, by builders.</figcaption>
             </figure>
           </div>
         </section>
 
         <section className={styles.partnersSection} id="partners">
           <div className={styles.partnersHeading} data-reveal="up">
-            <div className={styles.sectionLabel}>THE 2025 COHORT_</div>
-            <h2>Backed by industry giants.</h2>
+            <div className={styles.headingTitleGroup}>
+              <div className={styles.sectionLabel}>THE 2025 COHORT_</div>
+              <h2>Backed by industry giants.</h2>
+            </div>
             <p>
               The powerhouse lineup that made last year possible, driving the
               success of the ASEAN AI Malaysia Summit 2025 and the future of
@@ -552,15 +615,15 @@ export default function AiMalaysiaTakeoverPage() {
         <section className={styles.finalCta}>
           <div className={styles.finalGlow} aria-hidden="true" />
           <div data-reveal="up">
-            <p className={styles.eyebrow}>
-              11—12 AUGUST 2026 / THE CAMPUS AMPANG_
-            </p>
             <h2>
               <span>Join</span> the takeover.
             </h2>
-            <a className={styles.darkButton} href={registrationUrl}>
+            <p className={styles.finalDescription}>
+              Two days of practical AI learning, building and discovery.
+            </p>
+            <AimtoButton href={registrationUrl}>
               Secure your seats now <span aria-hidden="true">↗</span>
-            </a>
+            </AimtoButton>
           </div>
         </section>
       </main>
@@ -579,9 +642,9 @@ export default function AiMalaysiaTakeoverPage() {
             </a>
             <p>Building Malaysia&apos;s AI future, together.</p>
           </div>
-          <a className={styles.footerCta} href={registrationUrl}>
+          <AimtoButton className={styles.footerCta} href={registrationUrl}>
             Secure your seats now <span aria-hidden="true">↗</span>
-          </a>
+          </AimtoButton>
         </div>
 
         <nav className={styles.footerNav} aria-label="Footer navigation">

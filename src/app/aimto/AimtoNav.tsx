@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import Image from "next/image";
+import AimtoButton from "./AimtoButton";
 import styles from "./page.module.css";
 
 type AimtoNavProps = {
@@ -211,25 +212,33 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
             Contact Us
           </a>
         </div>
-        <a className={styles.navCta} href={registrationUrl}>
+        <AimtoButton className={styles.navCta} href={registrationUrl}>
           Secure your seats now <span aria-hidden="true">↗</span>
-        </a>
-        <button
-          ref={mobileToggleRef}
-          className={styles.mobileMenuToggle}
-          type="button"
-          aria-expanded={mobileOpen}
-          aria-controls="aimto-mobile-menu"
-          aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
-          onClick={() => {
-            setActiveMenu(null);
-            setMobileOpen((isOpen) => !isOpen);
-          }}
-        >
-          <span />
-          <span />
-          <span />
-        </button>
+        </AimtoButton>
+        <div className={styles.mobileNavActions}>
+          <AimtoButton
+            className={styles.mobileJoinCta}
+            href={registrationUrl}
+          >
+            Join <span aria-hidden="true">↗</span>
+          </AimtoButton>
+          <button
+            ref={mobileToggleRef}
+            className={styles.mobileMenuToggle}
+            type="button"
+            aria-expanded={mobileOpen}
+            aria-controls="aimto-mobile-menu"
+            aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
+            onClick={() => {
+              setActiveMenu(null);
+              setMobileOpen((isOpen) => !isOpen);
+            }}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
         <div
           className={`${styles.mobileMenu} ${
             mobileOpen ? styles.mobileMenuOpen : ""
@@ -272,13 +281,13 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
               Contact Us
             </a>
           </div>
-          <a
+          <AimtoButton
             className={styles.mobileMenuCta}
             href={registrationUrl}
             onClick={closeMobileMenu}
           >
             Secure your seats now <span aria-hidden="true">↗</span>
-          </a>
+          </AimtoButton>
         </div>
       </nav>
     </header>

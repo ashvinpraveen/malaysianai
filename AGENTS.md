@@ -4,16 +4,16 @@
 Malaysia’s AI Residency and Hub website. It promotes the Malaysian AI initiative, highlights the residency program, showcases resident companies, shares community partners, and publishes program updates via a simple blog.
 
 ## High-Level Architecture
-- Vite + React + TypeScript SPA.
-- React Router for pages.
+- Next.js + React + TypeScript application.
+- Next.js App Router for pages.
 - Tailwind CSS with a documented design system in `claude.md`.
 - Shadcn/Radix UI primitives in `src/components/ui`.
-- React Query provider initialized in `src/App.tsx`.
+- React Query provider initialized in `src/app/providers.tsx`.
 
 ## Entry Points
-- `index.html`: Vite HTML entry.
-- `src/main.tsx`: React root and global CSS import.
-- `src/App.tsx`: Router, providers, global UI (toasters, tooltips, error boundary).
+- `src/app/layout.tsx`: Root layout, metadata, global CSS, and shared providers.
+- `src/app/providers.tsx`: Client-side providers and global UI.
+- `src/app/page.tsx`: Home page route.
 
 ## Routes Map
 - `/` -> `src/app/page.tsx` (renders `src/views/MalaysianAI.tsx`)
@@ -52,7 +52,7 @@ Malaysia’s AI Residency and Hub website. It promotes the Malaysian AI initiati
 
 ## Styling System
 - Design system spec: `claude.md` (follow it when changing typography, colors, or spacing).
-- Global styles: `src/index.css` and `src/App.css`.
+- Global styles: `src/index.css`.
 - Tailwind config: `tailwind.config.ts`.
 - Shadcn config and aliases: `components.json`.
 
@@ -74,17 +74,16 @@ Malaysia’s AI Residency and Hub website. It promotes the Malaysian AI initiati
 - Example test: `src/test/example.test.ts`.
 
 ## Tooling
-- Vite config: `vite.config.ts`.
+- Next.js config: `next.config.mjs`.
 - ESLint: `eslint.config.js`.
-- TypeScript configs: `tsconfig.json`, `tsconfig.app.json`, `tsconfig.node.json`.
+- TypeScript config: `tsconfig.json`.
 - Vercel deploy config: `vercel.json`.
 
 ## Common Commands
 - `npm install`
 - `npm run dev`
 - `npm run build`
-- `npm run build:dev`
-- `npm run preview`
+- `npm run start`
 - `npm run lint`
 - `npm run test`
 - `npm run test:watch`

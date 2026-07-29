@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import AimtoButton from "./AimtoButton";
 import styles from "./page.module.css";
 
 const eventStart = new Date("2026-08-11T09:00:00+08:00").getTime();
@@ -17,18 +18,21 @@ function getRemaining() {
 }
 
 export default function AimtoCountdown() {
-  const [remaining, setRemaining] = useState(getRemaining);
+  const [remaining, setRemaining] = useState<ReturnType<
+    typeof getRemaining
+  > | null>(null);
 
   useEffect(() => {
+    setRemaining(getRemaining());
     const timer = window.setInterval(() => setRemaining(getRemaining()), 1000);
     return () => window.clearInterval(timer);
   }, []);
 
   const units = [
-    ["Days", remaining.days],
-    ["Hours", remaining.hours],
-    ["Minutes", remaining.minutes],
-    ["Seconds", remaining.seconds],
+    ["Days", remaining?.days],
+    ["Hours", remaining?.hours],
+    ["Minutes", remaining?.minutes],
+    ["Seconds", remaining?.seconds],
   ] as const;
 
   return (
@@ -38,18 +42,17 @@ export default function AimtoCountdown() {
         <div className={styles.countdownUnits}>
           {units.map(([label, value]) => (
             <div key={label}>
-              <strong>{String(value).padStart(2, "0")}</strong>
+              <strong>
+                {value === undefined ? "--" : String(value).padStart(2, "0")}
+              </strong>
               <span>{label}</span>
             </div>
           ))}
         </div>
       </div>
-      <a
-        className={styles.primaryButton}
-        href="https://event.aimto.my/concierge-menu/registration"
-      >
+      <AimtoButton href="https://event.aimto.my/concierge-menu/registration">
         Secure your seats now <span aria-hidden="true">↗</span>
-      </a>
+      </AimtoButton>
     </section>
   );
 }

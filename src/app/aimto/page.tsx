@@ -30,29 +30,39 @@ export const metadata: Metadata = {
 const registrationUrl =
   "https://event.aimto.my/concierge-menu/registration";
 
+const tickerItems = [
+  "KEYNOTES + PANELS_",
+  "LEARN-A-THON_",
+  "WORKSHOPS + LIVE DEMOS_",
+  "PASAR AI_",
+  "THE CAMPUS AMPANG_",
+  "BEGINNERS WELCOME_",
+  "MEET THE AI COMMUNITY_",
+];
+
 const experienceZones = [
   {
-    label: "THE WAR ROOM_",
+    label: "KEYNOTES + PANELS_",
     title: "Keynotes & Panels",
-    body: "Learn from the discussions of Malaysia’s top tech architects, policymakers, and global AI leaders to discuss and map the nation’s digital future.",
+    body: "Hear from Malaysia’s top tech architects, policymakers and global AI leaders as they discuss and map the nation’s digital future.",
     image: "/aimto-assets/the-war-room.jpg",
   },
   {
-    label: "PUBLIC AI LEARNING_",
+    label: "LEARN-A-THON_",
     title: "Learn-a-thon",
-    body: "Get hands on with AI. Learn to actually build things with AI. Vibe code your first websites and apps, get your personal assistant AI agents setup, meet Malaysia’s AI builder community and get help from mentors and AI engineers ready to support you.",
+    body: "Get hands-on with AI. Vibe-code your first website or app, set up personal AI agents, meet Malaysia’s AI builder community and get help from mentors and AI engineers.",
     image: "/aimto-assets/learnathon-builder-floor.jpg",
   },
   {
-    label: "THE SANDBOX_",
+    label: "WORKSHOPS + LIVE DEMOS_",
     title: "Workshops & Live Demos",
-    body: "Catch up with the latest AI developments shaking the industry. Learn from what’s working from leading practitioners, and get ideas and skills you can apply in your life.",
+    body: "Catch up on the latest AI developments shaping the industry. Learn what’s working from leading practitioners, then take home ideas and skills you can apply in your life.",
     image: "/aimto-assets/the-sandbox.jpg",
   },
   {
-    label: "COMMUNITY + DISCOVERY_",
+    label: "PASAR AI_",
     title: "Pasar AI",
-    body: "Discover the latest AI solutions, products and experiences from world leading institutions. Designed as a space for discovery, connection and conversation, Pasar AI brings together exhibitors and participants to explore how AI is transforming work, business, creativity and everyday life in Malaysia.",
+    body: "Discover AI solutions, products and experiences from leading institutions. Pasar AI brings exhibitors and participants together to explore how AI is changing work, business, creativity and everyday life in Malaysia.",
     image: "/aimto-assets/the-mainframe.jpg",
   },
 ];
@@ -162,18 +172,14 @@ export default function AiMalaysiaTakeoverPage() {
           <div className={styles.ticker} aria-label="Event highlights">
             <div className={styles.tickerTrack}>
               <div className={styles.tickerGroup}>
-                <span>LEARN AI_</span>
-                <span>LIVE DEMONSTRATIONS_</span>
-                <span>EXPERIENCE WHAT&apos;S NEXT_</span>
-                <span>BEGINNERS WELCOME_</span>
-                <span>MEET THE COMMUNITY_</span>
+                {tickerItems.map((item) => (
+                  <span key={item}>{item}</span>
+                ))}
               </div>
               <div className={styles.tickerGroup} aria-hidden="true">
-                <span>LEARN AI_</span>
-                <span>LIVE DEMONSTRATIONS_</span>
-                <span>EXPERIENCE WHAT&apos;S NEXT_</span>
-                <span>BEGINNERS WELCOME_</span>
-                <span>MEET THE COMMUNITY_</span>
+                {tickerItems.map((item) => (
+                  <span key={`${item}-repeat`}>{item}</span>
+                ))}
               </div>
             </div>
           </div>
@@ -265,7 +271,7 @@ export default function AiMalaysiaTakeoverPage() {
 
         <section className={styles.zonesSection} id="experience">
           <div className={styles.sectionHeading} data-reveal="up">
-            <div className={styles.sectionLabel}>02 / EXPERIENCE_</div>
+            <div className={styles.sectionLabel}>EXPERIENCE_</div>
             <h2>See AI in action.</h2>
           </div>
           <div className={styles.zonesGrid} data-reveal="stagger">
@@ -386,7 +392,7 @@ export default function AiMalaysiaTakeoverPage() {
 
         <section className={styles.faqSection} id="faq">
           <div className={styles.faqIntro} data-reveal="up">
-            <div className={styles.sectionLabel}>04 / FAQ_</div>
+            <div className={styles.sectionLabel}>FAQ_</div>
             <h2>Before you come.</h2>
             <p>
               The useful details—especially if this is your first AI event.

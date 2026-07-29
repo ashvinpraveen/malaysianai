@@ -1792,7 +1792,7 @@
       radial-gradient(circle at 62% 27%, transparent 0 13%, rgba(5, 4, 20, 0.18) 36%, rgba(5, 4, 20, 0.44) 100%),
       linear-gradient(90deg, rgba(4, 4, 19, 0.94) 0%, rgba(9, 7, 40, 0.7) 52%, rgba(5, 4, 20, 0.16) 100%),
       linear-gradient(180deg, rgba(7, 5, 27, 0.14) 30%, rgba(5, 4, 18, 0.8) 100%),
-      url("/aimto-hero-portrait-mobile.jpg") right center / cover no-repeat;
+      url("/aimto-hero-mobile-portal.jpg") 70% center / cover no-repeat;
     height: 100svh;
     min-height: 760px;
     padding: 84px 20px 124px;
@@ -1839,12 +1839,21 @@
     max-width: 100%;
   }
 
+  .heroActions .textLink {
+    display: none;
+  }
+
   .heroOrganisers {
     align-items: center;
-    bottom: 62px;
-    gap: 20px;
-    left: 20px;
-    right: auto;
+    bottom: 66px;
+    gap: 5px;
+    left: auto;
+    right: 20px;
+    width: max-content;
+  }
+
+  .heroOrganisers > div {
+    gap: 10px;
   }
 
   .heroOrganisers img {
@@ -1860,11 +1869,7 @@
   }
 
   .tickerTrack {
-    animation: none;
-  }
-
-  .tickerGroup:nth-child(2) {
-    display: none;
+    animation-duration: 36s;
   }
 
   .proof {

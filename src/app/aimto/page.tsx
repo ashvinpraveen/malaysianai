@@ -17,13 +17,23 @@ export const metadata: Metadata = {
     title: "AI Malaysia Takeover 2026",
     description:
       "Learn, build and experience Malaysian AI. Join us on 11–12 August 2026 at The Campus Ampang.",
+    url: "/aimto",
     type: "website",
+    images: [
+      {
+        url: "/aimto-assets/og-image.png",
+        width: 1535,
+        height: 1024,
+        alt: "AI Malaysia Takeover 2026, 11–12 August at The Campus Kuala Lumpur",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "AI Malaysia Takeover 2026",
     description:
       "Two days of hands-on AI learning at The Campus, Ampang.",
+    images: ["/aimto-assets/og-image.png"],
   },
 };
 
@@ -42,16 +52,17 @@ const tickerItems = [
 
 const experienceZones = [
   {
-    label: "KEYNOTES + PANELS_",
-    title: "Keynotes & Panels",
-    body: "Hear from Malaysia’s top tech architects, policymakers and global AI leaders as they discuss and map the nation’s digital future.",
-    image: "/aimto-assets/the-war-room.jpg",
-  },
-  {
     label: "LEARN-A-THON_",
     title: "Learn-a-thon",
     body: "Get hands-on with AI. Vibe-code your first website or app, set up personal AI agents, meet Malaysia’s AI builder community and get help from mentors and AI engineers.",
     image: "/aimto-assets/learnathon-builder-floor.jpg",
+    ctaLabel: "Secure your spot now",
+  },
+  {
+    label: "KEYNOTES + PANELS_",
+    title: "Keynotes & Panels",
+    body: "Hear from Malaysia’s top tech architects, policymakers and global AI leaders as they discuss and map the nation’s digital future.",
+    image: "/aimto-assets/the-war-room.jpg",
   },
   {
     label: "WORKSHOPS + LIVE DEMOS_",
@@ -143,7 +154,7 @@ export default function AiMalaysiaTakeoverPage() {
               <a className={styles.primaryButton} href={registrationUrl}>
                 Secure your seats now <span aria-hidden="true">↗</span>
               </a>
-              <a className={styles.textLink} href="#experience">
+              <a className={styles.textLink} href="#overview">
                 Explore the event <span aria-hidden="true">↓</span>
               </a>
             </div>
@@ -187,7 +198,7 @@ export default function AiMalaysiaTakeoverPage() {
 
         <AimtoStats />
 
-        <section className={styles.introSection}>
+        <section className={styles.introSection} id="overview">
           <div className={styles.sectionLabel} data-reveal="up">
             AI FOR THE PEOPLE_
           </div>
@@ -272,11 +283,16 @@ export default function AiMalaysiaTakeoverPage() {
         <section className={styles.zonesSection} id="experience">
           <div className={styles.sectionHeading} data-reveal="up">
             <div className={styles.sectionLabel}>EXPERIENCE_</div>
-            <h2>See AI in action.</h2>
+            <h2>What&apos;s happening in AI Malaysia Takeover 2026.</h2>
           </div>
           <div className={styles.zonesGrid} data-reveal="stagger">
             {experienceZones.map((zone, index) => (
-              <article className={styles.zoneCard} key={zone.label}>
+              <article
+                className={`${styles.zoneCard} ${
+                  zone.ctaLabel ? styles.zoneCardHasCta : ""
+                }`}
+                key={zone.label}
+              >
                 <Image
                   src={zone.image}
                   alt=""
@@ -290,6 +306,14 @@ export default function AiMalaysiaTakeoverPage() {
                 </div>
                 <h3>{zone.title}</h3>
                 <p>{zone.body}</p>
+                {zone.ctaLabel ? (
+                  <a
+                    className={`${styles.primaryButton} ${styles.zoneCta}`}
+                    href={registrationUrl}
+                  >
+                    {zone.ctaLabel} <span aria-hidden="true">↗</span>
+                  </a>
+                ) : null}
               </article>
             ))}
           </div>

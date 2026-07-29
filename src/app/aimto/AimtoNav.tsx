@@ -17,12 +17,15 @@ type MenuId = "program" | "attend" | "about";
 export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
   const [scrolled, setScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState<MenuId | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
+  const mobileToggleRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 40);
       setActiveMenu(null);
+      setMobileOpen(false);
     };
 
     onScroll();
@@ -34,16 +37,22 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
     const closeFromOutside = (event: PointerEvent) => {
       if (!navRef.current?.contains(event.target as Node)) {
         setActiveMenu(null);
+        setMobileOpen(false);
       }
     };
 
     const closeWithKeyboard = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
 
-      navRef.current
-        ?.querySelector<HTMLButtonElement>('[aria-expanded="true"]')
-        ?.focus();
+      if (mobileOpen) {
+        mobileToggleRef.current?.focus();
+      } else {
+        navRef.current
+          ?.querySelector<HTMLButtonElement>('[aria-expanded="true"]')
+          ?.focus();
+      }
       setActiveMenu(null);
+      setMobileOpen(false);
     };
 
     document.addEventListener("pointerdown", closeFromOutside);
@@ -53,17 +62,21 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
       document.removeEventListener("pointerdown", closeFromOutside);
       document.removeEventListener("keydown", closeWithKeyboard);
     };
-  }, []);
+  }, [mobileOpen]);
 
   const toggleMenu = (menu: MenuId) => {
     setActiveMenu((currentMenu) => (currentMenu === menu ? null : menu));
   };
 
+  const closeMobileMenu = () => setMobileOpen(false);
+
   return (
     <header className={styles.navWrap}>
       <nav
         ref={navRef}
-        className={`${styles.nav} ${scrolled ? styles.navScrolled : ""}`}
+        className={`${styles.nav} ${scrolled ? styles.navScrolled : ""} ${
+          mobileOpen ? styles.navMobileOpen : ""
+        }`}
         aria-label="AI Malaysia Takeover"
       >
         <a
@@ -175,6 +188,72 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
         <a className={styles.navCta} href={registrationUrl}>
           Secure your seats now <span aria-hidden="true">↗</span>
         </a>
+        <button
+          ref={mobileToggleRef}
+          className={styles.mobileMenuToggle}
+          type="button"
+          aria-expanded={mobileOpen}
+          aria-controls="aimto-mobile-menu"
+          aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
+          onClick={() => {
+            setActiveMenu(null);
+            setMobileOpen((isOpen) => !isOpen);
+          }}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+        <div
+          className={`${styles.mobileMenu} ${
+            mobileOpen ? styles.mobileMenuOpen : ""
+          }`}
+          id="aimto-mobile-menu"
+        >
+          <div className={styles.mobileMenuGroup}>
+            <span>Program_</span>
+            <a href="#experience" onClick={closeMobileMenu}>
+              Event Programme
+            </a>
+            <a href="https://aimto.my/side-events.html" onClick={closeMobileMenu}>
+              Side Events
+            </a>
+            <a href="https://aimto.my/#speakers" onClick={closeMobileMenu}>
+              Speakers
+            </a>
+          </div>
+          <div className={styles.mobileMenuGroup}>
+            <span>Attend_</span>
+            <a href={registrationUrl} onClick={closeMobileMenu}>
+              Tickets
+            </a>
+            <a href="#campus" onClick={closeMobileMenu}>
+              Get here
+            </a>
+            <a href="#faq" onClick={closeMobileMenu}>
+              FAQ
+            </a>
+          </div>
+          <div className={styles.mobileMenuGroup}>
+            <span>About_</span>
+            <a href="#experience" onClick={closeMobileMenu}>
+              Experience
+            </a>
+            <a href="#partners" onClick={closeMobileMenu}>
+              Partners
+            </a>
+            <a href="#contact" onClick={closeMobileMenu}>
+              Contact Us
+            </a>
+          </div>
+          <a
+            className={styles.mobileMenuCta}
+            href={registrationUrl}
+            onClick={closeMobileMenu}
+          >
+            Secure your seats now <span aria-hidden="true">↗</span>
+          </a>
+        </div>
       </nav>
     </header>
   );

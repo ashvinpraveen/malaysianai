@@ -723,6 +723,7 @@
 
 .introSection {
   padding-top: clamp(48px, 4vw, 64px);
+  position: relative;
 }
 
 .sectionLabel {
@@ -751,12 +752,6 @@
 
 .scrambleTitle {
   align-self: start;
-}
-
-.introVisualColumn {
-  align-self: start;
-  display: flex;
-  flex-direction: column;
 }
 
 .scrambleTitle > span {
@@ -792,18 +787,21 @@
 }
 
 .introArtwork {
-  align-self: flex-start;
-  aspect-ratio: 4 / 3;
-  margin-top: clamp(28px, 3.5vw, 48px);
-  overflow: hidden;
-  width: min(62%, 330px);
+  --intro-artwork-inset: clamp(18px, 2vw, 28px);
+
+  aspect-ratio: 5 / 4;
+  bottom: var(--intro-artwork-inset);
+  left: var(--intro-artwork-inset);
+  pointer-events: none;
+  position: absolute;
+  width: min(36vw, 414px);
 }
 
 .introArtwork img {
   display: block;
   height: 100%;
-  object-fit: cover;
-  object-position: 38% center;
+  object-fit: contain;
+  object-position: left bottom;
   width: 100%;
 }
 
@@ -2162,6 +2160,10 @@
 }
 
 @media (max-width: 1000px) {
+  .introSection {
+    padding-bottom: clamp(240px, 32vw, 310px);
+  }
+
   .trainersIntro {
     align-items: start;
     grid-template-columns: 1fr;
@@ -2413,6 +2415,10 @@
 }
 
 @media (max-width: 680px) {
+  .introSection {
+    padding-bottom: 88px;
+  }
+
   .trainersSection {
     padding: 88px 20px;
   }
@@ -2636,17 +2642,16 @@
   }
 
   .introLayout {
+    gap: 32px;
     margin-top: 44px;
   }
 
   .introArtwork {
-    aspect-ratio: 4 / 3;
-    margin-top: 28px;
-    width: min(62%, 240px);
-  }
-
-  .introArtwork img {
-    object-position: 40% center;
+    aspect-ratio: 5 / 4;
+    justify-self: start;
+    margin: 0;
+    position: static;
+    width: 100%;
   }
 
   .filmSection {

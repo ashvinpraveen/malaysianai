@@ -245,18 +245,7 @@ export default function AiMalaysiaTakeoverPage() {
             AI DOESN&apos;T HAVE TO BE CONFUSING_
           </div>
           <div className={styles.introLayout} data-reveal="up">
-            <div className={styles.introVisualColumn}>
-              <AimtoScrambleTitle />
-              <div className={styles.introArtwork}>
-                <Image
-                  src="/aimto-assets/digital-hibiscus.png"
-                  alt="A digital hibiscus formed from hot-pink and violet digital forms"
-                  width={1983}
-                  height={793}
-                  sizes="(max-width: 680px) 72vw, 36vw"
-                />
-              </div>
-            </div>
+            <AimtoScrambleTitle />
             <div className={styles.introCopy}>
               <p className={styles.lead}>
                 This is an event for everyday people to transform what they can
@@ -271,6 +260,15 @@ export default function AiMalaysiaTakeoverPage() {
                 Experience two days of free public AI training designed to help
                 you learn to get the most of AI and have fun along the way.
               </p>
+            </div>
+            <div className={styles.introArtwork} data-reveal="soft">
+              <Image
+                src="/aimto-assets/digital-hibiscus.png"
+                alt="A hibiscus constructed from hot-pink and violet ASCII characters"
+                width={1402}
+                height={1122}
+                sizes="(max-width: 680px) calc(100vw - 40px), 360px"
+              />
             </div>
           </div>
         </section>

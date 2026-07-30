@@ -219,10 +219,12 @@ This document outlines the design system for the Placeholder website. All compon
 
 ### AIMTO Digital Botanical Artwork
 
-- Use a crisp, low-detail digital hibiscus in hot pink, magenta and violet on
-  near-black to express Malaysian identity without adding soft gradient circles.
-- Keep the artwork compact and directly beneath the inclusive `AI FOR` title,
-  using a focused 4:3 crop on desktop and mobile.
+- Use a crisp ASCII-art hibiscus built from large monospaced characters in hot
+  pink, magenta and violet on near-black.
+- Absolutely position the artwork at the bottom-left of the inclusive intro
+  section on desktop so it does not participate in the title-and-copy document
+  flow. On mobile, place it after the full body copy and let it fill the content
+  width.
 
 ### AIMTO Learn-a-thon Page
 

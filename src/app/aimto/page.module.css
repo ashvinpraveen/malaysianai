@@ -792,10 +792,11 @@
 }
 
 .introArtwork {
+  align-self: flex-start;
   aspect-ratio: 4 / 3;
-  margin-top: clamp(38px, 5vw, 68px);
+  margin-top: clamp(28px, 3.5vw, 48px);
   overflow: hidden;
-  width: min(82%, 460px);
+  width: min(62%, 330px);
 }
 
 .introArtwork img {
@@ -2640,8 +2641,8 @@
 
   .introArtwork {
     aspect-ratio: 4 / 3;
-    margin-top: 34px;
-    width: min(76%, 300px);
+    margin-top: 28px;
+    width: min(62%, 240px);
   }
 
   .introArtwork img {

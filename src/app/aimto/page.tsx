@@ -55,7 +55,7 @@ const tickerItems = [
   "KEYNOTES + PANELS_",
   "LEARN-A-THON_",
   "WORKSHOPS + LIVE DEMOS_",
-  "PASAR AI_",
+  "AI OPEN HOUSE_",
   "THE CAMPUS AMPANG_",
   "BEGINNERS WELCOME_",
   "MEET THE AI COMMUNITY_",
@@ -86,8 +86,8 @@ const experienceZones = [
   {
     label: "EXHIBITION + ACTIVATIONS_",
     days: ["DAY 1", "DAY 2"],
-    title: "Pasar AI",
-    body: "Discover AI solutions, products and experiences from leading institutions. Pasar AI brings exhibitors and participants together to explore how AI is changing work, business, creativity and everyday life in Malaysia.",
+    title: "AI Open House",
+    body: "Discover AI solutions, products and experiences from leading institutions. The AI Open House brings exhibitors and participants together to explore how AI is changing work, business, creativity and everyday life in Malaysia.",
     image: "/aimto-assets/pasar-ai-booths-wide.jpg",
   },
 ];
@@ -96,6 +96,13 @@ const partnerLogos = Array.from(
   { length: 30 },
   (_, index) => `/aimto-assets/partners/${index + 1}.png`,
 );
+
+const trainers = [
+  "Timothy Tiah",
+  "Jon Lai",
+  "Warren Leow",
+  "Kracked Dev",
+];
 
 const faqs = [
   {
@@ -228,71 +235,33 @@ export default function AiMalaysiaTakeoverPage() {
                 do with AI.
               </p>
               <p>
-                We&apos;re curating a series of workshops, panels, community
-                events and practical hands-on build sessions to support you in
-                your journey towards mastering AI.
+                Two days of free public training, with no coding experience
+                needed. Bring your mom, aunties, teenagers and uncles to learn
+                together with us.
               </p>
             </div>
           </div>
-          <div
-            className={styles.introGallery}
-            aria-label="Scenes from the 2025 event"
-            data-reveal="stagger"
-          >
-            <Image
-              src="/aimto-assets/gallery-bottom.jpg"
-              alt="The 2025 AI Malaysia event stage"
-              width={2000}
-              height={520}
-              sizes="(max-width: 680px) 100vw, 50vw"
-            />
-            <Image
-              src="/aimto-assets/gallery-mid-1.jpg"
-              alt="A packed session at the 2025 event"
-              width={390}
-              height={460}
-              sizes="(max-width: 680px) 50vw, 25vw"
-            />
-            <Image
-              src="/aimto-assets/enterprise-ecosystem-leaders.jpg"
-              alt="Attendees trying an AI experience at the 2025 event"
-              width={900}
-              height={520}
-              sizes="(max-width: 680px) 50vw, 25vw"
-            />
-          </div>
         </section>
 
-        <section className={styles.filmSection} aria-labelledby="event-film-title">
-          <div className={styles.filmHeader} data-reveal="up">
-            <div>
-              <div className={styles.sectionLabel}>THE 2025 EVENT FILM_</div>
-              <h2 id="event-film-title">See what AI Malaysia feels like.</h2>
-            </div>
-            <p>
-              A look back at Malaysia&apos;s largest AI event, designed to
-              empower Malaysians.
-            </p>
+        <AimtoAudience />
+
+        <div
+          className={styles.introGallerySection}
+          aria-label="AI Open House preview"
+          data-reveal="soft"
+        >
+          <div
+            className={`${styles.introGallery} ${styles.introGallerySingle}`}
+          >
+            <Image
+              src="/aimto-assets/pasar-ai-booths-wide.jpg"
+              alt="Preview of the AI Open House exhibition and activation space"
+              width={1536}
+              height={1024}
+              sizes="(max-width: 680px) 100vw, 88vw"
+            />
           </div>
-          <div className={styles.filmFrame} data-reveal="soft">
-            <video
-              controls
-              playsInline
-              preload="metadata"
-              poster="/aimto-assets/video-poster.jpg"
-              aria-label="AI Malaysia 2025 event film"
-            >
-              <source
-                src="https://cdn.aimto.my/video/asean_ai_2025.mp4"
-                type="video/mp4"
-              />
-              Your browser does not support embedded video.{" "}
-              <a href="https://cdn.aimto.my/video/asean_ai_2025.mp4">
-                Watch the 2025 event film.
-              </a>
-            </video>
-          </div>
-        </section>
+        </div>
 
         <section className={styles.zonesSection} id="experience">
           <div className={styles.sectionHeading} data-reveal="up">
@@ -327,6 +296,39 @@ export default function AiMalaysiaTakeoverPage() {
               </article>
             ))}
           </div>
+        </section>
+
+        <section
+          className={styles.trainersSection}
+          aria-labelledby="trainers-title"
+        >
+          <div className={styles.trainersIntro} data-reveal="up">
+            <div>
+              <div className={styles.sectionLabel}>
+                LEARN FROM PEOPLE DOING THE WORK_
+              </div>
+              <h2 id="trainers-title">Meet your trainers.</h2>
+            </div>
+            <p>
+              Learning AI from professional trainers like these can often cost
+              thousands of ringgit. Here, you get to learn with them as part of
+              two free public training days.
+            </p>
+          </div>
+          <div
+            className={styles.trainersGrid}
+            aria-label="AI Malaysia Takeover trainers"
+            data-reveal="stagger"
+          >
+            {trainers.map((trainer, index) => (
+              <article className={styles.trainerCard} key={trainer}>
+                <span>{String(index + 1).padStart(2, "0")}_</span>
+                <h3>{trainer}</h3>
+                <small>TRAINER_</small>
+              </article>
+            ))}
+          </div>
+          <p className={styles.trainersMore}>MORE TRAINERS TO BE ANNOUNCED_</p>
         </section>
 
         <AimtoCountdown />
@@ -398,8 +400,6 @@ export default function AiMalaysiaTakeoverPage() {
             .
           </p>
         </section>
-
-        <AimtoAudience />
 
         <section className={styles.participationSection}>
           <div className={styles.participationIntro} data-reveal="up">
@@ -485,7 +485,7 @@ export default function AiMalaysiaTakeoverPage() {
         <section className={styles.eventGallery} aria-labelledby="gallery-title">
           <div className={styles.galleryHeading} data-reveal="up">
             <div className={styles.sectionLabel}>THE ENERGY OF 2025_</div>
-            <h2 id="gallery-title">Built by the community.</h2>
+            <h2 id="gallery-title">What happened in AI Malaysia 2025.</h2>
           </div>
           <div className={styles.galleryGrid} data-reveal="stagger">
             <figure>
@@ -548,6 +548,37 @@ export default function AiMalaysiaTakeoverPage() {
               />
               <figcaption>A platform for builders, by builders.</figcaption>
             </figure>
+          </div>
+        </section>
+
+        <section className={styles.filmSection} aria-labelledby="event-film-title">
+          <div className={styles.filmHeader} data-reveal="up">
+            <div>
+              <div className={styles.sectionLabel}>THE 2025 EVENT FILM_</div>
+              <h2 id="event-film-title">See what AI Malaysia feels like.</h2>
+            </div>
+            <p>
+              A look back at Malaysia&apos;s largest AI event, designed to
+              empower Malaysians.
+            </p>
+          </div>
+          <div className={styles.filmFrame} data-reveal="soft">
+            <video
+              controls
+              playsInline
+              preload="metadata"
+              poster="/aimto-assets/video-poster.jpg"
+              aria-label="AI Malaysia 2025 event film"
+            >
+              <source
+                src="https://cdn.aimto.my/video/asean_ai_2025.mp4"
+                type="video/mp4"
+              />
+              Your browser does not support embedded video.{" "}
+              <a href="https://cdn.aimto.my/video/asean_ai_2025.mp4">
+                Watch the 2025 event film.
+              </a>
+            </video>
           </div>
         </section>
 

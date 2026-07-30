@@ -776,8 +776,17 @@
   gap: 1px;
   grid-template-columns: 1.35fr 0.65fr 0.9fr;
   height: clamp(260px, 28vw, 430px);
-  margin-top: clamp(48px, 6vw, 88px);
   overflow: hidden;
+}
+
+.introGallerySection {
+  background: #09090c;
+  padding: 0 clamp(24px, 6vw, 96px) clamp(88px, 10vw, 144px);
+}
+
+.introGallerySingle {
+  grid-template-columns: 1fr;
+  height: clamp(320px, 48vw, 680px);
 }
 
 .introGallery img {
@@ -1524,6 +1533,98 @@
   max-width: 520px;
 }
 
+.trainersSection {
+  background:
+    radial-gradient(circle at 14% 18%, rgba(122, 92, 255, 0.18), transparent 34%),
+    #09090c;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  padding: clamp(88px, 10vw, 144px) clamp(24px, 6vw, 96px);
+}
+
+.trainersIntro {
+  align-items: end;
+  display: grid;
+  gap: clamp(42px, 9vw, 140px);
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.65fr);
+}
+
+.trainersIntro h2 {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: clamp(38px, 5.2vw, 72px);
+  font-weight: 500;
+  letter-spacing: -0.075em;
+  line-height: 0.94;
+  margin-top: 34px;
+  max-width: 920px;
+  text-transform: uppercase;
+}
+
+.trainersIntro > p {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: clamp(17px, 1.7vw, 22px);
+  line-height: 1.55;
+  max-width: 560px;
+}
+
+.trainersGrid {
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: clamp(54px, 7vw, 88px);
+}
+
+.trainerCard {
+  background: rgba(255, 255, 255, 0.018);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  justify-content: space-between;
+  min-height: clamp(220px, 22vw, 310px);
+  padding: clamp(24px, 2.8vw, 38px);
+  transition:
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.trainerCard:hover {
+  background: rgba(215, 255, 54, 0.055);
+  border-color: rgba(215, 255, 54, 0.5);
+}
+
+.trainerCard span,
+.trainerCard small,
+.trainersMore {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+}
+
+.trainerCard span {
+  color: var(--lime);
+}
+
+.trainerCard h3 {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: clamp(24px, 2.65vw, 40px);
+  font-weight: 500;
+  letter-spacing: -0.07em;
+  line-height: 0.98;
+  text-transform: uppercase;
+}
+
+.trainerCard small {
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.trainersMore {
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 22px;
+  text-align: right;
+}
+
 .countdown {
   align-items: center;
   background: var(--black);
@@ -2041,6 +2142,15 @@
 }
 
 @media (max-width: 1000px) {
+  .trainersIntro {
+    align-items: start;
+    grid-template-columns: 1fr;
+  }
+
+  .trainersGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .countdown,
   .countdown > div {
     align-items: flex-start;
@@ -2283,6 +2393,37 @@
 }
 
 @media (max-width: 680px) {
+  .trainersSection {
+    padding: 88px 20px;
+  }
+
+  .trainersIntro h2 {
+    font-size: clamp(36px, 11vw, 46px);
+    margin-top: 28px;
+  }
+
+  .trainersIntro > p {
+    font-size: 16px;
+  }
+
+  .trainersGrid {
+    grid-template-columns: 1fr;
+    margin-top: 48px;
+  }
+
+  .trainerCard {
+    min-height: 190px;
+  }
+
+  .trainerCard h3 {
+    font-size: clamp(30px, 10vw, 42px);
+  }
+
+  .trainersMore {
+    line-height: 1.5;
+    text-align: left;
+  }
+
   .countdown {
     padding-block: 30px;
   }
@@ -2474,9 +2615,8 @@
   }
 
   .introGallery {
-    grid-template-columns: 1fr 1fr;
     height: auto;
-    margin-top: 48px;
+    grid-template-columns: 1fr;
   }
 
   .introGallery img {
@@ -2484,8 +2624,11 @@
   }
 
   .introGallery img:first-child {
-    aspect-ratio: 16 / 9;
-    grid-column: 1 / -1;
+    aspect-ratio: 4 / 3;
+  }
+
+  .introGallerySection {
+    padding: 0 20px 88px;
   }
 
   .filmSection {
@@ -2859,6 +3002,7 @@
   .introGallery img,
   .stepCard,
   .zoneCard,
+  .trainerCard,
   .audienceStage,
   .stageMarker,
   .faqList summary i {

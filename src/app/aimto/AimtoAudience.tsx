@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./page.module.css";
+
+const audienceCycleMs = 4500;
 
 const audiencePaths = [
   {
@@ -33,6 +35,53 @@ const audiencePaths = [
 
 export default function AimtoAudience() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [cycleVersion, setCycleVersion] = useState(0);
+  const [announceChange, setAnnounceChange] = useState(false);
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    );
+    let intervalId: number | undefined;
+
+    const stopCycle = () => {
+      if (intervalId !== undefined) {
+        window.clearInterval(intervalId);
+        intervalId = undefined;
+      }
+    };
+
+    const startCycle = () => {
+      stopCycle();
+
+      if (reducedMotion.matches || document.hidden) {
+        return;
+      }
+
+      intervalId = window.setInterval(() => {
+        setAnnounceChange(false);
+        setActiveIndex((currentIndex) => {
+          return (currentIndex + 1) % audiencePaths.length;
+        });
+      }, audienceCycleMs);
+    };
+
+    startCycle();
+    reducedMotion.addEventListener("change", startCycle);
+    document.addEventListener("visibilitychange", startCycle);
+
+    return () => {
+      stopCycle();
+      reducedMotion.removeEventListener("change", startCycle);
+      document.removeEventListener("visibilitychange", startCycle);
+    };
+  }, [cycleVersion]);
+
+  const selectAudiencePath = (index: number) => {
+    setAnnounceChange(true);
+    setActiveIndex(index);
+    setCycleVersion((version) => version + 1);
+  };
 
   return (
     <section
@@ -66,9 +115,7 @@ export default function AimtoAudience() {
                 aria-pressed={isActive}
                 aria-controls="aimto-audience-detail"
                 aria-label={`${index + 1}. ${path.quote}`}
-                onClick={() => setActiveIndex(index)}
-                onFocus={() => setActiveIndex(index)}
-                onPointerEnter={() => setActiveIndex(index)}
+                onClick={() => selectAudiencePath(index)}
               >
                 <span className={styles.stageMarker} aria-hidden="true">
                   {String(index + 1).padStart(2, "0")}
@@ -80,7 +127,7 @@ export default function AimtoAudience() {
         <div
           className={styles.audienceDetail}
           id="aimto-audience-detail"
-          aria-live="polite"
+          aria-live={announceChange ? "polite" : "off"}
         >
           <strong>“{audiencePaths[activeIndex].quote}”</strong>
           <p>{audiencePaths[activeIndex].answer}</p>

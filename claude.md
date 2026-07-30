@@ -195,6 +195,14 @@ This document outlines the design system for the Placeholder website. All compon
 - Usage: Modals, popovers on dark backgrounds
 ```
 
+### AIMTO Trainer Roster
+
+- Use a bordered editorial grid on the AIMTO dark surface.
+- Keep trainer cards typographic when approved portrait assets are unavailable.
+- Use the AIMTO mono display face, compact numbered labels, lime accents, and
+  restrained background/border hover feedback without vertical movement.
+- Collapse from four columns to two, then one column on mobile.
+
 ### Backgrounds
 
 ```css

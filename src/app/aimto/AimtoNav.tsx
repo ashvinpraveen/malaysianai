@@ -93,7 +93,7 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
       >
         <a
           className={styles.brand}
-          href="#top"
+          href="/aimto#top"
           aria-label="AI Malaysia Takeover home"
         >
           <Image
@@ -118,7 +118,6 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
               aria-expanded={activeMenu === "program"}
               aria-controls="aimto-menu-program"
               onClick={() => toggleMenu("program")}
-              onFocus={() => setActiveMenu("program")}
             >
               Program <span className={styles.navChevron} aria-hidden="true" />
             </button>
@@ -128,8 +127,14 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
               }`}
               id="aimto-menu-program"
             >
-              <a href="#experience" onClick={() => setActiveMenu(null)}>
+              <a href="/aimto#experience" onClick={() => setActiveMenu(null)}>
                 Event Programme
+              </a>
+              <a
+                href="/aimto/learnathon"
+                onClick={() => setActiveMenu(null)}
+              >
+                Learn-a-thon
               </a>
               <a
                 href="https://aimto.my/side-events.html"
@@ -157,7 +162,6 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
               aria-expanded={activeMenu === "attend"}
               aria-controls="aimto-menu-attend"
               onClick={() => toggleMenu("attend")}
-              onFocus={() => setActiveMenu("attend")}
             >
               Attend <span className={styles.navChevron} aria-hidden="true" />
             </button>
@@ -170,10 +174,10 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
               <a href={registrationUrl} onClick={() => setActiveMenu(null)}>
                 Tickets
               </a>
-              <a href="#campus" onClick={() => setActiveMenu(null)}>
+              <a href="/aimto#campus" onClick={() => setActiveMenu(null)}>
                 Get here
               </a>
-              <a href="#faq" onClick={() => setActiveMenu(null)}>
+              <a href="/aimto#faq" onClick={() => setActiveMenu(null)}>
                 FAQ
               </a>
             </div>
@@ -190,7 +194,6 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
               aria-expanded={activeMenu === "about"}
               aria-controls="aimto-menu-about"
               onClick={() => toggleMenu("about")}
-              onFocus={() => setActiveMenu("about")}
             >
               About <span className={styles.navChevron} aria-hidden="true" />
             </button>
@@ -200,15 +203,15 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
               }`}
               id="aimto-menu-about"
             >
-              <a href="#experience" onClick={() => setActiveMenu(null)}>
+              <a href="/aimto#experience" onClick={() => setActiveMenu(null)}>
                 Experience
               </a>
-              <a href="#partners" onClick={() => setActiveMenu(null)}>
+              <a href="/aimto#partners" onClick={() => setActiveMenu(null)}>
                 Partners
               </a>
             </div>
           </div>
-          <a className={styles.navContact} href="#contact">
+          <a className={styles.navContact} href="/aimto#contact">
             Contact Us
           </a>
         </div>
@@ -247,8 +250,11 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
         >
           <div className={styles.mobileMenuGroup}>
             <span>Program_</span>
-            <a href="#experience" onClick={closeMobileMenu}>
+            <a href="/aimto#experience" onClick={closeMobileMenu}>
               Event Programme
+            </a>
+            <a href="/aimto/learnathon" onClick={closeMobileMenu}>
+              Learn-a-thon
             </a>
             <a href="https://aimto.my/side-events.html" onClick={closeMobileMenu}>
               Side Events
@@ -262,22 +268,22 @@ export default function AimtoNav({ registrationUrl }: AimtoNavProps) {
             <a href={registrationUrl} onClick={closeMobileMenu}>
               Tickets
             </a>
-            <a href="#campus" onClick={closeMobileMenu}>
+            <a href="/aimto#campus" onClick={closeMobileMenu}>
               Get here
             </a>
-            <a href="#faq" onClick={closeMobileMenu}>
+            <a href="/aimto#faq" onClick={closeMobileMenu}>
               FAQ
             </a>
           </div>
           <div className={styles.mobileMenuGroup}>
             <span>About_</span>
-            <a href="#experience" onClick={closeMobileMenu}>
+            <a href="/aimto#experience" onClick={closeMobileMenu}>
               Experience
             </a>
-            <a href="#partners" onClick={closeMobileMenu}>
+            <a href="/aimto#partners" onClick={closeMobileMenu}>
               Partners
             </a>
-            <a href="#contact" onClick={closeMobileMenu}>
+            <a href="/aimto#contact" onClick={closeMobileMenu}>
               Contact Us
             </a>
           </div>

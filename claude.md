@@ -203,6 +203,26 @@ This document outlines the design system for the Placeholder website. All compon
   restrained background/border hover feedback without vertical movement.
 - Collapse from four columns to two, then one column on mobile.
 
+### AIMTO Learn-a-thon Page
+
+- Keep the AIMTO dark-tech visual family, but use playful mission cards,
+  checkpoints, bright colour blocks, and build-floor imagery instead of a
+  conference agenda.
+- Lead with an inclusive making outcome for beginners of different ages.
+- Present business automation as one possible mission alongside life, study,
+  creativity, and community projects.
+- Keep the participant flow visible: arrive, set up, choose, build, get help,
+  and share.
+- Reuse the AIMTO homepage hero structure and responsive layout classes rather
+  than maintaining a separate Learn-a-thon hero composition.
+- Match the AIMTO homepage hero choreography: blur-fade the headline first,
+  then supporting copy, actions, event details, and image annotations. Keep
+  mobile motion lighter and disable all entrances for reduced-motion users.
+- After the shared AIMTO hero, shift into a friendlier public-learning
+  sub-theme: flat warm-cream surfaces, solid pastel cards, rounded corners,
+  sentence-case sans-serif headings, and monospace reserved for small metadata.
+  Avoid decorative radial gradients or unanchored background circles.
+
 ### Backgrounds
 
 ```css

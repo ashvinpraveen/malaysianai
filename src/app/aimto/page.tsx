@@ -84,7 +84,7 @@ const experienceZones = [
     image: "/aimto-assets/the-sandbox.jpg",
   },
   {
-    label: "EXHIBITION + ACTIVATIONS_",
+    label: "PASAR AI_",
     days: ["DAY 1", "DAY 2"],
     title: "AI Open House",
     body: "Discover AI solutions, products and experiences from leading institutions. The AI Open House brings exhibitors and participants together to explore how AI is changing work, business, creativity and everyday life in Malaysia.",
@@ -225,14 +225,19 @@ export default function AiMalaysiaTakeoverPage() {
           </div>
           <div className={styles.introLayout} data-reveal="up">
             <h2>
-              AI is becoming
+              AI For the
               <br />
-              everyone&apos;s skill.
+              Rakyat
             </h2>
             <div className={styles.introCopy}>
               <p className={styles.lead}>
                 This is an event for everyday people to transform what they can
                 do with AI.
+              </p>
+              <p>
+                We&apos;re curating a series of workshops, panels, community
+                events and practical hands-on build sessions to support you in
+                your journey towards mastering AI.
               </p>
               <p>
                 Two days of free public training, with no coding experience
@@ -244,24 +249,6 @@ export default function AiMalaysiaTakeoverPage() {
         </section>
 
         <AimtoAudience />
-
-        <div
-          className={styles.introGallerySection}
-          aria-label="AI Open House preview"
-          data-reveal="soft"
-        >
-          <div
-            className={`${styles.introGallery} ${styles.introGallerySingle}`}
-          >
-            <Image
-              src="/aimto-assets/pasar-ai-booths-wide.jpg"
-              alt="Preview of the AI Open House exhibition and activation space"
-              width={1536}
-              height={1024}
-              sizes="(max-width: 680px) 100vw, 88vw"
-            />
-          </div>
-        </div>
 
         <section className={styles.zonesSection} id="experience">
           <div className={styles.sectionHeading} data-reveal="up">
@@ -307,7 +294,7 @@ export default function AiMalaysiaTakeoverPage() {
               <div className={styles.sectionLabel}>
                 LEARN FROM PEOPLE DOING THE WORK_
               </div>
-              <h2 id="trainers-title">Meet your trainers.</h2>
+              <h2 id="trainers-title">Meet your Trainers &amp; Speakers</h2>
             </div>
             <p>
               Learning AI from professional trainers like these can often cost
@@ -671,6 +658,7 @@ export default function AiMalaysiaTakeoverPage() {
           <div>
             <h2>Program_</h2>
             <a href="#experience">Event programme</a>
+            <a href="/aimto/learnathon">Learn-a-thon</a>
             <a href="https://aimto.my/side-events.html">Side events</a>
             <a href="https://aimto.my/#speakers">Speakers</a>
           </div>

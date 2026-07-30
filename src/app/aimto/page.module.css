@@ -771,39 +771,6 @@
   line-height: 1.18;
 }
 
-.introGallery {
-  display: grid;
-  gap: 1px;
-  grid-template-columns: 1.35fr 0.65fr 0.9fr;
-  height: clamp(260px, 28vw, 430px);
-  overflow: hidden;
-}
-
-.introGallerySection {
-  background: #09090c;
-  padding: 0 clamp(24px, 6vw, 96px) clamp(88px, 10vw, 144px);
-}
-
-.introGallerySingle {
-  grid-template-columns: 1fr;
-  height: clamp(320px, 48vw, 680px);
-}
-
-.introGallery img {
-  filter: saturate(0.82) contrast(1.06);
-  height: 100%;
-  object-fit: cover;
-  transition:
-    filter 220ms ease,
-    transform 450ms ease;
-  width: 100%;
-}
-
-.introGallery img:hover {
-  filter: saturate(1.08) contrast(1.02);
-  transform: scale(1.02);
-}
-
 .filmSection {
   background: var(--black);
   padding: 0 clamp(24px, 6vw, 96px) clamp(88px, 11vw, 160px);
@@ -2614,23 +2581,6 @@
     margin-top: 44px;
   }
 
-  .introGallery {
-    height: auto;
-    grid-template-columns: 1fr;
-  }
-
-  .introGallery img {
-    aspect-ratio: 4 / 3;
-  }
-
-  .introGallery img:first-child {
-    aspect-ratio: 4 / 3;
-  }
-
-  .introGallerySection {
-    padding: 0 20px 88px;
-  }
-
   .filmSection {
     padding-bottom: 88px;
   }
@@ -2999,7 +2949,6 @@
   .mobileMenuGroup a,
   .mobileMenuCta,
   .ctaButton,
-  .introGallery img,
   .stepCard,
   .zoneCard,
   .trainerCard,

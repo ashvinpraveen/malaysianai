@@ -5,6 +5,7 @@ import AimtoButton from "./AimtoButton";
 import AimtoCountdown from "./AimtoCountdown";
 import AimtoMotion from "./AimtoMotion";
 import AimtoNav from "./AimtoNav";
+import AimtoScrambleTitle from "./AimtoScrambleTitle";
 import AimtoStats from "./AimtoStats";
 import styles from "./page.module.css";
 
@@ -98,10 +99,30 @@ const partnerLogos = Array.from(
 );
 
 const trainers = [
-  "Timothy Tiah",
-  "Jon Lai",
-  "Warren Leow",
-  "Kracked Dev",
+  {
+    name: "Timothy Tiah",
+    title: "Founder & CEO, Colony",
+    bio: "Founder and CEO of Colony and co-founder of Nuffnang, sharing practical lessons from building and scaling Malaysian companies.",
+    image: "/aimto-assets/trainers/timothy-tiah.png",
+  },
+  {
+    name: "Jon Lai",
+    title: "Founder & CEO, Atomic Group",
+    bio: "Founder and CEO of Atomic Group, building digital-first consumer brands in health and wellness.",
+    image: "/aimto-assets/trainers/jon-lai.jpg",
+  },
+  {
+    name: "Warren Leow",
+    title: "Founder & Strategy Lead, AITraining2U",
+    bio: "Former Bain consultant and former CEO of Designs.ai, now leading practical AI training and automation at AITraining2U.",
+    image: "/aimto-assets/trainers/warren-leow.jpg",
+  },
+  {
+    name: "Danial Hadi",
+    title: "Founder, KrackedDevs",
+    bio: "Founder of KrackedDevs, a Malaysian builder community where people learn, build and ship real software projects.",
+    image: "/aimto-assets/trainers/danial-hadi.jpg",
+  },
 ];
 
 const faqs = [
@@ -221,14 +242,21 @@ export default function AiMalaysiaTakeoverPage() {
 
         <section className={styles.introSection} id="overview">
           <div className={styles.sectionLabel} data-reveal="up">
-            AI FOR THE PEOPLE_
+            AI DOESN&apos;T HAVE TO BE CONFUSING_
           </div>
           <div className={styles.introLayout} data-reveal="up">
-            <h2>
-              AI For the
-              <br />
-              Rakyat
-            </h2>
+            <div className={styles.introVisualColumn}>
+              <AimtoScrambleTitle />
+              <div className={styles.introArtwork}>
+                <Image
+                  src="/aimto-assets/digital-hibiscus.png"
+                  alt="A digital hibiscus formed from hot-pink and violet digital forms"
+                  width={1983}
+                  height={793}
+                  sizes="(max-width: 680px) 72vw, 36vw"
+                />
+              </div>
+            </div>
             <div className={styles.introCopy}>
               <p className={styles.lead}>
                 This is an event for everyday people to transform what they can
@@ -240,9 +268,8 @@ export default function AiMalaysiaTakeoverPage() {
                 your journey towards mastering AI.
               </p>
               <p>
-                Two days of free public training, with no coding experience
-                needed. Bring your mom, aunties, teenagers and uncles to learn
-                together with us.
+                Experience two days of free public AI training designed to help
+                you learn to get the most of AI and have fun along the way.
               </p>
             </div>
           </div>
@@ -297,9 +324,8 @@ export default function AiMalaysiaTakeoverPage() {
               <h2 id="trainers-title">Meet your Trainers &amp; Speakers</h2>
             </div>
             <p>
-              Learning AI from professional trainers like these can often cost
-              thousands of ringgit. Here, you get to learn with them as part of
-              two free public training days.
+              What would normally cost thousands to learn from these trainers,
+              you can learn for free—for two days only.
             </p>
           </div>
           <div
@@ -307,11 +333,21 @@ export default function AiMalaysiaTakeoverPage() {
             aria-label="AI Malaysia Takeover trainers"
             data-reveal="stagger"
           >
-            {trainers.map((trainer, index) => (
-              <article className={styles.trainerCard} key={trainer}>
-                <span>{String(index + 1).padStart(2, "0")}_</span>
-                <h3>{trainer}</h3>
-                <small>TRAINER_</small>
+            {trainers.map((trainer) => (
+              <article className={styles.trainerCard} key={trainer.name}>
+                <div className={styles.trainerPortrait}>
+                  <Image
+                    src={trainer.image}
+                    alt={trainer.name}
+                    fill
+                    sizes="(max-width: 680px) calc(100vw - 40px), (max-width: 1000px) 44vw, 22vw"
+                  />
+                </div>
+                <div className={styles.trainerDetails}>
+                  <h3>{trainer.name}</h3>
+                  <small>{trainer.title}</small>
+                  <p>{trainer.bio}</p>
+                </div>
               </article>
             ))}
           </div>
@@ -351,12 +387,20 @@ export default function AiMalaysiaTakeoverPage() {
           </div>
           <div className={styles.campusGallery} data-reveal="stagger">
             <Image
-              className={styles.campusExterior}
+              className={styles.campusMain}
+              src="/aimto-assets/campus-steps.jpg"
+              alt="The Campus Ampang amphitheatre steps"
+              width={1500}
+              height={1000}
+              sizes="(max-width: 680px) 100vw, 70vw"
+            />
+            <Image
+              className={styles.campusRoof}
               src="/aimto-assets/campus-exterior.jpg"
               alt="The Campus Ampang exterior"
               width={1500}
               height={1000}
-              sizes="(max-width: 680px) 100vw, 70vw"
+              sizes="(max-width: 680px) 50vw, 30vw"
             />
             <Image
               className={styles.campusCourtyard}
@@ -364,14 +408,6 @@ export default function AiMalaysiaTakeoverPage() {
               alt="The Campus Ampang open-air courtyard"
               width={1000}
               height={1500}
-              sizes="(max-width: 680px) 50vw, 30vw"
-            />
-            <Image
-              className={styles.campusSteps}
-              src="/aimto-assets/campus-steps.jpg"
-              alt="The Campus Ampang amphitheatre steps"
-              width={1500}
-              height={1000}
               sizes="(max-width: 680px) 50vw, 30vw"
             />
           </div>
@@ -472,7 +508,9 @@ export default function AiMalaysiaTakeoverPage() {
         <section className={styles.eventGallery} aria-labelledby="gallery-title">
           <div className={styles.galleryHeading} data-reveal="up">
             <div className={styles.sectionLabel}>THE ENERGY OF 2025_</div>
-            <h2 id="gallery-title">What happened in AI Malaysia 2025.</h2>
+            <h2 id="gallery-title">
+              Building on the success of AI Malaysia 2025.
+            </h2>
           </div>
           <div className={styles.galleryGrid} data-reveal="stagger">
             <figure>

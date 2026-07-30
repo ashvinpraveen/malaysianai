@@ -56,7 +56,7 @@ const howItWorks = [
   },
 ];
 
-const trainers = ["Timothy Tiah", "Jon Lai", "Warren Leow", "Kracked Dev"];
+const trainers = ["Timothy Tiah", "Jon Lai", "Warren Leow", "Danial Hadi"];
 
 const manifesto =
   "We’re bringing together Malaysians from all walks of life—from teenagers to retirees—for a one-day public training event where everyone can learn to make something useful with AI. Whether it is an app, a personal tool or your first AI agent, we will give you the setup, inspiration and human support to start building with confidence. This is a first-of-its-kind public AI learning event for Malaysia.";

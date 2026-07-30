@@ -199,9 +199,30 @@ This document outlines the design system for the Placeholder website. All compon
 
 - Use a bordered editorial grid on the AIMTO dark surface.
 - Keep trainer cards typographic when approved portrait assets are unavailable.
-- Use the AIMTO mono display face, compact numbered labels, lime accents, and
-  restrained background/border hover feedback without vertical movement.
+- When approved portraits are available, show them in full colour with a
+  consistent crop, followed by a verified title and a concise source-backed bio.
+- Use the AIMTO mono display face, lime accents, and restrained
+  background/border hover feedback without vertical movement.
 - Collapse from four columns to two, then one column on mobile.
+
+### AIMTO Inclusive Audience Scramble
+
+- Keep `AI FOR` fixed while the audience name resolves through Malaysia's
+  languages and familiar community terms. Start with `THE RAKYAT`, include
+  `ALL MALAYSIANS`, and retain articles for English groups such as
+  `THE AUNTIES` and `THE UNCLES`.
+- Use a brief character-scramble transition followed by a readable pause; do
+  not use a typewriter or backspace treatment.
+- Keep the changing phrase out of live-region announcements, provide one stable
+  accessible heading label, pause while the tab is hidden, and show a static
+  phrase when reduced motion is requested.
+
+### AIMTO Digital Botanical Artwork
+
+- Use a crisp, low-detail digital hibiscus in hot pink, magenta and violet on
+  near-black to express Malaysian identity without adding soft gradient circles.
+- Keep the artwork compact and directly beneath the inclusive `AI FOR` title,
+  using a focused 4:3 crop on desktop and mobile.
 
 ### AIMTO Learn-a-thon Page
 

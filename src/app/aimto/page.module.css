@@ -749,6 +749,26 @@
   text-transform: uppercase;
 }
 
+.scrambleTitle {
+  align-self: start;
+}
+
+.introVisualColumn {
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+}
+
+.scrambleTitle > span {
+  display: block;
+}
+
+.scrambleWord {
+  color: var(--lime);
+  min-height: 1em;
+  white-space: nowrap;
+}
+
 .introCopy {
   align-self: end;
   display: grid;
@@ -769,6 +789,21 @@
   color: var(--white);
   font-size: clamp(22px, 2.3vw, 34px);
   line-height: 1.18;
+}
+
+.introArtwork {
+  aspect-ratio: 4 / 3;
+  margin-top: clamp(38px, 5vw, 68px);
+  overflow: hidden;
+  width: min(82%, 460px);
+}
+
+.introArtwork img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  object-position: 38% center;
+  width: 100%;
 }
 
 .filmSection {
@@ -1323,15 +1358,19 @@
   width: 100%;
 }
 
-.campusExterior {
+.campusMain {
   grid-column: 1;
   grid-row: 1 / -1;
-  object-position: center 44%;
+  object-position: center 48%;
 }
 
-.campusCourtyard,
-.campusSteps {
+.campusRoof,
+.campusCourtyard {
   min-height: 0;
+}
+
+.campusRoof {
+  object-position: center 44%;
 }
 
 .campusCourtyard {
@@ -1501,9 +1540,7 @@
 }
 
 .trainersSection {
-  background:
-    radial-gradient(circle at 14% 18%, rgba(122, 92, 255, 0.18), transparent 34%),
-    #09090c;
+  background: #09090c;
   border-top: 1px solid rgba(255, 255, 255, 0.16);
   padding: clamp(88px, 10vw, 144px) clamp(24px, 6vw, 96px);
 }
@@ -1545,12 +1582,6 @@
   background: rgba(255, 255, 255, 0.018);
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   border-right: 1px solid rgba(255, 255, 255, 0.2);
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  justify-content: space-between;
-  min-height: clamp(220px, 22vw, 310px);
-  padding: clamp(24px, 2.8vw, 38px);
   transition:
     background 180ms ease,
     border-color 180ms ease;
@@ -1561,7 +1592,24 @@
   border-color: rgba(215, 255, 54, 0.5);
 }
 
-.trainerCard span,
+.trainerPortrait {
+  aspect-ratio: 4 / 4.35;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  position: relative;
+}
+
+.trainerPortrait img {
+  object-fit: cover;
+}
+
+.trainerDetails {
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+  padding: clamp(24px, 2.8vw, 38px);
+}
+
 .trainerCard small,
 .trainersMore {
   font-family: "JetBrains Mono", ui-monospace, monospace;
@@ -1569,13 +1617,9 @@
   letter-spacing: 0.02em;
 }
 
-.trainerCard span {
-  color: var(--lime);
-}
-
 .trainerCard h3 {
   font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: clamp(24px, 2.65vw, 40px);
+  font-size: clamp(24px, 2.35vw, 36px);
   font-weight: 500;
   letter-spacing: -0.07em;
   line-height: 0.98;
@@ -1583,7 +1627,17 @@
 }
 
 .trainerCard small {
-  color: rgba(255, 255, 255, 0.48);
+  color: var(--lime);
+  line-height: 1.45;
+  margin-top: 18px;
+  text-transform: uppercase;
+}
+
+.trainerCard p {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: clamp(13px, 1.15vw, 15px);
+  line-height: 1.55;
+  margin-top: 28px;
 }
 
 .trainersMore {
@@ -2000,9 +2054,7 @@
 }
 
 .footer {
-  background:
-    radial-gradient(circle at 88% 12%, rgba(79, 36, 255, 0.18), transparent 32%),
-    #070707;
+  background: #070707;
   padding: clamp(56px, 7vw, 100px) clamp(24px, 6vw, 96px) 32px;
 }
 
@@ -2379,7 +2431,12 @@
   }
 
   .trainerCard {
-    min-height: 190px;
+    min-height: 0;
+  }
+
+  .trainerDetails {
+    min-height: 0;
+    padding: 26px 24px 32px;
   }
 
   .trainerCard h3 {
@@ -2581,6 +2638,16 @@
     margin-top: 44px;
   }
 
+  .introArtwork {
+    aspect-ratio: 4 / 3;
+    margin-top: 34px;
+    width: min(76%, 300px);
+  }
+
+  .introArtwork img {
+    object-position: 40% center;
+  }
+
   .filmSection {
     padding-bottom: 88px;
   }
@@ -2764,14 +2831,14 @@
     width: calc(100% - 40px);
   }
 
-  .campusExterior {
+  .campusMain {
     aspect-ratio: 16 / 10;
     grid-column: 1 / -1;
     grid-row: auto;
   }
 
-  .campusCourtyard,
-  .campusSteps {
+  .campusRoof,
+  .campusCourtyard {
     aspect-ratio: 1 / 1;
     height: auto;
   }

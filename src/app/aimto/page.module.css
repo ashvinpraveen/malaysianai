@@ -752,6 +752,8 @@
 
 .scrambleTitle {
   align-self: start;
+  position: relative;
+  z-index: 1;
 }
 
 .scrambleTitle > span {
@@ -768,6 +770,8 @@
   align-self: end;
   display: grid;
   gap: 24px;
+  position: relative;
+  z-index: 1;
 }
 
 .introCopy p,
@@ -794,7 +798,8 @@
   left: var(--intro-artwork-inset);
   pointer-events: none;
   position: absolute;
-  width: min(36vw, 414px);
+  width: min(32.4vw, 373px);
+  z-index: 0;
 }
 
 .introArtwork img {
@@ -2651,7 +2656,7 @@
     justify-self: start;
     margin: 0;
     position: static;
-    width: 100%;
+    width: 90%;
   }
 
   .filmSection {

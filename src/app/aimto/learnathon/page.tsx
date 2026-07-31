@@ -308,8 +308,7 @@ export default function LearnathonThreePage() {
           <div className={styles.sectionHeading} data-reveal="up">
             <div className={styles.sectionLabel}>YOUR BUILD JOURNEY_</div>
             <h2>
-              Stations and Interactive Activities to support you in your AI
-              journey
+              What You&apos;ll See
             </h2>
           </div>
           <div className={styles.zonesGrid} data-reveal="stagger">

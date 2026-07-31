@@ -1,46 +1,76 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 
-const projectIdeas = [
+type ProjectIdea = {
+  type: string;
+  prompt: string;
+  image?: string;
+  alt?: string;
+};
+
+const projectIdeas: ProjectIdea[] = [
   {
     type: "Ordering website",
     prompt:
       "Make me a website for people to order my home-cooked cinnamon rolls",
     image: "/aimto-assets/learnathon-inspiration-cinnamon-rolls.jpg",
-  },
-  {
-    type: "Study companion",
-    prompt:
-      "Make me a study app that turns my class notes into flashcards and practice quizzes",
-  },
-  {
-    type: "Follow-up assistant",
-    prompt:
-      "Make me an assistant that writes friendly customer follow-ups from my quotation details",
-  },
-  {
-    type: "Family archive",
-    prompt:
-      "Make me a family website to preserve our recipes, photos and stories",
-  },
-  {
-    type: "Budget planner",
-    prompt: "Make me an app that shows where my money goes every month",
-  },
-  {
-    type: "Community directory",
-    prompt:
-      "Make me a directory for people to find trusted services in my neighbourhood",
+    alt: "An artistic neon collage of a Malaysian home baker preparing cinnamon rolls for online orders",
   },
   {
     type: "Trip planner",
     prompt:
-      "Make me a trip planner that builds an itinerary around my family's interests",
+      "Make me a trip planner that builds an itinerary around my family's interests and budget",
+    image: "/aimto-assets/learnathon-project-trip-planner.jpg",
+    alt: "A multigenerational Chinese Malaysian family planning a trip together",
   },
   {
-    type: "Job application coach",
+    type: "Personal money tracker",
     prompt:
-      "Make me a tool that improves my CV and helps me practise interviews",
+      "Make me a personal money tracker that shows where my money goes and helps me save for my goals",
+    image: "/aimto-assets/learnathon-project-money-tracker.jpg",
+    alt: "An Indian Malaysian woman organising her personal finances with a laptop",
+  },
+  {
+    type: "Boss battle study game",
+    prompt:
+      "Make me a study game that turns revision into boss battles, levels and rewards",
+    image: "/aimto-assets/learnathon-project-study-game.jpg",
+    alt: "Malay, Chinese and Indian Malaysian teenagers studying together with a playful digital game world",
+  },
+  {
+    type: "Wedding planner",
+    prompt:
+      "Make me a wedding planner to keep my guest list, budget, vendors and checklist in one place",
+    image: "/aimto-assets/learnathon-project-wedding-planner.jpg",
+    alt: "A Malay Malaysian couple planning their wedding with a laptop and celebration details",
+  },
+  {
+    type: "Invoice automation",
+    prompt:
+      "Make me an app that creates invoices, tracks payments and follows up with customers automatically",
+    image: "/aimto-assets/learnathon-project-invoice-automation.jpg",
+    alt: "A Chinese Malaysian small-business owner managing invoices and customer orders",
+  },
+  {
+    type: "Personal AI assistant",
+    prompt:
+      "Make me a personal AI assistant that keeps me organised and brings me the news I care about",
+    image: "/aimto-assets/learnathon-project-personal-ai-assistant.jpg",
+    alt: "An Indian Malaysian man using a friendly personal AI assistant at home",
+  },
+  {
+    type: "Fitness & calorie coach",
+    prompt:
+      "Make me a fitness coach that plans my workouts, tracks my meals and helps me hit my goals",
+    image: "/aimto-assets/learnathon-project-fitness-coach.jpg",
+    alt: "Malay and Chinese Malaysian friends using a fitness and meal coach together",
+  },
+  {
+    type: "Family care organiser",
+    prompt:
+      "Make me a family care organiser for medicine, appointments, school schedules and reminders",
+    image: "/aimto-assets/learnathon-project-family-care.jpg",
+    alt: "An Indian Malaysian mother, elderly Chinese Malaysian father and Malay Malaysian child using a family care organiser",
   },
 ];
 
@@ -78,7 +108,7 @@ export default function LearnathonProjects() {
               {idea.image ? (
                 <Image
                   src={idea.image}
-                  alt="An artistic neon collage of a Malaysian home baker preparing cinnamon rolls for online orders"
+                  alt={idea.alt ?? "An artistic Learn-a-thon project illustration"}
                   fill
                   loading="eager"
                   sizes="(max-width: 680px) calc(100vw - 40px), (max-width: 1000px) 50vw, 25vw"

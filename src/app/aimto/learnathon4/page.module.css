@@ -1,0 +1,1136 @@
+.learnathonPage {
+  --lat-cream: #f4f0e6;
+  --lat-ink: #09090b;
+  background: #fffdf8;
+}
+
+.learnathonPage main {
+  overflow: hidden;
+}
+
+.eyebrow {
+  color: rgba(255, 255, 255, 0.54);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.learnathonPage .learnathonHero {
+  background:
+    radial-gradient(circle at 81% 27%, rgba(215, 255, 54, 0.1) 0 7%, transparent 24%),
+    radial-gradient(circle at 75% 30%, transparent 0 15%, rgba(5, 4, 20, 0.1) 38%, rgba(5, 4, 20, 0.3) 100%),
+    linear-gradient(90deg, rgba(4, 4, 19, 0.82) 0%, rgba(9, 7, 40, 0.6) 40%, rgba(9, 6, 33, 0.16) 70%, rgba(5, 4, 20, 0.03) 100%),
+    linear-gradient(180deg, rgba(7, 5, 27, 0.06) 32%, rgba(5, 4, 18, 0.52) 100%),
+    url("/aimto-assets/learnathon-builder-floor.jpg") center / cover no-repeat;
+}
+
+.learnathonIntro {
+  color: rgba(255, 255, 255, 0.78);
+  margin-top: 28px;
+  max-width: 680px;
+}
+
+.heroSticker {
+  align-items: center;
+  aspect-ratio: 1;
+  background: var(--lime);
+  border-radius: 50%;
+  color: var(--lat-ink);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  right: clamp(24px, 5vw, 76px);
+  text-align: center;
+  top: clamp(36px, 7vw, 100px);
+  transform: rotate(7deg);
+  width: clamp(128px, 13vw, 188px);
+  z-index: 4;
+}
+
+.heroSticker span,
+.heroSticker strong {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+
+.heroSticker span {
+  font-size: 9px;
+}
+
+.heroSticker strong {
+  font-size: clamp(17px, 1.7vw, 24px);
+  line-height: 1;
+  margin-top: 6px;
+  max-width: 130px;
+}
+
+@keyframes latBlurFadeIn {
+  from {
+    filter: blur(16px);
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+  }
+
+  to {
+    filter: blur(0);
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes latStickerIn {
+  from {
+    filter: blur(12px);
+    opacity: 0;
+    transform: translate3d(0, 22px, 0) rotate(7deg);
+  }
+
+  to {
+    filter: blur(0);
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(7deg);
+  }
+}
+
+@media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
+  .learnathonIntro {
+    animation: latBlurFadeIn 720ms 260ms cubic-bezier(0.22, 1, 0.36, 1)
+      both;
+  }
+
+  .heroSticker {
+    animation: latStickerIn 680ms 480ms cubic-bezier(0.22, 1, 0.36, 1)
+      both;
+  }
+}
+
+.howSection {
+  background: #f7f1e7;
+  color: #151517;
+  padding: clamp(90px, 10vw, 150px) clamp(24px, 6vw, 96px);
+  scroll-margin-top: 110px;
+}
+
+.friendlyLabel,
+.manifestoLabel {
+  color: rgba(21, 21, 23, 0.62);
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+
+.howIntro {
+  align-items: end;
+  display: grid;
+  gap: clamp(42px, 9vw, 150px);
+  grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.6fr);
+}
+
+.howIntro h2 {
+  font-size: clamp(42px, 5vw, 72px);
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+  margin-top: 28px;
+  max-width: 980px;
+}
+
+.howIntro > p {
+  color: rgba(21, 21, 23, 0.68);
+  font-size: clamp(17px, 1.6vw, 21px);
+  line-height: 1.55;
+  max-width: 560px;
+}
+
+.howGrid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: clamp(56px, 7vw, 92px);
+}
+
+.howCard {
+  --card-accent: #90a916;
+  --card-bg: #e8f7ad;
+  background: var(--card-bg);
+  border: 1px solid rgba(21, 21, 23, 0.08);
+  border-radius: 28px;
+  color: #151517;
+  display: flex;
+  flex-direction: column;
+  min-height: clamp(340px, 30vw, 430px);
+  overflow: hidden;
+  padding: clamp(26px, 2.7vw, 42px);
+  position: relative;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.howCard[data-accent="cyan"] {
+  --card-accent: #15788d;
+  --card-bg: #cceff5;
+}
+
+.howCard[data-accent="pink"] {
+  --card-accent: #b34682;
+  --card-bg: #ffd6ea;
+}
+
+.howCard[data-accent="orange"] {
+  --card-accent: #b95f2d;
+  --card-bg: #ffddc5;
+}
+
+.howCard:hover {
+  background: color-mix(in srgb, var(--card-bg) 90%, white);
+  border-color: color-mix(in srgb, var(--card-accent) 32%, transparent);
+  box-shadow: 0 18px 44px rgba(44, 32, 21, 0.08);
+}
+
+.howMeta {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+}
+
+.howMeta span,
+.howMeta small {
+  font-size: 12px;
+}
+
+.howMeta span {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.58);
+  border-radius: 999px;
+  color: #151517;
+  display: flex;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  height: 38px;
+  justify-content: center;
+  width: 38px;
+}
+
+.howMeta small {
+  color: rgba(21, 21, 23, 0.58);
+  font-weight: 600;
+  text-align: right;
+}
+
+.howCard h3 {
+  font-size: clamp(30px, 2.55vw, 40px);
+  font-weight: 650;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+  margin-top: clamp(52px, 6vw, 78px);
+}
+
+.howCard p {
+  color: rgba(21, 21, 23, 0.7);
+  font-size: 16px;
+  line-height: 1.55;
+  margin-top: 26px;
+}
+
+.howArrow {
+  align-items: center;
+  background: #151517;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  font-size: 20px;
+  height: 42px;
+  justify-content: center;
+  margin-top: auto;
+  width: 42px;
+}
+
+.manifestoSection {
+  background: #f2eafa;
+  color: #121214;
+  padding: clamp(120px, 14vw, 210px) clamp(24px, 6vw, 96px);
+}
+
+.manifestoSection > p {
+  color: #121214;
+  font-size: clamp(34px, 3.6vw, 54px);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 1.08;
+  margin-top: clamp(44px, 6vw, 76px);
+  max-width: 1380px;
+}
+
+.manifestoSection > p span {
+  transition: color 150ms linear;
+}
+
+.midCta {
+  align-items: center;
+  background: #bfeef6;
+  color: var(--lat-ink);
+  display: flex;
+  gap: 36px;
+  justify-content: space-between;
+  padding: 34px clamp(24px, 6vw, 96px);
+}
+
+.midCta > div {
+  display: grid;
+  gap: 8px;
+}
+
+.midCta span,
+.midCta p {
+  font-family: inherit;
+}
+
+.midCta span {
+  font-size: clamp(20px, 1.8vw, 27px);
+  font-weight: 650;
+  letter-spacing: -0.03em;
+}
+
+.midCta p {
+  font-size: clamp(15px, 1.35vw, 18px);
+}
+
+.midCta > a {
+  background: var(--lat-ink);
+  border-color: var(--lat-ink);
+  color: white !important;
+  flex: none;
+}
+
+.midCta > a:hover,
+.midCta > a:focus-visible {
+  background: #25252b;
+  border-color: #25252b;
+  color: white !important;
+}
+
+.learnathonPage .friendlyTrainers {
+  background: #e8f6f8;
+  border-top: 0;
+  color: #151517;
+}
+
+.friendlyTrainers h2 {
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+  text-transform: none;
+}
+
+.friendlyTrainers [data-reveal="up"] > p {
+  color: rgba(21, 21, 23, 0.68);
+}
+
+.friendlyTrainers [aria-label="Learn-a-thon trainers"] {
+  border: 0;
+  gap: 16px;
+}
+
+.friendlyTrainers article {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(21, 21, 23, 0.1);
+  border-radius: 24px;
+  box-shadow: 0 14px 40px rgba(36, 60, 63, 0.06);
+}
+
+.friendlyTrainers article:hover {
+  background: white;
+  border-color: rgba(21, 21, 23, 0.2);
+}
+
+.friendlyTrainers article span {
+  color: rgba(21, 21, 23, 0.52);
+}
+
+.friendlyTrainers article h3 {
+  font-family: inherit;
+  font-weight: 650;
+  letter-spacing: -0.045em;
+  text-transform: none;
+}
+
+.friendlyTrainers article small {
+  color: rgba(21, 21, 23, 0.48);
+  font-family: inherit;
+  text-transform: none;
+}
+
+.friendlyTrainers > p {
+  color: rgba(21, 21, 23, 0.54);
+  font-family: inherit;
+  text-transform: none;
+}
+
+.learnathonPage .friendlyVenue {
+  background: #fffdf8;
+  border-block-color: rgba(21, 21, 23, 0.1);
+  color: #151517;
+}
+
+.friendlyVenue h2 {
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  line-height: 1;
+  text-transform: none;
+}
+
+.friendlyVenue p {
+  color: rgba(21, 21, 23, 0.68);
+}
+
+.friendlyVenue address {
+  border-top-color: rgba(21, 21, 23, 0.16);
+  font-family: inherit;
+}
+
+.friendlyVenue a {
+  color: #151517;
+}
+
+.friendlyVenue img {
+  border-radius: 22px;
+  filter: saturate(0.94) contrast(1.02);
+}
+
+.missionsSection,
+.journeySection,
+.helpSection,
+.funSection,
+.takeHomeSection,
+.faqSection {
+  padding: clamp(90px, 10vw, 150px) clamp(24px, 6vw, 96px);
+}
+
+.sectionIntro {
+  align-items: end;
+  display: grid;
+  gap: clamp(42px, 9vw, 150px);
+  grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.6fr);
+}
+
+.sectionIntro h2,
+.funTitle h2,
+.faqIntro h2 {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: clamp(38px, 5.2vw, 74px);
+  font-weight: 500;
+  letter-spacing: -0.075em;
+  line-height: 0.94;
+  margin-top: 34px;
+  text-transform: uppercase;
+}
+
+.sectionIntro > p {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: clamp(17px, 1.6vw, 21px);
+  line-height: 1.55;
+  max-width: 560px;
+}
+
+.missionGrid {
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: clamp(56px, 7vw, 92px);
+}
+
+.missionCard {
+  --card-accent: var(--lime);
+  background: #101014;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+  min-height: 370px;
+  overflow: hidden;
+  padding: clamp(26px, 3.1vw, 46px);
+  position: relative;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.missionCard[data-accent="cyan"] {
+  --card-accent: var(--cyan);
+}
+
+.missionCard[data-accent="pink"] {
+  --card-accent: var(--pink);
+}
+
+.missionCard[data-accent="orange"] {
+  --card-accent: var(--orange);
+}
+
+.missionCard[data-accent="violet"] {
+  --card-accent: var(--electric);
+}
+
+.missionCard[data-accent="paper"] {
+  --card-accent: var(--lat-cream);
+}
+
+.missionCard:hover {
+  background: color-mix(in srgb, var(--card-accent) 8%, #101014);
+  border-color: color-mix(in srgb, var(--card-accent) 60%, transparent);
+}
+
+.missionMeta {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.missionMeta span,
+.missionMeta small {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 9px;
+}
+
+.missionMeta span {
+  color: var(--card-accent);
+}
+
+.missionMeta small {
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.missionCard h3 {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: clamp(28px, 3.2vw, 47px);
+  font-weight: 500;
+  letter-spacing: -0.075em;
+  line-height: 0.98;
+  margin-top: 72px;
+  max-width: 420px;
+  text-transform: uppercase;
+}
+
+.missionCard p {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 16px;
+  line-height: 1.55;
+  margin-top: 26px;
+  max-width: 410px;
+}
+
+.missionArrow {
+  color: var(--card-accent);
+  font-size: 30px;
+  margin-top: auto;
+  padding-top: 36px;
+}
+
+.journeySection {
+  background: var(--lat-cream);
+  color: var(--lat-ink);
+}
+
+.journeySection .eyebrow {
+  color: rgba(9, 9, 11, 0.52);
+}
+
+.journeySection .sectionIntro > p {
+  color: rgba(9, 9, 11, 0.68);
+}
+
+.journeyList {
+  border-top: 1px solid rgba(9, 9, 11, 0.22);
+  list-style: none;
+  margin: clamp(60px, 8vw, 110px) 0 0;
+  padding: 0;
+}
+
+.journeyList li {
+  align-items: start;
+  border-bottom: 1px solid rgba(9, 9, 11, 0.22);
+  display: grid;
+  gap: 40px;
+  grid-template-columns: 90px 1fr;
+  padding: 30px 0;
+}
+
+.journeyList > li > span {
+  align-items: center;
+  background: var(--lat-ink);
+  border-radius: 50%;
+  color: var(--lime);
+  display: flex;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 11px;
+  height: 54px;
+  justify-content: center;
+  width: 54px;
+}
+
+.journeyList li > div {
+  align-items: center;
+  display: grid;
+  gap: clamp(30px, 8vw, 140px);
+  grid-template-columns: minmax(240px, 0.8fr) minmax(300px, 1fr);
+}
+
+.journeyList h3 {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: clamp(28px, 4vw, 58px);
+  font-weight: 500;
+  letter-spacing: -0.07em;
+  text-transform: uppercase;
+}
+
+.journeyList p {
+  color: rgba(9, 9, 11, 0.68);
+  font-size: clamp(16px, 1.55vw, 20px);
+  line-height: 1.5;
+  max-width: 580px;
+}
+
+.helpSection {
+  background:
+    radial-gradient(circle at 12% 20%, rgba(122, 92, 255, 0.3), transparent 35%),
+    #0a0910;
+  display: grid;
+  gap: clamp(48px, 8vw, 130px);
+  grid-template-columns: minmax(0, 0.85fr) minmax(480px, 1.15fr);
+}
+
+.helpCallout {
+  align-self: start;
+  background: var(--electric);
+  color: white;
+  padding: clamp(34px, 5vw, 70px);
+  transform: rotate(-1.5deg);
+}
+
+.helpCallout > span {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10px;
+}
+
+.helpCallout h2 {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: clamp(38px, 4.8vw, 68px);
+  font-weight: 500;
+  letter-spacing: -0.08em;
+  line-height: 0.95;
+  margin-top: 48px;
+  text-transform: uppercase;
+}
+
+.helpCallout p {
+  font-size: 18px;
+  line-height: 1.55;
+  margin-top: 44px;
+}
+
+.helpGrid {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.helpGrid article {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  display: grid;
+  gap: 28px;
+  grid-template-columns: 54px minmax(230px, 0.7fr) 1fr;
+  padding: 30px 0;
+}
+
+.helpGrid span {
+  color: var(--lime);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10px;
+}
+
+.helpGrid h3 {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: clamp(21px, 2.2vw, 31px);
+  font-weight: 500;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+}
+
+.helpGrid p {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.funSection {
+  background: #09090c;
+}
+
+.funTitle {
+  max-width: 980px;
+}
+
+.funGrid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: clamp(54px, 7vw, 90px);
+}
+
+.funGrid article {
+  aspect-ratio: 1;
+  background: var(--lime);
+  color: var(--lat-ink);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(28px, 3.5vw, 52px);
+}
+
+.funGrid article:nth-child(2) {
+  background: var(--cyan);
+  transform: rotate(1.5deg);
+}
+
+.funGrid article:nth-child(3) {
+  background: var(--pink);
+  transform: rotate(-1.2deg);
+}
+
+.funGrid strong {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: clamp(24px, 3.3vw, 48px);
+  font-weight: 500;
+  letter-spacing: -0.07em;
+  line-height: 0.95;
+}
+
+.funGrid p {
+  font-size: clamp(16px, 1.55vw, 20px);
+  line-height: 1.45;
+}
+
+.takeHomeSection {
+  align-items: end;
+  background: #111117;
+  display: grid;
+  gap: clamp(56px, 10vw, 160px);
+  grid-template-columns: minmax(0, 1.05fr) minmax(420px, 0.95fr);
+}
+
+.takeHomeCopy h2 {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: clamp(42px, 6vw, 84px);
+  font-weight: 500;
+  letter-spacing: -0.08em;
+  line-height: 0.92;
+  margin-top: 36px;
+  text-transform: uppercase;
+}
+
+.takeHomeCopy h2 span {
+  color: var(--lime);
+}
+
+.takeHomeList {
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.takeHomeList > div {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  display: grid;
+  gap: 28px;
+  grid-template-columns: 86px 1fr;
+  padding: 28px 0;
+}
+
+.takeHomeList span {
+  color: var(--lime);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 9px;
+}
+
+.takeHomeList strong {
+  font-size: clamp(17px, 1.7vw, 22px);
+  font-weight: 500;
+}
+
+.faqSection {
+  background: #f7f1e7;
+  color: var(--lat-ink);
+  display: grid;
+  gap: clamp(60px, 10vw, 150px);
+  grid-template-columns: minmax(280px, 0.72fr) minmax(500px, 1.28fr);
+}
+
+.faqSection .eyebrow {
+  color: rgba(9, 9, 11, 0.52);
+}
+
+.faqIntro {
+  align-self: start;
+  position: sticky;
+  top: 120px;
+}
+
+.faqIntro h2 {
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  line-height: 1;
+  text-transform: none;
+}
+
+.faqList {
+  border-top: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.faqList details {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(9, 9, 11, 0.1);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.faqList summary {
+  align-items: center;
+  cursor: pointer;
+  display: grid;
+  font-size: clamp(17px, 1.8vw, 23px);
+  font-weight: 600;
+  gap: 20px;
+  grid-template-columns: 44px 1fr 22px;
+  list-style: none;
+  padding: 24px;
+}
+
+.faqList summary::-webkit-details-marker {
+  display: none;
+}
+
+.faqList summary span {
+  align-items: center;
+  background: #e8f6f8;
+  border-radius: 50%;
+  color: rgba(9, 9, 11, 0.62);
+  display: flex;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10px;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.faqList summary i {
+  font-style: normal;
+  font-weight: 400;
+  transition: transform 180ms ease;
+}
+
+.faqList details[open] summary i {
+  transform: rotate(45deg);
+}
+
+.faqList details > p {
+  color: rgba(9, 9, 11, 0.7);
+  line-height: 1.6;
+  max-width: 680px;
+  padding: 0 48px 28px 88px;
+}
+
+.finalCta {
+  align-items: center;
+  background: #ffd1e5;
+  color: #151517;
+  display: flex;
+  min-height: 740px;
+  overflow: hidden;
+  padding: clamp(90px, 10vw, 160px) clamp(24px, 8vw, 124px);
+  position: relative;
+}
+
+.finalCta > div:not(.finalBurst) {
+  max-width: 1050px;
+  position: relative;
+  z-index: 1;
+}
+
+.finalCta h2 {
+  font-size: clamp(48px, 7vw, 102px);
+  font-weight: 650;
+  letter-spacing: -0.065em;
+  line-height: 0.94;
+  margin-top: 38px;
+}
+
+.finalCta p {
+  font-size: clamp(18px, 1.8vw, 24px);
+  line-height: 1.5;
+  margin: 38px 0;
+  max-width: 680px;
+}
+
+.finalBurst {
+  color: rgba(255, 255, 255, 0.58);
+  font-size: min(86vw, 1100px);
+  line-height: 0.5;
+  position: absolute;
+  right: -8%;
+  top: 17%;
+  transform: rotate(11deg);
+}
+
+.footer {
+  align-items: center;
+  background: #08080a;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  display: grid;
+  gap: 34px;
+  grid-template-columns: 1fr auto 1fr;
+  padding: 38px clamp(24px, 6vw, 96px);
+}
+
+.footer img {
+  display: block;
+  height: auto;
+  width: clamp(150px, 15vw, 190px);
+}
+
+.footer p,
+.footer a {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 9px;
+}
+
+.footer p {
+  color: rgba(255, 255, 255, 0.48);
+  text-align: center;
+}
+
+.footer > div {
+  display: flex;
+  gap: 24px;
+  justify-content: flex-end;
+}
+
+.footer > div a {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.32);
+  padding-bottom: 4px;
+}
+
+@media (max-width: 1100px) {
+  .howGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .missionGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .helpSection,
+  .takeHomeSection {
+    grid-template-columns: 1fr;
+  }
+
+  .helpCallout {
+    max-width: 720px;
+  }
+
+  .faqSection {
+    grid-template-columns: 1fr;
+  }
+
+  .faqIntro {
+    position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  .learnathonIntro {
+    font-size: 16px;
+    line-height: 1.45;
+    margin-top: 20px;
+  }
+
+  .heroSticker {
+    right: 16px;
+    top: 282px;
+    width: 92px;
+  }
+
+  .howIntro {
+    align-items: start;
+    grid-template-columns: 1fr;
+  }
+
+  .howIntro h2 {
+    font-size: clamp(36px, 11vw, 48px);
+    margin-top: 28px;
+  }
+
+  .howIntro > p {
+    font-size: 16px;
+  }
+
+  .howGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .howCard {
+    min-height: 330px;
+  }
+
+  .howCard h3 {
+    font-size: clamp(31px, 10vw, 44px);
+  }
+
+  .manifestoSection {
+    background-size: 40px 40px;
+    padding-block: 104px;
+  }
+
+  .manifestoSection > p {
+    font-size: clamp(33px, 9.5vw, 44px);
+    letter-spacing: -0.07em;
+  }
+
+  .midCta {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .midCta > a {
+    width: 100%;
+  }
+
+  .sectionIntro {
+    align-items: start;
+    grid-template-columns: 1fr;
+  }
+
+  .sectionIntro h2,
+  .funTitle h2,
+  .faqIntro h2 {
+    font-size: clamp(36px, 11vw, 48px);
+    margin-top: 28px;
+  }
+
+  .sectionIntro > p {
+    font-size: 16px;
+  }
+
+  .missionGrid,
+  .funGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .missionCard {
+    min-height: 330px;
+  }
+
+  .missionCard h3 {
+    font-size: clamp(31px, 10vw, 44px);
+  }
+
+  .journeyList li {
+    gap: 16px;
+    grid-template-columns: 58px 1fr;
+  }
+
+  .journeyList li > div {
+    align-items: start;
+    gap: 12px;
+    grid-template-columns: 1fr;
+  }
+
+  .journeyList h3 {
+    font-size: 32px;
+  }
+
+  .helpSection {
+    gap: 72px;
+  }
+
+  .helpCallout {
+    transform: rotate(-0.8deg);
+  }
+
+  .helpGrid article {
+    gap: 16px;
+    grid-template-columns: 42px 1fr;
+  }
+
+  .helpGrid article p {
+    grid-column: 2;
+  }
+
+  .funGrid article {
+    aspect-ratio: auto;
+    min-height: 330px;
+  }
+
+  .funGrid article:nth-child(2),
+  .funGrid article:nth-child(3) {
+    transform: none;
+  }
+
+  .takeHomeSection {
+    grid-template-columns: 1fr;
+  }
+
+  .takeHomeCopy h2 {
+    font-size: clamp(40px, 12vw, 54px);
+  }
+
+  .faqList summary {
+    gap: 12px;
+    grid-template-columns: 34px 1fr 18px;
+  }
+
+  .faqList details > p {
+    padding-left: 46px;
+    padding-right: 0;
+  }
+
+  .finalCta {
+    min-height: 680px;
+    padding-inline: 20px;
+  }
+
+  .finalCta h2 {
+    font-size: clamp(45px, 13vw, 62px);
+  }
+
+  .footer {
+    align-items: start;
+    grid-template-columns: 1fr;
+  }
+
+  .footer p {
+    text-align: left;
+  }
+
+  .footer > div {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .manifestoSection > p span {
+    transition: none;
+  }
+
+  .missionCard {
+    transition-duration: 0.01ms;
+  }
+
+  .helpCallout,
+  .funGrid article {
+    transform: none;
+  }
+}

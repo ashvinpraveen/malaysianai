@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: "The Malaysian Learn-a-thon",
     description:
       "Learn AI, build something useful and take it home. 12 August 2026 at The Campus Ampang.",
-    url: "/aimto/learnathon",
+    url: "/aimto/learnathon3",
     type: "website",
     images: [
       {
@@ -174,8 +174,8 @@ const faqs = [
 
 export default function LearnathonThreePage() {
   return (
-    <div className={styles.site} id="aimto-learnathon-site">
-      <AimtoMotion rootId="aimto-learnathon-site" />
+    <div className={styles.site} id="aimto-learnathon3-site">
+      <AimtoMotion rootId="aimto-learnathon3-site" />
       <AimtoNav registrationUrl={registrationUrl} />
 
       <main>

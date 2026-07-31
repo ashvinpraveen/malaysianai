@@ -1,132 +1,70 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import styles from "./page.module.css";
-
-const projectCycleMs = 4500;
 
 const projectIdeas = [
   {
-    person: "A makcik running a home food business",
+    number: "01",
+    person: "A makcik with a home food business",
+    type: "Ordering website",
     project:
-      "Build a simple ordering website that turns WhatsApp enquiries into clear customer orders.",
+      "Turn WhatsApp enquiries into a simple menu and clear customer orders.",
   },
   {
+    number: "02",
     person: "A student with too many notes",
+    type: "Study companion",
     project:
-      "Build a study website that turns class notes into summaries, flashcards and quiz questions.",
+      "Turn class notes into summaries, flashcards and practice questions.",
   },
   {
-    person: "A small-business owner chasing follow-ups",
+    number: "03",
+    person: "A small-business owner",
+    type: "Follow-up assistant",
     project:
-      "Build an assistant that drafts quotations and polite customer follow-ups from a few details.",
+      "Draft quotations and polite customer follow-ups from a few details.",
   },
   {
+    number: "04",
     person: "A retiree preserving family stories",
+    type: "Family archive",
     project:
-      "Build a family website for recipes, photos and stories the next generation can keep.",
+      "Collect recipes, photographs and stories in a website the family can keep.",
   },
 ];
 
 export default function LearnathonProjects() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [cycleVersion, setCycleVersion] = useState(0);
-  const [announceChange, setAnnounceChange] = useState(false);
-
-  useEffect(() => {
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    );
-    let intervalId: number | undefined;
-
-    const stopCycle = () => {
-      if (intervalId !== undefined) {
-        window.clearInterval(intervalId);
-        intervalId = undefined;
-      }
-    };
-
-    const startCycle = () => {
-      stopCycle();
-
-      if (reducedMotion.matches || document.hidden) {
-        return;
-      }
-
-      intervalId = window.setInterval(() => {
-        setAnnounceChange(false);
-        setActiveIndex((currentIndex) => {
-          return (currentIndex + 1) % projectIdeas.length;
-        });
-      }, projectCycleMs);
-    };
-
-    startCycle();
-    reducedMotion.addEventListener("change", startCycle);
-    document.addEventListener("visibilitychange", startCycle);
-
-    return () => {
-      stopCycle();
-      reducedMotion.removeEventListener("change", startCycle);
-      document.removeEventListener("visibilitychange", startCycle);
-    };
-  }, [cycleVersion]);
-
-  const selectProject = (index: number) => {
-    setAnnounceChange(true);
-    setActiveIndex(index);
-    setCycleVersion((version) => version + 1);
-  };
-
   return (
     <section
-      className={styles.communitySection}
+      className={styles.projectsSection}
       aria-labelledby="learnathon-projects-title"
     >
-      <div className={styles.communityCopy} data-reveal="up">
-        <div className={styles.communityHeading}>
-          <div>
-            <div className={styles.sectionLabel}>WHAT TO BUILD_</div>
-            <h2 id="learnathon-projects-title">
-              Four people. Four useful first builds.
-            </h2>
-          </div>
-          <p>
-            Start with a real person and one familiar problem. Your first AI
-            project does not need to be complicated to be useful.
-          </p>
+      <div className={styles.projectsIntro} data-reveal="up">
+        <div>
+          <div className={styles.sectionLabel}>WHAT TO BUILD_</div>
+          <h2 id="learnathon-projects-title">
+            Build something you&apos;d love to use.
+          </h2>
         </div>
-        <div className={styles.audienceList} aria-label="Example projects">
-          {projectIdeas.map((idea, index) => {
-            const isActive = activeIndex === index;
+        <p>
+          Start with one real problem from daily life. Your first AI project
+          does not need to be complicated to be genuinely useful.
+        </p>
+      </div>
 
-            return (
-              <button
-                className={`${styles.audienceStage} ${
-                  isActive ? styles.audienceStageActive : ""
-                }`}
-                key={idea.person}
-                type="button"
-                aria-pressed={isActive}
-                aria-controls="learnathon-project-detail"
-                aria-label={`${index + 1}. ${idea.person}`}
-                onClick={() => selectProject(index)}
-              >
-                <span className={styles.stageMarker} aria-hidden="true">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-        <div
-          className={styles.audienceDetail}
-          id="learnathon-project-detail"
-          aria-live={announceChange ? "polite" : "off"}
-        >
-          <strong>{projectIdeas[activeIndex].person}</strong>
-          <p>{projectIdeas[activeIndex].project}</p>
-        </div>
+      <div
+        className={styles.projectsGrid}
+        aria-label="Example Learn-a-thon projects"
+        data-reveal="stagger"
+      >
+        {projectIdeas.map((idea) => (
+          <article className={styles.projectCard} key={idea.number}>
+            <span className={styles.projectNumber}>{idea.number}_</span>
+            <div className={styles.projectDetails}>
+              <small>{idea.type}</small>
+              <h3>{idea.person}</h3>
+              <p>{idea.project}</p>
+            </div>
+          </article>
+        ))}
       </div>
     </section>
   );

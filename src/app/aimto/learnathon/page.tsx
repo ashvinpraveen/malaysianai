@@ -269,11 +269,13 @@ export default function LearnathonThreePage() {
 
         <section className={styles.introSection} id="overview">
           <div className={styles.sectionLabel} data-reveal="up">
-            AI IS FOR THE RAKYAT_
+            AI DOESN&apos;T HAVE TO BE CONFUSING_
           </div>
           <div className={styles.introLayout} data-reveal="up">
             <AimtoScrambleTitle />
-            <div className={styles.introCopy}>
+            <div
+              className={`${styles.introCopy} ${styles.learnathonIntroCopy}`}
+            >
               <p className={styles.lead}>
                 Building cool things with AI has never been easier, yet getting
                 started is so hard.
@@ -281,8 +283,11 @@ export default function LearnathonThreePage() {
               <p>
                 The Learn-a-thon is a space where anyone with zero experience
                 can learn to build apps and websites and publish them all within
-                a day. Accelerate your learning with the support from
-                Malaysia&apos;s leading trainers and mentors.
+                a day.
+              </p>
+              <p>
+                Accelerate your learning with the support from Malaysia&apos;s
+                leading trainers and mentors.
               </p>
             </div>
             <div className={styles.introArtwork} data-reveal="soft">

@@ -771,6 +771,10 @@
   gap: 24px;
 }
 
+.learnathonIntroCopy {
+  padding-bottom: 26.35px;
+}
+
 .introCopy p,
 .sectionHeading > p,
 .campusCopy > p,
@@ -1539,6 +1543,105 @@
   max-width: 520px;
 }
 
+.projectsSection {
+  background: #09090c;
+  border-block: 1px solid rgba(255, 255, 255, 0.16);
+  padding: clamp(88px, 10vw, 144px) clamp(24px, 6vw, 96px);
+}
+
+.projectsIntro {
+  align-items: end;
+  display: grid;
+  gap: clamp(42px, 9vw, 140px);
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.65fr);
+}
+
+.projectsIntro h2 {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: clamp(38px, 5.2vw, 72px);
+  font-weight: 500;
+  letter-spacing: -0.075em;
+  line-height: 0.94;
+  margin-top: 34px;
+  max-width: 920px;
+  text-transform: uppercase;
+}
+
+.projectsIntro > p {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: clamp(17px, 1.7vw, 22px);
+  line-height: 1.55;
+  max-width: 560px;
+}
+
+.projectsGrid {
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: clamp(54px, 7vw, 88px);
+}
+
+.projectCard {
+  background: rgba(255, 255, 255, 0.018);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  min-height: 410px;
+  padding: clamp(24px, 2.8vw, 38px);
+  transition:
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.projectCard:hover {
+  background: rgba(215, 255, 54, 0.055);
+  border-color: rgba(215, 255, 54, 0.5);
+}
+
+.projectNumber,
+.projectCard small {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.projectNumber {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.projectDetails {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin-top: 72px;
+}
+
+.projectCard small {
+  color: var(--lime);
+  line-height: 1.45;
+}
+
+.projectCard h3 {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: clamp(22px, 2vw, 31px);
+  font-weight: 500;
+  letter-spacing: -0.07em;
+  line-height: 1;
+  margin-top: 20px;
+  text-transform: uppercase;
+}
+
+.projectCard p {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: clamp(13px, 1.15vw, 15px);
+  line-height: 1.55;
+  margin-top: 28px;
+}
+
 .trainersSection {
   background: #09090c;
   border-top: 1px solid rgba(255, 255, 255, 0.16);
@@ -2165,11 +2268,13 @@
     padding-bottom: clamp(240px, 32vw, 310px);
   }
 
+  .projectsIntro,
   .trainersIntro {
     align-items: start;
     grid-template-columns: 1fr;
   }
 
+  .projectsGrid,
   .trainersGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2415,37 +2520,44 @@
   }
 }
 
-@media (min-width: 1001px) and (max-width: 1100px) {
-  .introSection {
-    padding-bottom: 310px;
-  }
-}
-
 @media (max-width: 680px) {
   .introSection {
     padding-bottom: 88px;
   }
 
+  .projectsSection,
   .trainersSection {
     padding: 88px 20px;
   }
 
+  .projectsIntro h2,
   .trainersIntro h2 {
     font-size: clamp(36px, 11vw, 46px);
     margin-top: 28px;
   }
 
+  .projectsIntro > p,
   .trainersIntro > p {
     font-size: 16px;
   }
 
+  .projectsGrid,
   .trainersGrid {
     grid-template-columns: 1fr;
     margin-top: 48px;
   }
 
+  .projectCard,
   .trainerCard {
     min-height: 0;
+  }
+
+  .projectCard {
+    padding: 26px 24px 32px;
+  }
+
+  .projectDetails {
+    margin-top: 72px;
   }
 
   .trainerDetails {
@@ -2453,6 +2565,7 @@
     padding: 26px 24px 32px;
   }
 
+  .projectCard h3,
   .trainerCard h3 {
     font-size: clamp(30px, 10vw, 42px);
   }
@@ -3031,6 +3144,7 @@
   .ctaButton,
   .stepCard,
   .zoneCard,
+  .projectCard,
   .trainerCard,
   .audienceStage,
   .stageMarker,

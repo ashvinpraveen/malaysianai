@@ -66,42 +66,42 @@ const experienceZones = [
     days: ["START"],
     title: "Starter Kits & Resource Hub",
     body: "Open a ready-made starter pack with simple tool guides, templates and beginner prompts so your first useful build is never a blank page.",
-    image: "/aimto-assets/learnathon-builder-floor.jpg",
+    image: "/aimto-assets/learnathon-zones/starter-kits.jpg",
   },
   {
     label: "FIND YOUR SPARK_",
     days: ["CHOOSE"],
     title: "Build Wall & Inspiration Board",
     body: "Post what you want to make, find a teammate, ask for help or choose a beginner-friendly idea when you are not sure where to start.",
-    image: "/aimto-assets/campus-courtyard.jpg",
+    image: "/aimto-assets/learnathon-zones/inspiration-wall.jpg",
   },
   {
     label: "THE HEART OF IT_",
     days: ["BUILD"],
     title: "One Shared Builder Floor",
     body: "Beginners and experienced builders sit side by side. Watch, ask, learn, make and help the person next to you in productive, friendly chaos.",
-    image: "/aimto-assets/learnathon-builder-floor.jpg",
+    image: "/aimto-assets/learnathon-zones/builder-floor.jpg",
   },
   {
     label: "THE HUMAN SAFETY NET_",
     days: ["UNSTICK"],
     title: "Mentors & Helpdesk",
     body: "Ask a roaming mentor, use the virtual helpdesk or pick up a quick-start resource. There will always be another way to get help.",
-    image: "/aimto-assets/trainers/warren-leow.jpg",
+    image: "/aimto-assets/learnathon-zones/mentor-helpdesk.jpg",
   },
   {
     label: "THE LAST MILE_",
     days: ["SHIP"],
     title: "Debug & Deploy Bar",
     body: "Bring a working prototype for deeper help with errors, integrations, hosting, publishing and preparing something you can share.",
-    image: "/aimto-assets/for-thinkers-builders.jpg",
+    image: "/aimto-assets/learnathon-zones/debug-deploy.jpg",
   },
   {
     label: "CELEBRATE THE BUILD_",
     days: ["SHARE"],
     title: "Sandbox Stage & Show and Tell",
     body: "Catch short practical workshops and rolling five-minute demos. Finished, unfinished and wonderfully messy projects are all welcome.",
-    image: "/aimto-assets/the-sandbox.jpg",
+    image: "/aimto-assets/learnathon-zones/show-and-tell.jpg",
   },
 ];
 
@@ -307,7 +307,10 @@ export default function LearnathonThreePage() {
         <section className={styles.zonesSection} id="experience">
           <div className={styles.sectionHeading} data-reveal="up">
             <div className={styles.sectionLabel}>YOUR BUILD JOURNEY_</div>
-            <h2>Here&apos;s what you&apos;ll see at the Learn-a-thon.</h2>
+            <h2>
+              Stations and Interactive Activities to support you in your AI
+              journey
+            </h2>
           </div>
           <div className={styles.zonesGrid} data-reveal="stagger">
             {experienceZones.map((zone, index) => (

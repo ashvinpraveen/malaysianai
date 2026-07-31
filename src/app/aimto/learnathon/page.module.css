@@ -1202,8 +1202,8 @@
 
 .zonesGrid {
   display: grid;
-  gap: 18px;
-  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-top: 78px;
 }
 
@@ -1227,8 +1227,8 @@
 .zoneMeta {
   display: flex;
   justify-content: space-between;
-  margin-top: 30px;
-  padding-inline: clamp(24px, 3vw, 40px);
+  margin-top: 24px;
+  padding-inline: clamp(18px, 2vw, 28px);
 }
 
 .zoneCard > img {
@@ -1270,18 +1270,18 @@
 
 .zoneCard h3 {
   font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: clamp(24px, 2.7vw, 40px);
+  font-size: clamp(20px, 2vw, 30px);
   letter-spacing: -0.07em;
-  margin: 46px clamp(24px, 3vw, 40px) 0;
+  margin: 30px clamp(18px, 2vw, 28px) 0;
   text-transform: uppercase;
 }
 
 .zoneCard p {
   color: rgba(255, 255, 255, 0.64);
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.5;
-  margin: 20px clamp(24px, 3vw, 40px) 0;
-  padding-bottom: 42px;
+  margin: 16px clamp(18px, 2vw, 28px) 0;
+  padding-bottom: 30px;
 }
 
 .campusSection {
@@ -1593,8 +1593,6 @@
   border-right: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
   flex-direction: column;
-  min-height: 410px;
-  padding: clamp(24px, 2.8vw, 38px);
   transition:
     background 180ms ease,
     border-color 180ms ease;
@@ -1605,7 +1603,6 @@
   border-color: rgba(215, 255, 54, 0.5);
 }
 
-.projectNumber,
 .projectCard small {
   font-family: "JetBrains Mono", ui-monospace, monospace;
   font-size: 10px;
@@ -1613,16 +1610,44 @@
   text-transform: uppercase;
 }
 
-.projectNumber {
-  color: rgba(255, 255, 255, 0.45);
+.projectVisual {
+  aspect-ratio: 4 / 3;
+  background: #0d0d12;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  position: relative;
+}
+
+.projectVisual img {
+  object-fit: cover;
+}
+
+.projectVisualPlaceholder {
+  align-items: flex-end;
+  background:
+    linear-gradient(135deg, rgba(215, 255, 54, 0.04), transparent 42%),
+    repeating-linear-gradient(
+      135deg,
+      transparent 0 18px,
+      rgba(255, 255, 255, 0.025) 18px 19px
+    ),
+    #0d0d12;
+  display: flex;
+  padding: 20px;
+}
+
+.projectVisualPlaceholder span {
+  color: rgba(255, 255, 255, 0.28);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.02em;
 }
 
 .projectDetails {
   display: flex;
-  flex: 1;
   flex-direction: column;
-  justify-content: flex-end;
-  margin-top: 72px;
+  min-height: 250px;
+  padding: clamp(24px, 2.8vw, 38px);
 }
 
 .projectCard small {
@@ -1632,19 +1657,12 @@
 
 .projectCard h3 {
   font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: clamp(22px, 2vw, 31px);
+  font-size: clamp(19px, 1.7vw, 27px);
   font-weight: 500;
   letter-spacing: -0.07em;
-  line-height: 1;
+  line-height: 1.06;
   margin-top: 20px;
   text-transform: uppercase;
-}
-
-.projectCard p {
-  color: rgba(255, 255, 255, 0.62);
-  font-size: clamp(13px, 1.15vw, 15px);
-  line-height: 1.55;
-  margin-top: 28px;
 }
 
 .trainersSection {
@@ -2558,11 +2576,12 @@
   }
 
   .projectCard {
-    padding: 26px 24px 32px;
+    padding: 0;
   }
 
   .projectDetails {
-    margin-top: 72px;
+    min-height: 0;
+    padding: 30px 24px 36px;
   }
 
   .trainerDetails {

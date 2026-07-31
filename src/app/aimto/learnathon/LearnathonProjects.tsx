@@ -1,33 +1,46 @@
+import Image from "next/image";
 import styles from "./page.module.css";
 
 const projectIdeas = [
   {
-    number: "01",
-    person: "A makcik with a home food business",
     type: "Ordering website",
-    project:
-      "Turn WhatsApp enquiries into a simple menu and clear customer orders.",
+    prompt:
+      "Make me a website for people to order my home-cooked cinnamon rolls",
+    image: "/aimto-assets/learnathon-inspiration-cinnamon-rolls.jpg",
   },
   {
-    number: "02",
-    person: "A student with too many notes",
     type: "Study companion",
-    project:
-      "Turn class notes into summaries, flashcards and practice questions.",
+    prompt:
+      "Make me a study app that turns my class notes into flashcards and practice quizzes",
   },
   {
-    number: "03",
-    person: "A small-business owner",
     type: "Follow-up assistant",
-    project:
-      "Draft quotations and polite customer follow-ups from a few details.",
+    prompt:
+      "Make me an assistant that writes friendly customer follow-ups from my quotation details",
   },
   {
-    number: "04",
-    person: "A retiree preserving family stories",
     type: "Family archive",
-    project:
-      "Collect recipes, photographs and stories in a website the family can keep.",
+    prompt:
+      "Make me a family website to preserve our recipes, photos and stories",
+  },
+  {
+    type: "Budget planner",
+    prompt: "Make me an app that shows where my money goes every month",
+  },
+  {
+    type: "Community directory",
+    prompt:
+      "Make me a directory for people to find trusted services in my neighbourhood",
+  },
+  {
+    type: "Trip planner",
+    prompt:
+      "Make me a trip planner that builds an itinerary around my family's interests",
+  },
+  {
+    type: "Job application coach",
+    prompt:
+      "Make me a tool that improves my CV and helps me practise interviews",
   },
 ];
 
@@ -39,14 +52,14 @@ export default function LearnathonProjects() {
     >
       <div className={styles.projectsIntro} data-reveal="up">
         <div>
-          <div className={styles.sectionLabel}>WHAT TO BUILD_</div>
+          <div className={styles.sectionLabel}>WHAT YOU CAN BUILD_</div>
           <h2 id="learnathon-projects-title">
-            Build something you&apos;d love to use.
+            Learn to build something you&apos;d love
           </h2>
         </div>
         <p>
-          Start with one real problem from daily life. Your first AI project
-          does not need to be complicated to be genuinely useful.
+          Even if you&apos;re a beginner, you can build complete apps with AI
+          in minutes &amp; get support during this event
         </p>
       </div>
 
@@ -56,12 +69,28 @@ export default function LearnathonProjects() {
         data-reveal="stagger"
       >
         {projectIdeas.map((idea) => (
-          <article className={styles.projectCard} key={idea.number}>
-            <span className={styles.projectNumber}>{idea.number}_</span>
+          <article className={styles.projectCard} key={idea.type}>
+            <div
+              className={`${styles.projectVisual} ${
+                idea.image ? "" : styles.projectVisualPlaceholder
+              }`}
+            >
+              {idea.image ? (
+                <Image
+                  src={idea.image}
+                  alt="An artistic neon collage of a Malaysian home baker preparing cinnamon rolls for online orders"
+                  fill
+                  loading="eager"
+                  sizes="(max-width: 680px) calc(100vw - 40px), (max-width: 1000px) 50vw, 25vw"
+                  unoptimized
+                />
+              ) : (
+                <span>ARTWORK NEXT_</span>
+              )}
+            </div>
             <div className={styles.projectDetails}>
               <small>{idea.type}</small>
-              <h3>{idea.person}</h3>
-              <p>{idea.project}</p>
+              <h3>{idea.prompt}</h3>
             </div>
           </article>
         ))}

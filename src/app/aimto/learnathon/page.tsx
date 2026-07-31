@@ -307,7 +307,7 @@ export default function LearnathonThreePage() {
         <section className={styles.zonesSection} id="experience">
           <div className={styles.sectionHeading} data-reveal="up">
             <div className={styles.sectionLabel}>YOUR BUILD JOURNEY_</div>
-            <h2>Everything around you is designed to keep you moving.</h2>
+            <h2>Here&apos;s what you&apos;ll see at the Learn-a-thon.</h2>
           </div>
           <div className={styles.zonesGrid} data-reveal="stagger">
             {experienceZones.map((zone, index) => (

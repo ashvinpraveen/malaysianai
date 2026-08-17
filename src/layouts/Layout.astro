@@ -1,0 +1,28 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+
+interface Props {
+	title: string;
+	description: string;
+	image?: string;
+	immersive?: boolean;
+}
+
+const { title, description, image, immersive = false } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} image={image} />
+	</head>
+	<body class:list={{ immersive }}>
+		{!immersive && <Header />}
+		<main class:list={{ 'immersive-main': immersive }}>
+			<slot />
+		</main>
+		{!immersive && <Footer />}
+	</body>
+</html>

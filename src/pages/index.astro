@@ -1,0 +1,433 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+---
+
+<Layout
+	title={SITE_TITLE}
+	description={SITE_DESCRIPTION}
+	image="/images/malaysian-ai-kl-garden-hero-v2-4k.webp"
+	immersive
+>
+	<div class="hero-shell">
+		<img
+			class="hero-art"
+			src="/images/malaysian-ai-kl-garden-hero-v2-4k.webp"
+			alt=""
+			width="3840"
+			height="2160"
+			fetchpriority="high"
+			decoding="async"
+		/>
+		<div class="hero-shade" aria-hidden="true"></div>
+
+		<header class="floating-nav">
+			<a class="brand-mark" href="/" aria-label="Malaysian AI home">
+				<img src="/logo-ai-residency.png" alt="" width="42" height="42" />
+			</a>
+
+			<nav aria-label="Primary navigation">
+				<a href="#about">About</a>
+				<a href="/blog">Stories</a>
+				<a class="nav-residency" href="/residency">Residency</a>
+			</nav>
+
+			<a
+				class="nav-cta"
+				href="https://luma.com/malaysianai"
+				aria-label="Find an AI event"
+			>
+				<span>Find an event</span>
+				<span class="round-arrow" aria-hidden="true">↗</span>
+			</a>
+		</header>
+
+		<section class="hero-card" id="about" aria-labelledby="hero-title">
+			<h1 id="hero-title">Driving Malaysia's<br />AI progress.</h1>
+			<p class="intro">
+				The home of AI builders in Malaysia. Start with a workshop, meet the people building
+				around you, and make something of your own.
+			</p>
+			<a class="card-link" href="https://luma.com/malaysianai">
+				Join the next AI event
+				<span class="round-arrow" aria-hidden="true">↗</span>
+			</a>
+		</section>
+
+		<div class="scene-note" aria-hidden="true">
+			<span>03°08′N</span>
+			<span>101°41′E</span>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.hero-shell {
+		position: relative;
+		isolation: isolate;
+		min-height: 100svh;
+		overflow: hidden;
+		color: #fffdf6;
+		background: #0b2741;
+	}
+
+	.hero-art,
+	.hero-shade {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.hero-art {
+		z-index: -3;
+		max-width: none;
+		object-fit: cover;
+		object-position: center;
+		animation: settle 1.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+	}
+
+	.hero-shade {
+		z-index: -2;
+		background:
+			linear-gradient(180deg, rgb(4 16 34 / 0.28) 0%, transparent 34%, rgb(3 19 28 / 0.32) 100%),
+			radial-gradient(circle at 50% 35%, transparent 25%, rgb(2 16 26 / 0.26) 100%);
+	}
+
+	.floating-nav {
+		position: absolute;
+		z-index: 2;
+		top: clamp(1rem, 3vw, 2rem);
+		left: 50%;
+		display: flex;
+		align-items: center;
+		gap: 0.35rem;
+		width: min(94vw, 470px);
+		padding: 0.3rem;
+		border: 1px solid rgb(255 255 255 / 0.3);
+		border-radius: 1.05rem;
+		background: linear-gradient(105deg, rgb(35 43 58 / 0.52), rgb(85 105 143 / 0.5));
+		box-shadow: 0 18px 60px rgb(3 12 28 / 0.23), inset 0 1px rgb(255 255 255 / 0.16);
+		backdrop-filter: blur(18px) saturate(125%);
+		transform: translateX(-50%);
+		animation: nav-in 0.75s 0.08s ease-out both;
+	}
+
+	.brand-mark {
+		display: grid;
+		flex: 0 0 auto;
+		width: 2.4rem;
+		height: 2.4rem;
+		place-items: center;
+		border: 1px solid rgb(255 255 255 / 0.1);
+		border-radius: 0.72rem;
+		background: rgb(255 255 255 / 0.13);
+	}
+
+	.brand-mark img {
+		width: 1.7rem;
+		height: 1.7rem;
+		filter: drop-shadow(0 2px 6px rgb(0 0 0 / 0.25));
+	}
+
+	nav {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: clamp(0.7rem, 1.5vw, 1rem);
+		min-width: 0;
+		margin-inline: auto;
+	}
+
+	nav a {
+		position: relative;
+		font-size: 0.82rem;
+		text-decoration: none;
+		text-shadow: 0 1px 10px rgb(0 0 0 / 0.26);
+	}
+
+	nav a::after {
+		position: absolute;
+		right: 0;
+		bottom: -0.28rem;
+		left: 0;
+		height: 1px;
+		background: currentColor;
+		content: '';
+		transform: scaleX(0);
+		transform-origin: right;
+		transition: transform 180ms ease;
+	}
+
+	nav a:hover::after,
+	nav a:focus-visible::after {
+		transform: scaleX(1);
+		transform-origin: left;
+	}
+
+	.nav-cta,
+	.card-link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.55rem;
+		color: #fff;
+		text-decoration: none;
+	}
+
+	.nav-cta {
+		flex: 0 0 auto;
+		min-height: 2.4rem;
+		padding: 0.32rem 0.4rem 0.32rem 0.72rem;
+		border: 1px solid rgb(255 255 255 / 0.09);
+		border-radius: 0.75rem;
+		background: rgb(10 16 31 / 0.82);
+		box-shadow: inset 0 1px rgb(255 255 255 / 0.1);
+		font-size: 0.82rem;
+		transition: background 180ms ease, transform 180ms ease;
+	}
+
+	.nav-cta:hover,
+	.nav-cta:focus-visible {
+		background: rgb(19 29 49 / 0.94);
+		transform: translateY(-1px);
+	}
+
+	.round-arrow {
+		display: grid;
+		width: 1.2rem;
+		height: 1.2rem;
+		place-items: center;
+		border: 1px solid rgb(255 255 255 / 0.42);
+		border-radius: 50%;
+		font-family: system-ui, sans-serif;
+		font-size: 0.68rem;
+	}
+
+	.hero-card {
+		position: absolute;
+		z-index: 1;
+		isolation: isolate;
+		bottom: clamp(1.5rem, 4vw, 3.5rem);
+		left: clamp(1rem, 3vw, 2.5rem);
+		overflow: hidden;
+		width: min(86vw, 510px);
+		padding: clamp(1.65rem, 3vw, 2.35rem);
+		border: 1px solid rgb(238 250 255 / 0.38);
+		border-radius: 1.4rem;
+		background:
+			linear-gradient(135deg, rgb(158 194 215 / 0.2), rgb(13 37 55 / 0.38) 34%, rgb(4 20 34 / 0.22) 72%, rgb(238 192 125 / 0.11));
+		box-shadow:
+			0 28px 80px rgb(1 12 22 / 0.28),
+			inset 0 1px rgb(255 255 255 / 0.42),
+			inset 0 -1px rgb(255 255 255 / 0.1);
+		-webkit-backdrop-filter: blur(26px) saturate(155%) contrast(104%);
+		backdrop-filter: blur(26px) saturate(155%) contrast(104%);
+		animation: card-in 0.85s 0.2s ease-out both;
+	}
+
+	.hero-card::before {
+		position: absolute;
+		z-index: 0;
+		inset: 0;
+		border-radius: inherit;
+		background:
+			linear-gradient(118deg, rgb(255 255 255 / 0.18), transparent 24%, transparent 70%, rgb(255 212 149 / 0.07)),
+			radial-gradient(circle at 12% 0%, rgb(255 255 255 / 0.16), transparent 34%);
+		content: '';
+		pointer-events: none;
+	}
+
+	.hero-card::after {
+		position: absolute;
+		z-index: 0;
+		top: 0;
+		left: 9%;
+		width: 54%;
+		height: 1px;
+		background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.82), transparent);
+		content: '';
+		pointer-events: none;
+	}
+
+	.hero-card > * {
+		position: relative;
+		z-index: 1;
+	}
+
+	h1 {
+		margin: 0;
+		font-family: 'Times New Roman', Times, serif;
+		font-size: clamp(2.25rem, 3.4vw, 2.75rem);
+		font-weight: 400;
+		letter-spacing: -0.025em;
+		line-height: 1.02;
+		text-wrap: balance;
+	}
+
+	.intro {
+		max-width: 27rem;
+		margin: 1.25rem 0 1.35rem;
+		color: rgb(255 255 255 / 0.55);
+		font-size: 0.93rem;
+		line-height: 1.5;
+	}
+
+	.card-link {
+		justify-content: flex-start;
+		width: fit-content;
+		padding-bottom: 0.22rem;
+		border-bottom: 1px solid rgb(255 255 255 / 0.68);
+		font-size: 0.95rem;
+		transition: gap 180ms ease, color 180ms ease;
+	}
+
+	.card-link:hover,
+	.card-link:focus-visible {
+		gap: 1.1rem;
+		color: #ffd8a6;
+	}
+
+	.card-link .round-arrow {
+		width: 1.4rem;
+		height: 1.4rem;
+	}
+
+	.scene-note {
+		position: absolute;
+		right: clamp(1rem, 3vw, 2.5rem);
+		bottom: clamp(1rem, 2.5vw, 2rem);
+		display: flex;
+		gap: 0.8rem;
+		color: rgb(255 255 255 / 0.57);
+		font-size: 0.69rem;
+		letter-spacing: 0.13em;
+		text-shadow: 0 1px 5px rgb(0 0 0 / 0.65);
+	}
+
+	a:focus-visible {
+		outline: 2px solid #ffd29a;
+		outline-offset: 4px;
+	}
+
+	@keyframes nav-in {
+		from {
+			opacity: 0;
+			transform: translate(-50%, -0.8rem);
+		}
+	}
+
+	@keyframes card-in {
+		from {
+			opacity: 0;
+			transform: translateY(1.2rem);
+		}
+	}
+
+	@keyframes settle {
+		from {
+			opacity: 0.75;
+			transform: scale(1.025);
+		}
+	}
+
+	@media (max-width: 700px) {
+		.hero-shell {
+			min-height: max(44rem, 100svh);
+		}
+
+		.hero-art {
+			object-position: 49% center;
+		}
+
+		.floating-nav {
+			top: 0.85rem;
+			width: min(calc(100vw - 1.5rem), 28rem);
+			border-radius: 1rem;
+		}
+
+		.brand-mark {
+			width: 2.35rem;
+			height: 2.35rem;
+			border-radius: 0.75rem;
+		}
+
+		.brand-mark img {
+			width: 1.7rem;
+			height: 1.7rem;
+		}
+
+		nav {
+			gap: 1rem;
+		}
+
+		nav a {
+			font-size: 0.92rem;
+		}
+
+		.nav-residency {
+			display: none;
+		}
+
+		.nav-cta {
+			min-height: 2.35rem;
+			padding: 0.38rem;
+		}
+
+		.nav-cta span:first-child {
+			display: none;
+		}
+
+		.hero-card {
+			right: 0.75rem;
+			bottom: 0.75rem;
+			left: 0.75rem;
+			width: auto;
+			padding: 1.6rem;
+			border-radius: 1.3rem;
+		}
+
+		h1 {
+			font-size: clamp(2.15rem, 10vw, 2.55rem);
+		}
+
+		.intro {
+			margin-block: 1.1rem;
+			font-size: 0.9rem;
+		}
+
+		.scene-note {
+			display: none;
+		}
+	}
+
+	@media (max-width: 390px) {
+		nav a:nth-child(2) {
+			display: none;
+		}
+	}
+
+	@media (max-height: 760px) and (min-width: 701px) {
+		.hero-card {
+			bottom: 1rem;
+			padding: 1.6rem 2rem;
+		}
+
+		h1 {
+			font-size: 2.5rem;
+		}
+
+		.intro {
+			margin-block: 1rem;
+		}
+
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.hero-art,
+		.floating-nav,
+		.hero-card {
+			animation: none;
+		}
+	}
+</style>

@@ -1,0 +1,57 @@
+@font-face {
+	font-family: 'Atkinson';
+	src: url('../assets/fonts/atkinson-regular.woff') format('woff');
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Atkinson';
+	src: url('../assets/fonts/atkinson-bold.woff') format('woff');
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+}
+
+:root {
+	font-family: 'Atkinson', system-ui, sans-serif;
+	color: #102b2a;
+	background: #f0eadb;
+	font-synthesis: none;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+a {
+	color: inherit;
+}
+
+body.immersive {
+	background: #071e2d;
+}
+
+.immersive-main {
+	min-height: 100svh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+}

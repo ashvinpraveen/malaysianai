@@ -6,43 +6,47 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 <Layout
 	title={SITE_TITLE}
 	description={SITE_DESCRIPTION}
-	image="/images/malaysian-ai-kl-hero-v4-1-4k.webp"
+	image="/images/malaysian-ai-kl-hero-restored-3840.webp"
 	immersive
 >
+	<header class="floating-nav">
+		<a class="brand-mark" href="/" aria-label="Malaysian AI home">
+			<img src="/logo-ai-residency.png" alt="" width="42" height="42" />
+		</a>
+
+		<nav aria-label="Primary navigation">
+			<a href="#about">About</a>
+			<a href="/blog">Stories</a>
+			<a class="nav-residency" href="/residency">Residency</a>
+		</nav>
+
+		<a
+			class="nav-cta"
+			href="https://luma.com/malaysianai"
+			aria-label="Find an AI event"
+		>
+			<span>Find an event</span>
+			<span class="round-arrow" aria-hidden="true">↗</span>
+		</a>
+	</header>
+
 	<div class="hero-shell">
 		<img
 			class="hero-art"
-			src="/images/malaysian-ai-kl-hero-v4-1-4k.webp"
+			src="/images/malaysian-ai-kl-hero-restored-3840.webp"
+			srcset="/images/malaysian-ai-kl-hero-restored-1920.webp 1920w, /images/malaysian-ai-kl-hero-restored-3840.webp 3840w, /images/malaysian-ai-kl-hero-restored-7680.webp 7680w"
+			sizes="100vw"
 			alt=""
-			width="3840"
-			height="2160"
+			width="7680"
+			height="4320"
 			fetchpriority="high"
 			decoding="async"
 		/>
 		<div class="hero-shade" aria-hidden="true"></div>
 
-		<header class="floating-nav">
-			<a class="brand-mark" href="/" aria-label="Malaysian AI home">
-				<img src="/logo-ai-residency.png" alt="" width="42" height="42" />
-			</a>
+		<a class="sky-wordmark" href="/" aria-label="Malaysian AI home">Malaysian AI</a>
 
-			<nav aria-label="Primary navigation">
-				<a href="#about">About</a>
-				<a href="/blog">Stories</a>
-				<a class="nav-residency" href="/residency">Residency</a>
-			</nav>
-
-			<a
-				class="nav-cta"
-				href="https://luma.com/malaysianai"
-				aria-label="Find an AI event"
-			>
-				<span>Find an event</span>
-				<span class="round-arrow" aria-hidden="true">↗</span>
-			</a>
-		</header>
-
-		<section class="hero-card" id="about" aria-labelledby="hero-title">
+		<section class="hero-card" aria-labelledby="hero-title">
 			<h1 id="hero-title">Driving Malaysia's<br />AI progress.</h1>
 			<p class="intro">
 				The home of AI builders in Malaysia. Start with a workshop, meet the people building
@@ -54,12 +58,84 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 			</a>
 		</section>
 
-		<div class="scene-note" aria-hidden="true">
-			<span>03°08′N</span>
-			<span>101°41′E</span>
+		<div class="malaysia-clock" aria-label="Current time in Malaysia">
+			<svg viewBox="0 0 24 24" aria-hidden="true">
+				<circle cx="12" cy="12" r="8.5"></circle>
+				<path d="M12 7.5v5l3 2"></path>
+			</svg>
+			<time id="malaysia-time" aria-live="off">--:-- --</time>
+			<span class="clock-zone">MYT</span>
 		</div>
 	</div>
+
+	<section class="mission-section" id="about" aria-labelledby="mission-title">
+		<div class="mission-inner">
+			<figure class="mission-art-wrap">
+				<img
+					class="mission-art"
+					src="/images/malaysian-ai-bunga-raya-pixel.png"
+					alt="A pixel-art bunga raya plant with a red hibiscus bloom"
+					width="1122"
+					height="1402"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+
+			<div class="mission-copy">
+				<div class="mission-intro">
+					<p>
+						We believe anyone in Malaysia should have a place to take their first step
+						into AI.
+					</p>
+					<p>
+						A place to join a workshop, meet builders at every level, and turn a new
+						idea into something real.
+					</p>
+				</div>
+
+				<h2 id="mission-title">Your first step into AI starts here.</h2>
+			</div>
+		</div>
+	</section>
 </Layout>
+
+<script>
+	const malaysiaTime = document.querySelector<HTMLTimeElement>('#malaysia-time');
+	const floatingNav = document.querySelector<HTMLElement>('.floating-nav');
+	const missionSection = document.querySelector<HTMLElement>('.mission-section');
+	const malaysiaTimeFormatter = new Intl.DateTimeFormat('en-MY', {
+		timeZone: 'Asia/Kuala_Lumpur',
+		hour: 'numeric',
+		minute: '2-digit',
+		hour12: true,
+	});
+
+	function updateMalaysiaTime() {
+		if (!malaysiaTime) return;
+
+		const now = new Date();
+		malaysiaTime.textContent = malaysiaTimeFormatter.format(now).toUpperCase();
+		malaysiaTime.dateTime = now.toISOString();
+	}
+
+	updateMalaysiaTime();
+	window.setInterval(updateMalaysiaTime, 30_000);
+
+	function updateNavTheme() {
+		if (!floatingNav || !missionSection) return;
+
+		const navBounds = floatingNav.getBoundingClientRect();
+		const missionBounds = missionSection.getBoundingClientRect();
+		const isOverMission = missionBounds.top <= navBounds.bottom && missionBounds.bottom >= navBounds.top;
+
+		floatingNav.classList.toggle('is-over-light', isOverMission);
+	}
+
+	updateNavTheme();
+	window.addEventListener('scroll', updateNavTheme, { passive: true });
+	window.addEventListener('resize', updateNavTheme);
+</script>
 
 <style>
 	.hero-shell {
@@ -95,8 +171,8 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	}
 
 	.floating-nav {
-		position: absolute;
-		z-index: 2;
+		position: fixed;
+		z-index: 20;
 		top: clamp(1rem, 3vw, 2rem);
 		left: 50%;
 		display: flex;
@@ -106,11 +182,20 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 		padding: 0.3rem;
 		border: 1px solid rgb(255 255 255 / 0.3);
 		border-radius: 1.05rem;
+		color: #fffdf6;
 		background: linear-gradient(105deg, rgb(35 43 58 / 0.52), rgb(85 105 143 / 0.5));
 		box-shadow: 0 18px 60px rgb(3 12 28 / 0.23), inset 0 1px rgb(255 255 255 / 0.16);
 		backdrop-filter: blur(18px) saturate(125%);
 		transform: translateX(-50%);
+		transition: color 220ms ease, background 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
 		animation: nav-in 0.75s 0.08s ease-out both;
+	}
+
+	.floating-nav.is-over-light {
+		border-color: rgb(23 58 56 / 0.1);
+		color: #173a38;
+		background: rgb(250 247 238 / 0.82);
+		box-shadow: 0 14px 35px rgb(62 73 48 / 0.12), inset 0 1px rgb(255 255 255 / 0.8);
 	}
 
 	.brand-mark {
@@ -122,6 +207,12 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 		border: 1px solid rgb(255 255 255 / 0.1);
 		border-radius: 0.72rem;
 		background: rgb(255 255 255 / 0.13);
+		transition: background 220ms ease, border-color 220ms ease;
+	}
+
+	.floating-nav.is-over-light .brand-mark {
+		border-color: rgb(23 58 56 / 0.1);
+		background: rgb(23 58 56 / 0.07);
 	}
 
 	.brand-mark img {
@@ -193,6 +284,25 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 		transform: translateY(-1px);
 	}
 
+	.sky-wordmark {
+		position: absolute;
+		z-index: 1;
+		top: clamp(6.5rem, 14vh, 8.5rem);
+		left: 50%;
+		color: #fffdf8;
+		font-family: 'Mondwest', 'Times New Roman', Times, serif;
+		font-size: clamp(1.55rem, 2.4vw, 2.15rem);
+		font-weight: 400;
+		line-height: 1;
+		text-align: center;
+		text-decoration: none;
+		text-shadow:
+			0 0 7px rgb(255 255 255 / 0.42),
+			0 3px 20px rgb(13 32 77 / 0.7);
+		transform: translateX(-50%);
+		animation: wordmark-in 0.85s 0.16s ease-out both;
+	}
+
 	.round-arrow {
 		display: grid;
 		width: 1.2rem;
@@ -213,13 +323,13 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 		overflow: hidden;
 		width: min(86vw, 510px);
 		padding: clamp(1.65rem, 3vw, 2.35rem);
-		border: 1px solid rgb(238 250 255 / 0.38);
+		border: 1px solid rgb(238 250 255 / 0.18);
 		border-radius: 1.4rem;
 		background:
 			linear-gradient(135deg, rgb(158 194 215 / 0.2), rgb(13 37 55 / 0.38) 34%, rgb(4 20 34 / 0.22) 72%, rgb(238 192 125 / 0.11));
 		box-shadow:
 			0 28px 80px rgb(1 12 22 / 0.28),
-			inset 0 1px rgb(255 255 255 / 0.42),
+			inset 0 1px rgb(255 255 255 / 0.22),
 			inset 0 -1px rgb(255 255 255 / 0.1);
 		-webkit-backdrop-filter: blur(26px) saturate(155%) contrast(104%);
 		backdrop-filter: blur(26px) saturate(155%) contrast(104%);
@@ -245,7 +355,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 		left: 9%;
 		width: 54%;
 		height: 1px;
-		background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.82), transparent);
+		background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.45), transparent);
 		content: '';
 		pointer-events: none;
 	}
@@ -258,7 +368,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	h1 {
 		margin: 0;
 		font-family: 'Mondwest', 'Times New Roman', Times, serif;
-		font-size: clamp(2.25rem, 3.4vw, 2.75rem);
+		font-size: clamp(1.9rem, 2.8vw, 2.35rem);
 		font-weight: 400;
 		letter-spacing: 0;
 		line-height: 1.04;
@@ -293,16 +403,101 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 		height: 1.4rem;
 	}
 
-	.scene-note {
+	.malaysia-clock {
 		position: absolute;
-		right: clamp(1rem, 3vw, 2.5rem);
-		bottom: clamp(1rem, 2.5vw, 2rem);
+		z-index: 1;
+		top: clamp(0.85rem, 3vw, 2rem);
+		right: clamp(0.85rem, 3vw, 2rem);
 		display: flex;
-		gap: 0.8rem;
-		color: rgb(255 255 255 / 0.57);
-		font-size: 0.69rem;
-		letter-spacing: 0.13em;
-		text-shadow: 0 1px 5px rgb(0 0 0 / 0.65);
+		align-items: center;
+		gap: 0.55rem;
+		color: rgb(255 255 255 / 0.68);
+		font-size: clamp(0.72rem, 1vw, 0.82rem);
+		font-variant-numeric: tabular-nums;
+		line-height: 1;
+		text-shadow: 0 1px 8px rgb(0 0 0 / 0.75);
+	}
+
+	.malaysia-clock svg {
+		width: 1.2rem;
+		height: 1.2rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		stroke-width: 1.8;
+	}
+
+	.clock-zone {
+		color: rgb(255 255 255 / 0.42);
+	}
+
+	.mission-section {
+		position: relative;
+		display: grid;
+		min-height: max(48rem, 100svh);
+		padding: clamp(6rem, 10vw, 9rem) clamp(1.25rem, 6vw, 6rem);
+		color: #173a38;
+		background:
+			radial-gradient(circle at 18% 32%, rgb(210 223 157 / 0.2), transparent 27rem),
+			#f0eadb;
+	}
+
+	.mission-inner {
+		display: grid;
+		grid-template-columns: minmax(18rem, 0.82fr) minmax(24rem, 1.18fr);
+		gap: clamp(3rem, 8vw, 9rem);
+		width: min(100%, 82rem);
+		margin: auto;
+	}
+
+	.mission-art-wrap {
+		display: grid;
+		align-self: center;
+		min-width: 0;
+		margin: 0;
+		place-items: center;
+	}
+
+	.mission-art {
+		display: block;
+		width: min(100%, 32rem);
+		filter: drop-shadow(0 1.75rem 2.25rem rgb(67 78 36 / 0.13));
+		image-rendering: pixelated;
+	}
+
+	.mission-copy {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		min-width: 0;
+		padding-block: clamp(1rem, 5vw, 5rem);
+	}
+
+	.mission-intro {
+		max-width: 37rem;
+		color: rgb(23 58 56 / 0.7);
+		font-size: clamp(1.05rem, 1.35vw, 1.3rem);
+		line-height: 1.55;
+	}
+
+	.mission-intro p {
+		margin: 0;
+	}
+
+	.mission-intro p + p {
+		margin-top: 1.6rem;
+	}
+
+	.mission-copy h2 {
+		max-width: 48rem;
+		margin: clamp(4rem, 12vh, 8rem) 0 0;
+		font-family: 'Mondwest', 'Times New Roman', Times, serif;
+		font-size: clamp(3.4rem, 6vw, 6.5rem);
+		font-weight: 400;
+		letter-spacing: -0.035em;
+		line-height: 0.92;
+		text-wrap: balance;
 	}
 
 	a:focus-visible {
@@ -321,6 +516,13 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 		from {
 			opacity: 0;
 			transform: translateY(1.2rem);
+		}
+	}
+
+	@keyframes wordmark-in {
+		from {
+			opacity: 0;
+			transform: translate(-50%, 0.6rem);
 		}
 	}
 
@@ -344,6 +546,18 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 			top: 0.85rem;
 			width: min(calc(100vw - 1.5rem), 28rem);
 			border-radius: 1rem;
+		}
+
+		.sky-wordmark {
+			top: 8.15rem;
+			width: calc(100% - 2rem);
+			font-size: clamp(1.5rem, 6.5vw, 1.9rem);
+		}
+
+		.malaysia-clock {
+			top: 5.75rem;
+			right: 1rem;
+			font-size: 0.72rem;
 		}
 
 		.brand-mark {
@@ -388,7 +602,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 		}
 
 		h1 {
-			font-size: clamp(2.15rem, 10vw, 2.55rem);
+			font-size: clamp(1.85rem, 8vw, 2.2rem);
 		}
 
 		.intro {
@@ -396,9 +610,38 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 			font-size: 0.9rem;
 		}
 
-		.scene-note {
-			display: none;
+		.mission-section {
+			min-height: auto;
+			padding: 7rem 1.25rem 5rem;
 		}
+
+		.mission-inner {
+			grid-template-columns: 1fr;
+			gap: 2.75rem;
+		}
+
+		.mission-art-wrap {
+			order: 2;
+		}
+
+		.mission-art {
+			width: min(88vw, 25rem);
+		}
+
+		.mission-copy {
+			order: 1;
+			padding: 0;
+		}
+
+		.mission-intro {
+			font-size: 1.05rem;
+		}
+
+		.mission-copy h2 {
+			margin-top: 3rem;
+			font-size: clamp(3.25rem, 16vw, 5.2rem);
+		}
+
 	}
 
 	@media (max-width: 390px) {
@@ -414,7 +657,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 		}
 
 		h1 {
-			font-size: 2.5rem;
+			font-size: 2.25rem;
 		}
 
 		.intro {
@@ -426,6 +669,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	@media (prefers-reduced-motion: reduce) {
 		.hero-art,
 		.floating-nav,
+		.sky-wordmark,
 		.hero-card {
 			animation: none;
 		}

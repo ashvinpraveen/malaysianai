@@ -14,6 +14,14 @@
 	font-display: swap;
 }
 
+@font-face {
+	font-family: 'Mondwest';
+	src: url('../assets/fonts/PPMondwest-Regular.woff2') format('woff2');
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+}
+
 :root {
 	font-family: 'Atkinson', system-ui, sans-serif;
 	color: #102b2a;

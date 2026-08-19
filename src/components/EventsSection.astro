@@ -1,0 +1,584 @@
+---
+const events = [
+	{
+		title: 'AI Builder Night',
+		type: 'Community meetup',
+		date: 'Monthly in Kuala Lumpur',
+		image: '/aimto-assets/gallery-top-1.jpg',
+		position: 'center 54%',
+	},
+	{
+		title: 'Build With AI',
+		type: 'Hands-on workshop',
+		date: 'For first-time builders',
+		image: '/aimto-assets/learnathon-builder-floor.jpg',
+		position: 'center center',
+	},
+	{
+		title: 'Pasar AI',
+		type: 'Demo day',
+		date: 'Made in Malaysia',
+		image: '/aimto-assets/pasar-ai-booths-wide.jpg',
+		position: 'center center',
+	},
+	{
+		title: 'Show & Tell',
+		type: 'Open mic for ideas',
+		date: 'Bring what you are building',
+		image: '/show-and-tell.jpg',
+		position: 'center center',
+	},
+	{
+		title: 'AI Takeover',
+		type: 'Founder session',
+		date: 'People, products, progress',
+		image: '/ai-malaysia-takeover-hero.jpg',
+		position: 'center center',
+	},
+];
+---
+
+<section class="events-section" id="events" aria-labelledby="events-title" data-events>
+	<div class="events-background" aria-hidden="true">
+		<img
+			class="events-background-image is-visible"
+			data-events-background="0"
+			src={events[0].image}
+			alt=""
+			style={`object-position: ${events[0].position}`}
+		/>
+		<img
+			class="events-background-image"
+			data-events-background="1"
+			src={events[1].image}
+			alt=""
+			style={`object-position: ${events[1].position}`}
+		/>
+		<div class="events-background-wash"></div>
+	</div>
+
+	<div class="events-header">
+		<p class="events-kicker">Meet in real life</p>
+		<h2 id="events-title">There is always<br />something happening.</h2>
+		<a class="events-calendar-link" href="https://luma.com/malaysianai">
+			See the event calendar
+			<span aria-hidden="true">↗</span>
+		</a>
+	</div>
+
+	<div class="events-selected" aria-live="polite" aria-atomic="true">
+		<p data-event-type>{events[0].type}</p>
+		<h3 data-event-title>{events[0].title}</h3>
+		<p data-event-date>{events[0].date}</p>
+	</div>
+
+	<div class="events-deck" data-events-deck>
+		{events.map((event, index) => (
+			<button
+				class:list={['event-card', { 'is-active': index === 0 }]}
+				type="button"
+				data-event-card
+				data-index={index}
+				data-title={event.title}
+				data-type={event.type}
+				data-date={event.date}
+				data-image={event.image}
+				data-position={event.position}
+				aria-label={`Show ${event.title}`}
+				aria-pressed={index === 0 ? 'true' : 'false'}
+			>
+				<span class="event-card-image-wrap">
+					<img
+						class="event-card-image"
+						src={event.image}
+						alt=""
+						width="900"
+						height="600"
+						loading={index === 0 ? 'eager' : 'lazy'}
+						decoding="async"
+						style={`object-position: ${event.position}`}
+					/>
+				</span>
+				<span class="event-card-caption">
+					<span>{String(index + 1).padStart(2, '0')}</span>
+					<strong>{event.title}</strong>
+				</span>
+			</button>
+		))}
+	</div>
+
+	<p class="events-instruction" aria-hidden="true">Auto-playing · select a card</p>
+</section>
+
+<script>
+	const eventSections = document.querySelectorAll<HTMLElement>('[data-events]');
+
+	eventSections.forEach((section) => {
+		const cards = Array.from(section.querySelectorAll<HTMLButtonElement>('[data-event-card]'));
+		const backgrounds = Array.from(
+			section.querySelectorAll<HTMLImageElement>('[data-events-background]'),
+		);
+		const title = section.querySelector<HTMLElement>('[data-event-title]');
+		const type = section.querySelector<HTMLElement>('[data-event-type]');
+		const date = section.querySelector<HTMLElement>('[data-event-date]');
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+		const slots = [0, 1, 2, -2, -1];
+		let selectedIndex = 0;
+		let visibleBackground = 0;
+		let changeSequence = 0;
+		let sectionIsVisible = false;
+		let rotationTimer: number | undefined;
+
+		function stopRotation() {
+			if (rotationTimer === undefined) return;
+			window.clearInterval(rotationTimer);
+			rotationTimer = undefined;
+		}
+
+		function startRotation() {
+			stopRotation();
+			if (!sectionIsVisible || document.hidden || cards.length < 2) {
+				return;
+			}
+
+			rotationTimer = window.setInterval(() => {
+				void selectEvent((selectedIndex + 1) % cards.length);
+			}, 4_000);
+		}
+
+		function layoutCards() {
+			cards.forEach((card, index) => {
+				const order = (index - selectedIndex + cards.length) % cards.length;
+				const slot = slots[order] ?? order;
+				const distance = Math.abs(slot);
+
+				card.style.setProperty('--event-slot', String(slot));
+				card.style.setProperty('--event-distance', String(distance));
+				card.style.setProperty('--event-layer', String(cards.length - distance));
+				card.classList.toggle('is-active', index === selectedIndex);
+				card.setAttribute('aria-pressed', index === selectedIndex ? 'true' : 'false');
+			});
+		}
+
+		async function selectEvent(index: number) {
+			const card = cards[index];
+			if (!card || index === selectedIndex) return;
+			const currentChange = ++changeSequence;
+
+			selectedIndex = index;
+			layoutCards();
+
+			if (title) title.textContent = card.dataset.title ?? '';
+			if (type) type.textContent = card.dataset.type ?? '';
+			if (date) date.textContent = card.dataset.date ?? '';
+
+			const nextBackgroundIndex = visibleBackground === 0 ? 1 : 0;
+			const nextBackground = backgrounds[nextBackgroundIndex];
+			const currentBackground = backgrounds[visibleBackground];
+			if (!nextBackground || !currentBackground || !card.dataset.image) return;
+
+			nextBackground.src = card.dataset.image;
+			nextBackground.style.objectPosition = card.dataset.position ?? 'center';
+			if (!reduceMotion.matches) {
+				try {
+					await nextBackground.decode();
+				} catch {
+					// The browser can still display the image if decode is interrupted.
+				}
+			}
+			if (currentChange !== changeSequence) return;
+
+			nextBackground.classList.add('is-visible');
+			currentBackground.classList.remove('is-visible');
+			visibleBackground = nextBackgroundIndex;
+		}
+
+		cards.forEach((card, index) => {
+			card.addEventListener('click', () => {
+				void selectEvent(index);
+				startRotation();
+			});
+		});
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					sectionIsVisible = entry.isIntersecting;
+					if (entry.isIntersecting) {
+						section.classList.add('is-in-view');
+						startRotation();
+					} else {
+						stopRotation();
+					}
+				});
+			},
+			{ threshold: 0.18 },
+		);
+
+		layoutCards();
+		observer.observe(section);
+
+		document.addEventListener('visibilitychange', startRotation);
+	});
+</script>
+
+<style>
+	.events-section {
+		position: relative;
+		isolation: isolate;
+		min-height: max(52rem, 100svh);
+		overflow: hidden;
+		color: #fffaf0;
+		background: #081f27;
+	}
+
+	.events-background,
+	.events-background-image,
+	.events-background-wash {
+		position: absolute;
+		inset: 0;
+	}
+
+	.events-background {
+		z-index: -2;
+		overflow: hidden;
+	}
+
+	.events-background-image {
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		object-fit: cover;
+		filter: saturate(82%);
+		transform: scale(1.035);
+		opacity: 0;
+		transition: opacity 700ms ease, transform 6s ease;
+	}
+
+	.events-background-image.is-visible {
+		transform: scale(1);
+		opacity: 1;
+	}
+
+	.events-background-wash {
+		background:
+			linear-gradient(180deg, rgb(4 18 24 / 0.82) 0%, rgb(4 19 26 / 0.38) 40%, rgb(3 13 18 / 0.9) 100%),
+			linear-gradient(90deg, rgb(3 17 22 / 0.34), transparent 45%, rgb(3 17 22 / 0.3));
+		backdrop-filter: blur(1px);
+	}
+
+	.events-header {
+		position: absolute;
+		top: clamp(6.5rem, 13vh, 9rem);
+		left: clamp(1.25rem, 5vw, 5rem);
+		z-index: 2;
+		max-width: min(43rem, 70vw);
+		opacity: 0;
+		transform: translateY(1.5rem);
+		transition: opacity 700ms ease, transform 700ms cubic-bezier(0.2, 0.75, 0.2, 1);
+	}
+
+	.events-section.is-in-view .events-header {
+		transform: translateY(0);
+		opacity: 1;
+	}
+
+	.events-kicker {
+		margin: 0 0 1rem;
+		color: rgb(255 250 240 / 0.64);
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.events-header h2 {
+		margin: 0;
+		font-family: 'Mondwest', 'Times New Roman', Times, serif;
+		font-size: clamp(3rem, 6vw, 6.5rem);
+		font-weight: 400;
+		letter-spacing: -0.045em;
+		line-height: 0.84;
+		text-wrap: balance;
+	}
+
+	.events-calendar-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.65rem;
+		margin-top: 1.65rem;
+		padding-bottom: 0.25rem;
+		border-bottom: 1px solid rgb(255 250 240 / 0.58);
+		font-size: 0.95rem;
+		text-decoration: none;
+		transition: gap 180ms ease, color 180ms ease;
+	}
+
+	.events-calendar-link:hover,
+	.events-calendar-link:focus-visible {
+		gap: 1rem;
+		color: #f4c785;
+	}
+
+	.events-selected {
+		position: absolute;
+		top: clamp(10rem, 24vh, 15rem);
+		right: clamp(1.25rem, 5vw, 5rem);
+		z-index: 2;
+		width: min(23rem, 30vw);
+		padding-left: 1rem;
+		border-left: 1px solid rgb(255 250 240 / 0.42);
+		text-align: right;
+	}
+
+	.events-selected p,
+	.events-selected h3 {
+		margin: 0;
+	}
+
+	.events-selected p {
+		color: rgb(255 250 240 / 0.62);
+		font-size: 0.76rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.events-selected h3 {
+		margin-block: 0.45rem;
+		font-family: 'Mondwest', 'Times New Roman', Times, serif;
+		font-size: clamp(1.7rem, 2.6vw, 3rem);
+		font-weight: 400;
+		line-height: 0.95;
+	}
+
+	.events-deck {
+		position: absolute;
+		right: 0;
+		bottom: clamp(-4.5rem, -7vh, -2.5rem);
+		left: 0;
+		z-index: 3;
+		height: clamp(21rem, 47vh, 35rem);
+		perspective: 1200px;
+		pointer-events: none;
+	}
+
+	.event-card {
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		z-index: var(--event-layer, 1);
+		display: block;
+		width: clamp(14rem, 25vw, 24rem);
+		aspect-ratio: 0.75;
+		margin: 0;
+		padding: 0.5rem;
+		overflow: hidden;
+		border: 1px solid rgb(255 255 255 / 0.35);
+		border-radius: 1.15rem;
+		color: #fff;
+		background: rgb(241 235 220 / 0.16);
+		box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 0.42);
+		font: inherit;
+		text-align: left;
+		cursor: pointer;
+		pointer-events: auto;
+		transform:
+			translateX(calc(-50% + var(--event-slot, 0) * min(20vw, 16.5rem)))
+			translateY(calc(var(--event-distance, 0) * 2.1rem))
+			rotate(calc(var(--event-slot, 0) * 4deg))
+			scale(calc(1 - var(--event-distance, 0) * 0.08));
+		transform-origin: 50% 100%;
+		opacity: 0;
+		transition:
+			transform 760ms cubic-bezier(0.2, 0.8, 0.2, 1),
+			opacity 500ms ease,
+			box-shadow 300ms ease,
+			border-color 300ms ease;
+		will-change: transform;
+	}
+
+	.events-section.is-in-view .event-card {
+		opacity: 1;
+	}
+
+	.events-section.is-in-view .event-card:nth-child(1) { transition-delay: 60ms; }
+	.events-section.is-in-view .event-card:nth-child(2) { transition-delay: 110ms; }
+	.events-section.is-in-view .event-card:nth-child(3) { transition-delay: 160ms; }
+	.events-section.is-in-view .event-card:nth-child(4) { transition-delay: 210ms; }
+	.events-section.is-in-view .event-card:nth-child(5) { transition-delay: 260ms; }
+
+	.event-card:hover,
+	.event-card:focus-visible {
+		border-color: rgb(255 255 255 / 0.72);
+		box-shadow: 0 1.8rem 5rem rgb(0 0 0 / 0.55);
+	}
+
+	.event-card:focus-visible {
+		outline: 2px solid #f4c785;
+		outline-offset: 4px;
+	}
+
+	.event-card.is-active {
+		border-color: rgb(255 255 255 / 0.68);
+	}
+
+	.event-card-image-wrap {
+		display: block;
+		overflow: hidden;
+		width: 100%;
+		height: calc(100% - 3rem);
+		border-radius: 0.75rem;
+		background: #102b2a;
+	}
+
+	.event-card-image {
+		display: block;
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		object-fit: cover;
+		transform: scale(1.04);
+		transition: transform 900ms cubic-bezier(0.2, 0.75, 0.2, 1), filter 400ms ease;
+	}
+
+	.event-card:not(.is-active) .event-card-image {
+		filter: saturate(72%) brightness(0.78);
+	}
+
+	.event-card:hover .event-card-image,
+	.event-card:focus-visible .event-card-image,
+	.event-card.is-active .event-card-image {
+		transform: scale(1);
+	}
+
+	.event-card-caption {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		height: 3rem;
+		padding-inline: 0.35rem;
+		font-size: 0.72rem;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+
+	.event-card-caption span {
+		color: rgb(255 255 255 / 0.54);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.event-card-caption strong {
+		overflow: hidden;
+		font-weight: 700;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.events-instruction {
+		position: absolute;
+		right: 1.25rem;
+		bottom: 1.2rem;
+		z-index: 4;
+		margin: 0;
+		color: rgb(255 255 255 / 0.5);
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+	}
+
+	@media (max-width: 700px) {
+		.events-section {
+			min-height: max(48rem, 100svh);
+		}
+
+		.events-header {
+			top: 6.75rem;
+			left: 1.25rem;
+			max-width: calc(100% - 2.5rem);
+		}
+
+		.events-header h2 {
+			font-size: clamp(2.9rem, 13vw, 4.4rem);
+			line-height: 0.88;
+		}
+
+		.events-calendar-link {
+			margin-top: 1.2rem;
+		}
+
+		.events-selected {
+			top: auto;
+			right: 1.25rem;
+			bottom: clamp(19.5rem, 39vh, 24rem);
+			width: calc(100% - 2.5rem);
+			padding: 0;
+			border: 0;
+			text-align: right;
+		}
+
+		.events-selected h3 {
+			font-size: 1.65rem;
+		}
+
+		.events-deck {
+			bottom: -2.7rem;
+			height: clamp(18rem, 36vh, 22rem);
+		}
+
+		.event-card {
+			width: clamp(11.5rem, 48vw, 14.5rem);
+			padding: 0.35rem;
+			border-radius: 0.9rem;
+			transform:
+				translateX(calc(-50% + var(--event-slot, 0) * 38vw))
+				translateY(calc(var(--event-distance, 0) * 1.35rem))
+				rotate(calc(var(--event-slot, 0) * 5deg))
+				scale(calc(1 - var(--event-distance, 0) * 0.1));
+		}
+
+		.event-card-image-wrap {
+			height: calc(100% - 2.45rem);
+			border-radius: 0.62rem;
+		}
+
+		.event-card-caption {
+			height: 2.45rem;
+			font-size: 0.6rem;
+		}
+
+		.events-instruction {
+			display: none;
+		}
+	}
+
+	@media (max-height: 720px) and (min-width: 701px) {
+		.events-header {
+			top: 6.5rem;
+		}
+
+		.events-header h2 {
+			font-size: clamp(3rem, 5vw, 4.8rem);
+		}
+
+		.events-selected {
+			top: 8.5rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.events-background-image,
+		.events-header,
+		.event-card,
+		.event-card-image {
+			transition-duration: 1ms;
+		}
+
+		.events-header,
+		.event-card {
+			opacity: 1;
+		}
+	}
+</style>

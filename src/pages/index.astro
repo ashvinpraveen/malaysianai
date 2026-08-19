@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import EventsSection from '../components/EventsSection.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 ---
 
@@ -71,12 +72,15 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	<section class="mission-section light-nav-zone" id="about" aria-labelledby="mission-title">
 		<div class="mission-inner">
 			<figure class="mission-art-wrap">
-				<div
+				<img
 					class="mission-flower-slot"
-					data-mission-flower-slot
-					role="img"
-					aria-label="A pixel-art bunga raya plant with a red hibiscus bloom"
-				></div>
+					src="/images/malaysian-ai-bunga-raya-pixel.png"
+					alt="A pixel-art bunga raya plant with a red hibiscus bloom"
+					width="1122"
+					height="1402"
+					loading="lazy"
+					decoding="async"
+				/>
 			</figure>
 
 			<div class="mission-copy">
@@ -102,66 +106,13 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 		</div>
 	</section>
 
-	<section class="journey-section light-nav-zone" aria-labelledby="journey-title" data-journey>
-		<div class="journey-stage">
-			<div class="journey-copy">
-				<p class="journey-label">There is a way in</p>
-				<h2 id="journey-title" class="scroll-copy">
-					<span class="scroll-copy-line" data-scroll-line>Start with a workshop.</span>
-					<span class="scroll-copy-line" data-scroll-line>Meet the people building around you.</span>
-					<span class="scroll-copy-line" data-scroll-line>Find a community that keeps you moving.</span>
-					<span class="scroll-copy-line" data-scroll-line>
-						When you're ready to go all-in, the residency gives you room to ship.
-					</span>
-				</h2>
-			</div>
-
-			<div class="journey-path-wrap" aria-hidden="true">
-				<svg class="journey-path" viewBox="0 0 1200 420" preserveAspectRatio="none">
-					<path
-						class="journey-path-base"
-						d="M 70 300 C 250 140 380 380 555 245 C 735 105 885 340 1130 185"
-						pathLength="1"
-					></path>
-					<path
-						class="journey-path-progress"
-						data-journey-path
-						d="M 70 300 C 250 140 380 380 555 245 C 735 105 885 340 1130 185"
-						pathLength="1"
-					></path>
-				</svg>
-			</div>
-
-			<p class="journey-scroll-note" aria-hidden="true">Keep scrolling</p>
-		</div>
-	</section>
-
-	<div class="shared-flower-position" data-shared-flower aria-hidden="true">
-		<img
-			class="shared-flower"
-			src="/images/malaysian-ai-bunga-raya-pixel.png"
-			alt=""
-			width="1122"
-			height="1402"
-			loading="lazy"
-			decoding="async"
-		/>
-	</div>
+	<EventsSection />
 </Layout>
 
 <script>
 	const malaysiaTime = document.querySelector<HTMLTimeElement>('#malaysia-time');
 	const floatingNav = document.querySelector<HTMLElement>('.floating-nav');
 	const lightNavZones = Array.from(document.querySelectorAll<HTMLElement>('.light-nav-zone'));
-	const missionSection = document.querySelector<HTMLElement>('.mission-section');
-	const missionFlowerSlot = document.querySelector<HTMLElement>('[data-mission-flower-slot]');
-	const journeySection = document.querySelector<HTMLElement>('[data-journey]');
-	const journeyStage = document.querySelector<HTMLElement>('.journey-stage');
-	const journeyPathWrap = document.querySelector<HTMLElement>('.journey-path-wrap');
-	const journeyPath = document.querySelector<SVGPathElement>('[data-journey-path]');
-	const sharedFlower = document.querySelector<HTMLElement>('[data-shared-flower]');
-	const scrollCopyLines = Array.from(document.querySelectorAll<HTMLElement>('[data-scroll-line]'));
-	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 	let scrollFrame: number | undefined;
 	const malaysiaTimeFormatter = new Intl.DateTimeFormat('en-MY', {
 		timeZone: 'Asia/Kuala_Lumpur',
@@ -193,130 +144,9 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 		floatingNav.classList.toggle('is-over-light', isOverLightSection);
 	}
 
-	function clamp(value: number, min = 0, max = 1) {
-		return Math.min(max, Math.max(min, value));
-	}
-
-	function lerp(start: number, end: number, progress: number) {
-		return start + (end - start) * progress;
-	}
-
-	function smoothStep(progress: number) {
-		return progress * progress * (3 - 2 * progress);
-	}
-
-	function journeyFlowerWidth() {
-		if (window.innerWidth <= 700) {
-			return clamp(window.innerWidth * 0.22, 80, 96);
-		}
-
-		return clamp(window.innerWidth * 0.09, 92, 136);
-	}
-
-	function placeSharedFlower(
-		x: number,
-		y: number,
-		width: number,
-		anchorY: number,
-		tilt: number,
-		phase: 'mission' | 'transition' | 'journey',
-	) {
-		if (!sharedFlower) return;
-
-		sharedFlower.style.width = `${width}px`;
-		sharedFlower.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -${anchorY}%) rotate(${tilt}deg)`;
-		sharedFlower.dataset.phase = phase;
-	}
-
-	function updateJourney() {
-		if (
-			!missionSection ||
-			!missionFlowerSlot ||
-			!journeySection ||
-			!journeyStage ||
-			!journeyPathWrap ||
-			!journeyPath ||
-			!sharedFlower
-		) {
-			return;
-		}
-
-		const sectionBounds = journeySection.getBoundingClientRect();
-		const stageBounds = journeyStage.getBoundingClientRect();
-		const missionBounds = missionSection.getBoundingClientRect();
-		const slotBounds = missionFlowerSlot.getBoundingClientRect();
-		const pathBounds = journeyPathWrap.getBoundingClientRect();
-		const scrollDistance = Math.max(1, journeySection.offsetHeight - window.innerHeight);
-		const rawProgress = clamp(-sectionBounds.top / scrollDistance);
-		const progress = reducedMotion.matches ? 1 : rawProgress;
-		const journeyEnter = reducedMotion.matches ? 1 : clamp(rawProgress * 8);
-		const totalLength = journeyPath.getTotalLength();
-		const scaleX = pathBounds.width / 1200;
-		const scaleY = pathBounds.height / 420;
-
-		journeyStage.style.setProperty('--journey-progress', progress.toFixed(4));
-		journeyStage.style.setProperty('--journey-enter', journeyEnter.toFixed(4));
-		journeyStage.style.setProperty('--journey-copy-offset', `${((1 - journeyEnter) * 24).toFixed(2)}px`);
-		journeyPath.style.strokeDasharray = `${totalLength} ${totalLength}`;
-		journeyPath.style.strokeDashoffset = String(totalLength * (1 - progress));
-
-		const lineDuration = 2 / (scrollCopyLines.length + 1);
-		scrollCopyLines.forEach((line, index) => {
-			const lineStart = index / (scrollCopyLines.length + 1);
-			const lineProgress = clamp((progress - lineStart) / lineDuration);
-			line.style.setProperty('--line-fill', `${(lineProgress * 100).toFixed(1)}%`);
-		});
-
-		const point = journeyPath.getPointAtLength(totalLength * progress);
-		const nextPoint = journeyPath.getPointAtLength(Math.min(totalLength, totalLength * progress + 2));
-		const pathX = pathBounds.left + point.x * scaleX;
-		const pathY = pathBounds.top + point.y * scaleY;
-		const angle = Math.atan2(
-			(nextPoint.y - point.y) * scaleY,
-			(nextPoint.x - point.x) * scaleX,
-		) * (180 / Math.PI);
-		const tilt = clamp(angle * 0.08, -4, 4);
-		const sourceX = slotBounds.left + slotBounds.width / 2;
-		const sourceY = slotBounds.top + slotBounds.height / 2;
-		const sourceRestingY = slotBounds.top - missionBounds.top + slotBounds.height / 2;
-		const firstPoint = journeyPath.getPointAtLength(0);
-		const pathStartX = pathBounds.left + firstPoint.x * scaleX;
-		const pathStartY = pathBounds.top - stageBounds.top + firstPoint.y * scaleY;
-		const targetWidth = journeyFlowerWidth();
-		const transitionProgress = reducedMotion.matches
-			? Number(sectionBounds.top <= 0)
-			: clamp((window.innerHeight - sectionBounds.top) / window.innerHeight);
-		const easedTransition = smoothStep(transitionProgress);
-		const flowerIsVisible =
-			sectionBounds.bottom > 0 &&
-			(slotBounds.top < window.innerHeight || sectionBounds.top <= window.innerHeight);
-
-		sharedFlower.style.opacity = flowerIsVisible ? '1' : '0';
-
-		if (sectionBounds.top > window.innerHeight) {
-			placeSharedFlower(sourceX, sourceY, slotBounds.width, 50, 0, 'mission');
-			return;
-		}
-
-		if (sectionBounds.top > 0) {
-			placeSharedFlower(
-				lerp(sourceX, pathStartX, easedTransition),
-				lerp(sourceRestingY, pathStartY, easedTransition),
-				lerp(slotBounds.width, targetWidth, easedTransition),
-				lerp(50, 88, easedTransition),
-				0,
-				easedTransition < 0.01 ? 'mission' : 'transition',
-			);
-			return;
-		}
-
-		placeSharedFlower(pathX, pathY, targetWidth, 88, tilt, 'journey');
-	}
-
 	function updateScrollScene() {
 		scrollFrame = undefined;
 		updateNavTheme();
-		updateJourney();
 	}
 
 	function requestScrollUpdate() {
@@ -327,7 +157,6 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	requestScrollUpdate();
 	window.addEventListener('scroll', requestScrollUpdate, { passive: true });
 	window.addEventListener('resize', requestScrollUpdate);
-	reducedMotion.addEventListener('change', requestScrollUpdate);
 </script>
 
 <style>
@@ -653,8 +482,13 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	}
 
 	.mission-flower-slot {
+		display: block;
 		width: min(100%, 32rem);
 		aspect-ratio: 1122 / 1402;
+		filter: drop-shadow(0 1rem 1.25rem rgb(67 78 36 / 0.18));
+		image-rendering: pixelated;
+		transform-origin: 50% 88%;
+		animation: flower-sway 5.5s ease-in-out infinite alternate;
 	}
 
 	.mission-copy {
@@ -720,150 +554,6 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	.mission-cta .round-arrow {
 		width: 1.35rem;
 		height: 1.35rem;
-	}
-
-	.journey-section {
-		position: relative;
-		height: 270svh;
-		color: #173a38;
-		background:
-			radial-gradient(circle at 82% 24%, rgb(225 180 149 / 0.18), transparent 26rem),
-			radial-gradient(circle at 24% 76%, rgb(178 201 112 / 0.16), transparent 30rem),
-			#e8e0cf;
-	}
-
-	.journey-stage {
-		position: sticky;
-		top: 0;
-		isolation: isolate;
-		height: 100svh;
-		overflow: hidden;
-		border-top: 1px solid rgb(23 58 56 / 0.08);
-	}
-
-	.journey-copy {
-		position: relative;
-		z-index: 2;
-		width: min(calc(100% - 3rem), 76rem);
-		margin-inline: auto;
-		padding-top: clamp(7rem, 14vh, 9rem);
-		transform: translateY(var(--journey-copy-offset, 1.5rem));
-		opacity: var(--journey-enter, 0);
-		will-change: transform, opacity;
-	}
-
-	.journey-label {
-		margin: 0 0 clamp(1.5rem, 3vh, 2.5rem);
-		color: rgb(23 58 56 / 0.56);
-		font-size: 0.78rem;
-		font-weight: 700;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-	}
-
-	.scroll-copy {
-		max-width: 74rem;
-		margin: 0;
-		font-family: 'Mondwest', 'Times New Roman', Times, serif;
-		font-size: clamp(2.8rem, 5vw, 5.1rem);
-		font-weight: 400;
-		letter-spacing: -0.025em;
-		line-height: 0.94;
-	}
-
-	.scroll-copy-line {
-		--line-fill: 0%;
-
-		display: block;
-		width: fit-content;
-		color: transparent;
-		background: linear-gradient(
-			90deg,
-			#173a38 0 var(--line-fill),
-			rgb(23 58 56 / 0.17) var(--line-fill) 100%
-		);
-		background-clip: text;
-		-webkit-background-clip: text;
-	}
-
-	.scroll-copy-line + .scroll-copy-line {
-		margin-top: 0.18em;
-	}
-
-	.journey-path-wrap {
-		position: absolute;
-		z-index: 1;
-		right: clamp(1rem, 3vw, 3rem);
-		bottom: clamp(1rem, 3vh, 2.5rem);
-		left: clamp(1rem, 3vw, 3rem);
-		height: clamp(17rem, 42vh, 25rem);
-	}
-
-	.journey-path {
-		display: block;
-		overflow: visible;
-		width: 100%;
-		height: 100%;
-		fill: none;
-	}
-
-	.journey-path-base,
-	.journey-path-progress {
-		fill: none;
-		stroke-linecap: round;
-		stroke-width: 2;
-		vector-effect: non-scaling-stroke;
-	}
-
-	.journey-path-base {
-		stroke: rgb(23 58 56 / 0.13);
-		stroke-dasharray: 1 10;
-	}
-
-	.journey-path-progress {
-		stroke: #bf573f;
-		stroke-dasharray: 1;
-		stroke-dashoffset: 1;
-	}
-
-	.shared-flower-position {
-		position: fixed;
-		z-index: 4;
-		top: 0;
-		left: 0;
-		width: 0;
-		opacity: 0;
-		pointer-events: none;
-		transform-origin: 50% 88%;
-		transition: opacity 160ms ease;
-		will-change: transform, width;
-	}
-
-	.shared-flower {
-		display: block;
-		width: 100%;
-		max-width: none;
-		filter: drop-shadow(0 1rem 1.25rem rgb(67 78 36 / 0.18));
-		image-rendering: pixelated;
-		transform-origin: 50% 88%;
-	}
-
-	.shared-flower-position[data-phase='mission'] .shared-flower {
-		animation: flower-sway 5.5s ease-in-out infinite alternate;
-	}
-
-	.journey-scroll-note {
-		position: absolute;
-		z-index: 2;
-		bottom: 1.5rem;
-		left: 50%;
-		margin: 0;
-		color: rgb(23 58 56 / 0.48);
-		font-size: 0.75rem;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		transform: translateX(-50%);
-		opacity: calc(1 - var(--journey-progress, 0) * 8);
 	}
 
 	a:focus-visible {
@@ -1027,35 +717,6 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 			margin-top: 1.5rem;
 		}
 
-		.journey-section {
-			height: 290svh;
-		}
-
-		.journey-copy {
-			width: calc(100% - 2.5rem);
-			padding-top: 7rem;
-		}
-
-		.journey-label {
-			margin-bottom: 1.5rem;
-		}
-
-		.scroll-copy {
-			font-size: clamp(2.15rem, 10vw, 3rem);
-			line-height: 0.97;
-		}
-
-		.scroll-copy-line + .scroll-copy-line {
-			margin-top: 0.3em;
-		}
-
-		.journey-path-wrap {
-			right: 2rem;
-			bottom: 1rem;
-			left: 2rem;
-			height: min(39vh, 20rem);
-		}
-
 	}
 
 	@media (max-width: 390px) {
@@ -1085,21 +746,8 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 		.floating-nav,
 		.sky-wordmark,
 		.hero-card,
-		.shared-flower {
+		.mission-flower-slot {
 			animation: none;
-		}
-
-		.journey-section {
-			height: auto;
-		}
-
-		.journey-stage {
-			position: relative;
-			min-height: 100svh;
-		}
-
-		.journey-scroll-note {
-			display: none;
 		}
 	}
 </style>

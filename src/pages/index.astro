@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import EventsSection from '../components/EventsSection.astro';
+import CommunitySection from '../components/CommunitySection.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 ---
 
@@ -16,7 +17,8 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 		</a>
 
 		<nav aria-label="Primary navigation">
-			<a href="#about">About</a>
+			<a class="nav-about" href="#about">About</a>
+			<a href="#communities">Communities</a>
 			<a href="/blog">Stories</a>
 			<a class="nav-residency" href="/residency">Residency</a>
 		</nav>
@@ -107,6 +109,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	</section>
 
 	<EventsSection />
+	<CommunitySection />
 </Layout>
 
 <script>
@@ -200,7 +203,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 		display: flex;
 		align-items: center;
 		gap: 0.35rem;
-		width: min(94vw, 470px);
+		width: min(94vw, 570px);
 		padding: 0.3rem;
 		border: 1px solid rgb(255 255 255 / 0.3);
 		border-radius: 1.05rem;
@@ -651,6 +654,10 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 			display: none;
 		}
 
+		.nav-about {
+			display: none;
+		}
+
 		.nav-cta {
 			min-height: 2.35rem;
 			padding: 0.38rem;
@@ -717,12 +724,6 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 			margin-top: 1.5rem;
 		}
 
-	}
-
-	@media (max-width: 390px) {
-		nav a:nth-child(2) {
-			display: none;
-		}
 	}
 
 	@media (max-height: 760px) and (min-width: 701px) {

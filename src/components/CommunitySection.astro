@@ -1,0 +1,805 @@
+---
+const communities = [
+	{
+		name: 'Build Club',
+		logo: '/build-club-logo-navbar.webp',
+		group: 'build',
+		logoClass: 'is-wide',
+		label: 'Learn by building',
+		description:
+			'A large Asia-Pacific builder community with bite-sized courses, role-based learning tracks, and project bounties. A useful place to learn AI by making real things.',
+	},
+	{
+		name: 'Build with AI',
+		logo: '/build_with_ai_logo.jpeg',
+		group: 'learn',
+		logoClass: 'is-square',
+		label: 'Open builder meetups',
+		description:
+			"Malaysia's home for developers and non-technical builders creating AI projects together. Its meetups welcome first-timers and experienced makers alike.",
+	},
+	{
+		name: 'AI Tinkerers',
+		logo: '/ai_tinkerers_logo.png',
+		group: 'meet',
+		logoClass: 'is-wide',
+		label: 'Technical deep dives',
+		description:
+			'The Kuala Lumpur chapter of a global AI engineering network. Monthly meetups put live demos, practical talks, and technical conversation in the same room.',
+	},
+	{
+		name: 'AI Hackerdorm',
+		logo: '/ai_hackerdorm.webp',
+		group: 'build',
+		logoClass: 'is-square',
+		label: 'Student-first builds',
+		description:
+			'A community for student coders, designers, and founders building AI projects together through weekly sprints, hackathons, and mentorship sessions.',
+	},
+	{
+		name: 'AI SEA',
+		logo: '/aisea_logo.png',
+		group: 'learn',
+		logoClass: 'is-square',
+		label: 'Southeast Asian network',
+		description:
+			'A regional builder network for people shipping AI products. It brings engineers together through hackathons, co-build sprints, and AI.SEA Week.',
+	},
+	{
+		name: 'Rakan Tutor',
+		logo: '/rakan-tutor-logo.png',
+		group: 'learn',
+		logoClass: 'is-wide',
+		label: 'AI education for all',
+		description:
+			'A Malaysian non-profit bringing free, hands-on AI education to underserved secondary school students and helping young people prepare for an AI-shaped future.',
+	},
+	{
+		name: 'CoderPuffs',
+		logo: '/coderpuffs_logo.png',
+		group: 'meet',
+		logoClass: 'is-square',
+		label: 'Women-first community',
+		description:
+			'Welcoming café-based build sessions that make coding and AI easier to enter. Its monthly meetups are designed for women at every experience level.',
+	},
+	{
+		name: 'Cursor KL',
+		logo: '/cursor-community-logo.png',
+		group: 'build',
+		logoClass: 'is-square',
+		label: 'Cursor builders in KL',
+		description:
+			'The Kuala Lumpur community for people building with Cursor. Join local hackathons, workshops, and conversations with other product-minded makers.',
+	},
+];
+
+---
+
+<section class="community-chapter" id="communities" aria-labelledby="community-title">
+	<div class="community-constellation light-nav-zone" data-community-scene data-community-constellation>
+		<div class="community-orbit" aria-hidden="true"></div>
+		<div class="community-intro">
+			<p class="community-kicker">The Malaysian AI network</p>
+			<h2 id="community-title">The people are<br />the platform.</h2>
+			<p class="community-lede">
+				There is no single front door into AI here. There are many. Pick the room that
+				feels like yours and say hello.
+			</p>
+			<p class="community-jump">
+				Choose a community
+				<span aria-hidden="true">↓</span>
+			</p>
+		</div>
+
+		<div class="logo-constellation" aria-label="Community network" data-community-network>
+			{
+				communities.map((community, index) => (
+					<button
+						class:list={['constellation-node', community.logoClass]}
+						type="button"
+						style={`--node-index: ${index}`}
+						data-community-node
+						data-name={community.name}
+						data-logo={community.logo}
+						data-label={community.label}
+						data-description={community.description}
+						data-number={String(index + 1).padStart(2, '0')}
+						data-community-reveal
+						aria-label={`Open ${community.name} profile`}
+						aria-pressed="false"
+					>
+						<div class="constellation-logo">
+							<img
+								src={community.logo}
+								alt=""
+								width="220"
+								height="140"
+								loading="lazy"
+								decoding="async"
+							/>
+						</div>
+						<span class="constellation-name">{community.name}</span>
+					</button>
+				))
+			}
+
+			<aside class="community-slide" data-community-slide aria-hidden="true" aria-live="polite">
+				<div class="slide-progress" aria-hidden="true">
+					<span data-slide-number>01</span>
+					<span></span>
+					<span>08</span>
+				</div>
+				<button class="slide-close" type="button" data-slide-close aria-label="Close community profile">
+					<span aria-hidden="true">×</span>
+				</button>
+				<div class="slide-logo-stage">
+					<img data-slide-logo src={communities[0].logo} alt="" width="360" height="240" />
+				</div>
+				<div class="slide-copy">
+					<p data-slide-label>{communities[0].label}</p>
+					<h3 data-slide-name>{communities[0].name}</h3>
+					<div class="slide-rule" aria-hidden="true"></div>
+					<p data-slide-description>{communities[0].description}</p>
+					<span class="slide-hint">Close this profile to keep exploring</span>
+				</div>
+			</aside>
+		</div>
+
+		<p class="constellation-note" aria-hidden="true">Eight communities · one growing network</p>
+	</div>
+
+</section>
+
+<script>
+	const communityScenes = document.querySelectorAll<HTMLElement>('[data-community-scene]');
+	const reduceCommunityMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+	if (!reduceCommunityMotion.matches) {
+		const communityObserver = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (!entry.isIntersecting) return;
+					entry.target.classList.add('is-in-view');
+					communityObserver.unobserve(entry.target);
+				});
+			},
+			{ threshold: 0.14 },
+		);
+
+		communityScenes.forEach((scene) => communityObserver.observe(scene));
+	} else {
+		communityScenes.forEach((scene) => scene.classList.add('is-in-view'));
+	}
+
+	const communityNetwork = document.querySelector<HTMLElement>('[data-community-network]');
+
+	if (communityNetwork) {
+		const constellationScene = communityNetwork.closest<HTMLElement>('[data-community-constellation]');
+		const nodes = Array.from(
+			communityNetwork.querySelectorAll<HTMLButtonElement>('[data-community-node]'),
+		);
+		const slide = communityNetwork.querySelector<HTMLElement>('[data-community-slide]');
+		const slideLogo = communityNetwork.querySelector<HTMLImageElement>('[data-slide-logo]');
+		const slideName = communityNetwork.querySelector<HTMLElement>('[data-slide-name]');
+		const slideLabel = communityNetwork.querySelector<HTMLElement>('[data-slide-label]');
+		const slideDescription = communityNetwork.querySelector<HTMLElement>('[data-slide-description]');
+		const slideNumber = communityNetwork.querySelector<HTMLElement>('[data-slide-number]');
+		const closeButton = communityNetwork.querySelector<HTMLButtonElement>('[data-slide-close]');
+		let activeNode: HTMLButtonElement | undefined;
+
+		function openCommunity(node: HTMLButtonElement) {
+			activeNode = node;
+			nodes.forEach((item) => {
+				const isActive = item === node;
+				item.classList.toggle('is-active', isActive);
+				item.setAttribute('aria-pressed', String(isActive));
+			});
+
+			if (slideLogo) slideLogo.src = node.dataset.logo ?? '';
+			if (slideName) slideName.textContent = node.dataset.name ?? '';
+			if (slideLabel) slideLabel.textContent = node.dataset.label ?? '';
+			if (slideDescription) slideDescription.textContent = node.dataset.description ?? '';
+			if (slideNumber) slideNumber.textContent = node.dataset.number ?? '';
+			slide?.classList.add('is-open');
+			slide?.setAttribute('aria-hidden', 'false');
+			constellationScene?.classList.add('has-profile');
+		}
+
+		function closeCommunity() {
+			slide?.classList.remove('is-open');
+			slide?.setAttribute('aria-hidden', 'true');
+			constellationScene?.classList.remove('has-profile');
+			nodes.forEach((item) => {
+				item.classList.remove('is-active');
+				item.setAttribute('aria-pressed', 'false');
+			});
+			activeNode?.focus();
+			activeNode = undefined;
+		}
+
+		nodes.forEach((node) => node.addEventListener('click', () => openCommunity(node)));
+		closeButton?.addEventListener('click', closeCommunity);
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape' && slide?.classList.contains('is-open')) closeCommunity();
+		});
+	}
+</script>
+
+<style>
+	.community-chapter {
+		--ink: #173a38;
+		background: #f0eadb;
+	}
+
+	.community-constellation {
+		position: relative;
+		isolation: isolate;
+		overflow: hidden;
+	}
+
+	.community-constellation {
+		display: block;
+		min-height: max(52rem, 100svh);
+		padding: clamp(7rem, 10vw, 9rem) clamp(1.25rem, 5vw, 5rem) 4rem;
+		color: var(--ink);
+		background:
+			radial-gradient(circle at 18% 32%, rgb(210 223 157 / 0.2), transparent 27rem),
+			#f0eadb;
+	}
+
+	.community-constellation::before {
+		position: absolute;
+		z-index: -1;
+		inset: 0;
+		background-image: radial-gradient(rgb(23 58 56 / 0.16) 0.7px, transparent 0.8px);
+		background-size: 16px 16px;
+		content: '';
+		mask-image: radial-gradient(circle at center, #000, transparent 72%);
+		opacity: 0.12;
+	}
+
+	.community-orbit {
+		position: absolute;
+		z-index: -1;
+		top: 50%;
+		left: 50%;
+		width: min(78vw, 72rem);
+		height: min(70vh, 40rem);
+		aspect-ratio: auto;
+		border: 1.5px solid rgb(23 58 56 / 0.2);
+		border-radius: 50%;
+		box-shadow:
+			0 0 0 4rem rgb(23 58 56 / 0.03),
+			0 0 0 8rem rgb(23 58 56 / 0.018);
+		transform: translate(-50%, -50%);
+		transition: opacity 350ms ease, transform 650ms cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+
+	.community-intro {
+		position: absolute;
+		z-index: 2;
+		top: 50%;
+		left: 50%;
+		width: min(calc(100% - 2.5rem), 42rem);
+		max-width: 42rem;
+		text-align: center;
+		transform: translate(-50%, -50%);
+		transition: opacity 320ms ease, transform 600ms cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+
+	.community-kicker {
+		margin: 0 0 1.15rem;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.13em;
+		text-transform: uppercase;
+	}
+
+	.community-intro .community-kicker {
+		color: rgb(23 58 56 / 0.55);
+	}
+
+	.community-intro h2 {
+		margin: 0;
+		font-family: 'Mondwest', 'Times New Roman', Times, serif;
+		font-weight: 400;
+		letter-spacing: -0.045em;
+		line-height: 0.88;
+		text-wrap: balance;
+	}
+
+	.community-intro h2 {
+		font-size: clamp(3.7rem, 5vw, 5.45rem);
+	}
+
+	.community-lede {
+		max-width: 34rem;
+		margin: 1.8rem auto 0;
+		color: rgb(23 58 56 / 0.66);
+		font-size: clamp(1rem, 1.35vw, 1.2rem);
+		line-height: 1.55;
+	}
+
+	.community-jump {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.7rem;
+		margin-top: 2rem;
+		padding-bottom: 0.25rem;
+		border-bottom: 1px solid rgb(23 58 56 / 0.48);
+		font-size: 0.93rem;
+		text-decoration: none;
+		transition: gap 180ms ease, color 180ms ease;
+	}
+
+	.community-jump:hover,
+	.community-jump:focus-visible {
+		gap: 1rem;
+		color: #a65337;
+	}
+
+	.logo-constellation {
+		position: absolute;
+		z-index: 3;
+		inset: clamp(5.75rem, 8vw, 7.5rem) clamp(1rem, 4vw, 4rem) 3rem;
+		min-height: 0;
+	}
+
+	.constellation-node {
+		position: absolute;
+		display: grid;
+		gap: 0.55rem;
+		width: clamp(6.7rem, 10vw, 9rem);
+		margin: 0;
+		padding: 0;
+		border: 0;
+		color: rgb(23 58 56 / 0.66);
+		background: transparent;
+		font-family: inherit;
+		font-size: 0.69rem;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-align: center;
+		text-transform: uppercase;
+		cursor: pointer;
+		transform: translateY(1rem) scale(0.92);
+		opacity: 0;
+		transition:
+			transform 750ms cubic-bezier(0.2, 0.8, 0.2, 1),
+			opacity 600ms ease;
+		transition-delay: calc(var(--node-index) * 70ms);
+	}
+
+	.community-constellation.is-in-view .constellation-node {
+		opacity: 1;
+		animation: community-float 6s ease-in-out infinite alternate;
+		animation-delay: calc(var(--node-index) * -0.75s);
+	}
+
+	.constellation-logo {
+		display: grid;
+		width: 100%;
+		aspect-ratio: 1;
+		padding: 1.15rem;
+		place-items: center;
+		border: 1px solid rgb(23 58 56 / 0.14);
+		border-radius: 1.35rem;
+		background: rgb(255 253 247 / 0.58);
+		box-shadow:
+			0 1.2rem 3rem rgb(67 78 36 / 0.1),
+			inset 0 1px rgb(255 255 255 / 0.72);
+		backdrop-filter: blur(12px);
+		transition: border-color 220ms ease, background 220ms ease, transform 220ms ease;
+	}
+
+	.constellation-node:hover .constellation-logo {
+		border-color: rgb(23 58 56 / 0.35);
+		background: rgb(255 253 247 / 0.9);
+	}
+
+	.constellation-node:focus-visible {
+		outline: none;
+	}
+
+	.constellation-node:focus-visible .constellation-logo {
+		outline: 2px solid #a65337;
+		outline-offset: 4px;
+	}
+
+	.constellation-node.is-active .constellation-logo {
+		border-color: #a65337;
+		box-shadow:
+			0 1.2rem 3rem rgb(67 78 36 / 0.14),
+			0 0 0 3px rgb(166 83 55 / 0.12),
+			inset 0 1px rgb(255 255 255 / 0.72);
+	}
+
+	.constellation-logo img {
+		width: 78%;
+		height: 78%;
+		object-fit: contain;
+	}
+
+	.constellation-node.is-wide .constellation-logo img {
+		width: 92%;
+	}
+
+	.constellation-node:nth-child(1) { top: 8%; left: 10%; }
+	.constellation-node:nth-child(2) { top: 1%; left: 37%; }
+	.constellation-node:nth-child(3) { top: 9%; right: 10%; }
+	.constellation-node:nth-child(4) { top: 42%; right: 1%; }
+	.constellation-node:nth-child(5) { right: 14%; bottom: 2%; }
+	.constellation-node:nth-child(6) { bottom: -1%; left: 39%; }
+	.constellation-node:nth-child(7) { bottom: 6%; left: 11%; }
+	.constellation-node:nth-child(8) { top: 43%; left: 0; }
+
+	.constellation-name {
+		transform: translateY(-0.25rem);
+		opacity: 0;
+		transition: transform 180ms ease, opacity 180ms ease;
+	}
+
+	.constellation-node:hover .constellation-name,
+	.constellation-node:focus-visible .constellation-name {
+		transform: translateY(0);
+		opacity: 1;
+	}
+
+	.community-constellation.has-profile .community-intro {
+		transform: translate(-50%, -50%) scale(0.9);
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.community-constellation.has-profile .community-orbit {
+		transform: translate(-50%, -50%) scale(1.12);
+		opacity: 0;
+	}
+
+	.community-constellation.has-profile .constellation-node {
+		animation: none;
+		transform: scale(0.82);
+		opacity: 0;
+		pointer-events: none;
+		transition-delay: calc(var(--node-index) * 25ms);
+	}
+
+	.community-slide {
+		position: absolute;
+		z-index: 8;
+		inset: 0;
+		display: grid;
+		grid-template-columns: minmax(16rem, 0.82fr) minmax(22rem, 1.18fr);
+		grid-template-rows: auto 1fr;
+		gap: 1.2rem clamp(2rem, 6vw, 7rem);
+		padding: clamp(1rem, 3vw, 3rem) clamp(1rem, 6vw, 6rem);
+		color: var(--ink);
+		transform: translateY(2rem) scale(0.96);
+		opacity: 0;
+		pointer-events: none;
+		transition:
+			transform 700ms 260ms cubic-bezier(0.2, 0.82, 0.2, 1),
+			opacity 420ms 260ms ease;
+	}
+
+	.community-slide.is-open {
+		transform: translateY(0) scale(1);
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.slide-progress {
+		grid-column: 1 / -1;
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		gap: 0.65rem;
+		align-items: center;
+		padding-right: 3.2rem;
+		color: rgb(23 58 56 / 0.5);
+		font-size: 0.68rem;
+		font-weight: 700;
+		font-variant-numeric: tabular-nums;
+		letter-spacing: 0.1em;
+	}
+
+	.slide-progress > span:nth-child(2) {
+		height: 1px;
+		background: linear-gradient(90deg, #a65337, rgb(23 58 56 / 0.14));
+	}
+
+	.slide-close {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		display: grid;
+		width: 2.4rem;
+		height: 2.4rem;
+		padding: 0;
+		place-items: center;
+		border: 1px solid rgb(23 58 56 / 0.22);
+		border-radius: 50%;
+		color: var(--ink);
+		background: rgb(255 253 247 / 0.55);
+		font: inherit;
+		font-size: 1.35rem;
+		cursor: pointer;
+		transition: background 180ms ease, transform 180ms ease;
+	}
+
+	.slide-close:hover,
+	.slide-close:focus-visible {
+		background: rgb(255 253 247 / 0.92);
+		transform: rotate(8deg);
+	}
+
+	.slide-logo-stage {
+		display: grid;
+		min-width: 0;
+		place-items: center;
+		border: 1px solid rgb(23 58 56 / 0.14);
+		border-radius: 1.2rem;
+		background: rgb(255 253 247 / 0.58);
+		box-shadow: 0 1.5rem 4rem rgb(67 78 36 / 0.1), inset 0 1px rgb(255 255 255 / 0.75);
+		transform: translateX(-2rem);
+		opacity: 0;
+		transition: transform 550ms 180ms ease, opacity 450ms 180ms ease;
+	}
+
+	.community-slide.is-open .slide-logo-stage,
+	.community-slide.is-open .slide-copy {
+		transform: translateX(0);
+		opacity: 1;
+	}
+
+	.slide-logo-stage img {
+		width: 72%;
+		height: 58%;
+		object-fit: contain;
+	}
+
+	.slide-copy {
+		align-self: center;
+		min-width: 0;
+		transform: translateX(2rem);
+		opacity: 0;
+		transition: transform 600ms 250ms ease, opacity 500ms 250ms ease;
+	}
+
+	.slide-copy > p:first-child {
+		margin: 0 0 0.75rem;
+		color: #a65337;
+		font-size: 0.71rem;
+		font-weight: 700;
+		letter-spacing: 0.11em;
+		text-transform: uppercase;
+	}
+
+	.slide-copy h3 {
+		margin: 0;
+		font-family: 'Mondwest', 'Times New Roman', Times, serif;
+		font-size: clamp(2.3rem, 4vw, 4.5rem);
+		font-weight: 400;
+		letter-spacing: -0.035em;
+		line-height: 0.9;
+		text-wrap: balance;
+	}
+
+	.slide-rule {
+		width: 3.5rem;
+		height: 3px;
+		margin-block: 1.4rem;
+		background: linear-gradient(90deg, #da393d 0 33%, #f0a23b 33% 66%, #9aae42 66%);
+	}
+
+	.slide-copy > p:nth-of-type(2) {
+		margin: 0;
+		color: rgb(23 58 56 / 0.68);
+		font-size: clamp(0.92rem, 1.2vw, 1.05rem);
+		line-height: 1.55;
+	}
+
+	.slide-hint {
+		display: block;
+		margin-top: clamp(1.5rem, 4vh, 3rem);
+		color: rgb(23 58 56 / 0.42);
+		font-size: 0.66rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.constellation-note {
+		position: absolute;
+		right: clamp(1.25rem, 5vw, 5rem);
+		bottom: 1.5rem;
+		margin: 0;
+		color: rgb(255 248 233 / 0.38);
+		font-size: 0.68rem;
+		font-weight: 700;
+		letter-spacing: 0.09em;
+		text-transform: uppercase;
+	}
+
+	@keyframes community-float {
+		0% { transform: translate3d(-0.45rem, 0.3rem, 0) rotate(-1.2deg); }
+		50% { transform: translate3d(0.3rem, -0.65rem, 0) rotate(0.8deg); }
+		100% { transform: translate3d(0.7rem, 0.35rem, 0) rotate(-0.35deg); }
+	}
+
+	@keyframes community-orbit-float {
+		0% { transform: translate(-50%, -50%) translate3d(-0.4rem, 0.2rem, 0) rotate(-1deg); }
+		50% { transform: translate(-50%, -50%) translate3d(0.25rem, -0.55rem, 0) rotate(0.7deg); }
+		100% { transform: translate(-50%, -50%) translate3d(0.55rem, 0.3rem, 0) rotate(-0.3deg); }
+	}
+
+	@media (min-width: 901px) {
+		.community-constellation {
+			--orbit-layout-width: min(88vw, 84rem);
+			--orbit-layout-height: min(82vh, 48rem);
+		}
+
+		.community-orbit {
+			width: calc(var(--orbit-layout-width) - 9rem);
+			height: calc(var(--orbit-layout-height) - 9rem);
+			aspect-ratio: auto;
+		}
+
+		.logo-constellation {
+			inset: auto;
+			top: 50%;
+			left: 50%;
+			width: var(--orbit-layout-width);
+			height: var(--orbit-layout-height);
+			aspect-ratio: auto;
+			transform: translate(-50%, -50%);
+		}
+
+		.community-constellation.is-in-view .constellation-node {
+			animation-name: community-orbit-float;
+		}
+
+		.constellation-node:nth-child(1) { top: 20%; left: 18%; }
+		.constellation-node:nth-child(2) { top: 9.5%; left: 50%; }
+		.constellation-node:nth-child(3) { top: 20%; right: auto; left: 82%; }
+		.constellation-node:nth-child(4) { top: 50%; right: auto; left: 94.5%; }
+		.constellation-node:nth-child(5) { right: auto; bottom: auto; top: 80%; left: 82%; }
+		.constellation-node:nth-child(6) { bottom: auto; top: 90.5%; left: 50%; }
+		.constellation-node:nth-child(7) { right: auto; bottom: auto; top: 80%; left: 18%; }
+		.constellation-node:nth-child(8) { top: 50%; right: auto; left: 5.5%; }
+
+		.community-constellation.has-profile .constellation-node {
+			transform: translate(-50%, -50%) scale(0.82);
+		}
+	}
+
+	@media (max-width: 900px) {
+		.community-orbit {
+			top: 50%;
+			right: auto;
+			bottom: auto;
+			left: 50%;
+			width: 90vw;
+			height: min(68vh, 40rem);
+			transform: translate(-50%, -50%);
+		}
+	}
+
+	@media (max-width: 600px) {
+		.community-constellation {
+			min-height: max(44rem, 100svh);
+			padding: 7rem 1.25rem 4.5rem;
+		}
+
+		.community-intro h2 {
+			font-size: clamp(3.1rem, 14vw, 4.25rem);
+		}
+
+		.community-intro {
+			width: calc(100% - 5rem);
+		}
+
+		.community-lede {
+			font-size: 0.93rem;
+		}
+
+		.logo-constellation {
+			display: block;
+			inset: 5.2rem 0.65rem 2rem;
+			min-height: 0;
+		}
+
+		.constellation-node {
+			position: absolute;
+			width: clamp(4.6rem, 22vw, 5.6rem);
+		}
+
+		.constellation-logo {
+			aspect-ratio: 1;
+			padding: 0.65rem;
+			border-radius: 0.9rem;
+		}
+
+		.constellation-node:nth-child(1) { top: 8%; left: 3%; }
+		.constellation-node:nth-child(2) { top: 1%; left: 38%; }
+		.constellation-node:nth-child(3) { top: 8%; right: 3%; }
+		.constellation-node:nth-child(4) { top: 43%; right: -1%; }
+		.constellation-node:nth-child(5) { right: 7%; bottom: 3%; }
+		.constellation-node:nth-child(6) { bottom: -1%; left: 39%; }
+		.constellation-node:nth-child(7) { bottom: 4%; left: 5%; }
+		.constellation-node:nth-child(8) { top: 43%; left: -1%; }
+
+		.constellation-name {
+			font-size: 0.52rem;
+		}
+
+		.constellation-note {
+			display: none;
+		}
+
+		.community-slide {
+			position: absolute;
+			z-index: 8;
+			inset: 0;
+			grid-template-columns: minmax(7.5rem, 0.72fr) minmax(0, 1.28fr);
+			grid-template-rows: auto 1fr;
+			gap: 0.8rem 1rem;
+			padding: 1rem 0.35rem;
+			overflow: visible;
+			border-radius: 0;
+			transform: translateY(2rem) scale(0.96);
+		}
+
+		.community-slide.is-open {
+			transform: translateY(0) scale(1);
+		}
+
+		.slide-logo-stage {
+			min-height: 0;
+		}
+
+		.slide-logo-stage img {
+			width: 78%;
+			height: 72%;
+		}
+
+		.slide-copy {
+			align-self: center;
+			padding: 0;
+		}
+
+		.slide-copy h3 {
+			font-size: clamp(2rem, 9vw, 2.75rem);
+		}
+
+		.slide-rule {
+			margin-block: 1rem;
+		}
+
+		.slide-copy > p:nth-of-type(2) {
+			font-size: 0.84rem;
+			line-height: 1.45;
+		}
+
+		.slide-hint {
+			display: none;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.constellation-node {
+			animation: none;
+			transform: none;
+			opacity: 1;
+			transition: none;
+		}
+
+		.community-intro,
+		.community-orbit,
+		.community-slide,
+		.slide-logo-stage,
+		.slide-copy {
+			transition: none;
+		}
+	}
+</style>

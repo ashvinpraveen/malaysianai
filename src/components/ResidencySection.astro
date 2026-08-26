@@ -57,9 +57,26 @@ const residents: Resident[] = [
 ---
 
 <section class="residency-chapter light-nav-zone" id="residency" aria-labelledby="residency-title">
-	<div class="residency-heading">
-		<p class="residency-kicker">The Residency</p>
-		<h2 id="residency-title">Home to ambitious<br />Malaysian AI startups.</h2>
+	<div class="residency-intro">
+		<div class="residency-heading">
+			<p class="residency-kicker">The Residency</p>
+			<h2 id="residency-title">Home to ambitious<br />Malaysian AI startups.</h2>
+		</div>
+
+		<div class="residency-grip">
+			<p class="residency-lede">
+				A working home for founders building serious AI products. Residents win
+				hackathons, organise regional movements, raise venture capital, and ship at
+				the edge of the technology &mdash; together, from Kuala Lumpur.
+			</p>
+			<div class="residency-actions">
+				<a class="residency-cta" href="/residency">Explore the residency</a>
+				<a class="residency-directory" href="/residents">
+					Meet the residents
+					<span aria-hidden="true">&#8599;</span>
+				</a>
+			</div>
+		</div>
 	</div>
 
 	<div class="residency-panel">
@@ -102,21 +119,6 @@ const residents: Resident[] = [
 					</ul>
 				))
 			}
-			</div>
-		</div>
-
-		<div class="residency-grip">
-			<p class="residency-lede">
-				A working home for founders building serious AI products. Residents win
-				hackathons, organise regional movements, raise venture capital, and ship at
-				the edge of the technology &mdash; together, from Kuala Lumpur.
-			</p>
-			<div class="residency-actions">
-				<a class="residency-cta" href="/residency">Explore the residency</a>
-				<a class="residency-directory" href="/residents">
-					Meet the residents
-					<span aria-hidden="true">&#8599;</span>
-				</a>
 			</div>
 		</div>
 	</div>
@@ -374,6 +376,126 @@ const residents: Resident[] = [
 
 		.residency-track[aria-hidden='true'] {
 			display: none;
+		}
+	}
+
+	/* Minimal centered residency composition. */
+	.residency-chapter {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: clamp(3rem, 6vw, 5rem);
+		min-height: 100dvh;
+		padding: clamp(4rem, 7vw, 6rem) clamp(1.5rem, 4vw, 4rem);
+		align-content: center;
+		overflow: hidden;
+	}
+
+	.residency-intro,
+	.residency-panel,
+	.residency-frame {
+		min-width: 0;
+		max-width: 100%;
+	}
+
+	.residency-intro {
+		display: grid;
+		gap: 1.75rem;
+		width: min(47rem, 100%);
+		margin: 0 auto;
+		text-align: center;
+	}
+
+	.residency-heading {
+		padding: 0;
+	}
+
+	.residency-panel {
+		width: 100%;
+		overflow: hidden;
+	}
+
+	.residency-frame {
+		width: min(72rem, 100%);
+		margin: 0 auto;
+		border: 0;
+		border-radius: 0;
+		background: transparent;
+	}
+
+	.residency-grip {
+		position: static;
+		display: grid;
+		gap: 1.35rem;
+		justify-items: center;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		border-radius: 0;
+		background: transparent;
+		text-align: center;
+	}
+
+	.residency-lede {
+		max-width: 40rem;
+	}
+
+	.residency-actions {
+		justify-content: center;
+		gap: 1.25rem;
+	}
+
+	.residency-marquee {
+		padding: 1rem 0;
+		-webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+		mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+	}
+
+	.residency-track {
+		gap: clamp(1.25rem, 2.5vw, 2rem);
+		animation-duration: 42s;
+	}
+
+	.resident-tile {
+		gap: 0.65rem;
+		width: clamp(7.5rem, 10vw, 9.5rem);
+	}
+
+	.resident-face {
+		aspect-ratio: 1.2;
+	}
+
+	.resident-meta {
+		display: block;
+	}
+
+	.resident-name {
+		font-size: 0.76rem;
+	}
+
+	.resident-tag {
+		display: none;
+	}
+
+	@media (max-width: 700px) {
+		.residency-chapter {
+			gap: 2.75rem;
+			min-height: auto;
+			padding: 3.5rem 1rem;
+		}
+
+		.residency-heading {
+			padding: 0;
+		}
+
+		.residency-grip {
+			justify-items: center;
+			padding: 0;
+			text-align: center;
+		}
+
+		.resident-tile {
+			width: clamp(7.25rem, 34vw, 8.75rem);
 		}
 	}
 </style>

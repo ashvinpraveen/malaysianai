@@ -4,7 +4,8 @@ type Segment = { text: string; strong?: boolean };
 interface Voice {
 	author: string;
 	context: string;
-	initials: string;
+	avatar: string;
+	avatarColor: string;
 	segments: Segment[];
 }
 
@@ -12,7 +13,8 @@ const voices: Voice[] = [
 	{
 		author: 'Workshop attendee',
 		context: 'AI Builder Night, KL',
-		initials: 'WA',
+		avatar: 'W',
+		avatarColor: '#1a73e8',
 		segments: [
 			{ text: 'SF vibes and atmosphere', strong: true },
 			{ text: ', one-of-a-kind place in Malaysia.' },
@@ -21,7 +23,8 @@ const voices: Voice[] = [
 	{
 		author: 'Community member',
 		context: 'AI Takeover',
-		initials: 'CM',
+		avatar: 'C',
+		avatarColor: '#188038',
 		segments: [
 			{ text: 'You guys brought all the big guns.', strong: true },
 			{
@@ -33,7 +36,8 @@ const voices: Voice[] = [
 	{
 		author: 'First-time builder',
 		context: 'Build With AI workshop',
-		initials: 'FB',
+		avatar: 'F',
+		avatarColor: '#a142f4',
 		segments: [
 			{ text: 'I felt the pulse of the community.', strong: true },
 			{ text: ' It inspired me to build with AI. ' },
@@ -46,7 +50,8 @@ const voices: Voice[] = [
 	{
 		author: 'Startup operator',
 		context: 'Founder session',
-		initials: 'SO',
+		avatar: 'S',
+		avatarColor: '#d93025',
 		segments: [
 			{ text: 'One of the few sessions where we had a ' },
 			{ text: 'serious discussion about AI', strong: true },
@@ -60,7 +65,8 @@ const voices: Voice[] = [
 	{
 		author: 'Community member',
 		context: 'Pasar AI demo day',
-		initials: 'CM',
+		avatar: 'C',
+		avatarColor: '#e37400',
 		segments: [
 			{ text: 'Gave me hope about the state of Malaysian youth and builders', strong: true },
 			{ text: ' \u2014 it was so refreshing!' },
@@ -69,7 +75,8 @@ const voices: Voice[] = [
 	{
 		author: 'Educator',
 		context: 'Learnathon',
-		initials: 'ED',
+		avatar: 'E',
+		avatarColor: '#007b83',
 		segments: [
 			{ text: 'Gave me the idea that ' },
 			{ text: 'I should create', strong: true },
@@ -87,12 +94,6 @@ const voices: Voice[] = [
 
 <section class="voices-chapter light-nav-zone" id="voices" aria-labelledby="voices-title">
 	<div class="voices-shell">
-		<div class="voices-heading">
-			<p class="voices-kicker">Community voices</p>
-			<h2 id="voices-title">What the community<br />has to say.</h2>
-			<p class="voices-hint">Straight from event feedback forms. Tap a card for the next one.</p>
-		</div>
-
 		<div
 			class="voices-deck"
 			data-voices-deck
@@ -110,8 +111,12 @@ const voices: Voice[] = [
 						style={`z-index: ${voices.length - index}`}
 					>
 						<header class="voice-head">
-							<span class="voice-avatar" aria-hidden="true">
-								{voice.initials}
+							<span
+								class="voice-avatar"
+								aria-hidden="true"
+								style={`--avatar-bg: ${voice.avatarColor}`}
+							>
+								{voice.avatar}
 							</span>
 							<span class="voice-who">
 								<span class="voice-author">{voice.author}</span>
@@ -128,6 +133,12 @@ const voices: Voice[] = [
 					</article>
 				))
 			}
+		</div>
+
+		<div class="voices-heading">
+			<p class="voices-kicker">Community voices</p>
+			<h2 id="voices-title">What the community<br />has to say.</h2>
+			<p class="voices-hint">Straight from event feedback forms. Tap a card for the next one.</p>
 		</div>
 	</div>
 </section>
@@ -189,7 +200,7 @@ const voices: Voice[] = [
 
 	.voices-shell {
 		display: grid;
-		grid-template-columns: minmax(17rem, 0.95fr) minmax(19rem, 1.05fr);
+		grid-template-columns: minmax(19rem, 1.05fr) minmax(17rem, 0.95fr);
 		gap: clamp(2.5rem, 6vw, 6rem);
 		align-items: center;
 		padding: clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 3.5vw, 3.25rem);
@@ -289,12 +300,14 @@ const voices: Voice[] = [
 		width: 2.5rem;
 		height: 2.5rem;
 		place-items: center;
-		border: 1px solid rgb(169 199 239 / 0.4);
+		border: 0;
 		border-radius: 50%;
-		color: #a9c7ef;
-		background: rgb(49 93 159 / 0.22);
-		font-size: 0.78rem;
-		letter-spacing: 0.05em;
+		color: #fff;
+		background: var(--avatar-bg, #1a73e8);
+		box-shadow: 0 0 0 1px rgb(255 255 255 / 0.12), 0 4px 12px rgb(0 0 0 / 0.24);
+		font-size: 0.9rem;
+		font-weight: 500;
+		letter-spacing: 0;
 	}
 
 	.voice-who {

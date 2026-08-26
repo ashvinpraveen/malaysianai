@@ -610,26 +610,31 @@ const startIndex = 0;
 		--cream: #06090f;
 		--paper: #0d1622;
 		--accent: #9bbbe7;
+		display: grid;
 		min-height: 100dvh;
-		padding: clamp(0.75rem, 1.6vw, 1.5rem);
+		padding: clamp(4rem, 7vw, 6rem) clamp(1.5rem, 4vw, 4rem);
+		align-items: center;
 		color: var(--ink);
 		background: #06090f;
 	}
 
 	.community-shell {
-		width: 100%;
+		display: grid;
+		gap: clamp(1.75rem, 3vw, 2.75rem);
+		width: min(92rem, 100%);
+		margin: 0 auto;
 		background: transparent;
 	}
 
 	.community-copy {
-		display: grid;
-		grid-template-columns: minmax(17rem, 0.9fr) minmax(18rem, 1.1fr);
-		gap: clamp(2.5rem, 8vw, 8rem);
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
 		align-items: center;
-		width: 100%;
-		margin: 0;
-		padding: clamp(2.25rem, 5vw, 4.75rem);
-		text-align: left;
+		width: min(42rem, 100%);
+		margin: 0 auto;
+		padding: 0;
+		text-align: center;
 	}
 
 	.community-copy h2 {
@@ -642,15 +647,15 @@ const startIndex = 0;
 	}
 
 	.community-lede {
-		max-width: 31rem;
-		margin: 0;
+		max-width: 36rem;
+		margin: 0 auto;
 		color: rgb(224 232 244 / 0.72);
 		font-size: clamp(0.92rem, 1.25vw, 1.08rem);
 		line-height: 1.6;
 	}
 
 	.community-stage {
-		height: clamp(25rem, 52dvh, 34rem);
+		height: clamp(20rem, 34dvh, 27rem);
 		overflow: hidden;
 		cursor: default;
 		touch-action: pan-y;
@@ -705,19 +710,25 @@ const startIndex = 0;
 	}
 
 	.community-focus {
-		display: grid;
-		grid-template-columns: minmax(15rem, 0.72fr) minmax(20rem, 1.28fr);
-		gap: clamp(2rem, 7vw, 7rem);
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: 0.8rem;
 		align-items: center;
-		width: 100%;
-		margin: 0;
-		padding: clamp(1.75rem, 3.8vw, 3.25rem) clamp(2.25rem, 5vw, 4.75rem);
-		text-align: left;
+		width: min(48rem, 100%);
+		margin: 0 auto;
+		padding: clamp(1.5rem, 2.5vw, 2rem) clamp(1.5rem, 4vw, 3.25rem);
+		border-radius: 1.15rem;
+		background:
+			radial-gradient(ellipse at 50% 0%, rgb(41 82 134 / 0.18), transparent 68%),
+			#0a1019;
+		box-shadow: 0 20px 55px rgb(0 0 0 / 0.22);
+		text-align: center;
 	}
 
 	.community-focus-kicker {
-		justify-content: flex-start;
-		margin-bottom: 0.65rem;
+		justify-content: center;
+		margin-bottom: 0.4rem;
 		color: #a9c7ef;
 		font-size: 0.66rem;
 		font-weight: 400;
@@ -729,14 +740,14 @@ const startIndex = 0;
 
 	.community-focus h3 {
 		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
-		font-size: clamp(2.1rem, 3.8vw, 3.5rem);
+		font-size: clamp(1.8rem, 2.8vw, 2.65rem);
 		font-weight: 400;
 		line-height: 0.95;
 	}
 
 	.community-focus > p:last-child {
-		max-width: 42rem;
-		margin: 0;
+		max-width: 38rem;
+		margin: 0 auto;
 		color: rgb(224 232 244 / 0.68);
 		font-size: clamp(0.9rem, 1.15vw, 1.02rem);
 		line-height: 1.6;
@@ -744,13 +755,17 @@ const startIndex = 0;
 
 	@media (max-width: 700px) {
 		.community-chapter {
-			padding: 0.65rem;
+			min-height: auto;
+			padding: 3rem 1rem;
+		}
+
+		.community-shell {
+			gap: 1.75rem;
 		}
 
 		.community-copy {
-			grid-template-columns: 1fr;
-			gap: 1.75rem;
-			padding: 2.5rem 1.5rem;
+			gap: 1.25rem;
+			padding: 0;
 		}
 
 		.community-copy h2 {
@@ -758,7 +773,7 @@ const startIndex = 0;
 		}
 
 		.community-stage {
-			height: clamp(32rem, 70svh, 40rem);
+			height: clamp(24rem, 55svh, 30rem);
 		}
 
 		.community-card {
@@ -766,9 +781,8 @@ const startIndex = 0;
 		}
 
 		.community-focus {
-			grid-template-columns: 1fr;
-			gap: 1.4rem;
-			padding: 2rem 1.5rem 2.4rem;
+			gap: 1rem;
+			padding: 1.4rem 1rem;
 		}
 	}
 </style>

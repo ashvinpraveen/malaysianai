@@ -39,74 +39,79 @@ const events = [
 ---
 
 <section class="events-section" id="events" aria-labelledby="events-title" data-events>
-	<div class="events-background" aria-hidden="true">
-		<img
-			class="events-background-image is-visible"
-			data-events-background="0"
-			src={events[0].image}
-			alt=""
-			style={`object-position: ${events[0].position}`}
-		/>
-		<img
-			class="events-background-image"
-			data-events-background="1"
-			src={events[1].image}
-			alt=""
-			style={`object-position: ${events[1].position}`}
-		/>
-		<div class="events-background-wash"></div>
-	</div>
+	<div class="events-frame">
+		<div class="events-copy-panel">
+			<div class="events-header">
+				<p class="events-kicker">Meet in real life</p>
+				<h2 id="events-title">There is always<br />something happening.</h2>
+				<a class="events-calendar-link" href="https://luma.com/malaysianai">
+					See the event calendar
+					<span aria-hidden="true">↗</span>
+				</a>
+			</div>
 
-	<div class="events-header">
-		<p class="events-kicker">Meet in real life</p>
-		<h2 id="events-title">There is always<br />something happening.</h2>
-		<a class="events-calendar-link" href="https://luma.com/malaysianai">
-			See the event calendar
-			<span aria-hidden="true">↗</span>
-		</a>
-	</div>
+			<div class="events-selected" aria-live="polite" aria-atomic="true">
+				<p data-event-type>{events[0].type}</p>
+				<h3 data-event-title>{events[0].title}</h3>
+				<p data-event-date>{events[0].date}</p>
+			</div>
+		</div>
 
-	<div class="events-selected" aria-live="polite" aria-atomic="true">
-		<p data-event-type>{events[0].type}</p>
-		<h3 data-event-title>{events[0].title}</h3>
-		<p data-event-date>{events[0].date}</p>
-	</div>
+		<div class="events-visual">
+			<div class="events-background" aria-hidden="true">
+				<img
+					class="events-background-image is-visible"
+					data-events-background="0"
+					src={events[0].image}
+					alt=""
+					style={`object-position: ${events[0].position}`}
+				/>
+				<img
+					class="events-background-image"
+					data-events-background="1"
+					src={events[1].image}
+					alt=""
+					style={`object-position: ${events[1].position}`}
+				/>
+				<div class="events-background-wash"></div>
+			</div>
 
-	<div class="events-deck" data-events-deck>
-		{events.map((event, index) => (
-			<button
-				class:list={['event-card', { 'is-active': index === 0 }]}
-				type="button"
-				data-event-card
-				data-index={index}
-				data-title={event.title}
-				data-type={event.type}
-				data-date={event.date}
-				data-image={event.image}
-				data-position={event.position}
-				aria-label={`Show ${event.title}`}
-				aria-pressed={index === 0 ? 'true' : 'false'}
-			>
-				<span class="event-card-image-wrap">
-					<img
-						class="event-card-image"
-						src={event.image}
-						alt=""
-						width="900"
-						height="600"
-						loading={index === 0 ? 'eager' : 'lazy'}
-						decoding="async"
-						style={`object-position: ${event.position}`}
-					/>
-				</span>
-				<span class="event-card-caption">
-					<span>{String(index + 1).padStart(2, '0')}</span>
-					<strong>{event.title}</strong>
-				</span>
-			</button>
-		))}
+			<div class="events-deck" data-events-deck>
+				{events.map((event, index) => (
+					<button
+						class:list={['event-card', { 'is-active': index === 0 }]}
+						type="button"
+						data-event-card
+						data-index={index}
+						data-title={event.title}
+						data-type={event.type}
+						data-date={event.date}
+						data-image={event.image}
+						data-position={event.position}
+						aria-label={`Show ${event.title}`}
+						aria-pressed={index === 0 ? 'true' : 'false'}
+					>
+						<span class="event-card-image-wrap">
+							<img
+								class="event-card-image"
+								src={event.image}
+								alt=""
+								width="900"
+								height="600"
+								loading={index === 0 ? 'eager' : 'lazy'}
+								decoding="async"
+								style={`object-position: ${event.position}`}
+							/>
+						</span>
+						<span class="event-card-caption">
+							<span>{String(index + 1).padStart(2, '0')}</span>
+							<strong>{event.title}</strong>
+						</span>
+					</button>
+				))}
+			</div>
+		</div>
 	</div>
-
 </section>
 
 <script>
@@ -548,6 +553,297 @@ const events = [
 
 		.events-selected {
 			top: 8.5rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.events-background-image,
+		.events-header,
+		.event-card,
+		.event-card-image {
+			transition-duration: 1ms;
+		}
+
+		.events-header,
+		.event-card {
+			opacity: 1;
+		}
+	}
+
+	/* Framed editorial layout aligned with the homepage design system. */
+	.events-section {
+		min-height: 100dvh;
+		padding: 1rem;
+		color: #f4f7fc;
+		background: #06090f;
+	}
+
+	.events-frame {
+		position: relative;
+		display: grid;
+		grid-template-columns: minmax(19rem, 0.38fr) minmax(0, 0.62fr);
+		min-height: calc(100dvh - 2rem);
+		overflow: hidden;
+		border: 1px solid rgb(115 152 207 / 0.72);
+		border-radius: 1rem;
+		background: #06090f;
+	}
+
+	.events-copy-panel {
+		position: relative;
+		z-index: 4;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		min-width: 0;
+		padding: clamp(2.5rem, 5vw, 5rem) clamp(2rem, 4vw, 4rem) clamp(2rem, 4vw, 3.5rem);
+		border-right: 1px solid rgb(115 152 207 / 0.72);
+		background: #06090f;
+	}
+
+	.events-visual {
+		position: relative;
+		isolation: isolate;
+		min-width: 0;
+		overflow: hidden;
+		background: #0a1422;
+	}
+
+	.events-background,
+	.events-background-image,
+	.events-background-wash {
+		position: absolute;
+		inset: 0;
+	}
+
+	.events-background {
+		z-index: 0;
+		overflow: hidden;
+	}
+
+	.events-background-image {
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		object-fit: cover;
+		filter: saturate(76%) contrast(1.03);
+		transform: scale(1.025);
+		opacity: 0;
+		transition: opacity 700ms ease, transform 6s ease;
+	}
+
+	.events-background-image.is-visible {
+		transform: scale(1);
+		opacity: 1;
+	}
+
+	.events-background-wash {
+		background:
+			linear-gradient(180deg, rgb(5 10 17 / 0.08) 0%, rgb(5 10 17 / 0.24) 46%, rgb(5 9 15 / 0.92) 100%),
+			linear-gradient(90deg, rgb(5 10 17 / 0.2), transparent 48%);
+		backdrop-filter: none;
+	}
+
+	.events-header {
+		position: static;
+		z-index: auto;
+		max-width: 31rem;
+		opacity: 0;
+		transform: translateY(1rem);
+		transition: opacity 650ms ease, transform 650ms cubic-bezier(0.2, 0.75, 0.2, 1);
+	}
+
+	.events-kicker {
+		margin: 0 0 1.15rem;
+		color: rgb(188 208 238 / 0.72);
+		font-size: 0.72rem;
+		font-weight: 400;
+		letter-spacing: 0.13em;
+		text-transform: uppercase;
+	}
+
+	.events-header h2 {
+		margin: 0;
+		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-size: clamp(3.15rem, 4.7vw, 5.25rem);
+		font-weight: 400;
+		letter-spacing: -0.035em;
+		line-height: 0.88;
+		text-wrap: balance;
+	}
+
+	.events-calendar-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.65rem;
+		width: fit-content;
+		min-height: 2.45rem;
+		margin-top: 1.7rem;
+		padding: 0.5rem 0.9rem;
+		border: 0;
+		border-radius: 99rem;
+		color: #eff5ff;
+		background: #142b4d;
+		font-size: 0.82rem;
+		font-weight: 400;
+		text-decoration: none;
+		transition: gap 180ms ease, background 180ms ease, transform 180ms ease;
+	}
+
+	.events-calendar-link:hover,
+	.events-calendar-link:focus-visible {
+		gap: 0.9rem;
+		color: #fff;
+		background: #1b3b69;
+		transform: translateY(-1px);
+	}
+
+	.events-selected {
+		position: static;
+		z-index: auto;
+		width: 100%;
+		padding: 1.5rem 0 0;
+		border: 0;
+		border-top: 1px solid rgb(115 152 207 / 0.4);
+		text-align: left;
+	}
+
+	.events-selected p {
+		color: rgb(210 223 242 / 0.62);
+		font-size: 0.68rem;
+		font-weight: 400;
+		letter-spacing: 0.09em;
+	}
+
+	.events-selected h3 {
+		margin-block: 0.55rem;
+		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-size: clamp(1.8rem, 2.6vw, 2.7rem);
+		font-weight: 400;
+		line-height: 0.95;
+	}
+
+	.events-deck {
+		position: absolute;
+		right: 0;
+		bottom: -2.75rem;
+		left: 0;
+		z-index: 3;
+		height: min(55%, 31rem);
+		perspective: 1200px;
+		pointer-events: none;
+	}
+
+	.event-card {
+		width: clamp(13rem, 19vw, 19rem);
+		aspect-ratio: 0.78;
+		padding: 0.42rem;
+		border: 1px solid rgb(115 152 207 / 0.52);
+		border-radius: 0.9rem;
+		background: rgb(6 9 15 / 0.9);
+		box-shadow: 0 1.4rem 3.5rem rgb(0 0 0 / 0.45);
+		transform:
+			translateX(calc(-50% + var(--event-slot, 0) * min(15vw, 11rem)))
+			translateY(calc(var(--event-distance, 0) * 1.7rem))
+			rotate(calc(var(--event-slot, 0) * 3deg))
+			scale(calc(1 - var(--event-distance, 0) * 0.075));
+	}
+
+	.event-card:hover,
+	.event-card:focus-visible,
+	.event-card.is-active {
+		border-color: rgb(151 184 231 / 0.9);
+	}
+
+	.event-card:focus-visible {
+		outline: 2px solid #97b8e7;
+	}
+
+	.event-card-image-wrap {
+		height: calc(100% - 2.8rem);
+		border-radius: 0.62rem;
+		background: #0a1422;
+	}
+
+	.event-card-caption {
+		height: 2.8rem;
+		padding-inline: 0.3rem;
+		font-size: 0.66rem;
+		font-weight: 400;
+	}
+
+	.event-card-caption strong {
+		font-weight: 400;
+	}
+
+	@media (max-width: 800px) {
+		.events-section {
+			min-height: 100svh;
+			padding: 0.6rem;
+		}
+
+		.events-frame {
+			grid-template-columns: 1fr;
+			grid-template-rows: auto minmax(31rem, 1fr);
+			min-height: calc(100svh - 1.2rem);
+			border-radius: 0.75rem;
+		}
+
+		.events-copy-panel {
+			padding: 2.25rem 1.5rem 1.5rem;
+			border-right: 0;
+			border-bottom: 1px solid rgb(115 152 207 / 0.72);
+		}
+
+		.events-header {
+			max-width: 28rem;
+		}
+
+		.events-header h2 {
+			font-size: clamp(2.65rem, 11vw, 3.75rem);
+		}
+
+		.events-calendar-link {
+			margin-top: 1.25rem;
+		}
+
+		.events-selected {
+			display: grid;
+			grid-template-columns: 1fr auto;
+			align-items: end;
+			gap: 0.35rem 1rem;
+			margin-top: 2rem;
+			padding-top: 1rem;
+		}
+
+		.events-selected h3 {
+			grid-column: 1;
+			font-size: 1.65rem;
+		}
+
+		.events-selected p:last-child {
+			grid-column: 2;
+			grid-row: 1 / span 2;
+			max-width: 9rem;
+			text-align: right;
+		}
+
+		.events-visual {
+			min-height: 31rem;
+		}
+
+		.events-deck {
+			bottom: -2.25rem;
+			height: 23rem;
+		}
+
+		.event-card {
+			width: clamp(11rem, 44vw, 13.5rem);
+			transform:
+				translateX(calc(-50% + var(--event-slot, 0) * 36vw))
+				translateY(calc(var(--event-distance, 0) * 1.2rem))
+				rotate(calc(var(--event-slot, 0) * 4deg))
+				scale(calc(1 - var(--event-distance, 0) * 0.09));
 		}
 	}
 

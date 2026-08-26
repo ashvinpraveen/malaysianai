@@ -74,71 +74,67 @@ const communities = [
 	},
 ];
 
-const startIndex = 2;
+const startIndex = 0;
 ---
 
 <section class="community-chapter light-nav-zone" id="communities" aria-labelledby="community-title">
-	<div class="community-copy">
-		<p class="community-kicker">The Malaysian AI network</p>
-		<h2 id="community-title">The people are<br />the platform.</h2>
-		<p class="community-lede">
-			There is no single front door into AI here. There are many. Pick the room that
-			feels like yours and say hello.
-		</p>
-	</div>
-
-	<div
-		class="community-stage"
-		id="community-stage"
-		tabindex="0"
-		aria-label="Interactive community filmstrip"
-	>
-		<p class="sr-only">Move, scroll, or use the arrow keys to browse the communities.</p>
-		<div class="community-deck" id="community-deck" data-community-deck>
-			{
-				communities.map((community, index) => (
-					<button
-						class:list={['community-card', community.logoClass]}
-						type="button"
-						data-community-card
-						data-index={String(index)}
-						data-name={community.name}
-						data-label={community.label}
-						data-description={community.description}
-						aria-label={`Focus ${community.name}, ${community.label}`}
-						aria-current={index === startIndex ? 'true' : 'false'}
-					>
-						<span class="community-portrait">
-							<img
-								src={community.logo}
-								alt=""
-								width="220"
-								height="140"
-								loading="lazy"
-								decoding="async"
-							/>
-						</span>
-						<span class="community-footer">
-							<span class="community-index">{String(index + 1).padStart(2, '0')}</span>
-							<span class="community-meta">
-								<span class="community-name">{community.name}</span>
-								<span class="community-role">{community.label}</span>
-							</span>
-						</span>
-					</button>
-				))
-			}
+	<div class="community-shell">
+		<div class="community-copy">
+			<div class="community-heading">
+				<h2 id="community-title">The people are<br />the platform.</h2>
+			</div>
+			<p class="community-lede">
+				There is no single front door into AI here. There are many. Pick the room that
+				feels like yours and say hello.
+			</p>
 		</div>
-	</div>
 
-	<div class="community-focus" aria-live="polite" aria-atomic="true">
-		<p class="community-focus-kicker">
-			<span data-community-number>{String(startIndex + 1).padStart(2, '0')}</span>
-			<span aria-hidden="true"> / {String(communities.length).padStart(2, '0')}</span>
-			<span data-community-label>{communities[startIndex].label}</span>
-		</p>
-		<h3 data-community-name>{communities[startIndex].name}</h3>
-		<p data-community-description>{communities[startIndex].description}</p>
+		<div
+			class="community-stage"
+			id="community-stage"
+			tabindex="0"
+			aria-label="Interactive community filmstrip"
+		>
+			<p class="sr-only">Select a logo or use the arrow keys to browse the communities.</p>
+			<div class="community-deck" id="community-deck" data-community-deck>
+				{
+					communities.map((community, index) => (
+						<button
+							class:list={['community-card', community.logoClass]}
+							type="button"
+							data-community-card
+							data-index={String(index)}
+							data-name={community.name}
+							data-label={community.label}
+							data-description={community.description}
+							aria-label={`Focus ${community.name}, ${community.label}`}
+							aria-current={index === startIndex ? 'true' : 'false'}
+						>
+							<span class="community-portrait">
+								<img
+									src={community.logo}
+									alt={community.name}
+									width="220"
+									height="140"
+									loading="lazy"
+									decoding="async"
+								/>
+							</span>
+						</button>
+					))
+				}
+			</div>
+		</div>
+
+		<div class="community-focus" aria-live="polite" aria-atomic="true">
+			<div class="community-focus-title">
+				<p class="community-focus-kicker">
+					<span data-community-label>{communities[startIndex].label}</span>
+				</p>
+				<h3 data-community-name>{communities[startIndex].name}</h3>
+			</div>
+			<p data-community-description>{communities[startIndex].description}</p>
+		</div>
 	</div>
 </section>
 
@@ -146,7 +142,6 @@ const startIndex = 2;
 	const stage = document.querySelector<HTMLElement>('#community-stage');
 	const deck = document.querySelector<HTMLElement>('[data-community-deck]');
 	const cards = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-community-card]'));
-	const focusNumber = document.querySelector<HTMLElement>('[data-community-number]');
 	const focusLabel = document.querySelector<HTMLElement>('[data-community-label]');
 	const focusName = document.querySelector<HTMLElement>('[data-community-name]');
 	const focusDescription = document.querySelector<HTMLElement>('[data-community-description]');
@@ -154,14 +149,13 @@ const startIndex = 2;
 	if (stage && deck && cards.length) {
 		const count = cards.length;
 		const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-		const startIndex = 2;
+		const startIndex = 0;
 		const state = {
 			phase: startIndex,
 			target: startIndex,
 			base: startIndex,
-			pointerX: 0,
-			pointerY: 0,
-			active: false,
+			hovering: false,
+			hoverStartedAt: 0,
 			lastInput: performance.now(),
 		};
 		let lastActiveIndex = startIndex;
@@ -184,14 +178,14 @@ const startIndex = 2;
 			if (delta < -count / 2) delta += count;
 			state.base += delta;
 			state.target = state.base;
-			state.active = false;
 			state.lastInput = performance.now();
+			updateFocus(index);
+			lastActiveIndex = index;
 		}
 
 		function updateFocus(index: number) {
 			const card = cards[index];
 			if (!card) return;
-			if (focusNumber) focusNumber.textContent = String(index + 1).padStart(2, '0');
 			if (focusLabel) focusLabel.textContent = card.dataset.label ?? '';
 			if (focusName) focusName.textContent = card.dataset.name ?? '';
 			if (focusDescription) focusDescription.textContent = card.dataset.description ?? '';
@@ -200,43 +194,19 @@ const startIndex = 2;
 		cards.forEach((card, index) => {
 			card.addEventListener('click', () => moveTo(index));
 			card.addEventListener('focus', () => moveTo(index));
+			card.addEventListener('pointerenter', () => {
+				if (state.hovering) return;
+				state.hovering = true;
+				state.hoverStartedAt = performance.now();
+				state.target = state.phase;
+			});
+			card.addEventListener('pointerleave', () => {
+				if (!state.hovering) return;
+				const now = performance.now();
+				state.lastInput += now - state.hoverStartedAt;
+				state.hovering = false;
+			});
 		});
-
-		stage.addEventListener('pointermove', (event) => {
-			const rect = stage.getBoundingClientRect();
-			const nx = Math.max(-1, Math.min(1, ((event.clientX - rect.left) / rect.width - 0.5) * 2));
-			const ny = Math.max(-1, Math.min(1, ((event.clientY - rect.top) / rect.height - 0.5) * 2));
-			state.pointerX = nx;
-			state.pointerY = ny;
-			state.active = true;
-			state.target = state.base + (innerWidth < 650 ? ny * 2.2 : nx * 3.1);
-			state.lastInput = performance.now();
-			stage.style.setProperty('--pointer-x', `${(nx + 1) * 50}%`);
-		});
-
-		stage.addEventListener('pointerleave', () => {
-			state.active = false;
-			state.pointerX = 0;
-			state.pointerY = 0;
-			state.target = state.base;
-			stage.style.setProperty('--pointer-x', '50%');
-		});
-
-		stage.addEventListener(
-			'wheel',
-			(event) => {
-				event.preventDefault();
-				const direction = Math.sign(
-					Math.abs(event.deltaY) > Math.abs(event.deltaX) ? event.deltaY : event.deltaX,
-				);
-				if (!direction) return;
-				state.base += direction;
-				state.target = state.base;
-				state.active = false;
-				state.lastInput = performance.now();
-			},
-			{ passive: false },
-		);
 
 		addEventListener('keydown', (event) => {
 			const target = event.target;
@@ -251,7 +221,6 @@ const startIndex = 2;
 			event.preventDefault();
 			state.base += forward ? 1 : -1;
 			state.target = state.base;
-			state.active = false;
 			state.lastInput = performance.now();
 		});
 
@@ -262,16 +231,18 @@ const startIndex = 2;
 			previousTime = time;
 			const ease = reducedMotion ? 1 : 1 - Math.pow(0.001, deltaTime / 1000);
 
-			if (!reducedMotion && !state.active && time - state.lastInput > 3600) {
-				const idle = time - state.lastInput - 3600;
-				state.target = state.base + Math.sin(idle * 0.00042) * 2.45;
+			if (!reducedMotion && !state.hovering && time - state.lastInput > 2800) {
+				const elapsed = time - state.lastInput - 2800;
+				const cycle = (elapsed / 10500) % 2;
+				const sweep = cycle <= 1 ? cycle : 2 - cycle;
+				state.target = sweep * (count - 1);
 			}
 
 			state.phase += (state.target - state.phase) * ease;
 			const compact = innerWidth < 650;
 			const activeIndex = nearestIndex();
-			const horizontalSpacing = Math.min(168, Math.max(112, innerWidth * 0.116));
-			const verticalSpacing = Math.min(122, Math.max(88, innerHeight * 0.112));
+			const horizontalSpacing = Math.min(138, Math.max(82, innerWidth * 0.095));
+			const verticalSpacing = Math.min(112, Math.max(78, innerHeight * 0.1));
 
 			if (activeIndex !== lastActiveIndex) {
 				lastActiveIndex = activeIndex;
@@ -289,20 +260,19 @@ const startIndex = 2;
 					: delta * horizontalSpacing;
 				const y = compact
 					? delta * verticalSpacing
-					: distance * 8 + state.pointerY * focus * 10;
+					: distance * 6;
 				const z = focus * 145 - distance * 148;
 				const scale = 0.54 + side * 0.15 + focus * 0.54;
-				const rotateX = compact ? delta * 2.1 : -state.pointerY * focus * 3.5;
+				const rotateX = compact ? delta * 1.5 : 0;
 				const rotateY = compact
-					? -delta * 5
-					: -direction * (distance > 0.2 ? 14 + Math.min(distance, 3) * 5 : 0) +
-						state.pointerX * focus * 3;
+					? -delta * 3.5
+					: -direction * (distance > 0.2 ? 9 + Math.min(distance, 3) * 3 : 0);
 				const rotateZ = compact ? delta * -1.4 : delta * 0.7;
 
 				card.style.setProperty('--focus', focus.toFixed(4));
 				card.style.zIndex = String(Math.round(1000 - distance * 100));
-				card.style.opacity = String(Math.max(0.13, side * 0.76 + focus * 0.24));
-				card.style.filter = `blur(${Math.max(0, distance - 1.5) * 0.38}px)`;
+				card.style.opacity = String(Math.max(0.42, side * 0.66 + focus * 0.34));
+				card.style.filter = 'none';
 				card.style.transform = [
 					'translate(-50%, -50%)',
 					`translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, ${z.toFixed(2)}px)`,
@@ -631,6 +601,174 @@ const startIndex = 2;
 	@media (prefers-reduced-motion: reduce) {
 		.community-card {
 			will-change: auto;
+		}
+	}
+
+	/* Open, logo-only community composition. */
+	.community-chapter {
+		--ink: #f2f5fa;
+		--cream: #06090f;
+		--paper: #0d1622;
+		--accent: #9bbbe7;
+		min-height: 100dvh;
+		padding: clamp(0.75rem, 1.6vw, 1.5rem);
+		color: var(--ink);
+		background: #06090f;
+	}
+
+	.community-shell {
+		width: 100%;
+		background: transparent;
+	}
+
+	.community-copy {
+		display: grid;
+		grid-template-columns: minmax(17rem, 0.9fr) minmax(18rem, 1.1fr);
+		gap: clamp(2.5rem, 8vw, 8rem);
+		align-items: center;
+		width: 100%;
+		margin: 0;
+		padding: clamp(2.25rem, 5vw, 4.75rem);
+		text-align: left;
+	}
+
+	.community-copy h2 {
+		margin: 0;
+		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-size: clamp(2.2rem, 3.6vw, 3.4rem);
+		font-weight: 400;
+		letter-spacing: -0.035em;
+		line-height: 0.9;
+	}
+
+	.community-lede {
+		max-width: 31rem;
+		margin: 0;
+		color: rgb(224 232 244 / 0.72);
+		font-size: clamp(0.92rem, 1.25vw, 1.08rem);
+		line-height: 1.6;
+	}
+
+	.community-stage {
+		height: clamp(25rem, 52dvh, 34rem);
+		overflow: hidden;
+		cursor: default;
+		touch-action: pan-y;
+		background: transparent;
+	}
+
+	.community-stage::before,
+	.community-stage::after {
+		display: none;
+	}
+
+	.community-stage:focus-visible {
+		outline: none;
+	}
+
+	.community-card {
+		width: clamp(128px, 13vw, 188px);
+		aspect-ratio: 1.08;
+		padding: 0;
+		border: 0;
+		border-radius: 0.7rem;
+		background: transparent;
+		box-shadow: 0 calc(8px + var(--focus) * 16px) calc(18px + var(--focus) * 28px)
+			rgb(0 0 0 / calc(0.2 + var(--focus) * 0.22));
+	}
+
+	.community-card::before {
+		display: none;
+	}
+
+	.community-card:focus-visible {
+		box-shadow:
+			0 24px 48px rgb(0 0 0 / 0.48),
+			0 0 0 3px rgb(151 184 231 / 0.35);
+	}
+
+	.community-portrait {
+		inset: 0;
+		border-radius: 0.7rem;
+		background:
+			radial-gradient(circle at 50% 40%, rgb(255 255 255 / 0.9), transparent 62%),
+			#e9edf3;
+	}
+
+	.community-portrait img {
+		width: 76%;
+		height: 76%;
+	}
+
+	.community-card.is-wide .community-portrait img {
+		width: 86%;
+	}
+
+	.community-focus {
+		display: grid;
+		grid-template-columns: minmax(15rem, 0.72fr) minmax(20rem, 1.28fr);
+		gap: clamp(2rem, 7vw, 7rem);
+		align-items: center;
+		width: 100%;
+		margin: 0;
+		padding: clamp(1.75rem, 3.8vw, 3.25rem) clamp(2.25rem, 5vw, 4.75rem);
+		text-align: left;
+	}
+
+	.community-focus-kicker {
+		justify-content: flex-start;
+		margin-bottom: 0.65rem;
+		color: #a9c7ef;
+		font-size: 0.66rem;
+		font-weight: 400;
+	}
+
+	.community-focus-kicker [data-community-label] {
+		color: #a9c7ef;
+	}
+
+	.community-focus h3 {
+		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-size: clamp(2.1rem, 3.8vw, 3.5rem);
+		font-weight: 400;
+		line-height: 0.95;
+	}
+
+	.community-focus > p:last-child {
+		max-width: 42rem;
+		margin: 0;
+		color: rgb(224 232 244 / 0.68);
+		font-size: clamp(0.9rem, 1.15vw, 1.02rem);
+		line-height: 1.6;
+	}
+
+	@media (max-width: 700px) {
+		.community-chapter {
+			padding: 0.65rem;
+		}
+
+		.community-copy {
+			grid-template-columns: 1fr;
+			gap: 1.75rem;
+			padding: 2.5rem 1.5rem;
+		}
+
+		.community-copy h2 {
+			font-size: clamp(2.3rem, 10vw, 3.25rem);
+		}
+
+		.community-stage {
+			height: clamp(32rem, 70svh, 40rem);
+		}
+
+		.community-card {
+			width: clamp(116px, 38vw, 154px);
+		}
+
+		.community-focus {
+			grid-template-columns: 1fr;
+			gap: 1.4rem;
+			padding: 2rem 1.5rem 2.4rem;
 		}
 	}
 </style>

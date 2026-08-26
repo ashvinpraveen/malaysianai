@@ -1,0 +1,364 @@
+---
+type Segment = { text: string; strong?: boolean };
+
+interface Voice {
+	author: string;
+	context: string;
+	initials: string;
+	segments: Segment[];
+}
+
+const voices: Voice[] = [
+	{
+		author: 'Workshop attendee',
+		context: 'AI Builder Night, KL',
+		initials: 'WA',
+		segments: [
+			{ text: 'SF vibes and atmosphere', strong: true },
+			{ text: ', one-of-a-kind place in Malaysia.' },
+		],
+	},
+	{
+		author: 'Community member',
+		context: 'AI Takeover',
+		initials: 'CM',
+		segments: [
+			{ text: 'You guys brought all the big guns.', strong: true },
+			{
+				text: ' That was insanely good to see the perspectives, hopes and dreams the way you guys prop up builders. ',
+			},
+			{ text: 'F***ing Awesome! A+', strong: true },
+		],
+	},
+	{
+		author: 'First-time builder',
+		context: 'Build With AI workshop',
+		initials: 'FB',
+		segments: [
+			{ text: 'I felt the pulse of the community.', strong: true },
+			{ text: ' It inspired me to build with AI. ' },
+			{ text: 'I went home and learnt Claude Code.', strong: true },
+			{
+				text: ' I loved how supportive the community is to newbies. I felt very safe, heard and seen.',
+			},
+		],
+	},
+	{
+		author: 'Startup operator',
+		context: 'Founder session',
+		initials: 'SO',
+		segments: [
+			{ text: 'One of the few sessions where we had a ' },
+			{ text: 'serious discussion about AI', strong: true },
+			{ text: ' and its implications for our companies, society, and the country as a whole. ' },
+			{
+				text: "It gave me the sense that people outside our builders' bubble genuinely care about our nation's future.",
+				strong: true,
+			},
+		],
+	},
+	{
+		author: 'Community member',
+		context: 'Pasar AI demo day',
+		initials: 'CM',
+		segments: [
+			{ text: 'Gave me hope about the state of Malaysian youth and builders', strong: true },
+			{ text: ' \u2014 it was so refreshing!' },
+		],
+	},
+	{
+		author: 'Educator',
+		context: 'Learnathon',
+		initials: 'ED',
+		segments: [
+			{ text: 'Gave me the idea that ' },
+			{ text: 'I should create', strong: true },
+			{ text: ' similar programme where ' },
+			{
+				text: 'I can provide opportunity for the school students to learn vibe coding',
+				strong: true,
+			},
+			{ text: ' and start building something, and also for myself to ' },
+			{ text: 'try build something on my own.', strong: true },
+		],
+	},
+];
+---
+
+<section class="voices-chapter light-nav-zone" id="voices" aria-labelledby="voices-title">
+	<div class="voices-shell">
+		<div class="voices-heading">
+			<p class="voices-kicker">Community voices</p>
+			<h2 id="voices-title">What the community<br />has to say.</h2>
+			<p class="voices-hint">Straight from event feedback forms. Tap a card for the next one.</p>
+		</div>
+
+		<div
+			class="voices-deck"
+			data-voices-deck
+			aria-live="polite"
+			role="button"
+			tabindex="0"
+			aria-label="Community testimonials, activate for the next one"
+		>
+			{
+				voices.map((voice, index) => (
+					<article
+						class="voice-card"
+						data-voice-card
+						data-pos={String(Math.min(index, 3))}
+						style={`z-index: ${voices.length - index}`}
+					>
+						<header class="voice-head">
+							<span class="voice-avatar" aria-hidden="true">
+								{voice.initials}
+							</span>
+							<span class="voice-who">
+								<span class="voice-author">{voice.author}</span>
+								<span class="voice-context">{voice.context}</span>
+							</span>
+						</header>
+						<blockquote>
+							<p>
+								{voice.segments.map((segment) =>
+									segment.strong ? <strong>{segment.text}</strong> : segment.text
+								)}
+							</p>
+						</blockquote>
+					</article>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<script>
+	const deck = document.querySelector<HTMLElement>('[data-voices-deck]');
+	const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-voice-card]'));
+
+	if (deck && cards.length > 1) {
+		const HOLD_MS = 5200;
+		const LEAVE_MS = 480;
+		let order = cards.map((_, index) => index);
+		let hovering = false;
+		let leaving = false;
+
+		function layout() {
+			order.forEach((cardIndex, pos) => {
+				const card = cards[cardIndex];
+				card.dataset.pos = String(Math.min(pos, 3));
+				card.style.zIndex = String(cards.length - pos);
+			});
+		}
+
+		function advance() {
+			if (leaving) return;
+			leaving = true;
+			const front = cards[order[0]];
+			front.classList.add('is-leaving');
+			setTimeout(() => {
+				front.classList.remove('is-leaving');
+				order.push(order.shift()!);
+				layout();
+				leaving = false;
+			}, LEAVE_MS);
+		}
+
+		deck.addEventListener('click', advance);
+		deck.addEventListener('keydown', (event) => {
+			if (event.key === 'Enter' || event.key === ' ') {
+				event.preventDefault();
+				advance();
+			}
+		});
+		deck.addEventListener('pointerenter', () => (hovering = true));
+		deck.addEventListener('pointerleave', () => (hovering = false));
+
+		setInterval(() => {
+			if (!hovering && !document.hidden) advance();
+		}, HOLD_MS);
+	}
+</script>
+
+<style>
+	.voices-chapter {
+		padding: clamp(0.75rem, 1.6vw, 1.5rem);
+		color: #f2f5fa;
+		background: #06090f;
+	}
+
+	.voices-shell {
+		display: grid;
+		grid-template-columns: minmax(17rem, 0.95fr) minmax(19rem, 1.05fr);
+		gap: clamp(2.5rem, 6vw, 6rem);
+		align-items: center;
+		padding: clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 3.5vw, 3.25rem);
+	}
+
+	.voices-kicker {
+		margin: 0 0 1.1rem;
+		color: #a9c7ef;
+		font-size: 0.7rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.voices-heading h2 {
+		margin: 0;
+		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-size: clamp(2.3rem, 3.8vw, 3.6rem);
+		font-weight: 400;
+		letter-spacing: -0.035em;
+		line-height: 0.9;
+		text-wrap: balance;
+	}
+
+	.voices-hint {
+		max-width: 24rem;
+		margin: 1.4rem 0 0;
+		color: rgb(224 232 244 / 0.55);
+		font-size: 0.88rem;
+		line-height: 1.55;
+	}
+
+	.voices-deck {
+		display: grid;
+		padding-top: 3rem;
+		cursor: pointer;
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	.voices-deck:focus-visible {
+		outline: 2px solid #9bbbe7;
+		outline-offset: 6px;
+		border-radius: 0.95rem;
+	}
+
+	.voice-card {
+		grid-area: 1 / 1;
+		align-self: start;
+		min-height: 13rem;
+		padding: clamp(1.35rem, 2vw, 1.75rem);
+		border: 1.5px solid rgb(115 152 207 / 0.55);
+		border-radius: 0.95rem;
+		background: #0a111c;
+		transition: transform 480ms cubic-bezier(0.3, 0.8, 0.3, 1), opacity 420ms ease;
+	}
+
+	.voice-card[data-pos='0'] {
+		opacity: 1;
+		transform: none;
+	}
+
+	.voice-card[data-pos='1'] {
+		opacity: 0.5;
+		transform: translateY(-1.1rem) scale(0.955);
+	}
+
+	.voice-card[data-pos='2'] {
+		opacity: 0.25;
+		transform: translateY(-2.15rem) scale(0.912);
+	}
+
+	.voice-card[data-pos='3'] {
+		opacity: 0;
+		transform: translateY(-3rem) scale(0.88);
+		pointer-events: none;
+	}
+
+	.voice-card.is-leaving {
+		opacity: 0;
+		transform: translateY(2.4rem) rotate(1.8deg);
+	}
+
+	.voice-card[data-pos]:not([data-pos='0']) blockquote,
+	.voice-card[data-pos]:not([data-pos='0']) .voice-head {
+		visibility: hidden;
+	}
+
+	.voice-head {
+		display: flex;
+		align-items: center;
+		gap: 0.8rem;
+		margin-bottom: 1rem;
+	}
+
+	.voice-avatar {
+		display: grid;
+		flex: 0 0 auto;
+		width: 2.5rem;
+		height: 2.5rem;
+		place-items: center;
+		border: 1px solid rgb(169 199 239 / 0.4);
+		border-radius: 50%;
+		color: #a9c7ef;
+		background: rgb(49 93 159 / 0.22);
+		font-size: 0.78rem;
+		letter-spacing: 0.05em;
+	}
+
+	.voice-who {
+		display: grid;
+		gap: 0.2rem;
+	}
+
+	.voice-author {
+		font-size: 0.88rem;
+	}
+
+	.voice-context {
+		color: rgb(224 232 244 / 0.5);
+		font-size: 0.76rem;
+	}
+
+	.voice-card blockquote {
+		margin: 0;
+	}
+
+	.voice-card blockquote p {
+		margin: 0;
+		color: #fff;
+		font-size: clamp(0.95rem, 1.15vw, 1.08rem);
+		line-height: 1.6;
+	}
+
+	.voice-card strong {
+		color: #a9c7ef;
+		font-weight: 600;
+	}
+
+	@media (max-width: 860px) {
+		.voices-shell {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+	}
+
+	@media (max-width: 700px) {
+		.voices-chapter {
+			padding: 0.65rem;
+		}
+
+		.voices-shell {
+			padding: 2rem 1rem;
+		}
+
+		.voices-heading h2 {
+			font-size: clamp(2.3rem, 10vw, 3.25rem);
+		}
+
+		.voice-card {
+			min-height: 15rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.voice-card {
+			transition: opacity 200ms ease;
+		}
+
+		.voice-card.is-leaving {
+			transform: none;
+		}
+	}
+</style>

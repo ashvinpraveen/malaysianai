@@ -1,0 +1,379 @@
+---
+interface Resident {
+	name: string;
+	tag: string;
+	href: string;
+	logo?: string;
+	logoClass?: string;
+	wordmark?: string;
+}
+
+const residents: Resident[] = [
+	{
+		name: 'Cleve',
+		tag: 'Personal AI content assistant',
+		href: 'https://cleve.ai',
+		logo: '/cleve-logo.svg',
+	},
+	{
+		name: 'ReplyrAI',
+		tag: 'AI growth platform for clinics',
+		href: 'https://replyr.ai',
+		wordmark: 'Replyr.AI',
+	},
+	{
+		name: 'Blue Bolt Labs',
+		tag: 'MVP studio for solo founders',
+		href: 'https://blueboltlabs.com',
+		logo: '/blueboltlabs.webp',
+	},
+	{
+		name: 'Seavoice',
+		tag: 'Enterprise voice AI agents',
+		href: 'https://seavoice.ai',
+		logo: '/seavoice_icon.png',
+	},
+	{
+		name: 'DocuAsk',
+		tag: 'Chat with your documents',
+		href: 'https://docuask.com',
+		wordmark: 'DocuAsk',
+	},
+	{
+		name: 'Klovr',
+		tag: 'AI copilot for real estate teams',
+		href: 'https://klovr.co',
+		logo: '/klovr_logo.webp',
+		logoClass: 'is-wide',
+	},
+	{
+		name: 'Kelas Sekejap',
+		tag: 'Learn English by speaking',
+		href: 'https://kelassekejap.com',
+		logo: '/kelassekejaplogo.svg',
+		logoClass: 'is-wide',
+	},
+];
+---
+
+<section class="residency-chapter light-nav-zone" id="residency" aria-labelledby="residency-title">
+	<div class="residency-heading">
+		<p class="residency-kicker">The Residency</p>
+		<h2 id="residency-title">Home to ambitious<br />Malaysian AI startups.</h2>
+	</div>
+
+	<div class="residency-panel">
+		<div class="residency-frame">
+			<div class="residency-marquee" aria-label="Current resident startups">
+			{
+				[false, true].map((isClone) => (
+					<ul class="residency-track" aria-hidden={isClone ? 'true' : undefined}>
+						{residents.map((resident) => (
+							<li>
+								<a
+									class="resident-tile"
+									href={resident.href}
+									target="_blank"
+									rel="noopener"
+									tabindex={isClone ? -1 : undefined}
+								>
+									<span class="resident-face">
+										{resident.logo ? (
+											<img
+												class:list={['resident-logo', resident.logoClass]}
+												src={resident.logo}
+												alt=""
+												width="160"
+												height="160"
+												loading="lazy"
+												decoding="async"
+											/>
+										) : (
+											<span class="resident-wordmark">{resident.wordmark}</span>
+										)}
+									</span>
+									<span class="resident-meta">
+										<span class="resident-name">{resident.name}</span>
+										<span class="resident-tag">{resident.tag}</span>
+									</span>
+								</a>
+							</li>
+						))}
+					</ul>
+				))
+			}
+			</div>
+		</div>
+
+		<div class="residency-grip">
+			<p class="residency-lede">
+				A working home for founders building serious AI products. Residents win
+				hackathons, organise regional movements, raise venture capital, and ship at
+				the edge of the technology &mdash; together, from Kuala Lumpur.
+			</p>
+			<div class="residency-actions">
+				<a class="residency-cta" href="/residency">Explore the residency</a>
+				<a class="residency-directory" href="/residents">
+					Meet the residents
+					<span aria-hidden="true">&#8599;</span>
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.residency-chapter {
+		padding: clamp(0.75rem, 1.6vw, 1.5rem);
+		color: #f2f5fa;
+		background: #06090f;
+	}
+
+	.residency-heading {
+		padding: clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 3.5vw, 3.25rem) clamp(1.75rem, 3vw, 2.5rem);
+	}
+
+	.residency-kicker {
+		margin: 0 0 1.1rem;
+		color: #a9c7ef;
+		font-size: 0.7rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.residency-heading h2 {
+		margin: 0;
+		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-size: clamp(2.3rem, 3.8vw, 3.6rem);
+		font-weight: 400;
+		letter-spacing: -0.035em;
+		line-height: 0.9;
+		text-wrap: balance;
+	}
+
+	.residency-frame {
+		overflow: hidden;
+		border: 1.5px solid rgb(115 152 207 / 0.55);
+		border-radius: 0.95rem 0.95rem 0 0.95rem;
+		background: #06090f;
+	}
+
+	/* Hangs below the strip; its background hides the strip's bottom border
+	   underneath it so the outline reads as one continuous shape. */
+	.residency-grip {
+		position: relative;
+		z-index: 1;
+		display: grid;
+		gap: 1.5rem;
+		justify-items: end;
+		width: min(36rem, 100%);
+		margin-top: -1.5px;
+		margin-left: auto;
+		padding: clamp(1.5rem, 2.5vw, 2.25rem);
+		border: 1.5px solid rgb(115 152 207 / 0.55);
+		border-top: 0;
+		border-radius: 0 0 0.95rem 0.95rem;
+		background: #06090f;
+		text-align: right;
+	}
+
+	.residency-lede {
+		max-width: 31rem;
+		margin: 0;
+		color: rgb(224 232 244 / 0.72);
+		font-size: clamp(0.92rem, 1.25vw, 1.08rem);
+		line-height: 1.6;
+	}
+
+	.residency-actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 1.35rem;
+	}
+
+	.residency-cta {
+		display: inline-flex;
+		align-items: center;
+		min-height: 2.45rem;
+		padding: 0.5rem 1.05rem;
+		border-radius: 99rem;
+		color: #f8fbff;
+		background: #142b4d;
+		font-size: 0.84rem;
+		line-height: 1;
+		text-decoration: none;
+		transition: background 180ms ease, transform 180ms ease;
+	}
+
+	.residency-cta:hover,
+	.residency-cta:focus-visible {
+		color: #fff;
+		background: #1b3b69;
+		transform: translateY(-2px);
+	}
+
+	.residency-directory {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+		padding-bottom: 0.2rem;
+		border-bottom: 1px solid rgb(169 199 239 / 0.45);
+		color: #a9c7ef;
+		font-size: 0.84rem;
+		line-height: 1;
+		text-decoration: none;
+		transition: color 180ms ease, border-color 180ms ease;
+	}
+
+	.residency-directory:hover,
+	.residency-directory:focus-visible {
+		border-color: #dce9fb;
+		color: #dce9fb;
+	}
+
+	.residency-marquee {
+		display: flex;
+		overflow: hidden;
+		padding: clamp(1.5rem, 2.5vw, 2.25rem) 0;
+		-webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+		mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+	}
+
+	.residency-track {
+		display: flex;
+		flex: 0 0 auto;
+		gap: clamp(1.5rem, 3vw, 2.75rem);
+		min-width: 100%;
+		margin: 0;
+		padding: 0 clamp(0.75rem, 1.5vw, 1.4rem);
+		list-style: none;
+		animation: residency-scroll 36s linear infinite;
+	}
+
+	.residency-marquee:hover .residency-track,
+	.residency-marquee:focus-within .residency-track {
+		animation-play-state: paused;
+	}
+
+	.resident-tile {
+		display: grid;
+		gap: 0.85rem;
+		width: clamp(9.5rem, 12.5vw, 12rem);
+		justify-items: center;
+		text-align: center;
+		text-decoration: none;
+	}
+
+	.resident-face {
+		display: grid;
+		width: 100%;
+		aspect-ratio: 1.35;
+		place-items: center;
+		overflow: hidden;
+		border-radius: 0.7rem;
+		background:
+			radial-gradient(circle at 50% 40%, rgb(255 255 255 / 0.9), transparent 62%),
+			#e9edf3;
+		transition: transform 200ms ease;
+	}
+
+	.resident-tile:hover .resident-face,
+	.resident-tile:focus-visible .resident-face {
+		transform: translateY(-3px);
+	}
+
+	.resident-tile:focus-visible {
+		outline: 2px solid #9bbbe7;
+		outline-offset: 4px;
+		border-radius: 0.7rem;
+	}
+
+	.resident-logo {
+		width: 52%;
+		height: 52%;
+		object-fit: contain;
+	}
+
+	.resident-logo.is-wide {
+		width: 74%;
+	}
+
+	.resident-wordmark {
+		padding: 0.5rem 0.85rem;
+		border: 1.5px solid #12233d;
+		border-radius: 0.9rem 0.9rem 0.9rem 0.2rem;
+		color: #12233d;
+		font: 700 clamp(0.72rem, 0.9vw, 0.85rem) / 1 ui-monospace, 'SFMono-Regular', monospace;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+
+	.resident-meta {
+		display: grid;
+		gap: 0.3rem;
+	}
+
+	.resident-name {
+		color: #f2f5fa;
+		font-size: 0.82rem;
+		letter-spacing: 0.02em;
+	}
+
+	.resident-tag {
+		color: rgb(224 232 244 / 0.55);
+		font-size: 0.7rem;
+		line-height: 1.35;
+	}
+
+	@keyframes residency-scroll {
+		to {
+			transform: translateX(-100%);
+		}
+	}
+
+	@media (max-width: 700px) {
+		.residency-chapter {
+			padding: 0.65rem;
+		}
+
+		.residency-heading {
+			padding: 2rem 1rem 1.5rem;
+		}
+
+		.residency-heading h2 {
+			font-size: clamp(2.3rem, 10vw, 3.25rem);
+		}
+
+		.residency-frame {
+			border-radius: 0.95rem 0.95rem 0 0;
+		}
+
+		.residency-grip {
+			justify-items: start;
+			width: 100%;
+			padding: 1.5rem 1.25rem;
+			text-align: left;
+		}
+
+		.resident-tile {
+			width: clamp(8.5rem, 40vw, 10rem);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.residency-track {
+			animation: none;
+		}
+
+		.residency-marquee {
+			overflow-x: auto;
+			-webkit-mask-image: none;
+			mask-image: none;
+		}
+
+		.residency-track[aria-hidden='true'] {
+			display: none;
+		}
+	}
+</style>

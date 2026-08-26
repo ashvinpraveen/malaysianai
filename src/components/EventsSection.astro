@@ -1,38 +1,38 @@
 ---
 const events = [
 	{
-		title: 'AI Builder Night',
-		type: 'Community meetup',
-		date: 'Monthly in Kuala Lumpur',
-		image: '/aimto-assets/gallery-top-1.jpg',
-		position: 'center 54%',
-	},
-	{
-		title: 'Build With AI',
-		type: 'Hands-on workshop',
-		date: 'For first-time builders',
-		image: '/aimto-assets/learnathon-builder-floor.jpg',
+		title: 'Show & Tell with the Supabase CEO',
+		type: 'Founder show & tell',
+		date: 'Ideas, demos, and conversation',
+		image: '/images/events/show-and-tell-supabase-ceo.png',
 		position: 'center center',
 	},
 	{
-		title: 'Pasar AI',
-		type: 'Demo day',
-		date: 'Made in Malaysia',
-		image: '/aimto-assets/pasar-ai-booths-wide.jpg',
+		title: 'AIMTO Learnathon',
+		type: 'Hands-on learnathon',
+		date: 'AI Malaysia Takeover 2026',
+		image: '/images/events/aimto-learnathon.jpg',
 		position: 'center center',
 	},
 	{
-		title: 'Show & Tell',
-		type: 'Open mic for ideas',
-		date: 'Bring what you are building',
-		image: '/show-and-tell.jpg',
-		position: 'center center',
+		title: 'Anthropic × Cursor Hackathon Malaysia',
+		type: 'Community hackathon',
+		date: 'Built in Malaysia',
+		image: '/images/events/anthropic-cursor-hackathon-malaysia.png',
+		position: 'center 56%',
 	},
 	{
-		title: 'AI Takeover',
-		type: 'Founder session',
-		date: 'People, products, progress',
-		image: '/ai-malaysia-takeover-hero.jpg',
+		title: 'Workshops',
+		type: 'Hands-on learning',
+		date: 'Learn with local builders',
+		image: '/images/events/workshops.jpg',
+		position: 'center 42%',
+	},
+	{
+		title: 'AI for Every Age',
+		type: 'Open to everyone',
+		date: 'All ages, all experience levels',
+		image: '/images/events/all-ages.jpg',
 		position: 'center center',
 	},
 ];
@@ -42,7 +42,6 @@ const events = [
 	<div class="events-frame">
 		<div class="events-copy-panel">
 			<div class="events-header">
-				<p class="events-kicker">Meet in real life</p>
 				<h2 id="events-title">There is always<br />something happening.</h2>
 				<a class="events-calendar-link" href="https://luma.com/malaysianai">
 					See the event calendar
@@ -51,7 +50,6 @@ const events = [
 			</div>
 
 			<div class="events-selected" aria-live="polite" aria-atomic="true">
-				<p data-event-type>{events[0].type}</p>
 				<h3 data-event-title>{events[0].title}</h3>
 				<p data-event-date>{events[0].date}</p>
 			</div>
@@ -85,11 +83,11 @@ const events = [
 				<path
 					class="events-outline-matte"
 					fill-rule="evenodd"
-					d="M0 0H1000V1000H0ZM16 984V16H48V334Q48 350 64 350H384Q400 350 400 334V32Q400 16 416 16H716Q732 16 732 32V244Q732 260 748 260H968Q984 260 984 276V984H16Z"
+					d="M0 0H1000V1000H0ZM16 984V16H48V269Q48 285 64 285H364Q380 285 380 269V32Q380 16 396 16H764Q780 16 780 32V244Q780 260 796 260H968Q984 260 984 276V984H16Z"
 				/>
 				<path
 					class="events-outline-line"
-					d="M16 984V16H48V334Q48 350 64 350H384Q400 350 400 334V32Q400 16 416 16H716Q732 16 732 32V244Q732 260 748 260H968Q984 260 984 276V984H16"
+					d="M16 984V16H48V269Q48 285 64 285H364Q380 285 380 269V32Q380 16 396 16H764Q780 16 780 32V244Q780 260 796 260H968Q984 260 984 276V984H16"
 				/>
 			</svg>
 
@@ -967,6 +965,7 @@ const events = [
 
 	.events-calendar-link {
 		margin-left: 0;
+		margin-top: 1.2rem;
 		font-size: 0.76rem;
 	}
 
@@ -975,7 +974,7 @@ const events = [
 		top: clamp(3rem, 6vw, 5.5rem);
 		right: clamp(3rem, 4.5vw, 4.5rem);
 		left: auto;
-		width: min(16rem, 22vw);
+		width: min(13rem, 18vw);
 		padding: 0;
 		border: 0;
 		text-align: right;
@@ -1077,6 +1076,82 @@ const events = [
 		.events-deck {
 			bottom: -2.25rem;
 			height: 22rem;
+		}
+	}
+
+	/* Compact document-style event previews. */
+	.events-selected h3 {
+		font-size: clamp(1.35rem, 1.9vw, 2rem);
+		line-height: 0.96;
+	}
+
+	.events-deck {
+		bottom: 1rem;
+		height: clamp(8.5rem, 18vh, 11.5rem);
+	}
+
+	.event-card {
+		--preview-lift: 0rem;
+		--preview-scale: 1;
+		width: clamp(5.75rem, 7.4vw, 7.5rem);
+		padding: 0.25rem;
+		border-color: rgb(151 184 231 / 0.42);
+		border-radius: 0.6rem;
+		background: rgb(6 9 15 / 0.82);
+		box-shadow: 0 0.75rem 1.75rem rgb(0 0 0 / 0.34);
+		transform:
+			translateX(calc(-50% + var(--event-slot, 0) * min(8.4vw, 8.4rem)))
+			translateY(calc(var(--event-distance, 0) * 0.45rem + var(--preview-lift)))
+			rotate(calc(var(--event-slot, 0) * 1.5deg))
+			scale(calc(var(--preview-scale) - var(--event-distance, 0) * 0.035));
+	}
+
+	.events-section.is-in-view .event-card {
+		opacity: 0.66;
+	}
+
+	.events-section.is-in-view .event-card:hover,
+	.events-section.is-in-view .event-card:focus-visible,
+	.events-section.is-in-view .event-card.is-active {
+		--preview-lift: -0.75rem;
+		--preview-scale: 1.08;
+		opacity: 1;
+		border-color: rgb(174 204 242 / 0.95);
+		box-shadow:
+			0 1rem 2.5rem rgb(0 0 0 / 0.52),
+			0 0 0 1px rgb(174 204 242 / 0.3);
+	}
+
+	.event-card-image-wrap {
+		height: 100%;
+		border-radius: 0.4rem;
+	}
+
+	.event-card-caption {
+		display: none;
+	}
+
+	@media (max-width: 800px) {
+		.events-selected {
+			bottom: 12rem;
+		}
+
+		.events-selected h3 {
+			font-size: clamp(1.2rem, 5.5vw, 1.55rem);
+		}
+
+		.events-deck {
+			bottom: 0.75rem;
+			height: 8.5rem;
+		}
+
+		.event-card {
+			width: clamp(4.75rem, 19vw, 6rem);
+			transform:
+				translateX(calc(-50% + var(--event-slot, 0) * min(20vw, 6.2rem)))
+				translateY(calc(var(--event-distance, 0) * 0.35rem + var(--preview-lift)))
+				rotate(calc(var(--event-slot, 0) * 1.5deg))
+				scale(calc(var(--preview-scale) - var(--event-distance, 0) * 0.035));
 		}
 	}
 </style>

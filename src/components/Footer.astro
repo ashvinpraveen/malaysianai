@@ -1,7 +1,233 @@
 ---
 const year = new Date().getFullYear();
+
+const groups = [
+	{
+		title: 'Get involved',
+		links: [
+			{ label: 'View events', href: 'https://luma.com/malaysianai' },
+			{ label: 'Communities', href: '/#communities' },
+			{ label: 'Residency', href: '/residency' },
+		],
+	},
+	{
+		title: 'Explore',
+		links: [
+			{ label: 'AI Takeover', href: '/#events' },
+			{ label: 'Stories', href: '/blog' },
+			{ label: 'Residents', href: '/residents' },
+		],
+	},
+];
 ---
 
-<footer>
-	<p>&copy; {year} Malaysian AI</p>
+<footer class="site-footer" id="site-footer">
+	<div class="footer-grid">
+		<div class="footer-intro">
+			<a class="footer-brand" href="/" aria-label="Malaysian AI home">
+				<img src="/logo-ai-residency.png" alt="" width="960" height="960" />
+				<span>Malaysian AI</span>
+			</a>
+			<p>
+				The home of AI builders in Malaysia. Join workshops, events, and a community
+				figuring out AI together.
+			</p>
+			<a class="footer-cta" href="https://luma.com/malaysianai">
+				<span>View events</span>
+				<span aria-hidden="true">↗</span>
+			</a>
+		</div>
+
+		{
+			groups.map((group) => (
+				<nav class="footer-link-group" aria-label={group.title}>
+					<p>{group.title}</p>
+					<ul>
+						{group.links.map((link) => (
+							<li><a href={link.href}>{link.label}</a></li>
+						))}
+					</ul>
+				</nav>
+			))
+		}
+
+		<div class="footer-company">
+			<p>Company</p>
+			<a href="/contact">Contact</a>
+			<span>© {year} Malaysian AI</span>
+		</div>
+	</div>
+
+	<div class="footer-wordmark" aria-hidden="true">Malaysian AI</div>
 </footer>
+
+<style>
+	.site-footer {
+		position: relative;
+		overflow: hidden;
+		padding: clamp(4rem, 7vw, 6.5rem) clamp(1.25rem, 4vw, 4rem) clamp(2rem, 4vw, 3.5rem);
+		color: #f2f5fa;
+		background: #07101a;
+	}
+
+	:global(html),
+	:global(body) {
+		background-color: #07101a;
+	}
+
+	.footer-grid {
+		position: relative;
+		z-index: 1;
+		display: grid;
+		grid-template-columns: minmax(16rem, 1.7fr) repeat(2, minmax(8rem, 0.72fr)) minmax(9rem, 0.8fr);
+		gap: clamp(2.5rem, 6vw, 7rem);
+		width: min(92rem, 100%);
+		margin: 0 auto;
+	}
+
+	.footer-brand {
+		display: inline-flex;
+		gap: 0.7rem;
+		align-items: center;
+		width: fit-content;
+		font-size: 1rem;
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.footer-brand img {
+		width: 2rem;
+		height: 2rem;
+		object-fit: contain;
+	}
+
+	.footer-intro > p {
+		max-width: 24rem;
+		margin: 1.6rem 0;
+		color: rgb(224 232 244 / 0.62);
+		font-size: 0.92rem;
+		line-height: 1.55;
+	}
+
+	.footer-cta {
+		display: inline-flex;
+		gap: 1.5rem;
+		align-items: center;
+		justify-content: space-between;
+		width: 10.5rem;
+		padding: 0.8rem 1rem;
+		border-radius: 0.5rem;
+		color: #f7f9fc;
+		background: #183764;
+		font-size: 0.86rem;
+		text-decoration: none;
+		transition: background 180ms ease, transform 180ms ease;
+	}
+
+	.footer-cta:hover,
+	.footer-cta:focus-visible {
+		background: #234b84;
+		transform: translateY(-2px);
+	}
+
+	.footer-link-group {
+		display: block;
+		min-width: 0;
+		margin: 0;
+	}
+
+	.footer-link-group > p,
+	.footer-company > p {
+		margin: 0 0 1.5rem;
+		color: #8da7ca;
+		font-size: 0.78rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.footer-link-group ul {
+		display: grid;
+		gap: 1.05rem;
+		padding: 0;
+		margin: 0;
+		list-style: none;
+	}
+
+	.footer-link-group a,
+	.footer-company a {
+		color: rgb(224 232 244 / 0.7);
+		font-size: 0.9rem;
+		text-decoration: none;
+		transition: color 180ms ease;
+	}
+
+	.footer-link-group a:hover,
+	.footer-link-group a:focus-visible,
+	.footer-company a:hover,
+	.footer-company a:focus-visible {
+		color: #fff;
+	}
+
+	.footer-company {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.footer-company span {
+		margin-top: 2rem;
+		color: rgb(224 232 244 / 0.38);
+		font-size: 0.76rem;
+	}
+
+	.footer-wordmark {
+		position: relative;
+		width: min(92rem, 100%);
+		margin: clamp(5.5rem, 10vw, 9rem) auto 0;
+		color: rgb(155 187 231 / 0.18);
+		font-family: 'Atkinson', system-ui, sans-serif;
+		font-size: clamp(6rem, 14vw, 14rem);
+		font-weight: 400;
+		letter-spacing: -0.06em;
+		line-height: 0.72;
+		text-align: center;
+		white-space: nowrap;
+		user-select: none;
+	}
+
+	@media (max-width: 900px) {
+		.footer-grid {
+			grid-template-columns: 1.5fr 1fr 1fr;
+		}
+
+		.footer-company {
+			grid-column: 2 / -1;
+		}
+	}
+
+	@media (max-width: 620px) {
+		.site-footer {
+			padding: 3.5rem 1.25rem 2rem;
+		}
+
+		.footer-grid {
+			grid-template-columns: 1fr 1fr;
+			gap: 3rem 1.5rem;
+		}
+
+		.footer-intro {
+			grid-column: 1 / -1;
+		}
+
+		.footer-company {
+			grid-column: 1 / -1;
+		}
+
+		.footer-wordmark {
+			margin-top: 5rem;
+			font-size: clamp(5rem, 23vw, 8rem);
+			line-height: 0.76;
+			white-space: normal;
+		}
+	}
+</style>

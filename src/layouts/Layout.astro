@@ -23,6 +23,6 @@ const { title, description, image, immersive = false } = Astro.props;
 		<main class:list={{ 'immersive-main': immersive }}>
 			<slot />
 		</main>
-		{!immersive && <Footer />}
+		<Footer />
 	</body>
 </html>

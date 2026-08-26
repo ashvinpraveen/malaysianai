@@ -25,7 +25,7 @@
 :root {
 	font-family: 'Atkinson', system-ui, sans-serif;
 	color: #102b2a;
-	background: #f0eadb;
+	background: #07101a;
 	font-synthesis: none;
 }
 
@@ -35,10 +35,12 @@
 
 html {
 	scroll-behavior: smooth;
+	background-color: #07101a;
 }
 
 body {
 	margin: 0;
+	background-color: #07101a;
 }
 
 img {
@@ -51,7 +53,7 @@ a {
 }
 
 body.immersive {
-	background: #071e2d;
+	background: #07101a;
 }
 
 .immersive-main {

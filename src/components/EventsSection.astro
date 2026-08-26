@@ -76,6 +76,23 @@ const events = [
 				<div class="events-background-wash"></div>
 			</div>
 
+			<svg
+				class="events-outline"
+				viewBox="0 0 1000 1000"
+				preserveAspectRatio="none"
+				aria-hidden="true"
+			>
+				<path
+					class="events-outline-matte"
+					fill-rule="evenodd"
+					d="M0 0H1000V1000H0ZM16 984V16H48V334Q48 350 64 350H384Q400 350 400 334V32Q400 16 416 16H716Q732 16 732 32V244Q732 260 748 260H968Q984 260 984 276V984H16Z"
+				/>
+				<path
+					class="events-outline-line"
+					d="M16 984V16H48V334Q48 350 64 350H384Q400 350 400 334V32Q400 16 416 16H716Q732 16 732 32V244Q732 260 748 260H968Q984 260 984 276V984H16"
+				/>
+			</svg>
+
 			<div class="events-deck" data-events-deck>
 				{events.map((event, index) => (
 					<button
@@ -858,6 +875,208 @@ const events = [
 		.events-header,
 		.event-card {
 			opacity: 1;
+		}
+	}
+
+	/* Full-frame event image with all editorial content inside the image boundary. */
+	.events-section {
+		min-height: 100dvh;
+		padding: 0;
+	}
+
+	.events-frame {
+		display: block;
+		min-height: 100dvh;
+		border: 0;
+		border-radius: 0;
+	}
+
+	.events-copy-panel {
+		position: absolute;
+		z-index: 4;
+		inset: 0;
+		display: block;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		pointer-events: none;
+	}
+
+	.events-visual {
+		position: absolute;
+		inset: 0;
+		min-height: 100dvh;
+	}
+
+	.events-visual::after {
+		display: none;
+	}
+
+	.events-outline {
+		position: absolute;
+		z-index: 2;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		fill: none;
+		stroke: rgb(151 184 231 / 0.82);
+		stroke-width: 1;
+		vector-effect: non-scaling-stroke;
+		pointer-events: none;
+	}
+
+.events-outline path {
+  vector-effect: non-scaling-stroke;
+}
+
+.events-outline-matte {
+  fill: #06090f;
+  stroke: none;
+}
+
+.events-outline-line {
+  fill: none;
+  stroke: rgb(151 184 231 / 0.82);
+  stroke-width: 1;
+}
+
+	.events-background-wash {
+		background:
+			linear-gradient(180deg, rgb(4 8 14 / 0.66) 0%, rgb(4 8 14 / 0.08) 38%, rgb(4 8 14 / 0.9) 100%),
+			linear-gradient(90deg, rgb(4 8 14 / 0.48), transparent 42%, rgb(4 8 14 / 0.36));
+	}
+
+	.events-header {
+		position: absolute;
+		top: clamp(3rem, 6vw, 5.5rem);
+		right: auto;
+		left: clamp(4rem, 6.5vw, 6rem);
+		max-width: min(30rem, 44vw);
+		text-align: left;
+		pointer-events: auto;
+	}
+
+	.events-header h2 {
+		font-size: clamp(2.25rem, 3.45vw, 3.8rem);
+		text-shadow: 0 0.15rem 1.75rem rgb(0 0 0 / 0.5);
+	}
+
+	.events-header .events-kicker {
+		font-size: 0.66rem;
+	}
+
+	.events-calendar-link {
+		margin-left: 0;
+		font-size: 0.76rem;
+	}
+
+	.events-selected {
+		position: absolute;
+		top: clamp(3rem, 6vw, 5.5rem);
+		right: clamp(3rem, 4.5vw, 4.5rem);
+		left: auto;
+		width: min(16rem, 22vw);
+		padding: 0;
+		border: 0;
+		text-align: right;
+		pointer-events: auto;
+	}
+
+	.events-selected h3 {
+		text-shadow: 0 0.1rem 1.25rem rgb(0 0 0 / 0.55);
+	}
+
+	.events-selected p {
+		text-shadow: 0 0.1rem 0.8rem rgb(0 0 0 / 0.7);
+	}
+
+	.events-deck {
+		right: 0;
+		left: 0;
+		height: min(56%, 33rem);
+	}
+
+	.event-card {
+		width: clamp(13rem, 19vw, 19rem);
+		transform:
+			translateX(calc(-50% + var(--event-slot, 0) * min(17vw, 13rem)))
+			translateY(calc(var(--event-distance, 0) * 1.7rem))
+			rotate(calc(var(--event-slot, 0) * 3deg))
+			scale(calc(1 - var(--event-distance, 0) * 0.075));
+	}
+
+	@media (max-width: 800px) {
+		.events-section,
+		.events-frame,
+		.events-visual {
+			min-height: 100svh;
+		}
+
+		.events-frame {
+			display: block;
+			border-radius: 0;
+		}
+
+		.events-copy-panel {
+			padding: 0;
+			border: 0;
+		}
+
+		.events-visual::after {
+			position: absolute;
+			z-index: 2;
+			inset: 0.6rem;
+			display: block;
+			border: 1px solid rgb(151 184 231 / 0.82);
+			border-radius: 0.75rem;
+			content: '';
+			pointer-events: none;
+		}
+
+		.events-outline {
+			display: none;
+		}
+
+		.events-header {
+			top: 2rem;
+			right: auto;
+			left: 1.5rem;
+			max-width: min(23rem, calc(100% - 3rem));
+			text-align: left;
+		}
+
+		.events-header h2 {
+			font-size: clamp(2.2rem, 10vw, 3.2rem);
+		}
+
+		.events-calendar-link {
+			margin-left: 0;
+		}
+
+		.events-selected {
+			top: auto;
+			right: 1.5rem;
+			bottom: 23rem;
+			left: auto;
+			display: block;
+			width: min(17rem, calc(100% - 3rem));
+			margin: 0;
+			padding: 0 0.8rem 0 0;
+			border-right: 1px solid rgb(151 184 231 / 0.66);
+			border-left: 0;
+			text-align: right;
+		}
+
+		.events-selected h3,
+		.events-selected p:last-child {
+			display: block;
+			max-width: none;
+			text-align: right;
+		}
+
+		.events-deck {
+			bottom: -2.25rem;
+			height: 22rem;
 		}
 	}
 </style>

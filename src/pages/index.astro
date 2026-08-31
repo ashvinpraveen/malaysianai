@@ -1,5 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import FramedChrome from '../components/FramedChrome.astro';
+import HeroImageToggle from '../components/HeroImageToggle.astro';
 import EventsSection from '../components/EventsSection.astro';
 import CommunitySection from '../components/CommunitySection.astro';
 import ResidencySection from '../components/ResidencySection.astro';
@@ -18,50 +20,36 @@ import '@fontsource/instrument-serif/400.css';
 		<div class="hero-media">
 			<img
 				class="hero-art"
-				src="/images/malaysian-ai-kl-hero-restored-3840.webp"
-				srcset="/images/malaysian-ai-kl-hero-restored-1920.webp 1920w, /images/malaysian-ai-kl-hero-restored-3840.webp 3840w, /images/malaysian-ai-kl-hero-restored-7680.webp 7680w"
-				sizes="100vw"
+				src="/images/malaysian-ai-kl-hero-fibonacci-v1.png"
 				alt=""
-				width="7680"
-				height="4320"
+				width="1672"
+				height="941"
 				fetchpriority="high"
 				decoding="async"
 			/>
 			<div class="hero-shade" aria-hidden="true"></div>
 		</div>
 
-		<header class="hero-header">
-			<div class="brand-panel">
-				<a class="brand-mark" href="/" aria-label="Malaysian AI home">
-					<img src="/malaysian-ai-batik-logo-bw.svg" alt="" width="800" height="800" />
-				</a>
-			</div>
-
-			<nav class="hero-nav" aria-label="Primary navigation">
-				<a href="#about">About</a>
-				<a href="#communities">Communities</a>
-				<a href="/blog">Stories</a>
-			</nav>
-		</header>
-
-		<div class="hero-cta-panel">
-			<a class="nav-cta" href="https://luma.com/malaysianai">Find an event</a>
-		</div>
+		<FramedChrome home />
 
 		<a class="sky-wordmark" href="/" aria-label="Malaysian AI home">Malaysian AI</a>
 
 		<section class="hero-card" aria-labelledby="hero-title">
-			<h1 id="hero-title">Driving Malaysia's<br />AI progress.</h1>
-			<p class="intro">
-				The home of AI builders in Malaysia. Start with a workshop, meet the people building
-				around you, and make something of your own.
-			</p>
-			<a class="card-link" href="https://luma.com/malaysianai">Explore Malaysian AI</a>
+			<div class="hero-copy">
+				<h1 id="hero-title">Driving Malaysia's<br />AI progress.</h1>
+				<p class="intro">
+					The home of AI builders in Malaysia. Start with a workshop, meet the people building
+					around you, and make something of your own.
+				</p>
+			</div>
+			<a class="card-link site-button" href="https://luma.com/malaysianai">Explore Malaysian AI</a>
 		</section>
+		{import.meta.env.DEV && <HeroImageToggle />}
 	</div>
 
 	<section class="mission-section light-nav-zone" id="about" aria-labelledby="mission-title">
 		<div class="mission-events">
+			<h2 id="mission-title">Your first step into AI starts here.</h2>
 			<figure class="mission-flower">
 				<img
 					class="mission-flower-image"
@@ -75,7 +63,6 @@ import '@fontsource/instrument-serif/400.css';
 			</figure>
 
 			<div class="mission-calendar">
-				<h2 id="mission-title">Your first step into AI starts here.</h2>
 				<div class="luma-frame">
 					<iframe
 						src="https://luma.com/embed/calendar/cal-pPgkuwCFrycSv1Z/events"
@@ -155,29 +142,6 @@ import '@fontsource/instrument-serif/400.css';
 		box-shadow: 0 14px 35px rgb(62 73 48 / 0.12), inset 0 1px rgb(255 255 255 / 0.8);
 	}
 
-	.brand-mark {
-		display: grid;
-		flex: 0 0 auto;
-		width: 2.4rem;
-		height: 2.4rem;
-		place-items: center;
-		border: 1px solid rgb(255 255 255 / 0.1);
-		border-radius: 0.72rem;
-		background: rgb(255 255 255 / 0.13);
-		transition: background 220ms ease, border-color 220ms ease;
-	}
-
-	.floating-nav.is-over-light .brand-mark {
-		border-color: rgb(23 58 56 / 0.1);
-		background: rgb(23 58 56 / 0.07);
-	}
-
-	.brand-mark img {
-		width: 1.7rem;
-		height: 1.7rem;
-		filter: drop-shadow(0 2px 6px rgb(0 0 0 / 0.25));
-	}
-
 	nav {
 		display: flex;
 		align-items: center;
@@ -211,34 +175,6 @@ import '@fontsource/instrument-serif/400.css';
 	nav a:focus-visible::after {
 		transform: scaleX(1);
 		transform-origin: left;
-	}
-
-	.nav-cta,
-	.card-link {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.55rem;
-		color: #fff;
-		text-decoration: none;
-	}
-
-	.nav-cta {
-		flex: 0 0 auto;
-		min-height: 2.4rem;
-		padding: 0.32rem 0.4rem 0.32rem 0.72rem;
-		border: 1px solid rgb(255 255 255 / 0.09);
-		border-radius: 0.75rem;
-		background: rgb(10 16 31 / 0.82);
-		box-shadow: inset 0 1px rgb(255 255 255 / 0.1);
-		font-size: 0.82rem;
-		transition: background 180ms ease, transform 180ms ease;
-	}
-
-	.nav-cta:hover,
-	.nav-cta:focus-visible {
-		background: rgb(19 29 49 / 0.94);
-		transform: translateY(-1px);
 	}
 
 	.sky-wordmark {
@@ -341,18 +277,8 @@ import '@fontsource/instrument-serif/400.css';
 	}
 
 	.card-link {
-		justify-content: flex-start;
 		width: fit-content;
-		padding-bottom: 0.22rem;
-		border-bottom: 1px solid rgb(255 255 255 / 0.68);
-		font-size: 0.95rem;
 		transition: gap 180ms ease, color 180ms ease;
-	}
-
-	.card-link:hover,
-	.card-link:focus-visible {
-		gap: 1.1rem;
-		color: #ffd8a6;
 	}
 
 	.card-link .round-arrow {
@@ -402,7 +328,8 @@ import '@fontsource/instrument-serif/400.css';
 
 	.mission-events {
 		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
+		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+		align-content: center;
 		align-items: center;
 		gap: clamp(2.5rem, 5vw, 5rem);
 		width: min(100%, 82rem);
@@ -435,8 +362,11 @@ import '@fontsource/instrument-serif/400.css';
 	}
 
 	.mission-events h2 {
+		grid-column: 1 / -1;
+		justify-self: center;
 		max-width: 36rem;
 		margin: 0;
+		text-align: center;
 		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
 		font-size: clamp(2.4rem, 3.4vw, 3.6rem);
 		font-weight: 400;
@@ -466,7 +396,7 @@ import '@fontsource/instrument-serif/400.css';
 		background: #06090f;
 	}
 
-	@media (max-width: 700px) {
+	@media (max-width: 900px) {
 		.mission-section {
 			height: auto;
 			max-height: none;
@@ -475,12 +405,13 @@ import '@fontsource/instrument-serif/400.css';
 
 		.mission-events {
 			grid-template-columns: 1fr;
-			gap: 3.5rem;
+			gap: 2rem;
+			max-width: 38rem;
 			height: auto;
 		}
 
 		.mission-flower-image {
-			width: min(82vw, 24rem);
+			width: min(45vw, 14rem);
 		}
 
 		.mission-events h2 {
@@ -660,40 +591,12 @@ import '@fontsource/instrument-serif/400.css';
 			font-size: 0.72rem;
 		}
 
-		.brand-mark {
-			width: 2.35rem;
-			height: 2.35rem;
-			border-radius: 0.75rem;
-		}
-
-		.brand-mark img {
-			width: 1.7rem;
-			height: 1.7rem;
-		}
-
 		nav {
 			gap: 1rem;
 		}
 
 		nav a {
 			font-size: 0.92rem;
-		}
-
-		.nav-residency {
-			display: none;
-		}
-
-		.nav-about {
-			display: none;
-		}
-
-		.nav-cta {
-			min-height: 2.35rem;
-			padding: 0.38rem;
-		}
-
-		.nav-cta span:first-child {
-			display: none;
 		}
 
 		.hero-card {
@@ -787,6 +690,10 @@ import '@fontsource/instrument-serif/400.css';
 		--hero-line: #7398cf;
 		--hero-accent: #315d9f;
 		--hero-gap: 1rem;
+		--hero-panel-width: 29rem;
+		--hero-brand-width: 7.2rem;
+		--hero-control-height: 2.25rem;
+		--hero-header-height: calc(var(--hero-gap) * 2 + var(--hero-control-height));
 		min-height: max(46rem, 100svh);
 		padding: var(--hero-gap);
 		background: var(--hero-frame);
@@ -833,179 +740,14 @@ import '@fontsource/instrument-serif/400.css';
 		animation: soft-rise 0.75s 0.8s ease-out both;
 	}
 
-	.hero-header {
-		position: absolute;
-		z-index: 4;
-		top: 0;
-		left: 0;
-		width: 21rem;
-		height: 7.3rem;
-		pointer-events: none;
-	}
-
-	.hero-header::before {
-		position: absolute;
-		z-index: -1;
-		top: 0;
-		left: 7.2rem;
-		width: 12.85rem;
-		height: 4rem;
-		border-bottom: 1.5px solid var(--hero-line);
-		background: var(--hero-frame);
-		content: '';
-		animation: frame-piece-in 0.65s 0.18s ease-out both;
-	}
-
-	.hero-header::after {
-		position: absolute;
-		top: var(--hero-gap);
-		left: 20.05rem;
-		width: 0.95rem;
-		height: 3rem;
-		border-right: 1.5px solid var(--hero-line);
-		border-bottom: 1.5px solid var(--hero-line);
-		border-bottom-right-radius: 0.95rem;
-		background: var(--hero-frame);
-		content: '';
-		pointer-events: none;
-		animation: frame-piece-in 0.65s 0.25s ease-out both;
-	}
-
-	.brand-panel {
-		position: absolute;
-		top: 0;
-		left: 0;
-		display: grid;
-		width: 7.2rem;
-		height: 7.2rem;
-		place-items: center;
-		border: 0;
-		border-bottom-right-radius: 0.95rem;
-		background: var(--hero-frame);
-		pointer-events: auto;
-		animation: panel-arrive 0.65s 0.15s ease-out both;
-	}
-
-	.brand-panel::after {
-		position: absolute;
-		top: 4rem;
-		right: 0;
-		bottom: 0;
-		left: var(--hero-gap);
-		border-right: 1.5px solid var(--hero-line);
-		border-bottom: 1.5px solid var(--hero-line);
-		border-bottom-right-radius: 0.95rem;
-		content: '';
-		pointer-events: none;
-	}
-
-	.brand-mark {
-		display: grid;
-		width: 5.2rem;
-		height: 5.2rem;
-		place-items: center;
-		border: 0;
-		border-radius: 0;
-		background: transparent;
-		transform-origin: center;
-		animation: logo-stage-in 0.2s 1.3s ease-out both;
-	}
-
-	.brand-mark img {
-		display: block;
-		width: 100%;
-		height: 100%;
-		filter: none;
-	}
-
-	.hero-nav {
-		position: absolute;
-		top: 0.85rem;
-		left: 7.15rem;
-		display: flex;
-		align-items: center;
-		gap: 0.9rem;
-		min-height: 2.25rem;
-		margin: 0;
-		padding: 0.3rem 0.85rem;
-		border-radius: 0.45rem;
-		color: #121817;
-		background: #f7f7f4;
-		box-shadow: 0 1px 0 rgb(255 255 255 / 0.7);
-		pointer-events: auto;
-		animation: soft-rise 0.65s 0.55s ease-out both;
-	}
-
-	.hero-nav a {
-		font-size: 0.82rem;
-		font-weight: 400;
-		line-height: 1;
-		text-decoration: none;
-		text-shadow: none;
-	}
-
-	.hero-nav a::after {
-		bottom: -0.25rem;
-	}
-
-	.hero-cta-panel {
-		position: absolute;
-		z-index: 4;
-		top: 0;
-		right: 0;
-		display: flex;
-		align-items: flex-start;
-		justify-content: flex-end;
-		width: 8.6rem;
-		height: 4rem;
-		padding: 0.85rem 1rem 0 0;
-		border: 0;
-		border-bottom-left-radius: 0.95rem;
-		background: var(--hero-frame);
-		animation: panel-arrive 0.65s 0.25s ease-out both;
-	}
-
-	.hero-cta-panel::after {
-		position: absolute;
-		top: var(--hero-gap);
-		right: var(--hero-gap);
-		bottom: 0;
-		left: 0;
-		border-bottom: 1.5px solid var(--hero-line);
-		border-left: 1.5px solid var(--hero-line);
-		border-bottom-left-radius: 0.95rem;
-		content: '';
-		pointer-events: none;
-	}
-
-	.nav-cta {
-		min-height: 2.25rem;
-		padding: 0.35rem 0.85rem;
-		border: 0;
-		border-radius: 0.45rem;
-		color: #f8fbff;
-		background: #142b4d;
-		box-shadow: none;
-		font-size: 0.82rem;
-		font-weight: 400;
-		white-space: nowrap;
-		animation: soft-rise 0.65s 0.7s ease-out both;
-	}
-
-	.nav-cta:hover,
-	.nav-cta:focus-visible {
-		color: #fff;
-		background: #1b3b69;
-		transform: translateY(-1px);
-	}
-
 	.hero-card {
 		position: absolute;
 		z-index: 3;
 		bottom: 0;
 		left: 0;
 		overflow: visible;
-		width: min(31rem, calc(100vw - 4rem));
+		width: var(--hero-panel-width);
+		max-width: calc(100% - var(--hero-gap));
 		padding: 2.1rem 3rem 2rem;
 		border: 0;
 		border-radius: 0 1rem 0 0;
@@ -1038,6 +780,18 @@ import '@fontsource/instrument-serif/400.css';
 		pointer-events: none;
 	}
 
+	.hero-copy {
+		width: fit-content;
+		max-width: 100%;
+	}
+
+	/* Let the headline set the measure for its supporting copy. */
+	.hero-copy .intro {
+		width: 0;
+		min-width: 100%;
+		max-width: none;
+	}
+
 	.hero-card h1 {
 		margin: 0;
 		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
@@ -1061,27 +815,12 @@ import '@fontsource/instrument-serif/400.css';
 	}
 
 	.card-link {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		min-height: 2.45rem;
-		padding: 0.5rem 1.05rem;
-		border: 0;
-		border-radius: 99rem;
-		color: #f8fbff;
-		background: #142b4d;
-		font-size: 0.84rem;
-		font-weight: 400;
-		line-height: 1;
-		text-decoration: none;
 		transition: background 180ms ease, transform 180ms ease;
 		animation: soft-rise 0.65s 1s ease-out both;
 	}
 
 	.card-link:hover,
 	.card-link:focus-visible {
-		color: #fff;
-		background: #1b3b69;
 		transform: translateY(-2px);
 	}
 
@@ -1128,6 +867,9 @@ import '@fontsource/instrument-serif/400.css';
 	@media (max-width: 700px) {
 		.hero-shell {
 			--hero-gap: 0.6rem;
+			--hero-panel-width: calc(100% - var(--hero-gap));
+			--hero-brand-width: 4.4rem;
+			--hero-control-height: 2rem;
 			min-height: max(42rem, 100svh);
 			padding: var(--hero-gap);
 		}
@@ -1141,87 +883,16 @@ import '@fontsource/instrument-serif/400.css';
 			object-position: 51% center;
 		}
 
-		.hero-header {
-			width: 12.2rem;
-			height: 4.5rem;
-		}
-
-		.hero-header::before {
-			left: 4.4rem;
-			width: 7.05rem;
-			height: 3.1rem;
-		}
-
-		.hero-header::after {
-			top: var(--hero-gap);
-			left: 11.45rem;
-			width: 0.75rem;
-			height: 2.5rem;
-			border-bottom-right-radius: 0.75rem;
-		}
-
-		.brand-panel {
-			width: 4.4rem;
-			height: 4.4rem;
-			border-bottom-right-radius: 0.75rem;
-		}
-
-		.brand-mark {
-			width: 3.2rem;
-			height: 3.2rem;
-		}
-
-		.brand-panel::after {
-			top: 3.1rem;
-			left: var(--hero-gap);
-			border-bottom-right-radius: 0.75rem;
-		}
-
-		.hero-nav {
-			top: 0.55rem;
-			left: 4.35rem;
-			gap: 0.5rem;
-			min-height: 2rem;
-			padding: 0.28rem 0.55rem;
-		}
-
-		.hero-nav a {
-			font-size: 0.68rem;
-		}
-
-		.hero-nav a:nth-child(3) {
-			display: none;
-		}
-
-		.hero-cta-panel {
-			width: 6.55rem;
-			height: 3.1rem;
-			padding: 0.55rem 0.55rem 0 0;
-			border-bottom-left-radius: 0.75rem;
-		}
-
-		.hero-cta-panel::after {
-			top: var(--hero-gap);
-			right: var(--hero-gap);
-			border-bottom-left-radius: 0.75rem;
-		}
-
-		.nav-cta {
-			min-height: 2rem;
-			padding: 0.3rem 0.6rem;
-			font-size: 0.68rem;
-		}
-
 		.sky-wordmark {
 			top: 6.5rem;
 			font-size: 1.25rem;
 		}
 
 		.hero-card {
-			right: 2.5rem;
+			right: auto;
 			bottom: 0;
 			left: 0;
-			width: auto;
+			width: var(--hero-panel-width);
 			padding: 1.5rem 2rem 1.4rem;
 			border-radius: 0 0.85rem 0 0;
 		}
@@ -1240,38 +911,11 @@ import '@fontsource/instrument-serif/400.css';
 			margin: 0.95rem 0 1.05rem;
 			font-size: 0.8rem;
 		}
-
-		.card-link {
-			min-height: 2.25rem;
-			padding-inline: 0.8rem;
-			font-size: 0.76rem;
-		}
 	}
 
-	@media (max-width: 390px) {
-		.hero-nav {
-			gap: 0.5rem;
-			padding-inline: 0.55rem;
-		}
-
-		.hero-nav a {
-			font-size: 0.64rem;
-		}
-
-		.hero-cta-panel {
-			width: 6.4rem;
-		}
-	}
 
 	@media (prefers-reduced-motion: reduce) {
 		.hero-media,
-		.brand-mark,
-		.brand-panel,
-		.hero-header::before,
-		.hero-header::after,
-		.hero-nav,
-		.hero-cta-panel,
-		.nav-cta,
 		.sky-wordmark,
 		.hero-card,
 		.hero-card h1,

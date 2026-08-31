@@ -7,11 +7,12 @@ interface Props {
 }
 
 const { home = false, current } = Astro.props;
-
 const links = [
 	{ id: 'about', href: home ? '#about' : '/#about', label: 'About' },
+	{ id: 'events', href: home ? '#events' : '/#events', label: 'Events' },
 	{ id: 'communities', href: home ? '#communities' : '/#communities', label: 'Communities' },
-	{ id: 'residency', href: '/residency', label: 'Residency' },
+	{ id: 'residency', href: home ? '#residency' : '/#residency', label: 'Residency' },
+	{ id: 'stories', href: '/blog', label: 'Stories' },
 ] as const;
 ---
 
@@ -23,23 +24,41 @@ const links = [
 	</div>
 
 	<nav class="hero-nav" aria-label="Primary navigation">
-		{
-			links.map((link) => (
-				<a
-					class:list={[`nav-${link.id}`]}
-					href={link.href}
-					aria-current={current === link.id ? 'page' : undefined}
-				>
-					{link.label}
-				</a>
-			))
-		}
+		{links.map(link => (
+			<a href={link.href} aria-current={current === link.id ? 'page' : undefined}>{link.label}</a>
+		))}
 	</nav>
+
+	<details class="mobile-navigation">
+		<summary class="site-button">Menu <span aria-hidden="true">⌄</span></summary>
+		<nav aria-label="Mobile navigation">
+			{links.map(link => (
+				<a href={link.href} aria-current={current === link.id ? 'page' : undefined}>{link.label}</a>
+			))}
+		</nav>
+	</details>
 </header>
 
 <div class="hero-cta-panel">
-	<a class="nav-cta" href={LUMA_URL}>Find an event</a>
+	<a class="nav-cta site-button" href={LUMA_URL}>Find an event</a>
 </div>
+
+<script>
+	document.querySelectorAll<HTMLDetailsElement>('.mobile-navigation').forEach(menu => {
+		menu.addEventListener('click', event => {
+			if ((event.target as Element).closest('a')) menu.open = false;
+		});
+		menu.addEventListener('keydown', event => {
+			if (event.key === 'Escape') {
+				menu.open = false;
+				menu.querySelector('summary')?.focus();
+			}
+		});
+		document.addEventListener('click', event => {
+			if (!menu.contains(event.target as Node)) menu.open = false;
+		});
+	});
+</script>
 
 <style>
 	.hero-header {
@@ -47,8 +66,8 @@ const links = [
 		z-index: 4;
 		top: 0;
 		left: 0;
-		width: 21rem;
-		height: 7.3rem;
+		width: var(--hero-panel-width, 29rem);
+		height: var(--hero-brand-width, 7.2rem);
 		pointer-events: none;
 	}
 
@@ -56,28 +75,26 @@ const links = [
 		position: absolute;
 		z-index: -1;
 		top: 0;
-		left: 7.2rem;
-		width: 12.85rem;
-		height: 4rem;
+		right: 0.95rem;
+		bottom: auto;
+		left: var(--hero-brand-width, 7.2rem);
+		height: var(--hero-header-height, 4.25rem);
 		border-bottom: 1.5px solid var(--hero-line, #7398cf);
 		background: var(--hero-frame, #06090f);
 		content: '';
-		animation: frame-piece-in 0.65s 0.18s ease-out both;
 	}
 
 	.hero-header::after {
 		position: absolute;
 		top: var(--hero-gap, 1rem);
-		left: 20.05rem;
+		right: 0;
 		width: 0.95rem;
-		height: 3rem;
+		height: calc(var(--hero-header-height, 4.25rem) - var(--hero-gap, 1rem));
 		border-right: 1.5px solid var(--hero-line, #7398cf);
 		border-bottom: 1.5px solid var(--hero-line, #7398cf);
 		border-bottom-right-radius: 0.95rem;
 		background: var(--hero-frame, #06090f);
 		content: '';
-		pointer-events: none;
-		animation: frame-piece-in 0.65s 0.25s ease-out both;
 	}
 
 	.brand-panel {
@@ -85,18 +102,17 @@ const links = [
 		top: 0;
 		left: 0;
 		display: grid;
-		width: 7.2rem;
-		height: 7.2rem;
+		width: var(--hero-brand-width, 7.2rem);
+		height: var(--hero-brand-width, 7.2rem);
 		place-items: center;
 		border-bottom-right-radius: 0.95rem;
 		background: var(--hero-frame, #06090f);
 		pointer-events: auto;
-		animation: panel-arrive 0.65s 0.15s ease-out both;
 	}
 
 	.brand-panel::after {
 		position: absolute;
-		top: 4rem;
+		top: var(--hero-header-height, 4.25rem);
 		right: 0;
 		bottom: 0;
 		left: var(--hero-gap, 1rem);
@@ -112,59 +128,40 @@ const links = [
 		width: 5.2rem;
 		height: 5.2rem;
 		place-items: center;
-		animation: logo-stage-in 0.2s 1.3s ease-out both;
 	}
 
-	.brand-mark img {
-		display: block;
-		width: 100%;
-		height: 100%;
-	}
+	.brand-mark img { display: block; width: 100%; height: 100%; }
 
 	.hero-nav {
 		position: absolute;
-		top: 0.85rem;
-		left: 7.15rem;
+		top: var(--hero-gap, 1rem);
+		right: var(--hero-gap, 1rem);
+		left: var(--hero-brand-width, 7.2rem);
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 		gap: 0.9rem;
-		min-height: 2.25rem;
-		margin: 0;
-		padding: 0.3rem 0.85rem;
-		border-radius: 0.45rem;
-		color: #121817;
-		background: #f7f7f4;
-		box-shadow: 0 1px 0 rgb(255 255 255 / 0.7);
+		height: var(--hero-control-height, 2.25rem);
+		padding: 0.35rem 0.85rem;
+		border-radius: var(--button-radius);
+		color: var(--button-text);
+		background: var(--button-background);
 		pointer-events: auto;
-		animation: soft-rise 0.65s 0.55s ease-out both;
 	}
 
-	.hero-nav a {
-		position: relative;
-		font-size: 0.82rem;
-		font-weight: 400;
-		line-height: 1;
+	.hero-nav a,
+	.mobile-navigation a {
+		font: 400 0.82rem / 1.2 'Atkinson', system-ui, sans-serif;
 		text-decoration: none;
+		white-space: nowrap;
 	}
 
-	.hero-nav a::after {
-		position: absolute;
-		right: 0;
-		bottom: -0.25rem;
-		left: 0;
-		height: 1px;
-		background: currentColor;
-		content: '';
-		transform: scaleX(0);
-		transform-origin: right;
-		transition: transform 180ms ease;
-	}
-
-	.hero-nav a:hover::after,
-	.hero-nav a:focus-visible::after,
-	.hero-nav a[aria-current='page']::after {
-		transform: scaleX(1);
-		transform-origin: left;
+	.hero-nav a:hover,
+	.hero-nav a[aria-current='page'],
+	.mobile-navigation a:hover,
+	.mobile-navigation a[aria-current='page'] {
+		text-decoration: underline;
+		text-underline-offset: 0.3rem;
 	}
 
 	.hero-cta-panel {
@@ -174,13 +171,10 @@ const links = [
 		right: 0;
 		display: flex;
 		align-items: flex-start;
-		justify-content: flex-end;
-		width: 8.6rem;
-		height: 4rem;
-		padding: 0.85rem 1rem 0 0;
+		padding: var(--hero-gap, 1rem);
+		height: var(--hero-header-height, 4.25rem);
 		border-bottom-left-radius: 0.95rem;
 		background: var(--hero-frame, #06090f);
-		animation: panel-arrive 0.65s 0.25s ease-out both;
 	}
 
 	.hero-cta-panel::after {
@@ -196,160 +190,47 @@ const links = [
 		pointer-events: none;
 	}
 
-	.nav-cta {
-		position: relative;
-		z-index: 1;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		min-height: 2.25rem;
-		padding: 0.35rem 0.85rem;
-		border-radius: 0.45rem;
-		color: #f8fbff;
-		background: #142b4d;
-		font-size: 0.82rem;
-		font-weight: 400;
-		white-space: nowrap;
-		text-decoration: none;
-		animation: soft-rise 0.65s 0.7s ease-out both;
-		transition: background 180ms ease, transform 180ms ease;
-	}
-
-	.nav-cta:hover,
-	.nav-cta:focus-visible {
-		color: #fff;
-		background: #1b3b69;
-		transform: translateY(-1px);
-	}
-
-	a:focus-visible {
-		outline: 2px solid #97b8e7;
-		outline-offset: 3px;
-	}
-
-	@keyframes logo-stage-in {
-		from {
-			opacity: 0;
-		}
-	}
-
-	@keyframes soft-rise {
-		from {
-			opacity: 0;
-			transform: translateY(0.55rem);
-		}
-	}
-
-	@keyframes panel-arrive {
-		from {
-			opacity: 0;
-			transform: translateY(0.7rem);
-		}
-	}
-
-	@keyframes frame-piece-in {
-		from {
-			opacity: 0;
-		}
-	}
+	.nav-cta { position: relative; z-index: 1; height: var(--hero-control-height, 2.25rem); }
+	.mobile-navigation { display: none; }
+	a:focus-visible { outline: 2px solid #97b8e7; outline-offset: 3px; }
 
 	@media (max-width: 700px) {
-		.hero-header {
-			width: 12.2rem;
-			height: 4.5rem;
-		}
-
-		.hero-header::before {
-			left: 4.4rem;
-			width: 7.05rem;
-			height: 3.1rem;
-		}
-
-		.hero-header::after {
-			top: var(--hero-gap, 0.6rem);
-			left: 11.45rem;
-			width: 0.75rem;
-			height: 2.5rem;
-			border-bottom-right-radius: 0.75rem;
-		}
-
-		.brand-panel {
-			width: 4.4rem;
-			height: 4.4rem;
-			border-bottom-right-radius: 0.75rem;
-		}
-
-		.brand-mark {
-			width: 3.2rem;
-			height: 3.2rem;
-		}
-
-		.brand-panel::after {
-			top: 3.1rem;
-			left: var(--hero-gap, 0.6rem);
-			border-bottom-right-radius: 0.75rem;
-		}
-
-		.hero-nav {
-			top: 0.55rem;
-			left: 4.35rem;
-			gap: 0.5rem;
-			min-height: 2rem;
-			padding: 0.28rem 0.55rem;
-		}
-
-		.hero-nav a {
-			font-size: 0.68rem;
-		}
-
-		.nav-about {
-			display: none;
-		}
-
+		.hero-header { width: var(--hero-panel-width, calc(100% - 0.6rem)); }
+		.hero-nav { display: none; }
+		.brand-mark { width: 3.2rem; height: 3.2rem; }
 		.hero-cta-panel {
-			width: 6.55rem;
-			height: 3.1rem;
-			padding: 0.55rem 0.55rem 0 0;
-			border-bottom-left-radius: 0.75rem;
-		}
-
-		.hero-cta-panel::after {
 			top: var(--hero-gap, 0.6rem);
-			right: var(--hero-gap, 0.6rem);
-			border-bottom-left-radius: 0.75rem;
+			right: calc(var(--hero-gap, 0.6rem) * 2);
+			height: var(--hero-control-height, 2rem);
+			padding: 0;
+			background: transparent;
 		}
-
-		.nav-cta {
-			min-height: 2rem;
-			padding: 0.3rem 0.6rem;
-			font-size: 0.68rem;
+		.hero-cta-panel::after { display: none; }
+		.mobile-navigation {
+			position: absolute;
+			top: var(--hero-gap, 0.6rem);
+			left: var(--hero-brand-width, 4.4rem);
+			display: block;
+			pointer-events: auto;
 		}
-	}
-
-	@media (max-width: 390px) {
-		.hero-nav {
-			gap: 0.5rem;
-			padding-inline: 0.55rem;
+		.mobile-navigation summary { height: var(--hero-control-height, 2rem); list-style: none; }
+		.mobile-navigation summary::-webkit-details-marker { display: none; }
+		.mobile-navigation summary span { transition: transform 150ms ease; }
+		.mobile-navigation[open] summary span { transform: rotate(180deg); }
+		.mobile-navigation nav {
+			position: absolute;
+			top: calc(100% + 1rem);
+			left: 0;
+			display: grid;
+			gap: 0.25rem;
+			width: min(18rem, calc(100vw - var(--hero-brand-width, 4.4rem) - 2rem));
+			padding: 0.5rem;
+			border: 1px solid #7398cf;
+			border-radius: var(--button-radius);
+			color: var(--button-text);
+			background: var(--button-background);
+			box-shadow: 0 10px 30px #0005;
 		}
-
-		.hero-nav a {
-			font-size: 0.64rem;
-		}
-
-		.hero-cta-panel {
-			width: 6.4rem;
-		}
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.brand-mark,
-		.brand-panel,
-		.hero-header::before,
-		.hero-header::after,
-		.hero-nav,
-		.hero-cta-panel,
-		.nav-cta {
-			animation: none;
-		}
+		.mobile-navigation a { padding: 0.75rem; }
 	}
 </style>

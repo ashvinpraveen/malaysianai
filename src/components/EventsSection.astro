@@ -43,7 +43,7 @@ const events = [
 		<div class="events-copy-panel">
 			<div class="events-header">
 				<h2 id="events-title">There is always<br />something happening.</h2>
-				<a class="events-calendar-link" href="https://luma.com/malaysianai">
+				<a class="events-calendar-link site-button" href="https://luma.com/malaysianai">
 					See the event calendar
 					<span aria-hidden="true">↗</span>
 				</a>
@@ -322,21 +322,8 @@ const events = [
 	}
 
 	.events-calendar-link {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.65rem;
 		margin-top: 1.65rem;
-		padding-bottom: 0.25rem;
-		border-bottom: 1px solid rgb(255 250 240 / 0.58);
-		font-size: 0.95rem;
-		text-decoration: none;
 		transition: gap 180ms ease, color 180ms ease;
-	}
-
-	.events-calendar-link:hover,
-	.events-calendar-link:focus-visible {
-		gap: 1rem;
-		color: #f4c785;
 	}
 
 	.events-selected {
@@ -688,28 +675,13 @@ const events = [
 	}
 
 	.events-calendar-link {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.65rem;
 		width: fit-content;
-		min-height: 2.45rem;
 		margin-top: 1.7rem;
-		padding: 0.5rem 0.9rem;
-		border: 0;
-		border-radius: 99rem;
-		color: #eff5ff;
-		background: #142b4d;
-		font-size: 0.82rem;
-		font-weight: 400;
-		text-decoration: none;
 		transition: gap 180ms ease, background 180ms ease, transform 180ms ease;
 	}
 
 	.events-calendar-link:hover,
 	.events-calendar-link:focus-visible {
-		gap: 0.9rem;
-		color: #fff;
-		background: #1b3b69;
 		transform: translateY(-1px);
 	}
 
@@ -966,7 +938,6 @@ const events = [
 	.events-calendar-link {
 		margin-left: 0;
 		margin-top: 1.2rem;
-		font-size: 0.76rem;
 	}
 
 	.events-selected {

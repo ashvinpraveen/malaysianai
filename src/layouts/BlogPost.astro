@@ -1,20 +1,447 @@
 ---
+import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
+import fallbackCover from '../assets/blog-placeholder-2.jpg';
 import FormattedDate from '../components/FormattedDate.astro';
 import Layout from './Layout.astro';
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<'blog'>['data'] & { slug?: string };
 
-const { title, description, pubDate, author, category } = Astro.props;
+const { title, description, image, pubDate, author, category, slug } = Astro.props;
+const coverImage = slug === 'largest-ai-learnathon'
+	? '/images/blog/largest-ai-learnathon/hero.webp'
+	: image;
 ---
 
-<Layout title={title} description={description}>
-	<article>
-		<p>{category}</p>
-		<h1>{title}</h1>
-		<p>
-			{author} · <FormattedDate date={pubDate} />
-		</p>
-		<slot />
+<Layout title={title} description={description} image={image}>
+	<article class="story-page">
+		<header class="story-header">
+			<a class="back-link" href="/blog" aria-label="Back to all stories">
+				<span aria-hidden="true">←</span>
+				<span class="back-label">All stories</span>
+			</a>
+			<div class="story-heading">
+				<h1>{title}</h1>
+				<p class="story-description">{description}</p>
+				<div class="story-byline">
+					<span>By {author}</span>
+					<span aria-hidden="true">/</span>
+					<FormattedDate date={pubDate} />
+				</div>
+			</div>
+		</header>
+
+		<button class="story-cover" type="button" data-story-cover aria-label="View cover image full screen">
+			{
+				coverImage ? (
+					<img src={coverImage} alt="" width="2200" height="1467" loading="eager" fetchpriority="high" />
+				) : (
+					<Image src={fallbackCover} alt="" width={960} height={480} loading="eager" />
+				)
+			}
+		</button>
+
+		<div class="story-body">
+			<slot />
+		</div>
+
+		<footer class="story-end">
+			<p>Keep reading what Malaysia's AI community is building and learning.</p>
+			<a class="site-button" href="/blog">More stories</a>
+		</footer>
+
+		<div class="image-viewer" data-image-viewer role="dialog" aria-modal="true" aria-label="Full-screen image viewer" hidden>
+			<button class="image-viewer-close" type="button" data-image-viewer-close aria-label="Close full-screen image">
+				<span aria-hidden="true">×</span>
+			</button>
+			<img class="image-viewer-image" src="" alt="" />
+		</div>
 	</article>
 </Layout>
+
+<script>
+	const viewer = document.querySelector<HTMLElement>('[data-image-viewer]');
+	const viewerImage = viewer?.querySelector<HTMLImageElement>('.image-viewer-image');
+	const cover = document.querySelector<HTMLButtonElement>('[data-story-cover]');
+	const closeViewer = viewer?.querySelector<HTMLButtonElement>('[data-image-viewer-close]');
+	let previousFocus: HTMLElement | null = null;
+
+	const hideViewer = () => {
+		if (!viewer) return;
+		viewer.hidden = true;
+		document.body.classList.remove('has-image-viewer');
+		previousFocus?.focus();
+	};
+
+	const openImage = (image: HTMLImageElement) => {
+		if (!viewer || !viewerImage) return;
+		previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+		viewerImage.src = image.currentSrc || image.src;
+		viewerImage.alt = image.alt;
+		viewer.hidden = false;
+		document.body.classList.add('has-image-viewer');
+		closeViewer?.focus();
+	};
+
+	const coverImage = cover?.querySelector<HTMLImageElement>('img');
+	if (cover && coverImage) cover.addEventListener('click', () => openImage(coverImage));
+	closeViewer?.addEventListener('click', event => {
+		event.preventDefault();
+		hideViewer();
+	});
+
+	document.querySelectorAll<HTMLImageElement>('.story-body img').forEach(image => {
+		image.tabIndex = 0;
+		image.setAttribute('role', 'button');
+		image.setAttribute('aria-label', image.alt ? `View ${image.alt} full screen` : 'View image full screen');
+		image.addEventListener('click', () => openImage(image));
+		image.addEventListener('keydown', event => {
+			if (event.key === 'Enter' || event.key === ' ') {
+				event.preventDefault();
+				openImage(image);
+			}
+		});
+	});
+
+	viewer?.addEventListener('click', event => {
+		if (event.target === viewer) hideViewer();
+	});
+	document.addEventListener('keydown', event => {
+		if (event.key === 'Escape' && viewer && !viewer.hidden) hideViewer();
+	});
+</script>
+
+<style>
+	.story-page {
+		--story-width: 54rem;
+		--story-inline-gap: clamp(1.25rem, 6vw, 6rem);
+		color: #e0e8f4;
+		background: #06090f;
+	}
+
+	.story-header {
+		position: relative;
+		padding: clamp(0.65rem, 1.25vw, 1rem) var(--story-inline-gap) clamp(1.25rem, 2vw, 1.75rem);
+	}
+
+	.story-heading {
+		width: min(100%, var(--story-width));
+		margin-inline: auto;
+		text-align: center;
+	}
+
+	.back-link {
+		position: absolute;
+		top: clamp(0.9rem, 1.5vw, 1.2rem);
+		left: clamp(0.9rem, 2.5vw, 2.25rem);
+		display: flex;
+		align-items: center;
+		gap: 0.55rem;
+		color: #8da7ca;
+		font-size: 0.875rem;
+		text-decoration: none;
+	}
+
+	.back-link:hover,
+	.back-link:focus-visible {
+		text-decoration: underline;
+		text-underline-offset: 0.3rem;
+	}
+
+	.story-header h1 {
+		width: 100%;
+		margin: 0 auto;
+		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-size: clamp(2.1rem, 4vw, 3.25rem);
+		font-weight: 400;
+		letter-spacing: -0.04em;
+		line-height: 0.98;
+		text-wrap: balance;
+	}
+
+	.story-description {
+		width: 100%;
+		margin: 0.75rem auto 0;
+		color: rgb(235 241 249 / 0.78);
+		font-size: clamp(0.95rem, 1.15vw, 1rem);
+		line-height: 1.45;
+	}
+
+	.story-byline {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.65rem;
+		justify-content: center;
+		margin-top: 0.75rem;
+		color: rgb(235 241 249 / 0.58);
+		font-size: 0.8rem;
+	}
+
+	.story-cover {
+		display: block;
+		overflow: hidden;
+		width: min(calc(100% - var(--story-inline-gap) - var(--story-inline-gap)), var(--story-width));
+		aspect-ratio: 3 / 2;
+		padding: 0;
+		margin: 0 auto;
+		border: 0;
+		border-radius: 0;
+		background: #121a29;
+		cursor: zoom-in;
+	}
+
+	.story-cover :global(img) {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 250ms ease;
+	}
+
+	.story-cover:hover :global(img),
+	.story-cover:focus-visible :global(img) {
+		transform: scale(1.012);
+	}
+
+	.story-cover:focus-visible {
+		outline: 2px solid #97b8e7;
+		outline-offset: 4px;
+	}
+
+	.story-body {
+		width: min(calc(100% - var(--story-inline-gap) - var(--story-inline-gap)), var(--story-width));
+		margin-inline: auto;
+		padding-block: clamp(3rem, 6vw, 5rem);
+	}
+
+	.story-body :global(p),
+	.story-body :global(li) {
+		color: rgb(238 244 252 / 0.82);
+		font-size: 1.08rem;
+		line-height: 1.75;
+	}
+
+	.story-body :global(p) {
+		margin: 0 0 1.5rem;
+		text-align: justify;
+		text-justify: inter-word;
+	}
+
+	.story-body :global(p:first-child) {
+		font-size: clamp(1.2rem, 2vw, 1.4rem);
+		line-height: 1.62;
+	}
+
+	.story-body :global(h2) {
+		margin: clamp(3.75rem, 7vw, 5.5rem) 0 1.35rem;
+		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-size: clamp(2.3rem, 5vw, 3.65rem);
+		font-weight: 400;
+		letter-spacing: -0.035em;
+		line-height: 0.98;
+		text-wrap: balance;
+	}
+
+	.story-body :global(h3) {
+		margin: 3rem 0 1rem;
+		font-size: 1.35rem;
+		line-height: 1.2;
+	}
+
+	.story-body :global(ul),
+	.story-body :global(ol) {
+		padding-left: 1.4rem;
+		margin: 0 0 1.75rem;
+	}
+
+	.story-body :global(li) {
+		padding-left: 0.4rem;
+		margin-bottom: 0.55rem;
+	}
+
+	.story-body :global(blockquote) {
+		padding: 0.25rem 0 0.25rem clamp(1.25rem, 3vw, 2rem);
+		margin: clamp(2.5rem, 5vw, 4rem) 0;
+		border-left: 2px solid #315d9f;
+		color: #b7c9e2;
+	}
+
+	.story-body :global(blockquote p) {
+		margin: 0;
+		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-size: clamp(1.65rem, 3.2vw, 2.35rem);
+		letter-spacing: -0.02em;
+		line-height: 1.15;
+	}
+
+	.story-body :global(a) {
+		color: #9ab7dd;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.2em;
+	}
+
+	.story-body :global(a:hover),
+	.story-body :global(a:focus-visible) {
+		color: #fff;
+	}
+
+	.story-body :global(a:focus-visible),
+	.back-link:focus-visible {
+		outline: 2px solid #315d9f;
+		outline-offset: 4px;
+	}
+
+	.story-body :global(img) {
+		display: block;
+		width: min(100vw - 2.5rem, 68rem);
+		max-width: none;
+		height: auto;
+		margin: 3.5rem 50%;
+		cursor: zoom-in;
+		transform: translateX(-50%);
+	}
+
+	.story-body :global(figure) {
+		width: min(100vw - 2.5rem, 68rem);
+		margin: clamp(3rem, 7vw, 5rem) 50%;
+		transform: translateX(-50%);
+	}
+
+	.story-body :global(figure img) {
+		width: 100%;
+		max-width: 100%;
+		margin: 0;
+		transform: none;
+	}
+
+	.story-body :global(img:focus-visible) {
+		outline: 2px solid #97b8e7;
+		outline-offset: 4px;
+	}
+
+	.story-body :global(figcaption) {
+		max-width: 46rem;
+		margin: 0.85rem auto 0;
+		color: rgb(224 232 244 / 0.5);
+		font-size: 0.82rem;
+		line-height: 1.5;
+	}
+
+	.story-body :global(hr) {
+		display: none;
+	}
+
+	.story-end {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 2rem;
+		width: min(100% - 2.5rem, 72rem);
+		padding: clamp(2rem, 4vw, 3rem) 0 clamp(5rem, 8vw, 7rem);
+		margin-inline: auto;
+	}
+
+	.story-end p {
+		max-width: 31rem;
+		margin: 0;
+		color: rgb(224 232 244 / 0.62);
+		font-size: 1rem;
+		line-height: 1.5;
+	}
+
+	.story-end .site-button {
+		color: #101820;
+		background: #fff;
+	}
+
+	.story-end .site-button:hover,
+	.story-end .site-button:focus-visible {
+		color: #101820;
+		background: #edf0f4;
+	}
+
+	.image-viewer {
+		position: fixed;
+		z-index: 1000;
+		inset: 0;
+		width: 100vw;
+		max-width: none;
+		height: 100dvh;
+		max-height: none;
+		box-sizing: border-box;
+		padding: clamp(1rem, 3vw, 2.5rem);
+		margin: 0;
+		border: 0 !important;
+		color: #f4f7fc;
+		background: #02050a !important;
+	}
+
+	.image-viewer:not([hidden]) {
+		display: grid;
+		place-items: center;
+	}
+
+	.image-viewer[hidden] {
+		display: none;
+	}
+
+	:global(body.has-image-viewer) {
+		overflow: hidden;
+	}
+
+	.image-viewer-close {
+		position: fixed;
+		z-index: 2;
+		top: 1rem;
+		right: 1rem;
+		display: grid;
+		width: 2.5rem;
+		height: 2.5rem;
+		padding: 0;
+		place-items: center;
+		border: 1px solid rgb(255 255 255 / 0.5);
+		border-radius: 50%;
+		color: #fff;
+		background: rgb(7 16 26 / 0.88);
+		font: 400 1.5rem / 1 'Atkinson', system-ui, sans-serif;
+		cursor: pointer;
+	}
+
+	.image-viewer-close:hover,
+	.image-viewer-close:focus-visible {
+		background: #315d9f;
+	}
+
+	.image-viewer-image {
+		display: block;
+		width: auto;
+		max-width: 100%;
+		height: auto;
+		max-height: 100%;
+		object-fit: contain;
+	}
+
+	@media (max-width: 620px) {
+		.back-link {
+			top: 0.8rem;
+			left: 0.75rem;
+		}
+
+		.back-label {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			padding: 0;
+			margin: -1px;
+			overflow: hidden;
+			clip: rect(0, 0, 0, 0);
+			white-space: nowrap;
+			border: 0;
+		}
+
+		.story-end {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+	}
+</style>

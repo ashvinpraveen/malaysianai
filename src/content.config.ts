@@ -7,10 +7,11 @@ const blog = defineCollection({
 	schema: z.object({
 		title: z.string(),
 		description: z.string(),
+		image: z.string().optional(),
 		pubDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),
 		author: z.string(),
-		category: z.enum(['announcements', 'cohort-stories', 'curriculum']),
+		category: z.enum(['announcements', 'cohort-stories', 'curriculum', 'events']),
 	}),
 });
 

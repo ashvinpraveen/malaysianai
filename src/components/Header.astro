@@ -1,14 +1,39 @@
 ---
-import { SITE_TITLE } from '../consts';
+import FramedChrome from './FramedChrome.astro';
+
+const current = Astro.url.pathname.startsWith('/blog') ? 'stories' : undefined;
 ---
 
-<header>
-	<a href="/">
-		<img src="/logo-ai-residency.png" alt="" width="40" height="40" />
-		{SITE_TITLE}
-	</a>
-	<nav>
-		<a href="/">Home</a>
-		<a href="/blog">Blog</a>
-	</nav>
-</header>
+<div class="site-header">
+	<FramedChrome current={current} minimal />
+</div>
+
+<style>
+	.site-header {
+		--hero-frame: #06090f;
+		--hero-line: transparent;
+		--hero-gap: 0.75rem;
+		--hero-panel-width: 29rem;
+		--hero-control-height: 2.25rem;
+		--hero-header-height: calc(var(--hero-gap) * 2 + var(--hero-control-height));
+		--hero-brand-width: var(--hero-header-height);
+		--hero-logo-width: var(--hero-control-height);
+		position: relative;
+		isolation: isolate;
+		height: var(--hero-header-height);
+		border: 0 !important;
+		background: #06090f;
+		box-shadow: none;
+	}
+
+	@media (max-width: 700px) {
+		.site-header {
+			--hero-gap: 0.55rem;
+			--hero-panel-width: calc(100% - 0.6rem);
+			--hero-control-height: 2rem;
+			--hero-brand-width: var(--hero-header-height);
+			--hero-logo-width-mobile: var(--hero-control-height);
+			height: var(--hero-header-height);
+		}
+	}
+</style>

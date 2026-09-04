@@ -47,6 +47,45 @@ body {
 	background-color: #07101a;
 }
 
+::view-transition {
+	background: #06090f;
+}
+
+::view-transition-old(root) {
+	animation: page-leave 280ms cubic-bezier(0.4, 0, 0.7, 0.2) both;
+}
+
+::view-transition-new(root) {
+	animation: page-arrive 520ms 45ms cubic-bezier(0.16, 0.82, 0.2, 1) both;
+}
+
+::view-transition-group(site-brand) {
+	z-index: 100;
+	animation-duration: 620ms;
+	animation-timing-function: cubic-bezier(0.16, 0.82, 0.2, 1);
+}
+
+::view-transition-old(site-brand),
+::view-transition-new(site-brand) {
+	mix-blend-mode: normal;
+}
+
+@keyframes page-leave {
+	to {
+		opacity: 0;
+		filter: blur(2px);
+		transform: scale(0.992);
+	}
+}
+
+@keyframes page-arrive {
+	from {
+		opacity: 0;
+		filter: blur(3px);
+		transform: translateY(0.65rem) scale(1.006);
+	}
+}
+
 img {
 	max-width: 100%;
 	height: auto;
@@ -104,5 +143,12 @@ body.immersive {
 @media (prefers-reduced-motion: reduce) {
 	html {
 		scroll-behavior: auto;
+	}
+
+	::view-transition-old(root),
+	::view-transition-new(root),
+	::view-transition-group(site-brand) {
+		animation-duration: 1ms;
+		animation-delay: 0ms;
 	}
 }

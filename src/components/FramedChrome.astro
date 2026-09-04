@@ -3,10 +3,11 @@ import { LUMA_URL } from '../consts';
 
 interface Props {
 	home?: boolean;
-	current?: 'home' | 'residency' | 'residents' | 'apply';
+	current?: 'home' | 'residency' | 'residents' | 'apply' | 'stories';
+	minimal?: boolean;
 }
 
-const { home = false, current } = Astro.props;
+const { home = false, current, minimal = false } = Astro.props;
 const links = [
 	{ id: 'about', href: home ? '#about' : '/#about', label: 'About' },
 	{ id: 'events', href: home ? '#events' : '/#events', label: 'Events' },
@@ -16,8 +17,8 @@ const links = [
 ] as const;
 ---
 
-<header class="hero-header">
-	<div class="brand-panel">
+<header class:list={['hero-header', { 'is-minimal': minimal }]}>
+	<div class="brand-panel" transition:name="site-brand" transition:persist="site-brand">
 		<a class="brand-mark" href="/" aria-label="Malaysian AI home">
 			<img src="/malaysian-ai-batik-logo-bw.svg" alt="" width="800" height="800" />
 		</a>
@@ -39,12 +40,16 @@ const links = [
 	</details>
 </header>
 
-<div class="hero-cta-panel">
+<div class:list={['hero-cta-panel', { 'is-minimal': minimal }]}>
 	<a class="nav-cta site-button" href={LUMA_URL}>Find an event</a>
 </div>
 
 <script>
-	document.querySelectorAll<HTMLDetailsElement>('.mobile-navigation').forEach(menu => {
+	function prepareNavigation() {
+		document.querySelectorAll<HTMLDetailsElement>('.mobile-navigation').forEach(menu => {
+			if (menu.dataset.ready === 'true') return;
+			menu.dataset.ready = 'true';
+
 		menu.addEventListener('click', event => {
 			if ((event.target as Element).closest('a')) menu.open = false;
 		});
@@ -57,7 +62,10 @@ const links = [
 		document.addEventListener('click', event => {
 			if (!menu.contains(event.target as Node)) menu.open = false;
 		});
-	});
+		});
+	}
+
+	document.addEventListener('astro:page-load', prepareNavigation);
 </script>
 
 <style>
@@ -125,8 +133,8 @@ const links = [
 
 	.brand-mark {
 		display: grid;
-		width: 5.2rem;
-		height: 5.2rem;
+		width: var(--hero-logo-width, 5.2rem);
+		height: var(--hero-logo-width, 5.2rem);
 		place-items: center;
 	}
 
@@ -190,6 +198,13 @@ const links = [
 		pointer-events: none;
 	}
 
+	.hero-header.is-minimal::before,
+	.hero-header.is-minimal::after,
+	.hero-header.is-minimal .brand-panel::after,
+	.hero-cta-panel.is-minimal::after {
+		display: none;
+	}
+
 	.nav-cta { position: relative; z-index: 1; height: var(--hero-control-height, 2.25rem); }
 	.mobile-navigation { display: none; }
 	a:focus-visible { outline: 2px solid #97b8e7; outline-offset: 3px; }
@@ -197,7 +212,10 @@ const links = [
 	@media (max-width: 700px) {
 		.hero-header { width: var(--hero-panel-width, calc(100% - 0.6rem)); }
 		.hero-nav { display: none; }
-		.brand-mark { width: 3.2rem; height: 3.2rem; }
+		.brand-mark {
+			width: var(--hero-logo-width-mobile, 3.2rem);
+			height: var(--hero-logo-width-mobile, 3.2rem);
+		}
 		.hero-cta-panel {
 			top: var(--hero-gap, 0.6rem);
 			right: calc(var(--hero-gap, 0.6rem) * 2);

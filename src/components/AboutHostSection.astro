@@ -1,0 +1,163 @@
+<section class="about-host light-nav-zone" aria-labelledby="about-host-title">
+	<div class="about-host-frame">
+		<div class="about-statement">
+			<p class="section-kicker">About Malaysian AI</p>
+			<h2 id="about-host-title">
+				Your first step into AI starts here. Malaysian AI connects you to workshops,
+				events, and a community of people figuring out AI together.
+				<span>First-timers and serious builders are both welcome.</span>
+			</h2>
+		</div>
+
+		<div class="host-row">
+			<div class="host-mark">
+				<p>Host &amp; initiator</p>
+				<a href="https://500.co" aria-label="Visit 500 Global">
+					<img src="/500_Global_Logo.svg" alt="500 Global" width="140" height="48" />
+				</a>
+			</div>
+
+			<p class="host-copy">
+				<a href="https://500.co">500 Global</a> is a venture capital firm with more than
+				$2.1B in assets under management. Since 2010, it has backed founders across 80+
+				countries and invested early in companies including Grab, Carsome, Carousell,
+				Canva and Udemy. Its portfolio includes 3,000+ companies, 35+ unicorns and 270+
+				exits.
+			</p>
+		</div>
+	</div>
+</section>
+
+<style>
+	.about-host {
+		padding: clamp(0.75rem, 1.6vw, 1.5rem);
+		color: #f2f5fa;
+		background: #06090f;
+	}
+
+	.about-host-frame {
+		position: relative;
+		overflow: hidden;
+		min-height: min(54rem, 92svh);
+		padding: clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 3.5vw, 3.25rem);
+	}
+
+	.about-statement {
+		display: grid;
+		grid-template-columns: minmax(8rem, 0.32fr) minmax(0, 1.68fr);
+		gap: clamp(2rem, 5vw, 6rem);
+		align-items: start;
+	}
+
+	.section-kicker,
+	.host-mark > p {
+		margin: 0;
+		color: #a9c7ef;
+		font-size: 0.7rem;
+		letter-spacing: 0.16em;
+		line-height: 1.4;
+		text-transform: uppercase;
+	}
+
+	.about-statement h2 {
+		max-width: 64rem;
+		margin: 0;
+		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-size: clamp(2.65rem, 4.6vw, 5rem);
+		font-weight: 400;
+		letter-spacing: -0.045em;
+		line-height: 0.91;
+		text-wrap: pretty;
+	}
+
+	.about-statement h2 span {
+		color: #8da7ca;
+	}
+
+	.host-row {
+		display: grid;
+		grid-template-columns: minmax(12rem, 0.78fr) minmax(20rem, 1.22fr);
+		gap: clamp(3rem, 9vw, 10rem);
+		align-items: end;
+		width: min(72rem, 100%);
+		margin-top: clamp(7rem, 15vh, 12rem);
+		margin-left: auto;
+		padding-top: clamp(1.5rem, 3vw, 2.5rem);
+		border-top: 1px solid rgb(115 152 207 / 0.32);
+	}
+
+	.host-mark {
+		display: grid;
+		gap: 1.6rem;
+	}
+
+	.host-mark a {
+		display: block;
+		width: fit-content;
+	}
+
+	.host-mark img {
+		display: block;
+		width: clamp(8.5rem, 14vw, 12rem);
+		height: auto;
+		filter: grayscale(1) invert(1) brightness(1.4);
+	}
+
+	.host-copy {
+		max-width: 42rem;
+		margin: 0;
+		color: rgb(224 232 244 / 0.68);
+		font-size: clamp(0.96rem, 1.2vw, 1.08rem);
+		line-height: 1.6;
+	}
+
+	.host-copy a {
+		color: #dce9fb;
+		text-decoration-color: rgb(169 199 239 / 0.48);
+		text-underline-offset: 0.22rem;
+	}
+
+	.host-mark a:focus-visible,
+	.host-copy a:focus-visible {
+		outline: 2px solid #97b8e7;
+		outline-offset: 4px;
+	}
+
+	@media (max-width: 860px) {
+		.about-host-frame {
+			min-height: auto;
+		}
+
+		.about-statement,
+		.host-row {
+			grid-template-columns: 1fr;
+		}
+
+		.about-statement {
+			gap: 1.5rem;
+		}
+
+		.about-statement h2 {
+			font-size: clamp(2.5rem, 8.2vw, 4rem);
+		}
+
+		.host-row {
+			gap: 2.5rem;
+			margin-top: clamp(5rem, 12vw, 7rem);
+		}
+	}
+
+	@media (max-width: 700px) {
+		.about-host {
+			padding: 0.65rem;
+		}
+
+		.about-host-frame {
+			padding: 2rem 1rem 2.5rem;
+		}
+
+		.about-statement h2 {
+			font-size: clamp(2.35rem, 9.5vw, 3.35rem);
+		}
+	}
+</style>

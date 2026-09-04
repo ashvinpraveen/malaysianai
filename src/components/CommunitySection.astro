@@ -139,14 +139,18 @@ const startIndex = 0;
 </section>
 
 <script>
-	const stage = document.querySelector<HTMLElement>('#community-stage');
-	const deck = document.querySelector<HTMLElement>('[data-community-deck]');
-	const cards = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-community-card]'));
-	const focusLabel = document.querySelector<HTMLElement>('[data-community-label]');
-	const focusName = document.querySelector<HTMLElement>('[data-community-name]');
-	const focusDescription = document.querySelector<HTMLElement>('[data-community-description]');
+	let cleanUpCommunity = () => {};
 
-	if (stage && deck && cards.length) {
+	function prepareCommunitySection() {
+		const stage = document.querySelector<HTMLElement>('#community-stage');
+		const deck = document.querySelector<HTMLElement>('[data-community-deck]');
+		const cards = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-community-card]'));
+		const focusLabel = document.querySelector<HTMLElement>('[data-community-label]');
+		const focusName = document.querySelector<HTMLElement>('[data-community-name]');
+		const focusDescription = document.querySelector<HTMLElement>('[data-community-description]');
+
+		if (!stage || !deck || !cards.length) return () => {};
+
 		const count = cards.length;
 		const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 		const startIndex = 0;
@@ -208,7 +212,7 @@ const startIndex = 0;
 			});
 		});
 
-		addEventListener('keydown', (event) => {
+		function handleKeydown(event: KeyboardEvent) {
 			const target = event.target;
 			const inSection =
 				target instanceof Node &&
@@ -222,9 +226,12 @@ const startIndex = 0;
 			state.base += forward ? 1 : -1;
 			state.target = state.base;
 			state.lastInput = performance.now();
-		});
+		}
+
+		window.addEventListener('keydown', handleKeydown);
 
 		let previousTime = performance.now();
+		let frame = 0;
 
 		function render(time: number) {
 			const deltaTime = Math.min(32, time - previousTime);
@@ -284,11 +291,23 @@ const startIndex = 0;
 				card.setAttribute('aria-current', index === activeIndex ? 'true' : 'false');
 			});
 
-			requestAnimationFrame(render);
+			frame = requestAnimationFrame(render);
 		}
 
-		requestAnimationFrame(render);
+		frame = requestAnimationFrame(render);
+		return () => {
+			cancelAnimationFrame(frame);
+			window.removeEventListener('keydown', handleKeydown);
+		};
 	}
+
+	function prepareCommunity() {
+		cleanUpCommunity();
+		cleanUpCommunity = prepareCommunitySection();
+	}
+
+	document.addEventListener('astro:page-load', prepareCommunity);
+	document.addEventListener('astro:before-swap', () => cleanUpCommunity());
 </script>
 
 <style>

@@ -130,9 +130,9 @@ const events = [
 </section>
 
 <script>
-	const eventSections = document.querySelectorAll<HTMLElement>('[data-events]');
+	let cleanUpEvents = () => {};
 
-	eventSections.forEach((section) => {
+	function prepareEventSection(section: HTMLElement) {
 		const cards = Array.from(section.querySelectorAll<HTMLButtonElement>('[data-event-card]'));
 		const backgrounds = Array.from(
 			section.querySelectorAll<HTMLImageElement>('[data-events-background]'),
@@ -236,9 +236,27 @@ const events = [
 
 		layoutCards();
 		observer.observe(section);
-
 		document.addEventListener('visibilitychange', startRotation);
-	});
+
+		return () => {
+			stopRotation();
+			observer.disconnect();
+			document.removeEventListener('visibilitychange', startRotation);
+		};
+	}
+
+	function prepareEvents() {
+		cleanUpEvents();
+		const cleanups = Array.from(
+			document.querySelectorAll<HTMLElement>('[data-events]'),
+			prepareEventSection,
+		);
+
+		cleanUpEvents = () => cleanups.forEach(cleanup => cleanup());
+	}
+
+	document.addEventListener('astro:page-load', prepareEvents);
+	document.addEventListener('astro:before-swap', () => cleanUpEvents());
 </script>
 
 <style>

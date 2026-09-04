@@ -5,10 +5,13 @@
 </div>
 
 <script>
-	const toggle = document.querySelector<HTMLElement>('[data-hero-image-toggle]');
-	const heroImage = toggle?.closest('.hero-shell')?.querySelector<HTMLImageElement>('.hero-art');
+	function prepareHeroImageToggle() {
+		const toggle = document.querySelector<HTMLElement>('[data-hero-image-toggle]');
+		const heroImage = toggle?.closest('.hero-shell')?.querySelector<HTMLImageElement>('.hero-art');
 
-	if (toggle && heroImage) {
+		if (!toggle || !heroImage || toggle.dataset.ready === 'true') return;
+		toggle.dataset.ready = 'true';
+
 		const variants = {
 			original: {
 				src: '/images/malaysian-ai-kl-hero-restored-3840.webp',
@@ -43,6 +46,8 @@
 		});
 		toggle.hidden = false;
 	}
+
+	document.addEventListener('astro:page-load', prepareHeroImageToggle);
 </script>
 
 <style>

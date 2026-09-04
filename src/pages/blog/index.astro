@@ -21,13 +21,26 @@ const [featuredPost, ...otherPosts] = posts;
 				featuredPost && (
 					<article class="featured-story">
 						<a class="featured-image" href={`/blog/${featuredPost.id}/`} aria-label={`Read ${featuredPost.data.title}`}>
-							<Image
-								src={featuredPlaceholder}
-								alt=""
-								width={960}
-								height={480}
-								loading="eager"
-							/>
+							{
+								featuredPost.data.image ? (
+									<img
+										src={featuredPost.data.image}
+										alt={featuredPost.data.imageAlt ?? ''}
+										width="960"
+										height="480"
+										loading="eager"
+										fetchpriority="high"
+									/>
+								) : (
+									<Image
+										src={featuredPlaceholder}
+										alt=""
+										width={960}
+										height={480}
+										loading="eager"
+									/>
+								)
+							}
 						</a>
 						<div class="featured-copy">
 							<p class="featured-meta">

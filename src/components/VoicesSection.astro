@@ -144,15 +144,20 @@ const voices: Voice[] = [
 </section>
 
 <script>
-	const deck = document.querySelector<HTMLElement>('[data-voices-deck]');
-	const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-voice-card]'));
+	let cleanUpVoices = () => {};
 
-	if (deck && cards.length > 1) {
+	function prepareVoiceDeck() {
+		const deck = document.querySelector<HTMLElement>('[data-voices-deck]');
+		const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-voice-card]'));
+
+		if (!deck || cards.length < 2) return () => {};
+
 		const HOLD_MS = 5200;
 		const LEAVE_MS = 480;
 		let order = cards.map((_, index) => index);
 		let hovering = false;
 		let leaving = false;
+		let leaveTimer: number | undefined;
 
 		function layout() {
 			order.forEach((cardIndex, pos) => {
@@ -167,7 +172,7 @@ const voices: Voice[] = [
 			leaving = true;
 			const front = cards[order[0]];
 			front.classList.add('is-leaving');
-			setTimeout(() => {
+			leaveTimer = window.setTimeout(() => {
 				front.classList.remove('is-leaving');
 				order.push(order.shift()!);
 				layout();
@@ -185,10 +190,23 @@ const voices: Voice[] = [
 		deck.addEventListener('pointerenter', () => (hovering = true));
 		deck.addEventListener('pointerleave', () => (hovering = false));
 
-		setInterval(() => {
+		const autoTimer = window.setInterval(() => {
 			if (!hovering && !document.hidden) advance();
 		}, HOLD_MS);
+
+		return () => {
+			window.clearInterval(autoTimer);
+			if (leaveTimer !== undefined) window.clearTimeout(leaveTimer);
+		};
 	}
+
+	function prepareVoices() {
+		cleanUpVoices();
+		cleanUpVoices = prepareVoiceDeck();
+	}
+
+	document.addEventListener('astro:page-load', prepareVoices);
+	document.addEventListener('astro:before-swap', () => cleanUpVoices());
 </script>
 
 <style>

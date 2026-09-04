@@ -45,27 +45,31 @@ const links = [
 </div>
 
 <script>
-	function prepareNavigation() {
-		document.querySelectorAll<HTMLDetailsElement>('.mobile-navigation').forEach(menu => {
-			if (menu.dataset.ready === 'true') return;
-			menu.dataset.ready = 'true';
+	let navigationController: AbortController | undefined;
 
-		menu.addEventListener('click', event => {
-			if ((event.target as Element).closest('a')) menu.open = false;
-		});
-		menu.addEventListener('keydown', event => {
-			if (event.key === 'Escape') {
-				menu.open = false;
-				menu.querySelector('summary')?.focus();
-			}
-		});
-		document.addEventListener('click', event => {
-			if (!menu.contains(event.target as Node)) menu.open = false;
-		});
+	function prepareNavigation() {
+		navigationController?.abort();
+		navigationController = new AbortController();
+		const { signal } = navigationController;
+
+		document.querySelectorAll<HTMLDetailsElement>('.mobile-navigation').forEach(menu => {
+			menu.addEventListener('click', event => {
+				if ((event.target as Element).closest('a')) menu.open = false;
+			}, { signal });
+			menu.addEventListener('keydown', event => {
+				if (event.key === 'Escape') {
+					menu.open = false;
+					menu.querySelector('summary')?.focus();
+				}
+			}, { signal });
+			document.addEventListener('click', event => {
+				if (!menu.contains(event.target as Node)) menu.open = false;
+			}, { signal });
 		});
 	}
 
 	document.addEventListener('astro:page-load', prepareNavigation);
+	document.addEventListener('astro:before-swap', () => navigationController?.abort());
 </script>
 
 <style>

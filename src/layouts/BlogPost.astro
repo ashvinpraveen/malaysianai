@@ -60,55 +60,82 @@ const coverImage = slug === 'largest-ai-learnathon'
 </Layout>
 
 <script>
-	const viewer = document.querySelector<HTMLElement>('[data-image-viewer]');
-	const viewerImage = viewer?.querySelector<HTMLImageElement>('.image-viewer-image');
-	const cover = document.querySelector<HTMLButtonElement>('[data-story-cover]');
-	const closeViewer = viewer?.querySelector<HTMLButtonElement>('[data-image-viewer-close]');
-	let previousFocus: HTMLElement | null = null;
+	let cleanUpStoryViewer = () => {};
 
-	const hideViewer = () => {
-		if (!viewer) return;
-		viewer.hidden = true;
-		document.body.classList.remove('has-image-viewer');
-		previousFocus?.focus();
-	};
+	function connectStoryViewer(
+		viewer: HTMLElement,
+		viewerImage: HTMLImageElement | null,
+		cover: HTMLButtonElement | null,
+		closeViewer: HTMLButtonElement | null,
+	) {
+		let previousFocus: HTMLElement | null = null;
 
-	const openImage = (image: HTMLImageElement) => {
-		if (!viewer || !viewerImage) return;
-		previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-		viewerImage.src = image.currentSrc || image.src;
-		viewerImage.alt = image.alt;
-		viewer.hidden = false;
-		document.body.classList.add('has-image-viewer');
-		closeViewer?.focus();
-	};
+		const hideViewer = () => {
+			viewer.hidden = true;
+			document.body.classList.remove('has-image-viewer');
+			previousFocus?.focus();
+		};
 
-	const coverImage = cover?.querySelector<HTMLImageElement>('img');
-	if (cover && coverImage) cover.addEventListener('click', () => openImage(coverImage));
-	closeViewer?.addEventListener('click', event => {
-		event.preventDefault();
-		hideViewer();
-	});
+		const openImage = (image: HTMLImageElement) => {
+			if (!viewerImage) return;
+			previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+			viewerImage.src = image.currentSrc || image.src;
+			viewerImage.alt = image.alt;
+			viewer.hidden = false;
+			document.body.classList.add('has-image-viewer');
+			closeViewer?.focus();
+		};
 
-	document.querySelectorAll<HTMLImageElement>('.story-body img').forEach(image => {
-		image.tabIndex = 0;
-		image.setAttribute('role', 'button');
-		image.setAttribute('aria-label', image.alt ? `View ${image.alt} full screen` : 'View image full screen');
-		image.addEventListener('click', () => openImage(image));
-		image.addEventListener('keydown', event => {
-			if (event.key === 'Enter' || event.key === ' ') {
-				event.preventDefault();
-				openImage(image);
-			}
+		const coverImage = cover?.querySelector<HTMLImageElement>('img');
+		if (cover && coverImage) cover.addEventListener('click', () => openImage(coverImage));
+		closeViewer?.addEventListener('click', event => {
+			event.preventDefault();
+			hideViewer();
 		});
-	});
 
-	viewer?.addEventListener('click', event => {
-		if (event.target === viewer) hideViewer();
-	});
-	document.addEventListener('keydown', event => {
-		if (event.key === 'Escape' && viewer && !viewer.hidden) hideViewer();
-	});
+		document.querySelectorAll<HTMLImageElement>('.story-body img').forEach(image => {
+			image.tabIndex = 0;
+			image.setAttribute('role', 'button');
+			image.setAttribute('aria-label', image.alt ? `View ${image.alt} full screen` : 'View image full screen');
+			image.addEventListener('click', () => openImage(image));
+			image.addEventListener('keydown', event => {
+				if (event.key === 'Enter' || event.key === ' ') {
+					event.preventDefault();
+					openImage(image);
+				}
+			});
+		});
+
+		viewer.addEventListener('click', event => {
+			if (event.target === viewer) hideViewer();
+		});
+		function handleViewerKeydown(event: KeyboardEvent) {
+			if (event.key === 'Escape' && !viewer.hidden) hideViewer();
+		}
+
+		document.addEventListener('keydown', handleViewerKeydown);
+		return () => document.removeEventListener('keydown', handleViewerKeydown);
+	}
+
+	function prepareStoryViewerForPage() {
+		const viewer = document.querySelector<HTMLElement>('[data-image-viewer]');
+		if (!viewer) return () => {};
+
+		return connectStoryViewer(
+			viewer,
+			viewer.querySelector<HTMLImageElement>('.image-viewer-image'),
+			document.querySelector<HTMLButtonElement>('[data-story-cover]'),
+			viewer.querySelector<HTMLButtonElement>('[data-image-viewer-close]'),
+		);
+	}
+
+	function prepareStoryViewer() {
+		cleanUpStoryViewer();
+		cleanUpStoryViewer = prepareStoryViewerForPage();
+	}
+
+	document.addEventListener('astro:page-load', prepareStoryViewer);
+	document.addEventListener('astro:before-swap', () => cleanUpStoryViewer());
 </script>
 
 <style>

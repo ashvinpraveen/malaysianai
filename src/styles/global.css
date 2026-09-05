@@ -33,22 +33,34 @@
 	font-synthesis: none;
 }
 
+html.neutral-page {
+	--page-background: #090909;
+	--page-text: #fff;
+	--page-border: rgb(255 255 255 / 0.16);
+	--card-background: #111;
+	--focus-color: #fff;
+	--footer-wordmark-color: rgb(255 255 255 / 0.12);
+	--button-text: #111;
+	--button-hover-background: #eee;
+	color: var(--page-text);
+}
+
 * {
 	box-sizing: border-box;
 }
 
 html {
 	scroll-behavior: smooth;
-	background-color: #07101a;
+	background-color: var(--page-background, #07101a);
 }
 
 body {
 	margin: 0;
-	background-color: #07101a;
+	background-color: var(--page-background, #07101a);
 }
 
 ::view-transition {
-	background: #06090f;
+	background: var(--page-background, #06090f);
 }
 
 ::view-transition-old(root) {
@@ -120,7 +132,7 @@ a {
 }
 
 .site-button:focus-visible {
-	outline: 2px solid #97b8e7;
+	outline: 2px solid var(--focus-color, #97b8e7);
 	outline-offset: 3px;
 }
 

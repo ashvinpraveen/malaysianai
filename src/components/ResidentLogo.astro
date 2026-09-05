@@ -1,0 +1,18 @@
+---
+import type { Resident } from '../data/residents';
+interface Props { resident: Resident }
+const { resident } = Astro.props;
+---
+<span class="resident-logo" aria-hidden="true">
+	{resident.logo ? (
+		<img class:list={{ wide: resident.logoClass === 'is-wide' }} src={resident.logo} alt="" width="100" height="48" loading="lazy" decoding="async" />
+	) : (
+		<span class="wordmark">{resident.wordmark ?? resident.name}</span>
+	)}
+</span>
+<style>
+	.resident-logo { display: flex; align-items: center; justify-content: center; width: 100%; max-width: 6.25rem; height: 3rem; color: #fff; }
+	img { display: block; width: 3rem; height: 3rem; object-fit: contain; }
+	img.wide { width: 6.25rem; filter: brightness(0) invert(1); }
+	.wordmark { font-size: 1rem; font-weight: 700; letter-spacing: -0.04em; white-space: nowrap; }
+</style>

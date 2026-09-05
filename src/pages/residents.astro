@@ -1,4 +1,5 @@
 ---
+import ResidentLogo from '../components/ResidentLogo.astro';
 import InfoPage from '../layouts/InfoPage.astro';
 import { residents } from '../data/residents';
 ---
@@ -6,6 +7,7 @@ import { residents } from '../data/residents';
 	<div class="resident-grid">
 		{residents.map(resident => (
 			<section class="resident">
+				<div class="resident-brand"><ResidentLogo resident={resident} /></div>
 				<h2><a href={resident.website}>{resident.name}</a></h2>
 				<p class="tag">{resident.tag}</p>
 				<p>{resident.description}</p>
@@ -17,7 +19,8 @@ import { residents } from '../data/residents';
 </InfoPage>
 <style>
 	.resident-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); gap: 1.5rem; }
-	.resident { padding: 1.5rem; border: 1px solid #7398cf66; border-radius: 0.75rem; background: #0b1422; }
+	.resident { padding: 1.5rem; border: 1px solid var(--page-border); border-radius: 0.75rem; background: var(--card-background); }
 	.resident h2 { margin-top: 0; }
-	.tag { color: #a9c7ef; }
+	.tag { color: var(--page-text); }
+	.resident-brand { margin-bottom: 1.25rem; }
 </style>

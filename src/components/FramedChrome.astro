@@ -211,7 +211,7 @@ const links = [
 
 	.nav-cta { position: relative; z-index: 1; height: var(--hero-control-height, 2.25rem); }
 	.mobile-navigation { display: none; }
-	a:focus-visible { outline: 2px solid #97b8e7; outline-offset: 3px; }
+	a:focus-visible { outline: 2px solid var(--focus-color, #97b8e7); outline-offset: 3px; }
 
 	@media (max-width: 700px) {
 		.hero-header { width: var(--hero-panel-width, calc(100% - 0.6rem)); }
@@ -247,7 +247,7 @@ const links = [
 			gap: 0.25rem;
 			width: min(18rem, calc(100vw - var(--hero-brand-width, 4.4rem) - 2rem));
 			padding: 0.5rem;
-			border: 1px solid #7398cf;
+			border: 1px solid var(--page-border, #7398cf);
 			border-radius: var(--button-radius);
 			color: var(--button-text);
 			background: var(--button-background);

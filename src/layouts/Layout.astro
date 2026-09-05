@@ -10,13 +10,14 @@ interface Props {
 	description: string;
 	image?: string;
 	immersive?: boolean;
+	neutral?: boolean;
 }
 
-const { title, description, image, immersive = false } = Astro.props;
+const { title, description, image, immersive = false, neutral = false } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class:list={{ 'neutral-page': neutral }}>
 	<head>
 		<BaseHead title={title} description={description} image={image} />
 		<ClientRouter fallback="swap" />

@@ -1,13 +1,15 @@
 ---
 import { Image } from 'astro:assets';
 import showAndTell from '../../public/images/events/show-and-tell-supabase-ceo.png';
+import ResidentLogo from '../components/ResidentLogo.astro';
+import { residents } from '../data/residents';
 import Layout from '../layouts/Layout.astro';
 import { SITE_TITLE, APPLY_FORM_URL, VENUE_ADDRESS, VENUE_MAPS_URL, VENUE_WAZE_URL } from '../consts';
 
 const description = 'A working home for founders building AI products in Malaysia.';
 ---
 
-<Layout title={`The AI Residency | ${SITE_TITLE}`} description={description}>
+<Layout title={`The AI Residency | ${SITE_TITLE}`} description={description} neutral>
 	<article class="residency-page">
 		<div class="residency-content">
 			<header class="residency-header">
@@ -38,6 +40,20 @@ const description = 'A working home for founders building AI products in Malaysi
 				<figcaption>Show &amp; Tell at Malaysian AI</figcaption>
 			</figure>
 
+			<section class="resident-teams" aria-labelledby="teams-title">
+				<h2 id="teams-title">Resident teams</h2>
+				<ul class="resident-logos">
+					{residents.map(resident => (
+						<li>
+							<a href={resident.website}>
+								<ResidentLogo resident={resident} />
+								<span>{resident.name}</span>
+							</a>
+						</li>
+					))}
+				</ul>
+			</section>
+
 			<section class="residency-home" aria-labelledby="home-title">
 				<h2 id="home-title">Our home</h2>
 				<div class="home-address">
@@ -55,8 +71,8 @@ const description = 'A working home for founders building AI products in Malaysi
 
 <style>
 	.residency-page {
-		color: #e0e8f4;
-		background: #06090f;
+		color: var(--page-text);
+		background: var(--page-background);
 	}
 
 	.residency-content {
@@ -81,7 +97,7 @@ const description = 'A working home for founders building AI products in Malaysi
 
 	.residency-title p {
 		margin: 0.9rem 0 0;
-		color: #a9c7ef;
+		color: var(--page-text);
 		font-size: 0.875rem;
 		line-height: 1.5;
 	}
@@ -89,7 +105,7 @@ const description = 'A working home for founders building AI products in Malaysi
 	.residency-intro > p {
 		max-width: 32rem;
 		margin: 0;
-		color: rgb(224 232 244 / 0.78);
+		color: var(--page-text);
 		font-size: 1rem;
 		line-height: 1.6;
 	}
@@ -103,7 +119,7 @@ const description = 'A working home for founders building AI products in Malaysi
 	}
 
 	.residents-link {
-		color: #b7c9e2;
+		color: var(--page-text);
 		font-size: 0.85rem;
 		text-decoration: none;
 	}
@@ -123,10 +139,17 @@ const description = 'A working home for founders building AI products in Malaysi
 
 	figcaption {
 		margin-top: 0.75rem;
-		color: #8b9aaf;
+		color: var(--page-text);
 		font-size: 0.75rem;
 		line-height: 1.5;
 	}
+
+	.resident-teams { margin-top: 2rem; }
+	.resident-teams h2 { margin: 0 0 1rem; font-size: 0.875rem; font-weight: 400; }
+	.resident-logos { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0.75rem; margin: 0; padding: 0; list-style: none; }
+	.resident-logos a { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; height: 100%; padding: 1.25rem 0.5rem; border: 1px solid var(--page-border); border-radius: 0.5rem; color: var(--page-text); background: var(--card-background); text-decoration: none; }
+	.resident-logos a > span { font-size: 0.75rem; text-align: center; }
+	.resident-logos a:hover { border-color: #fff; }
 
 	.residency-home {
 		display: grid;
@@ -135,12 +158,12 @@ const description = 'A working home for founders building AI products in Malaysi
 		align-items: start;
 		padding-top: 1.5rem;
 		margin-top: 2rem;
-		border-top: 1px solid rgb(115 152 207 / 0.25);
+		border-top: 1px solid var(--page-border);
 	}
 
 	.residency-home h2 {
 		margin: 0;
-		color: #8da7ca;
+		color: var(--page-text);
 		font-size: 0.75rem;
 		font-weight: 400;
 		line-height: 1.6;
@@ -155,7 +178,7 @@ const description = 'A working home for founders building AI products in Malaysi
 	.home-address address {
 		max-width: 35rem;
 		margin-top: 0.3rem;
-		color: #8b9aaf;
+		color: var(--page-text);
 		font-size: 0.8rem;
 		font-style: normal;
 		line-height: 1.6;
@@ -168,7 +191,7 @@ const description = 'A working home for founders building AI products in Malaysi
 	}
 
 	.home-directions a {
-		color: #b7c9e2;
+		color: var(--page-text);
 		font-size: 0.8rem;
 		line-height: 1.6;
 		text-decoration: none;
@@ -181,9 +204,10 @@ const description = 'A working home for founders building AI products in Malaysi
 		text-underline-offset: 0.25em;
 	}
 
-	a:focus-visible { outline: 2px solid #97b8e7; outline-offset: 4px; }
+	a:focus-visible { outline: 2px solid var(--focus-color); outline-offset: 4px; }
 
 	@media (max-width: 760px) {
+		.resident-logos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 		.residency-header { grid-template-columns: 1fr; gap: 1.5rem; }
 		.residency-intro > p { max-width: 36rem; }
 		.residency-home { grid-template-columns: 1fr; gap: 0.75rem; margin-top: 1.5rem; }

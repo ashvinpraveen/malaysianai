@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ResidentsTicker } from "@/components/ResidentsTicker";
 import Sponsor from "@/components/Sponsor";
+import { communityPartners } from "@/data/communityPartners";
 
 const LUMA_EVENTS_URL = "https://luma.com/malaysianai";
 const LUMA_EVENTS_EMBED_URL = "https://luma.com/embed/calendar/cal-pPgkuwCFrycSv1Z/events";
@@ -188,65 +189,6 @@ const initiatives: Initiative[] = [
       href: "https://instagram.com/malaysianai",
       isExternal: true,
     },
-  },
-];
-
-const communityPartners = [
-  {
-    name: "Build Club",
-    href: "https://www.buildclub.ai",
-    logo: "/build-club-logo-navbar.webp",
-    summary:
-      "One of the largest AI communities in Asia-Pacific with 5,000+ members. Offers bite-sized courses, role-based learning tracks, and a bounty marketplace — great for anyone wanting to learn AI by actually building things.",
-  },
-  {
-    name: "Build with AI",
-    href: "https://buildwithai.my/",
-    logo: "/build_with_ai_logo.jpeg",
-    summary:
-      "Malaysia's home for developers and non-technical builders creating AI projects. Hosts regular meetups, showcases 65+ member projects, and welcomes everyone from total beginners to experienced devs.",
-  },
-  {
-    name: "AI Tinkerers",
-    href: "https://aitinkerers.org",
-    logo: "/ai_tinkerers_logo.png",
-    summary:
-      "A global network of 86,000+ AI engineers across 203 cities. KL chapter runs monthly meetups with live demos and technical deep-dives.",
-  },
-  {
-    name: "AI Hackerdorm",
-    href: "https://aihackerdorm.com",
-    logo: "/ai_hackerdorm.webp",
-    summary:
-      "Student-first community for coders, designers, and entrepreneurs building AI projects together. Runs weekly sprints, hackathons, and mentorship sessions open to all skill levels.",
-  },
-  {
-    name: "AI SEA",
-    href: "https://www.aisea.builders",
-    logo: "/aisea_logo.png",
-    summary:
-      "A 10,000+ builder network across Southeast Asia shipping real AI products. Organises regional hackathons, co-build sprints, and the flagship AI.SEA Week conference connecting engineers across the region.",
-  },
-  {
-    name: "Rakan Tutor",
-    href: "https://rakantutor.org",
-    logo: "/rakan-tutor-logo.png",
-    summary:
-      "Non-profit bringing free AI education to underserved secondary school students in Malaysia. Runs hands-on workshops and an online learning platform to prepare young Malaysians for an AI-driven future.",
-  },
-  {
-    name: "CoderPuffs",
-    href: "https://luma.com/calendar/cal-GfEevCO5iGF9vbu?period=past",
-    logo: "/coderpuffs_logo.png",
-    summary:
-      "A women-first initiative hosting hands-on café-based build sessions that make coding and AI more welcoming and accessible for all levels. Runs monthly meetups at various cafés across KL.",
-  },
-  {
-    name: "Cursor Community",
-    href: "https://www.instagram.com/cursor.my/",
-    logo: "/cursor-community-logo.png",
-    summary:
-      "Co-organised the Cursor Malaysia hackathon with 1000+ signups and the official community for Cursor in KL. Join hackathons, workshops and chat with builders.",
   },
 ];
 
@@ -480,17 +422,20 @@ const MalaysianAI = () => {
           <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
             <div>
               <h2 className="section-title text-foreground">
-                Meet Malaysia&apos;s AI communities
+                Malaysia&apos;s AI communities and events
               </h2>
               <p className="body-default text-foreground/70 mt-4 max-w-3xl">
                 The best way to get started is by joining an event and meeting like-minded people.
                 There&apos;s communities for everyone — from people totally new to coding, students,
-                to technical ones for devs looking to go deeper into AI. Find your tribe and join
-                an event. Many are free and very friendly!
+                to technical ones for devs looking to go deeper into AI. This directory grows as
+                more groups join. Many events are free and very friendly.
               </p>
-              <div className="mt-8">
+              <div className="mt-8 flex flex-wrap gap-3">
                 <CTAButton href="https://luma.com/malaysianai" variant="primary" size="lg" showArrow isExternal={true}>
                   Join the next AI event
+                </CTAButton>
+                <CTAButton href="/community" variant="outline" size="lg" showArrow isExternal={false}>
+                  Browse all communities
                 </CTAButton>
               </div>
             </div>

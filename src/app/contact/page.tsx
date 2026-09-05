@@ -16,6 +16,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page() {
-  return <Contact />;
+export default function Page({
+  searchParams,
+}: {
+  searchParams?: { subject?: string };
+}) {
+  return <Contact defaultSubject={searchParams?.subject ?? ""} />;
 }

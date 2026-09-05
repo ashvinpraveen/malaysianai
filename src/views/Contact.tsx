@@ -5,7 +5,15 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { CTAButton } from "@/components/CTAButton";
 
-const Contact = () => {
+type ContactProps = {
+  defaultSubject?: string;
+};
+
+const Contact = ({ defaultSubject = "" }: ContactProps) => {
+  const isCommunitySubmission = defaultSubject
+    .toLowerCase()
+    .includes("add my community");
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -38,9 +46,13 @@ const Contact = () => {
         <section className="px-6 md:px-10 lg:px-16">
           <div className="mx-auto max-w-4xl text-center space-y-4">
             <p className="text-sm font-medium text-foreground/60">Contact</p>
-            <h1 className="section-title text-foreground">Get in touch</h1>
+            <h1 className="section-title text-foreground">
+              {isCommunitySubmission ? "Add your community" : "Get in touch"}
+            </h1>
             <p className="body-default text-foreground/70">
-              Send a message about partnerships, residency questions, or community collaborations.
+              {isCommunitySubmission
+                ? "Tell us about your community — name, website, what you run, and where you meet. We'll get you into the directory."
+                : "Send a message about partnerships, residency questions, or community collaborations."}
             </p>
           </div>
         </section>
@@ -96,6 +108,7 @@ const Contact = () => {
                   id="contact-subject"
                   name="subject"
                   type="text"
+                  defaultValue={defaultSubject}
                   placeholder="How can we help?"
                   className="w-full rounded-xl border border-foreground/10 bg-background px-4 py-3 text-sm text-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
                 />
@@ -113,7 +126,11 @@ const Contact = () => {
                   name="message"
                   rows={6}
                   required
-                  placeholder="Tell us a bit about your request."
+                  placeholder={
+                    isCommunitySubmission
+                      ? "Community name, website/social, city, and a short description of what you do."
+                      : "Tell us a bit about your request."
+                  }
                   className="w-full rounded-xl border border-foreground/10 bg-background px-4 py-3 text-sm text-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
                 />
               </div>

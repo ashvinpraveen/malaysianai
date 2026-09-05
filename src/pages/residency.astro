@@ -1,19 +1,192 @@
 ---
-import InfoPage from '../layouts/InfoPage.astro';
-import { APPLY_FORM_URL, SHOW_AND_TELL_WHATSAPP, VENUE_ADDRESS, VENUE_MAPS_URL, VENUE_WAZE_URL } from '../consts';
+import { Image } from 'astro:assets';
+import showAndTell from '../../public/images/events/show-and-tell-supabase-ceo.png';
+import Layout from '../layouts/Layout.astro';
+import { SITE_TITLE, APPLY_FORM_URL, VENUE_ADDRESS, VENUE_MAPS_URL, VENUE_WAZE_URL } from '../consts';
+
+const description = 'A working home for founders building AI products in Malaysia.';
 ---
-<InfoPage title="The AI Residency" description="Build in Malaysia. Ship for the world. A working home for founders building AI products in Malaysia.">
-	<div class="actions"><a class="site-button" href={APPLY_FORM_URL}>Apply to the residency</a><a href="/residents">Meet the residents</a></div>
-	<h2>A place to build together</h2>
-	<ul>
-		<li>A co-working space for your daily work.</li>
-		<li>Weekly show and tells to share progress and learn from other builders.</li>
-		<li>Support with technical work, fundraising, product, and bringing your product to market.</li>
-	</ul>
-	<h2>Show and Tell Thursdays</h2>
-	<p>Join the community for co-working from 11am and Show and Tell at 4pm on Thursdays.</p>
-	<a class="site-button" href={SHOW_AND_TELL_WHATSAPP}>Ask to join on WhatsApp</a>
-	<h2>Our home at 500 Global</h2>
-	<p>{VENUE_ADDRESS}</p>
-	<div class="actions"><a href={VENUE_MAPS_URL}>Directions on Google Maps</a><a href={VENUE_WAZE_URL}>Directions on Waze</a></div>
-</InfoPage>
+
+<Layout title={`The AI Residency | ${SITE_TITLE}`} description={description}>
+	<article class="residency-page">
+		<div class="residency-content">
+			<header class="residency-header">
+				<div class="residency-title">
+					<h1>The AI Residency</h1>
+					<p>Build in Malaysia. Ship for the world.</p>
+				</div>
+				<div class="residency-intro">
+					<p>{description} Co-working space, regular demos, and support with product, engineering, and fundraising.</p>
+					<div class="residency-actions">
+						<a class="site-button" href={APPLY_FORM_URL}>Apply to the residency</a>
+						<a class="residents-link" href="/residents">Meet the residents <span aria-hidden="true">↗</span></a>
+					</div>
+				</div>
+			</header>
+
+			<figure class="residency-photo">
+				<Image
+					src={showAndTell}
+					alt="An audience of builders gathered for a Show & Tell conversation at Malaysian AI"
+					widths={[540, 810, 1080]}
+					sizes="(max-width: 1152px) calc(100vw - 3rem), 1104px"
+					format="webp"
+					quality={85}
+					loading="eager"
+					fetchpriority="high"
+				/>
+				<figcaption>Show &amp; Tell at Malaysian AI</figcaption>
+			</figure>
+
+			<section class="residency-home" aria-labelledby="home-title">
+				<h2 id="home-title">Our home</h2>
+				<div class="home-address">
+					<p class="home-name">500 Global, Kuala Lumpur</p>
+					<address>{VENUE_ADDRESS}</address>
+				</div>
+				<nav class="home-directions" aria-label="Venue directions">
+					<a href={VENUE_MAPS_URL}>Google Maps <span aria-hidden="true">↗</span></a>
+					<a href={VENUE_WAZE_URL}>Waze <span aria-hidden="true">↗</span></a>
+				</nav>
+			</section>
+		</div>
+	</article>
+</Layout>
+
+<style>
+	.residency-page {
+		color: #e0e8f4;
+		background: #06090f;
+	}
+
+	.residency-content {
+		max-width: 72rem;
+		padding: clamp(2rem, 4vw, 3.5rem) 1.5rem clamp(3rem, 6vw, 5rem);
+		margin-inline: auto;
+	}
+
+	.residency-header {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 2rem clamp(2rem, 5vw, 5rem);
+		align-items: start;
+		margin-bottom: clamp(2rem, 4vw, 3rem);
+	}
+
+	h1 {
+		margin: 0;
+		font: 400 clamp(2rem, 3.5vw, 3rem) / 1 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		letter-spacing: -0.04em;
+	}
+
+	.residency-title p {
+		margin: 0.9rem 0 0;
+		color: #a9c7ef;
+		font-size: 0.875rem;
+		line-height: 1.5;
+	}
+
+	.residency-intro > p {
+		max-width: 32rem;
+		margin: 0;
+		color: rgb(224 232 244 / 0.78);
+		font-size: 1rem;
+		line-height: 1.6;
+	}
+
+	.residency-actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 1rem 1.5rem;
+		margin-top: 1.4rem;
+	}
+
+	.residents-link {
+		color: #b7c9e2;
+		font-size: 0.85rem;
+		text-decoration: none;
+	}
+
+	.residents-link span { margin-left: 0.25rem; }
+
+	.residency-photo { margin: 0; }
+
+	.residency-photo :global(img) {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 3 / 2;
+		object-fit: cover;
+		border-radius: 0.7rem;
+	}
+
+	figcaption {
+		margin-top: 0.75rem;
+		color: #8b9aaf;
+		font-size: 0.75rem;
+		line-height: 1.5;
+	}
+
+	.residency-home {
+		display: grid;
+		grid-template-columns: 7rem minmax(0, 1fr) auto;
+		gap: 0.75rem 1.5rem;
+		align-items: start;
+		padding-top: 1.5rem;
+		margin-top: 2rem;
+		border-top: 1px solid rgb(115 152 207 / 0.25);
+	}
+
+	.residency-home h2 {
+		margin: 0;
+		color: #8da7ca;
+		font-size: 0.75rem;
+		font-weight: 400;
+		line-height: 1.6;
+	}
+
+	.home-name {
+		margin: 0;
+		font-size: 0.875rem;
+		line-height: 1.5;
+	}
+
+	.home-address address {
+		max-width: 35rem;
+		margin-top: 0.3rem;
+		color: #8b9aaf;
+		font-size: 0.8rem;
+		font-style: normal;
+		line-height: 1.6;
+	}
+
+	.home-directions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem 1.25rem;
+	}
+
+	.home-directions a {
+		color: #b7c9e2;
+		font-size: 0.8rem;
+		line-height: 1.6;
+		text-decoration: none;
+	}
+
+	.residents-link:hover,
+	.home-directions a:hover {
+		color: #fff;
+		text-decoration: underline;
+		text-underline-offset: 0.25em;
+	}
+
+	a:focus-visible { outline: 2px solid #97b8e7; outline-offset: 4px; }
+
+	@media (max-width: 760px) {
+		.residency-header { grid-template-columns: 1fr; gap: 1.5rem; }
+		.residency-intro > p { max-width: 36rem; }
+		.residency-home { grid-template-columns: 1fr; gap: 0.75rem; margin-top: 1.5rem; }
+		.home-directions { margin-top: 0.25rem; }
+	}
+</style>

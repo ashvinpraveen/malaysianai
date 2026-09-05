@@ -67,13 +67,8 @@ const groups = [
 		position: relative;
 		overflow: hidden;
 		padding: clamp(4rem, 7vw, 6.5rem) clamp(1.25rem, 4vw, 4rem) clamp(2rem, 4vw, 3.5rem);
-		color: var(--page-text, #f2f5fa);
-		background: var(--page-background, #07101a);
-	}
-
-	:global(html),
-	:global(body) {
-		background-color: var(--page-background, #07101a);
+		color: var(--footer-text);
+		background: var(--site-background);
 	}
 
 	.footer-grid {
@@ -91,7 +86,7 @@ const groups = [
 		gap: 0.7rem;
 		align-items: center;
 		width: fit-content;
-		font-size: 1rem;
+		font-size: var(--text-base);
 		font-weight: 600;
 		text-decoration: none;
 	}
@@ -105,7 +100,7 @@ const groups = [
 	.footer-intro > p {
 		max-width: 24rem;
 		margin: 1.6rem 0;
-		color: var(--page-text, rgb(224 232 244 / 0.62));
+		color: var(--footer-copy);
 		font-size: 0.92rem;
 		line-height: 1.55;
 	}
@@ -129,7 +124,7 @@ const groups = [
 	.footer-link-group > p,
 	.footer-company > p {
 		margin: 0 0 1.5rem;
-		color: var(--page-text, #8da7ca);
+		color: var(--footer-label);
 		font-size: 0.78rem;
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
@@ -145,7 +140,7 @@ const groups = [
 
 	.footer-link-group a,
 	.footer-company a {
-		color: var(--page-text, rgb(224 232 244 / 0.7));
+		color: var(--footer-link);
 		font-size: 0.9rem;
 		text-decoration: none;
 		transition: color 180ms ease;
@@ -155,7 +150,7 @@ const groups = [
 	.footer-link-group a:focus-visible,
 	.footer-company a:hover,
 	.footer-company a:focus-visible {
-		color: #fff;
+		color: var(--color-white);
 	}
 
 	.footer-company {
@@ -166,7 +161,7 @@ const groups = [
 
 	.footer-company span {
 		margin-top: 2rem;
-		color: var(--page-text, rgb(224 232 244 / 0.38));
+		color: var(--footer-meta);
 		font-size: 0.76rem;
 	}
 
@@ -174,8 +169,8 @@ const groups = [
 		position: relative;
 		width: min(92rem, 100%);
 		margin: clamp(5.5rem, 10vw, 9rem) auto 0;
-		color: var(--footer-wordmark-color, rgb(155 187 231 / 0.18));
-		font-family: 'Atkinson', system-ui, sans-serif;
+		color: var(--footer-wordmark-color);
+		font-family: var(--font-body);
 		font-size: clamp(6rem, 14vw, 14rem);
 		font-weight: 400;
 		letter-spacing: -0.06em;

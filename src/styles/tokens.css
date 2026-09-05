@@ -1,0 +1,59 @@
+/* Shared typography and theme values. Component geometry stays with its component. */
+:root {
+	--font-body: 'Atkinson', system-ui, sans-serif;
+	--font-display: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+	--font-pixel: 'Mondwest', 'Times New Roman', Times, serif;
+	--text-xs: 0.75rem;
+	--text-sm: 0.875rem;
+	--text-base: 1rem;
+	--text-page-title: clamp(2rem, 3.5vw, 3rem);
+	--text-section-title: clamp(1.3rem, 1.8vw, 1.7rem);
+	--leading-body: 1.6;
+	--radius-media: 0.7rem;
+
+	--color-white: #fff;
+	--site-background: #07101a;
+	--page-background: #06090f;
+	--surface-background: #0a1422;
+	--card-background: #0b1422;
+	--image-background: #121a29;
+	--page-text: #e0e8f4;
+	--text-heading: #f4f7fc;
+	--text-bright: #f2f5fa;
+	--text-accent: #a9c7ef;
+	--text-link: #b7c9e2;
+	--text-muted: #8da7ca;
+	--focus-color: #97b8e7;
+	--border-color: #7398cf;
+	--page-border: var(--border-color);
+
+	--button-background: var(--color-white);
+	--button-hover-background: #edf0f4;
+	--button-text: #101820;
+	--button-radius: 0.45rem;
+
+	--footer-text: var(--text-bright);
+	--footer-label: var(--text-muted);
+	--footer-copy: rgb(224 232 244 / 0.62);
+	--footer-link: rgb(224 232 244 / 0.7);
+	--footer-meta: rgb(224 232 244 / 0.38);
+	--footer-wordmark-color: rgb(155 187 231 / 0.18);
+}
+
+/* Residency, residents and contact use white text on neutral dark surfaces. */
+html.neutral-page {
+	--site-background: #090909;
+	--page-background: #090909;
+	--page-text: var(--color-white);
+	--page-border: rgb(255 255 255 / 0.16);
+	--card-background: #111;
+	--focus-color: var(--color-white);
+	--footer-text: var(--color-white);
+	--footer-label: var(--color-white);
+	--footer-copy: var(--color-white);
+	--footer-link: var(--color-white);
+	--footer-meta: var(--color-white);
+	--footer-wordmark-color: rgb(255 255 255 / 0.12);
+	--button-text: #111;
+	--button-hover-background: #eee;
+}

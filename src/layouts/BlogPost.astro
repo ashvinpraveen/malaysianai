@@ -142,8 +142,8 @@ const coverImage = slug === 'largest-ai-learnathon'
 	.story-page {
 		--story-width: 54rem;
 		--story-inline-gap: clamp(1.25rem, 6vw, 6rem);
-		color: #e0e8f4;
-		background: #06090f;
+		color: var(--page-text);
+		background: var(--page-background);
 	}
 
 	.story-header {
@@ -164,8 +164,8 @@ const coverImage = slug === 'largest-ai-learnathon'
 		display: flex;
 		align-items: center;
 		gap: 0.55rem;
-		color: #8da7ca;
-		font-size: 0.875rem;
+		color: var(--text-muted);
+		font-size: var(--text-sm);
 		text-decoration: none;
 	}
 
@@ -178,7 +178,7 @@ const coverImage = slug === 'largest-ai-learnathon'
 	.story-header h1 {
 		width: 100%;
 		margin: 0 auto;
-		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-family: var(--font-display);
 		font-size: clamp(2.1rem, 4vw, 3.25rem);
 		font-weight: 400;
 		letter-spacing: -0.04em;
@@ -213,7 +213,7 @@ const coverImage = slug === 'largest-ai-learnathon'
 		margin: 0 auto;
 		border: 0;
 		border-radius: 0;
-		background: #121a29;
+		background: var(--image-background);
 		cursor: zoom-in;
 	}
 
@@ -231,7 +231,7 @@ const coverImage = slug === 'largest-ai-learnathon'
 	}
 
 	.story-cover:focus-visible {
-		outline: 2px solid #97b8e7;
+		outline: 2px solid var(--focus-color);
 		outline-offset: 4px;
 	}
 
@@ -261,7 +261,7 @@ const coverImage = slug === 'largest-ai-learnathon'
 
 	.story-body :global(h2) {
 		margin: clamp(3.75rem, 7vw, 5.5rem) 0 1.35rem;
-		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-family: var(--font-display);
 		font-size: clamp(2.3rem, 5vw, 3.65rem);
 		font-weight: 400;
 		letter-spacing: -0.035em;
@@ -290,12 +290,12 @@ const coverImage = slug === 'largest-ai-learnathon'
 		padding: 0.25rem 0 0.25rem clamp(1.25rem, 3vw, 2rem);
 		margin: clamp(2.5rem, 5vw, 4rem) 0;
 		border-left: 2px solid #315d9f;
-		color: #b7c9e2;
+		color: var(--text-link);
 	}
 
 	.story-body :global(blockquote p) {
 		margin: 0;
-		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-family: var(--font-display);
 		font-size: clamp(1.65rem, 3.2vw, 2.35rem);
 		letter-spacing: -0.02em;
 		line-height: 1.15;
@@ -309,7 +309,7 @@ const coverImage = slug === 'largest-ai-learnathon'
 
 	.story-body :global(a:hover),
 	.story-body :global(a:focus-visible) {
-		color: #fff;
+		color: var(--color-white);
 	}
 
 	.story-body :global(a:focus-visible),
@@ -342,7 +342,7 @@ const coverImage = slug === 'largest-ai-learnathon'
 	}
 
 	.story-body :global(img:focus-visible) {
-		outline: 2px solid #97b8e7;
+		outline: 2px solid var(--focus-color);
 		outline-offset: 4px;
 	}
 
@@ -372,13 +372,13 @@ const coverImage = slug === 'largest-ai-learnathon'
 		max-width: 31rem;
 		margin: 0;
 		color: rgb(224 232 244 / 0.62);
-		font-size: 1rem;
+		font-size: var(--text-base);
 		line-height: 1.5;
 	}
 
 	.story-end .site-button {
 		color: #101820;
-		background: #fff;
+		background: var(--color-white);
 	}
 
 	.story-end .site-button:hover,
@@ -399,7 +399,7 @@ const coverImage = slug === 'largest-ai-learnathon'
 		padding: clamp(1rem, 3vw, 2.5rem);
 		margin: 0;
 		border: 0 !important;
-		color: #f4f7fc;
+		color: var(--text-heading);
 		background: #02050a !important;
 	}
 
@@ -428,9 +428,9 @@ const coverImage = slug === 'largest-ai-learnathon'
 		place-items: center;
 		border: 1px solid rgb(255 255 255 / 0.5);
 		border-radius: 50%;
-		color: #fff;
+		color: var(--color-white);
 		background: rgb(7 16 26 / 0.88);
-		font: 400 1.5rem / 1 'Atkinson', system-ui, sans-serif;
+		font: 400 1.5rem / 1 var(--font-body);
 		cursor: pointer;
 	}
 

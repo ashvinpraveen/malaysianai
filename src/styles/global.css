@@ -1,3 +1,5 @@
+@import './tokens.css';
+
 @font-face {
 	font-family: 'Atkinson';
 	src: url('../assets/fonts/atkinson-regular.woff') format('woff');
@@ -23,27 +25,13 @@
 }
 
 :root {
-	--button-background: #fff;
-	--button-hover-background: #edf0f4;
-	--button-text: #101820;
-	--button-radius: 0.45rem;
-	font-family: 'Atkinson', system-ui, sans-serif;
+	font-family: var(--font-body);
 	color: #102b2a;
-	background: #07101a;
+	background: var(--site-background);
 	font-synthesis: none;
 }
 
-html.neutral-page {
-	--page-background: #090909;
-	--page-text: #fff;
-	--page-border: rgb(255 255 255 / 0.16);
-	--card-background: #111;
-	--focus-color: #fff;
-	--footer-wordmark-color: rgb(255 255 255 / 0.12);
-	--button-text: #111;
-	--button-hover-background: #eee;
-	color: var(--page-text);
-}
+html.neutral-page { color: var(--page-text); }
 
 * {
 	box-sizing: border-box;
@@ -51,16 +39,16 @@ html.neutral-page {
 
 html {
 	scroll-behavior: smooth;
-	background-color: var(--page-background, #07101a);
+	background-color: var(--site-background);
 }
 
 body {
 	margin: 0;
-	background-color: var(--page-background, #07101a);
+	background-color: var(--site-background);
 }
 
 ::view-transition {
-	background: var(--page-background, #06090f);
+	background: var(--page-background);
 }
 
 ::view-transition-old(root) {
@@ -118,7 +106,7 @@ a {
 	border-radius: var(--button-radius);
 	color: var(--button-text);
 	background: var(--button-background);
-	font: 400 0.82rem / 1.2 'Atkinson', system-ui, sans-serif;
+	font: 400 0.82rem / 1.2 var(--font-body);
 	text-decoration: none;
 	white-space: nowrap;
 	cursor: pointer;
@@ -132,7 +120,7 @@ a {
 }
 
 .site-button:focus-visible {
-	outline: 2px solid var(--focus-color, #97b8e7);
+	outline: 2px solid var(--focus-color);
 	outline-offset: 3px;
 }
 
@@ -145,7 +133,7 @@ a {
 }
 
 body.immersive {
-	background: #07101a;
+	background: var(--site-background);
 }
 
 .immersive-main {

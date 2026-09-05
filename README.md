@@ -49,6 +49,14 @@ The Luma calendar loads from an external iframe. Applications open the configure
 
 `docs/site-inventory.md` records the previous site's content and routes. It is historical context, not a list of currently implemented pages.
 
+## Styling
+
+`src/styles/tokens.css` owns shared fonts, text sizes, colors, and button values. Its default theme preserves the homepage and blog palette. `Layout` accepts `neutral` for residency, residents, and contact; the `html.neutral-page` overrides define their white text and neutral backgrounds. Change these values here when updating several pages together.
+
+`src/styles/global.css` loads the tokens and fonts, then defines resets, shared buttons, and page transitions. Keep section layout, responsive rules, and animation styles in their Astro component. Hero and calendar styles live in `HeroSection.astro` and `MissionSection.astro`; `src/pages/index.astro` composes the homepage sections.
+
+Use the shared text sizes for ordinary page headings and copy. Keep intentional homepage display sizes and illustration colors local. Edit an existing selector before adding another override, and group mobile and reduced-motion rules at the end of the component stylesheet.
+
 ## Deployment
 
 Run `bun run build` and serve `dist/` with a static host that resolves directory URLs to `index.html`. The canonical site URL is configured in `astro.config.mjs`. No server runtime is needed after the build.

@@ -91,8 +91,8 @@ const links = [
 		bottom: auto;
 		left: var(--hero-brand-width, 7.2rem);
 		height: var(--hero-header-height, 4.25rem);
-		border-bottom: 1.5px solid var(--hero-line, #7398cf);
-		background: var(--hero-frame, #06090f);
+		border-bottom: 1.5px solid var(--hero-line, var(--border-color));
+		background: var(--hero-frame, var(--page-background));
 		content: '';
 	}
 
@@ -102,10 +102,10 @@ const links = [
 		right: 0;
 		width: 0.95rem;
 		height: calc(var(--hero-header-height, 4.25rem) - var(--hero-gap, 1rem));
-		border-right: 1.5px solid var(--hero-line, #7398cf);
-		border-bottom: 1.5px solid var(--hero-line, #7398cf);
+		border-right: 1.5px solid var(--hero-line, var(--border-color));
+		border-bottom: 1.5px solid var(--hero-line, var(--border-color));
 		border-bottom-right-radius: 0.95rem;
-		background: var(--hero-frame, #06090f);
+		background: var(--hero-frame, var(--page-background));
 		content: '';
 	}
 
@@ -118,7 +118,7 @@ const links = [
 		height: var(--hero-brand-width, 7.2rem);
 		place-items: center;
 		border-bottom-right-radius: 0.95rem;
-		background: var(--hero-frame, #06090f);
+		background: var(--hero-frame, var(--page-background));
 		pointer-events: auto;
 	}
 
@@ -128,8 +128,8 @@ const links = [
 		right: 0;
 		bottom: 0;
 		left: var(--hero-gap, 1rem);
-		border-right: 1.5px solid var(--hero-line, #7398cf);
-		border-bottom: 1.5px solid var(--hero-line, #7398cf);
+		border-right: 1.5px solid var(--hero-line, var(--border-color));
+		border-bottom: 1.5px solid var(--hero-line, var(--border-color));
 		border-bottom-right-radius: 0.95rem;
 		content: '';
 		pointer-events: none;
@@ -163,7 +163,7 @@ const links = [
 
 	.hero-nav a,
 	.mobile-navigation a {
-		font: 400 0.82rem / 1.2 'Atkinson', system-ui, sans-serif;
+		font: 400 0.82rem / 1.2 var(--font-body);
 		text-decoration: none;
 		white-space: nowrap;
 	}
@@ -186,7 +186,7 @@ const links = [
 		padding: var(--hero-gap, 1rem);
 		height: var(--hero-header-height, 4.25rem);
 		border-bottom-left-radius: 0.95rem;
-		background: var(--hero-frame, #06090f);
+		background: var(--hero-frame, var(--page-background));
 	}
 
 	.hero-cta-panel::after {
@@ -195,8 +195,8 @@ const links = [
 		right: var(--hero-gap, 1rem);
 		bottom: 0;
 		left: 0;
-		border-bottom: 1.5px solid var(--hero-line, #7398cf);
-		border-left: 1.5px solid var(--hero-line, #7398cf);
+		border-bottom: 1.5px solid var(--hero-line, var(--border-color));
+		border-left: 1.5px solid var(--hero-line, var(--border-color));
 		border-bottom-left-radius: 0.95rem;
 		content: '';
 		pointer-events: none;
@@ -211,7 +211,7 @@ const links = [
 
 	.nav-cta { position: relative; z-index: 1; height: var(--hero-control-height, 2.25rem); }
 	.mobile-navigation { display: none; }
-	a:focus-visible { outline: 2px solid var(--focus-color, #97b8e7); outline-offset: 3px; }
+	a:focus-visible { outline: 2px solid var(--focus-color); outline-offset: 3px; }
 
 	@media (max-width: 700px) {
 		.hero-header { width: var(--hero-panel-width, calc(100% - 0.6rem)); }
@@ -247,7 +247,7 @@ const links = [
 			gap: 0.25rem;
 			width: min(18rem, calc(100vw - var(--hero-brand-width, 4.4rem) - 2rem));
 			padding: 0.5rem;
-			border: 1px solid var(--page-border, #7398cf);
+			border: 1px solid var(--page-border);
 			border-radius: var(--button-radius);
 			color: var(--button-text);
 			background: var(--button-background);

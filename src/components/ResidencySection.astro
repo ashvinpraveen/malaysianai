@@ -73,8 +73,8 @@ import { residents } from '../data/residents';
 <style>
 	.residency-chapter {
 		padding: clamp(0.75rem, 1.6vw, 1.5rem);
-		color: #f2f5fa;
-		background: #06090f;
+		color: var(--text-bright);
+		background: var(--page-background);
 	}
 
 	.residency-heading {
@@ -83,7 +83,7 @@ import { residents } from '../data/residents';
 
 	.residency-kicker {
 		margin: 0 0 1.1rem;
-		color: #a9c7ef;
+		color: var(--text-accent);
 		font-size: 0.7rem;
 		letter-spacing: 0.16em;
 		text-transform: uppercase;
@@ -91,7 +91,7 @@ import { residents } from '../data/residents';
 
 	.residency-heading h2 {
 		margin: 0;
-		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-family: var(--font-display);
 		font-size: clamp(2.3rem, 3.8vw, 3.6rem);
 		font-weight: 400;
 		letter-spacing: -0.035em;
@@ -103,7 +103,7 @@ import { residents } from '../data/residents';
 		overflow: hidden;
 		border: 1.5px solid rgb(115 152 207 / 0.55);
 		border-radius: 0.95rem 0.95rem 0 0.95rem;
-		background: #06090f;
+		background: var(--page-background);
 	}
 
 	/* Hangs below the strip; its background hides the strip's bottom border
@@ -121,7 +121,7 @@ import { residents } from '../data/residents';
 		border: 1.5px solid rgb(115 152 207 / 0.55);
 		border-top: 0;
 		border-radius: 0 0 0.95rem 0.95rem;
-		background: #06090f;
+		background: var(--page-background);
 		text-align: right;
 	}
 
@@ -130,7 +130,7 @@ import { residents } from '../data/residents';
 		margin: 0;
 		color: rgb(224 232 244 / 0.72);
 		font-size: clamp(0.92rem, 1.25vw, 1.08rem);
-		line-height: 1.6;
+		line-height: var(--leading-body);
 	}
 
 	.residency-actions {
@@ -155,7 +155,7 @@ import { residents } from '../data/residents';
 		gap: 0.45rem;
 		padding-bottom: 0.2rem;
 		border-bottom: 1px solid rgb(169 199 239 / 0.45);
-		color: #a9c7ef;
+		color: var(--text-accent);
 		font-size: 0.84rem;
 		line-height: 1;
 		text-decoration: none;
@@ -207,7 +207,7 @@ import { residents } from '../data/residents';
 		aspect-ratio: 1.35;
 		place-items: center;
 		overflow: hidden;
-		border-radius: 0.7rem;
+		border-radius: var(--radius-media);
 		background:
 			radial-gradient(circle at 50% 40%, rgb(255 255 255 / 0.9), transparent 62%),
 			#e9edf3;
@@ -222,7 +222,7 @@ import { residents } from '../data/residents';
 	.resident-tile:focus-visible {
 		outline: 2px solid #9bbbe7;
 		outline-offset: 4px;
-		border-radius: 0.7rem;
+		border-radius: var(--radius-media);
 	}
 
 	.resident-logo {
@@ -251,7 +251,7 @@ import { residents } from '../data/residents';
 	}
 
 	.resident-name {
-		color: #f2f5fa;
+		color: var(--text-bright);
 		font-size: 0.82rem;
 		letter-spacing: 0.02em;
 	}

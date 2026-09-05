@@ -61,8 +61,8 @@ const [featuredPost, ...otherPosts] = posts;
 	.split-blog {
 		min-height: 80svh;
 		padding: clamp(1.25rem, 2vw, 2rem) clamp(1.25rem, 5vw, 4rem) clamp(6rem, 10vw, 10rem);
-		color: #f4f7fc;
-		background: #06090f;
+		color: var(--text-heading);
+		background: var(--page-background);
 	}
 
 	.page-heading,
@@ -79,8 +79,8 @@ const [featuredPost, ...otherPosts] = posts;
 
 	.page-heading h1 {
 		margin: 0;
-		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
-		font-size: clamp(2rem, 3.5vw, 3rem);
+		font-family: var(--font-display);
+		font-size: var(--text-page-title);
 		font-weight: 400;
 		letter-spacing: -0.04em;
 		line-height: 1;
@@ -97,8 +97,8 @@ const [featuredPost, ...otherPosts] = posts;
 		display: block;
 		overflow: hidden;
 		aspect-ratio: 2 / 1;
-		border-radius: 0.7rem;
-		background: #121a29;
+		border-radius: var(--radius-media);
+		background: var(--image-background);
 	}
 
 	.lead-image img {
@@ -118,8 +118,8 @@ const [featuredPost, ...otherPosts] = posts;
 
 	.eyebrow {
 		margin: 0;
-		color: #8da7ca;
-		font-size: 0.75rem;
+		color: var(--text-muted);
+		font-size: var(--text-xs);
 		letter-spacing: 0.06em;
 		text-transform: uppercase;
 	}
@@ -132,7 +132,7 @@ const [featuredPost, ...otherPosts] = posts;
 
 	.lead-copy h2 {
 		margin: 1.1rem 0 0;
-		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-family: var(--font-display);
 		font-size: clamp(2rem, 3.35vw, 3.35rem);
 		font-weight: 400;
 		letter-spacing: -0.04em;
@@ -149,8 +149,8 @@ const [featuredPost, ...otherPosts] = posts;
 		max-width: 31rem;
 		margin: 1.5rem 0 0;
 		color: rgb(224 232 244 / 0.66);
-		font-size: 1rem;
-		line-height: 1.6;
+		font-size: var(--text-base);
+		line-height: var(--leading-body);
 	}
 
 	.text-link {
@@ -158,7 +158,7 @@ const [featuredPost, ...otherPosts] = posts;
 		gap: 0.55rem;
 		margin-top: 1.75rem;
 		padding-bottom: 0.25rem;
-		border-bottom: 1px solid #7398cf;
+		border-bottom: 1px solid var(--border-color);
 		color: #dce7f7;
 		font-size: 0.85rem;
 	}
@@ -181,13 +181,13 @@ const [featuredPost, ...otherPosts] = posts;
 		display: block;
 		margin-top: 0.75rem;
 		color: rgb(224 232 244 / 0.38);
-		font-size: 0.75rem;
+		font-size: var(--text-xs);
 	}
 
 	.archive-row h3 {
 		margin: 0;
-		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
-		font-size: clamp(1.3rem, 1.8vw, 1.7rem);
+		font-family: var(--font-display);
+		font-size: var(--text-section-title);
 		font-weight: 400;
 		line-height: 1.05;
 	}
@@ -198,14 +198,14 @@ const [featuredPost, ...otherPosts] = posts;
 	.archive-row h3 a:focus-visible,
 	.text-link:hover,
 	.text-link:focus-visible {
-		color: #b7c9e2;
+		color: var(--text-link);
 	}
 
 	.lead-image:focus-visible,
 	.lead-copy h2 a:focus-visible,
 	.archive-row h3 a:focus-visible,
 	.text-link:focus-visible {
-		outline: 2px solid #97b8e7;
+		outline: 2px solid var(--focus-color);
 		outline-offset: 4px;
 	}
 

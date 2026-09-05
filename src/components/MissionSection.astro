@@ -1,0 +1,164 @@
+<section class="mission-section light-nav-zone" id="about" aria-labelledby="mission-title">
+	<div class="mission-events">
+		<h2 id="mission-title">Your first step into AI starts here.</h2>
+		<figure class="mission-flower">
+			<img
+				class="mission-flower-image"
+				src="/images/malaysian-ai-bunga-raya-pixel.png"
+				alt="A pixel-art bunga raya plant with a red hibiscus bloom"
+				width="1122"
+				height="1402"
+				loading="lazy"
+				decoding="async"
+			/>
+		</figure>
+
+		<div class="mission-calendar">
+			<div class="luma-frame">
+				<iframe
+					src="https://luma.com/embed/calendar/cal-pPgkuwCFrycSv1Z/events"
+					title="Malaysian AI upcoming events on Luma"
+					loading="lazy"
+					allow="clipboard-write; payment"
+				></iframe>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<style>
+
+	.mission-section {
+		position: relative;
+		display: grid;
+		height: 100dvh;
+		max-height: 100dvh;
+		padding: clamp(2.5rem, 5vh, 4.5rem) clamp(1.25rem, 6vw, 6rem);
+		overflow: hidden;
+		color: var(--text-heading);
+		background: var(--page-background);
+	}
+
+	.mission-events {
+		display: grid;
+		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+		align-content: center;
+		align-items: center;
+		gap: clamp(2.5rem, 5vw, 5rem);
+		width: min(100%, 82rem);
+		height: 100%;
+		margin: auto;
+	}
+
+	.mission-flower {
+		display: grid;
+		align-self: center;
+		min-width: 0;
+		margin: 0;
+		place-items: center;
+	}
+
+	.mission-flower-image {
+		display: block;
+		width: min(100%, 30rem);
+		aspect-ratio: 1122 / 1402;
+		image-rendering: pixelated;
+		transform-origin: 50% 88%;
+		animation: flower-sway 5.5s ease-in-out infinite alternate;
+	}
+
+	.mission-calendar {
+		display: grid;
+		align-self: center;
+		gap: clamp(1.5rem, 3vh, 2.25rem);
+		min-width: 0;
+	}
+
+	.mission-events h2 {
+		grid-column: 1 / -1;
+		justify-self: center;
+		max-width: 36rem;
+		margin: 0;
+		text-align: center;
+		font-family: var(--font-display);
+		font-size: clamp(2.4rem, 3.4vw, 3.6rem);
+		font-weight: 400;
+		letter-spacing: -0.035em;
+		line-height: 0.9;
+		text-wrap: balance;
+	}
+
+	.luma-frame {
+		overflow: hidden;
+		width: 100%;
+		height: min(56dvh, 32rem);
+		padding: 0.35rem;
+		border: 1px solid rgb(115 152 207 / 0.55);
+		border-radius: 1rem;
+		background: var(--page-background);
+		content-visibility: auto;
+		contain-intrinsic-size: 720px;
+	}
+
+	.luma-frame iframe {
+		display: block;
+		width: 100%;
+		height: 100%;
+		border: 0;
+		border-radius: 0.75rem;
+		background: var(--page-background);
+	}
+
+	@media (max-width: 900px) {
+		.mission-section {
+			height: auto;
+			max-height: none;
+			overflow: visible;
+		}
+
+		.mission-events {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+			max-width: 38rem;
+			height: auto;
+		}
+
+		.mission-flower-image {
+			width: min(45vw, 14rem);
+		}
+
+		.mission-events h2 {
+			font-size: clamp(2.8rem, 13vw, 4.2rem);
+		}
+
+		.luma-frame iframe {
+			height: 100%;
+		}
+
+		.luma-frame {
+			height: min(62dvh, 32rem);
+		}
+	}
+
+	@keyframes flower-sway {
+		0% {
+			transform: translate3d(-0.2rem, 0.1rem, 0) rotate(-0.75deg);
+		}
+		55% {
+			transform: translate3d(0.12rem, -0.28rem, 0) rotate(0.2deg);
+		}
+		100% {
+			transform: translate3d(0.35rem, 0, 0) rotate(0.8deg);
+		}
+	}
+
+	@media (max-width: 700px) {
+
+		.mission-section {
+			min-height: auto;
+			padding: 7rem 1.25rem 5rem;
+		}
+
+	}
+</style>

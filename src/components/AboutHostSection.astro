@@ -31,8 +31,8 @@
 <style>
 	.about-host {
 		padding: clamp(0.75rem, 1.6vw, 1.5rem);
-		color: #f2f5fa;
-		background: #06090f;
+		color: var(--text-bright);
+		background: var(--page-background);
 	}
 
 	.about-host-frame {
@@ -52,7 +52,7 @@
 	.section-kicker,
 	.host-mark > p {
 		margin: 0;
-		color: #a9c7ef;
+		color: var(--text-accent);
 		font-size: 0.7rem;
 		letter-spacing: 0.16em;
 		line-height: 1.4;
@@ -62,7 +62,7 @@
 	.about-statement h2 {
 		max-width: 64rem;
 		margin: 0;
-		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-family: var(--font-display);
 		font-size: clamp(2.65rem, 4.6vw, 5rem);
 		font-weight: 400;
 		letter-spacing: -0.045em;
@@ -71,7 +71,7 @@
 	}
 
 	.about-statement h2 span {
-		color: #8da7ca;
+		color: var(--text-muted);
 	}
 
 	.host-row {
@@ -108,7 +108,7 @@
 		margin: 0;
 		color: rgb(224 232 244 / 0.68);
 		font-size: clamp(0.96rem, 1.2vw, 1.08rem);
-		line-height: 1.6;
+		line-height: var(--leading-body);
 	}
 
 	.host-copy a {
@@ -119,7 +119,7 @@
 
 	.host-mark a:focus-visible,
 	.host-copy a:focus-visible {
-		outline: 2px solid #97b8e7;
+		outline: 2px solid var(--focus-color);
 		outline-offset: 4px;
 	}
 

@@ -3,7 +3,7 @@ import { resolve, relative, sep } from 'node:path';
 import { parse } from 'parse5';
 
 const root = resolve('dist');
-const origin = 'https://malaysian.ai';
+const origin = 'https://www.malaysian.ai';
 async function filesIn(directory) {
 	const entries = await readdir(directory, { withFileTypes: true });
 	return (await Promise.all(entries.map(entry => entry.isDirectory()

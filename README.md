@@ -1,6 +1,6 @@
 # Malaysian AI
 
-The public Malaysian AI community site, built with Astro and Bun. It generates static pages for the homepage, residency, residents, contact details, and blog, plus an RSS feed and sitemap.
+The public Malaysian AI community site, built with Astro and Bun. It generates static pages for the homepage, community profile, residency, residents, contact details, legal pages, and blog, plus an RSS feed and sitemap.
 
 ## Development
 
@@ -60,3 +60,17 @@ Use the shared text sizes for ordinary page headings and copy. Keep intentional 
 ## Deployment
 
 Run `bun run build` and serve `dist/` with a static host that resolves directory URLs to `index.html`. The canonical site URL is configured in `astro.config.mjs`. No server runtime is needed after the build.
+
+`vercel.json` configures the Astro build, removes trailing slashes, and sends retired AIMTO URLs to `https://aimto.my/` with HTTP 301 redirects. The `/aimto/:path*` rule covers arbitrary subpaths. Other retired routes point to the residency page or the communities section. Keep `/residency`, `/residents`, and `/contact` as pages.
+
+Astro reads the exact redirect entries from this same file to generate fallback HTML for local preview and other static hosts. These fallback files use meta refresh; `astro preview` does not provide Vercel's HTTP status codes, wildcard routing, or slash normalization. After deployment, check `/aimto`, `/aimto/learnathon`, an arbitrary `/aimto/` subpath, and `/blog/` against the production host. Check that an unknown URL serves the custom 404 with status 404. On a different host, port these redirect rules before switching traffic.
+
+## SEO and page metadata
+
+Set the production hostname in `astro.config.mjs`. `BaseHead.astro` uses it for canonical URLs, share metadata, and Organization/WebSite structured data. Blog posts also emit BlogPosting data. The shared `PageMetadata` type and default share image are in `src/lib/seo.ts`.
+
+Blog authors default to `Organization` because the current posts are credited to editorial teams. Set `authorType: Person` for an individual author. When adding a cover image, supply `imageAlt`, `imageWidth`, and `imageHeight` in frontmatter so share metadata matches the asset. `updatedDate` is optional and should reflect a substantive content update.
+
+`robots.txt` and `llms.txt` are generated endpoints; the latter gets blog URLs from the content collection. The sitemap excludes redirects and the 404 page. Browser checks cover canonical URLs, actual share-image dimensions, structured data, crawl documents, and metadata updates during navigation.
+
+Privacy and terms copy was carried over from the published site and the former `src/views/Privacy.tsx` and `src/views/Terms.tsx` at commit `9f16a4a`, retaining the February 3, 2026 date and contact addresses. This migration changes their presentation, not their policy terms.

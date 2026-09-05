@@ -1,40 +1,74 @@
 ---
 import '../styles/global.css';
-import { SITE_TITLE } from '../consts';
+import { SITE_TITLE, VENUE_ADDRESS } from '../consts';
+import { canonicalURL, defaultShareImage, serializeJsonLd, type PageMetadata } from '../lib/seo';
 
-interface Props {
-	title: string;
-	description: string;
-	image?: string;
-}
-
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-
-const { title, description, image = '/logo-ai-residency.png' } = Astro.props;
-const imageURL = new URL(image, Astro.site ?? Astro.url);
+type Props = PageMetadata;
+const { title, description, image = defaultShareImage, article, noindex = false } = Astro.props;
+if (!Astro.site) throw new Error('Configure the production site URL in astro.config.mjs.');
+const site = Astro.site;
+const canonical = canonicalURL(Astro.url.pathname, site);
+const pageTitle = title === SITE_TITLE
+	? `${SITE_TITLE} | The home of AI builders in Malaysia`
+	: title.endsWith(` | ${SITE_TITLE}`) ? title : `${title} | ${SITE_TITLE}`;
+const imageURL = new URL(image.src, site).href;
+const organizationId = new URL('#organization', site).href;
+const websiteId = new URL('#website', site).href;
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Organization', '@id': organizationId,
+			name: SITE_TITLE, url: site.href,
+			logo: new URL('/malaysian-ai-batik-logo.svg', site).href,
+			address: { '@type': 'PostalAddress', streetAddress: VENUE_ADDRESS, addressLocality: 'Kuala Lumpur', addressCountry: 'MY' },
+		},
+		{
+			'@type': 'WebSite', '@id': websiteId,
+			name: SITE_TITLE, url: site.href, inLanguage: 'en-MY',
+			publisher: { '@id': organizationId },
+		},
+		...(article ? [{
+			'@type': 'BlogPosting', '@id': `${canonical.href}#article`,
+			headline: title, description, url: canonical.href,
+			mainEntityOfPage: { '@type': 'WebPage', '@id': canonical.href },
+			isPartOf: { '@id': websiteId },
+			datePublished: article.published.toISOString(),
+			dateModified: (article.modified ?? article.published).toISOString(),
+			author: { '@type': article.authorType, name: article.author },
+			publisher: { '@id': organizationId }, image: imageURL,
+		}] : []),
+	],
+};
 ---
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="theme-color" content="#06090f" />
-<link rel="icon" type="image/png" href="/logo-ai-residency.png" />
-<link rel="sitemap" href="/sitemap-index.xml" />
-<link
-	rel="alternate"
-	type="application/rss+xml"
-	title={SITE_TITLE}
-	href={new URL('rss.xml', Astro.site)}
-/>
+<link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="/favicon.ico?v=batik" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/favicon-batik.svg" />
+<link rel="sitemap" href={new URL('sitemap-index.xml', site)} />
+<link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href={new URL('rss.xml', site)} />
 <meta name="generator" content={Astro.generator} />
-<link rel="canonical" href={canonicalURL} />
-<title>{title}</title>
+{!noindex && <link rel="canonical" href={canonical} />}
+{noindex && <meta name="robots" content="noindex, follow" />}
+<title>{pageTitle}</title>
 <meta name="description" content={description} />
-<meta property="og:type" content="website" />
-<meta property="og:url" content={Astro.url} />
-<meta property="og:title" content={title} />
+<meta property="og:type" content={article ? 'article' : 'website'} />
+<meta property="og:url" content={canonical} />
+<meta property="og:site_name" content={SITE_TITLE} />
+<meta property="og:locale" content="en_MY" />
+<meta property="og:title" content={pageTitle} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={imageURL} />
+{image.width && <meta property="og:image:width" content={String(image.width)} />}
+{image.height && <meta property="og:image:height" content={String(image.height)} />}
+{image.alt && <meta property="og:image:alt" content={image.alt} />}
+{article && <meta property="article:published_time" content={article.published.toISOString()} />}
+{article?.modified && <meta property="article:modified_time" content={article.modified.toISOString()} />}
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content={title} />
+<meta name="twitter:title" content={pageTitle} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={imageURL} />
+{image.alt && <meta name="twitter:image:alt" content={image.alt} />}
+{!noindex && <script is:inline type="application/ld+json" set:html={serializeJsonLd(structuredData)} />}

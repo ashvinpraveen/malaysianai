@@ -2,11 +2,11 @@
 	<div class="about-host-frame">
 		<div class="about-statement">
 			<p class="section-kicker">About Malaysian AI</p>
-			<h2 id="about-host-title">
-				Your first step into AI starts here. Malaysian AI connects you to workshops,
-				events, and a community of people figuring out AI together.
-				<span>First-timers and serious builders are both welcome.</span>
-			</h2>
+			<div class="about-summary">
+				<h2 id="about-host-title">Build AI together.</h2>
+				<p>Malaysian AI connects you to workshops, events, and a community of people figuring out AI together. First-timers and serious builders are both welcome.</p>
+				<a href="/about">About the community <span aria-hidden="true">↗</span></a>
+			</div>
 		</div>
 
 		<div class="host-row">
@@ -70,8 +70,21 @@
 		text-wrap: pretty;
 	}
 
-	.about-statement h2 span {
-		color: var(--text-muted);
+	.about-summary p {
+		max-width: 38rem;
+		margin: 1.5rem 0 1rem;
+		font-size: var(--text-base);
+		line-height: var(--leading-body);
+	}
+
+	.about-summary > a {
+		font-size: var(--text-sm);
+		text-underline-offset: 0.2em;
+	}
+
+	.about-summary > a:focus-visible {
+		outline: 2px solid var(--focus-color);
+		outline-offset: 4px;
 	}
 
 	.host-row {

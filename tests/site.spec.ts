@@ -26,7 +26,7 @@ test('public destinations load and the hero uses responsive images', async ({ pa
 test('image dialog contains keyboard focus, closes and survives page navigation', async ({ page }) => {
 	const errors: string[] = [];
 	page.on('pageerror', error => errors.push(error.message));
-	await page.goto('/blog/largest-ai-learnathon/');
+	await page.goto('/blog/largest-ai-learnathon');
 	const cover = page.getByRole('button', { name: 'View cover image full screen' });
 	const dialog = page.getByRole('dialog');
 	const close = page.getByRole('button', { name: 'Close full-screen image' });
@@ -39,8 +39,8 @@ test('image dialog contains keyboard focus, closes and survives page navigation'
 		// Native dialog may focus the document boundary; background controls must remain unreachable.
 		expect(await page.evaluate(() => document.activeElement === document.body || !!document.activeElement?.closest('dialog'))).toBe(true);
 	}
-	await page.locator('.footer-company a').evaluate((link: HTMLElement) => link.focus());
-	expect(await page.locator('.footer-company a').evaluate(link => link === document.activeElement)).toBe(false);
+	await page.locator('.footer-company').getByRole('link', { name: 'Contact', exact: true }).evaluate((link: HTMLElement) => link.focus());
+	expect(await page.locator('.footer-company').getByRole('link', { name: 'Contact', exact: true }).evaluate(link => link === document.activeElement)).toBe(false);
 	await page.keyboard.press('Escape');
 	await expect(dialog).not.toBeVisible();
 	await expect(cover).toBeFocused();

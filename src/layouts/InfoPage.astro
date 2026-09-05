@@ -1,10 +1,10 @@
 ---
 import Layout from './Layout.astro';
 import { SITE_TITLE } from '../consts';
-interface Props { title: string; description: string }
-const { title, description } = Astro.props;
+interface Props { title: string; description: string; noindex?: boolean }
+const { title, description, noindex = false } = Astro.props;
 ---
-<Layout title={`${title} | ${SITE_TITLE}`} description={description} neutral>
+<Layout title={`${title} | ${SITE_TITLE}`} description={description} noindex={noindex} neutral>
 	<article class="info-page">
 		<header><h1>{title}</h1><p>{description}</p></header>
 		<slot />

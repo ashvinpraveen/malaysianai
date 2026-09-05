@@ -1,7 +1,7 @@
 ---
 import FramedChrome from './FramedChrome.astro';
 
-const current = Astro.url.pathname.startsWith('/blog') ? 'stories' : undefined;
+const current = Astro.url.pathname.startsWith('/blog') ? 'stories' : Astro.url.pathname === '/about' ? 'about' : undefined;
 ---
 
 <div class="site-header">

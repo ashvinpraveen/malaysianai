@@ -11,7 +11,7 @@ export default [
 		files: ['**/*.{js,mjs,ts,astro}'],
 		languageOptions: {
 			globals: Object.fromEntries([
-				'console', 'process', 'URL', 'setTimeout', 'clearTimeout', 'document', 'window',
+				'console', 'process', 'URL', 'Response', 'setTimeout', 'clearTimeout', 'document', 'window',
 				'HTMLElement', 'HTMLImageElement', 'HTMLButtonElement', 'HTMLDetailsElement', 'HTMLDialogElement',
 				'Element', 'Node', 'KeyboardEvent', 'AbortController', 'IntersectionObserver',
 				'performance', 'matchMedia', 'innerWidth', 'innerHeight', 'requestAnimationFrame', 'cancelAnimationFrame',

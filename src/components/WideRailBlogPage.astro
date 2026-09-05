@@ -10,7 +10,7 @@ const posts = (await getCollection('blog')).sort(
 const [featuredPost, ...otherPosts] = posts;
 ---
 
-<Layout title={`Malaysian AI Blog | ${SITE_TITLE}`} description="Stories from Malaysian AI.">
+<Layout title={`Stories | ${SITE_TITLE}`} description="Stories from Malaysian AI.">
 	<section class="split-blog" aria-labelledby="split-title">
 		<header class="page-heading">
 			<h1 id="split-title">Malaysian AI Blog</h1>
@@ -18,7 +18,7 @@ const [featuredPost, ...otherPosts] = posts;
 
 		{featuredPost && (
 			<article class="lead-story">
-				<a class="lead-image" href={`/blog/${featuredPost.id}/`} aria-label={`Read ${featuredPost.data.title}`}>
+				<a class="lead-image" href={`/blog/${featuredPost.id}`} aria-label={`Read ${featuredPost.data.title}`}>
 					{featuredPost.data.image ? (
 						<img
 							src={featuredPost.data.image}
@@ -35,9 +35,9 @@ const [featuredPost, ...otherPosts] = posts;
 					<p class="eyebrow">
 						Latest story <span aria-hidden="true">/</span> <FormattedDate date={featuredPost.data.pubDate} />
 					</p>
-					<h2><a href={`/blog/${featuredPost.id}/`}>{featuredPost.data.title}</a></h2>
+					<h2><a href={`/blog/${featuredPost.id}`}>{featuredPost.data.title}</a></h2>
 					<p class="description">{featuredPost.data.description}</p>
-					<a class="text-link" href={`/blog/${featuredPost.id}/`}>Read the story <span aria-hidden="true">↗</span></a>
+					<a class="text-link" href={`/blog/${featuredPost.id}`}>Read the story <span aria-hidden="true">↗</span></a>
 				</div>
 			</article>
 		)}
@@ -47,7 +47,7 @@ const [featuredPost, ...otherPosts] = posts;
 				<div class="archive-grid">
 					{otherPosts.map((post) => (
 						<article class="archive-row">
-							<h3><a href={`/blog/${post.id}/`}>{post.data.title}</a></h3>
+							<h3><a href={`/blog/${post.id}`}>{post.data.title}</a></h3>
 							<FormattedDate date={post.data.pubDate} />
 						</article>
 					))}

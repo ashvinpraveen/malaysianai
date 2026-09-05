@@ -9,9 +9,12 @@ const blog = defineCollection({
 		description: z.string(),
 		image: z.string().optional(),
 		imageAlt: z.string().optional(),
+		imageWidth: z.number().positive().optional(),
+		imageHeight: z.number().positive().optional(),
 		pubDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),
 		author: z.string(),
+		authorType: z.enum(['Person', 'Organization']).default('Organization'),
 		category: z.enum(['announcements', 'cohort-stories', 'curriculum', 'events']),
 	}),
 });

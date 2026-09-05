@@ -3,6 +3,8 @@ title: "We did it: Malaysia's largest AI Learn-a-thon"
 description: 'How thousands of Malaysians, hundreds of builders and a floor full of volunteers turned AI Malaysia Takeover 2026 into a national record.'
 image: '/images/blog/largest-ai-learnathon/hero.webp'
 imageAlt: 'Malaysian AI volunteers and organisers celebrating with the Malaysia Book of Records certificate'
+imageWidth: 2200
+imageHeight: 1467
 pubDate: 2026-09-05
 author: 'Malaysian AI Team'
 category: events

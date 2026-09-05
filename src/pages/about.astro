@@ -1,0 +1,69 @@
+---
+import { Image } from 'astro:assets';
+import communityPhoto from '../../public/images/blog/largest-ai-learnathon/hero.webp';
+import InfoPage from '../layouts/InfoPage.astro';
+import { CONTACT_WHATSAPP, LUMA_URL, VENUE_ADDRESS, VENUE_MAPS_URL } from '../consts';
+---
+
+<InfoPage title="About Malaysian AI" description="A community for people learning, building, and starting companies with AI in Malaysia.">
+	<div class="profile-intro">
+		<div>
+			<p>Malaysian AI brings together first-time builders, developers, founders, and the communities helping them learn. We connect people through practical workshops, events, and a residency for teams building AI products.</p>
+			<p>Come with a question, a project, or something you want to try. You can meet people working through the same problems and share what you learn along the way.</p>
+			<div class="actions"><a class="site-button" href={LUMA_URL}>Find an event</a><a href={CONTACT_WHATSAPP}>Talk to the team</a></div>
+		</div>
+		<aside aria-label="Community profile">
+			<dl>
+				<div><dt>Based in</dt><dd>Kuala Lumpur, Malaysia</dd></div>
+				<div><dt>Host &amp; initiator</dt><dd><a href="https://500.co">500 Global</a></dd></div>
+				<div><dt>Open to</dt><dd>First-timers and experienced builders</dd></div>
+			</dl>
+		</aside>
+	</div>
+
+	<figure>
+		<Image src={communityPhoto} alt="Malaysian AI volunteers and organisers celebrating the Learn-a-thon with a Malaysia Book of Records certificate" widths={[600, 1104, 1600]} sizes="(max-width: 1152px) calc(100vw - 3rem), 1104px" format="webp" loading="lazy" />
+		<figcaption>The people behind Malaysia's largest AI Learn-a-thon. <a href="/blog/largest-ai-learnathon">Read the story</a>.</figcaption>
+	</figure>
+
+	<div class="profile-sections">
+		<section aria-labelledby="activities-title">
+			<h2 id="activities-title">What we do</h2>
+			<p>Workshops offer a place to try AI tools and build something with help nearby. Show &amp; Tell sessions let builders share their work and hear how others approach similar problems.</p>
+			<p>We also bring together independent AI communities and organisers. <a href="/#communities">Meet the communities</a> or <a href={LUMA_URL}>browse the event calendar</a> to find a way in.</p>
+		</section>
+		<section aria-labelledby="residency-title">
+			<h2 id="residency-title">A home for founders</h2>
+			<p>The AI Residency gives teams a working home in Kuala Lumpur, with co-working space, regular demos, and support with product, engineering, and fundraising.</p>
+			<p><a href="/residency">Explore the residency</a> and <a href="/residents">meet the resident teams</a>.</p>
+		</section>
+		<section aria-labelledby="host-title">
+			<h2 id="host-title">Hosted by 500 Global</h2>
+			<p>Malaysian AI is an initiative started by <a href="https://500.co">500 Global</a>. It brings founders and community organisers together around a shared interest in building useful AI products in Malaysia.</p>
+			<p>{VENUE_ADDRESS}<br /><a href={VENUE_MAPS_URL}>Get directions</a></p>
+		</section>
+		<section aria-labelledby="join-title">
+			<h2 id="join-title">Take part</h2>
+			<p>Join an event, share what you are building, or get in touch about running a workshop or collaborating with the community.</p>
+			<p><a href="/contact">Contact Malaysian AI</a></p>
+		</section>
+	</div>
+</InfoPage>
+
+<style>
+	.profile-intro { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 3rem; align-items: start; }
+	.profile-intro p:first-child { margin-top: 0; }
+	aside { padding: 1.5rem; border: 1px solid var(--page-border); border-radius: var(--radius-media); background: var(--card-background); }
+	dl { display: grid; gap: 1.25rem; margin: 0; }
+	dt { margin-bottom: 0.35rem; font-size: var(--text-xs); }
+	dd { margin: 0; font-size: var(--text-sm); line-height: var(--leading-body); }
+	figure { margin: 2rem 0 1rem; }
+	figure img { display: block; width: 100%; height: auto; border-radius: var(--radius-media); }
+	figcaption { margin-top: 0.75rem; font-size: var(--text-xs); line-height: var(--leading-body); }
+	.profile-sections { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 3rem; }
+	.profile-sections p { max-width: 36rem; }
+	@media (max-width: 700px) {
+		.profile-intro, .profile-sections { grid-template-columns: 1fr; gap: 0; }
+		aside { margin-top: 1rem; }
+	}
+</style>

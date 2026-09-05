@@ -13,3 +13,5 @@ export const VENUE_MAPS_URL =
 export const VENUE_WAZE_URL = 'https://waze.com/ul?q=500%20Global%20Bangunan%20AICB%20Kuala%20Lumpur';
 
 export const CONTACT_WHATSAPP = 'https://wa.me/60109847954';
+
+export const AIMTO_URL = 'https://aimto.my/';

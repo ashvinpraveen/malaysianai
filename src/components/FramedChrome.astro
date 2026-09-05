@@ -3,13 +3,13 @@ import { LUMA_URL } from '../consts';
 
 interface Props {
 	home?: boolean;
-	current?: 'home' | 'residency' | 'residents' | 'apply' | 'stories';
+	current?: 'home' | 'about' | 'residency' | 'residents' | 'apply' | 'stories';
 	minimal?: boolean;
 }
 
 const { home = false, current, minimal = false } = Astro.props;
 const links = [
-	{ id: 'about', href: home ? '#about' : '/#about', label: 'About' },
+	{ id: 'about', href: '/about', label: 'About' },
 	{ id: 'events', href: home ? '#events' : '/#events', label: 'Events' },
 	{ id: 'communities', href: home ? '#communities' : '/#communities', label: 'Communities' },
 	{ id: 'residency', href: home ? '#residency' : '/#residency', label: 'Residency' },

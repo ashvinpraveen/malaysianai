@@ -7,13 +7,18 @@ import Layout from './Layout.astro';
 
 type Props = CollectionEntry<'blog'>['data'] & { slug?: string };
 
-const { title, description, image, pubDate, author, imageAlt, slug } = Astro.props;
+const { title, description, image, pubDate, author, authorType, imageAlt, imageWidth, imageHeight, updatedDate, slug } = Astro.props;
 const coverImage = slug === 'largest-ai-learnathon'
 	? '/images/blog/largest-ai-learnathon/hero.webp'
 	: image;
 ---
 
-<Layout title={title} description={description} image={image}>
+<Layout
+	title={title}
+	description={description}
+	image={coverImage ? { src: coverImage, width: imageWidth, height: imageHeight, alt: imageAlt } : undefined}
+	article={{ published: pubDate, modified: updatedDate, author, authorType }}
+>
 	<article class="story-page">
 		<header class="story-header">
 			<a class="back-link" href="/blog" aria-label="Back to all stories">

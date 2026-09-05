@@ -1,5 +1,5 @@
 ---
-import { LUMA_URL } from '../consts';
+import { AIMTO_URL, LUMA_URL } from '../consts';
 const year = new Date().getFullYear();
 
 const groups = [
@@ -14,7 +14,7 @@ const groups = [
 	{
 		title: 'Explore',
 		links: [
-			{ label: 'AI Takeover', href: '/#events' },
+			{ label: 'AI Takeover', href: AIMTO_URL },
 			{ label: 'Stories', href: '/blog' },
 			{ label: 'Residents', href: '/residents' },
 		],
@@ -26,7 +26,7 @@ const groups = [
 	<div class="footer-grid">
 		<div class="footer-intro">
 			<a class="footer-brand" href="/" aria-label="Malaysian AI home">
-				<img src="/logo-ai-residency.png" alt="" width="960" height="960" />
+				<img src="/malaysian-ai-batik-logo-bw.svg" alt="" width="880" height="880" loading="lazy" />
 				<span>Malaysian AI</span>
 			</a>
 			<p>
@@ -53,8 +53,11 @@ const groups = [
 		}
 
 		<div class="footer-company">
-			<p>Company</p>
+			<p>Malaysian AI</p>
+			<a href="/about">About</a>
 			<a href="/contact">Contact</a>
+			<a href="/privacy">Privacy</a>
+			<a href="/terms">Terms</a>
 			<span>© {year} Malaysian AI</span>
 		</div>
 	</div>
@@ -158,6 +161,8 @@ const groups = [
 		flex-direction: column;
 		align-items: flex-start;
 	}
+
+	.footer-company a + a { margin-top: 1rem; }
 
 	.footer-company span {
 		margin-top: 2rem;

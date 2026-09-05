@@ -1,0 +1,64 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "astro",
+  "buildCommand": "bun run build",
+  "outputDirectory": "dist",
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/aimto",
+      "destination": "https://aimto.my/",
+      "statusCode": 301
+    },
+    {
+      "source": "/aimto/learnathon",
+      "destination": "https://aimto.my/",
+      "statusCode": 301
+    },
+    {
+      "source": "/aimto/learnathon2",
+      "destination": "https://aimto.my/",
+      "statusCode": 301
+    },
+    {
+      "source": "/aimto/learnathon3",
+      "destination": "https://aimto.my/",
+      "statusCode": 301
+    },
+    {
+      "source": "/aimto/learnathon4",
+      "destination": "https://aimto.my/",
+      "statusCode": 301
+    },
+    {
+      "source": "/aimto/:path*",
+      "destination": "https://aimto.my/",
+      "statusCode": 301
+    },
+    {
+      "source": "/aimalaysiatakeover",
+      "destination": "https://aimto.my/",
+      "statusCode": 301
+    },
+    {
+      "source": "/residency/apply",
+      "destination": "/residency#apply",
+      "statusCode": 301
+    },
+    {
+      "source": "/residency/showandtell",
+      "destination": "/residency",
+      "statusCode": 301
+    },
+    {
+      "source": "/community",
+      "destination": "/#communities",
+      "statusCode": 301
+    },
+    {
+      "source": "/venue",
+      "destination": "/residency#our-home",
+      "statusCode": 301
+    }
+  ]
+}

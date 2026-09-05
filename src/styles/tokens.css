@@ -40,7 +40,7 @@
 	--footer-wordmark-color: rgb(155 187 231 / 0.18);
 }
 
-/* Residency, residents and contact use white text on neutral dark surfaces. */
+/* Information pages use white text on neutral dark surfaces. */
 html.neutral-page {
 	--site-background: #090909;
 	--page-background: #090909;

@@ -7,7 +7,7 @@ import { CTAButton } from "./CTAButton";
 
 const navItems = [
   { label: "Events", href: "/#events" },
-  { label: "Communities", href: "/community" },
+  { label: "Communities", href: "/#communities" },
   { label: "Residency", href: "/residency" },
 ];
 

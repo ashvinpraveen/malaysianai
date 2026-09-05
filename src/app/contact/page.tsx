@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Contact from "@/views/Contact";
 
 export const metadata: Metadata = {
@@ -16,10 +17,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page({
-  searchParams,
-}: {
-  searchParams?: { subject?: string };
-}) {
-  return <Contact defaultSubject={searchParams?.subject ?? ""} />;
+export default function Page() {
+  return (
+    <Suspense fallback={null}>
+      <Contact />
+    </Suspense>
+  );
 }

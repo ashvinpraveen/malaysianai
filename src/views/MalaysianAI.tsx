@@ -164,7 +164,7 @@ const initiatives: Initiative[] = [
     image: "/batik_kl_city_sunset.png",
     cta: {
       label: "Learn more",
-      href: "#community-partners",
+      href: "#communities",
       isExternal: false,
     },
   },
@@ -418,24 +418,29 @@ const MalaysianAI = () => {
           </div>
         </section>
 
-        <section id="community-partners" className="py-20 md:py-28 bg-background">
+        <section id="communities" className="py-20 md:py-28 bg-background">
           <div className="mx-auto px-6 md:px-10 lg:px-16 max-w-[1440px]">
             <div>
               <h2 className="section-title text-foreground">
-                Malaysia&apos;s AI communities and events
+                Malaysia&apos;s AI Communities and Events
               </h2>
               <p className="body-default text-foreground/70 mt-4 max-w-3xl">
-                The best way to get started is by joining an event and meeting like-minded people.
-                There&apos;s communities for everyone — from people totally new to coding, students,
-                to technical ones for devs looking to go deeper into AI. This directory grows as
-                more groups join. Many events are free and very friendly.
+                A growing map of AI communities across Malaysia — meetups, builder groups, student
+                chapters, and everyone in between. Join an event, find your people, or add your
+                community to the list. Many gatherings are free and very welcoming.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <CTAButton href="https://luma.com/malaysianai" variant="primary" size="lg" showArrow isExternal={true}>
-                  Join the next AI event
+                  View upcoming events
                 </CTAButton>
-                <CTAButton href="/community" variant="outline" size="lg" showArrow isExternal={false}>
-                  Browse all communities
+                <CTAButton
+                  href="/contact?subject=Add%20my%20community%20to%20the%20directory"
+                  variant="outline"
+                  size="lg"
+                  showArrow
+                  isExternal={false}
+                >
+                  Add your community
                 </CTAButton>
               </div>
             </div>
@@ -446,7 +451,6 @@ const MalaysianAI = () => {
                   key={partner.name}
                   className="flex flex-col rounded-2xl border border-border/60 bg-card/40 overflow-hidden"
                 >
-                  {/* Logo area */}
                   <div className="flex items-center justify-center bg-background border-b border-border/60 px-6 py-6">
                     <img
                       src={partner.logo}
@@ -455,7 +459,6 @@ const MalaysianAI = () => {
                       loading="lazy"
                     />
                   </div>
-                  {/* Content */}
                   <div className="flex flex-col flex-1 p-6">
                     <h3 className="card-title text-foreground">{partner.name}</h3>
                     <p className="body-small text-foreground/60 mt-2 flex-1">{partner.summary}</p>
@@ -467,6 +470,24 @@ const MalaysianAI = () => {
                   </div>
                 </div>
               ))}
+            </div>
+
+            <div className="mt-12 max-w-2xl">
+              <p className="body-default text-foreground/70">
+                Run a community that isn&apos;t listed yet? We&apos;re building this as a shared
+                directory for Malaysia&apos;s AI scene — filled in by the people who organise it.
+              </p>
+              <div className="mt-5">
+                <CTAButton
+                  href="/contact?subject=Add%20my%20community%20to%20the%20directory"
+                  variant="secondary"
+                  size="md"
+                  showArrow
+                  isExternal={false}
+                >
+                  Submit a community
+                </CTAButton>
+              </div>
             </div>
           </div>
         </section>

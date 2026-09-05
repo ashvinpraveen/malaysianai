@@ -1,15 +1,14 @@
 "use client";
 
 import type { FormEvent } from "react";
+import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { CTAButton } from "@/components/CTAButton";
 
-type ContactProps = {
-  defaultSubject?: string;
-};
-
-const Contact = ({ defaultSubject = "" }: ContactProps) => {
+const Contact = () => {
+  const searchParams = useSearchParams();
+  const defaultSubject = searchParams.get("subject") ?? "";
   const isCommunitySubmission = defaultSubject
     .toLowerCase()
     .includes("add my community");
@@ -105,6 +104,7 @@ const Contact = ({ defaultSubject = "" }: ContactProps) => {
                   Subject
                 </label>
                 <input
+                  key={defaultSubject || "subject"}
                   id="contact-subject"
                   name="subject"
                   type="text"

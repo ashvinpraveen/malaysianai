@@ -1,0 +1,1146 @@
+---
+const events = [
+	{
+		title: 'Show & Tell with the Supabase CEO',
+		type: 'Founder show & tell',
+		date: 'Ideas, demos, and conversation',
+		image: '/images/events/show-and-tell-supabase-ceo.png',
+		position: 'center center',
+	},
+	{
+		title: 'AIMTO Learnathon',
+		type: 'Hands-on learnathon',
+		date: 'AI Malaysia Takeover 2026',
+		image: '/images/events/aimto-learnathon.jpg',
+		position: 'center center',
+	},
+	{
+		title: 'Anthropic × Cursor Hackathon Malaysia',
+		type: 'Community hackathon',
+		date: 'Built in Malaysia',
+		image: '/images/events/anthropic-cursor-hackathon-malaysia.png',
+		position: 'center 56%',
+	},
+	{
+		title: 'Workshops',
+		type: 'Hands-on learning',
+		date: 'Learn with local builders',
+		image: '/images/events/workshops.jpg',
+		position: 'center 42%',
+	},
+	{
+		title: 'AI for Every Age',
+		type: 'Open to everyone',
+		date: 'All ages, all experience levels',
+		image: '/images/events/all-ages.jpg',
+		position: 'center center',
+	},
+];
+---
+
+<section class="events-section" id="events" aria-labelledby="events-title" data-events>
+	<div class="events-frame">
+		<div class="events-copy-panel">
+			<div class="events-header">
+				<h2 id="events-title">There is always<br />something happening.</h2>
+				<a class="events-calendar-link site-button" href="https://luma.com/malaysianai">
+					See the event calendar
+					<span aria-hidden="true">↗</span>
+				</a>
+			</div>
+
+			<div class="events-selected" aria-live="polite" aria-atomic="true">
+				<h3 data-event-title>{events[0].title}</h3>
+				<p data-event-date>{events[0].date}</p>
+			</div>
+		</div>
+
+		<div class="events-visual">
+			<div class="events-background" aria-hidden="true">
+				<img
+					class="events-background-image is-visible"
+					data-events-background="0"
+					src={events[0].image}
+					alt=""
+					style={`object-position: ${events[0].position}`}
+				/>
+				<img
+					class="events-background-image"
+					data-events-background="1"
+					src={events[1].image}
+					alt=""
+					style={`object-position: ${events[1].position}`}
+				/>
+				<div class="events-background-wash"></div>
+			</div>
+
+			<svg
+				class="events-outline"
+				viewBox="0 0 1000 1000"
+				preserveAspectRatio="none"
+				aria-hidden="true"
+			>
+				<path
+					class="events-outline-matte"
+					fill-rule="evenodd"
+					d="M0 0H1000V1000H0ZM16 984V16H48V269Q48 285 64 285H364Q380 285 380 269V32Q380 16 396 16H764Q780 16 780 32V244Q780 260 796 260H968Q984 260 984 276V984H16Z"
+				/>
+				<path
+					class="events-outline-line"
+					d="M16 984V16H48V269Q48 285 64 285H364Q380 285 380 269V32Q380 16 396 16H764Q780 16 780 32V244Q780 260 796 260H968Q984 260 984 276V984H16"
+				/>
+			</svg>
+
+			<div class="events-deck" data-events-deck>
+				{events.map((event, index) => (
+					<button
+						class:list={['event-card', { 'is-active': index === 0 }]}
+						type="button"
+						data-event-card
+						data-index={index}
+						data-title={event.title}
+						data-type={event.type}
+						data-date={event.date}
+						data-image={event.image}
+						data-position={event.position}
+						aria-label={`Show ${event.title}`}
+						aria-pressed={index === 0 ? 'true' : 'false'}
+					>
+						<span class="event-card-image-wrap">
+							<img
+								class="event-card-image"
+								src={event.image}
+								alt=""
+								width="900"
+								height="600"
+								loading={index === 0 ? 'eager' : 'lazy'}
+								decoding="async"
+								style={`object-position: ${event.position}`}
+							/>
+						</span>
+						<span class="event-card-caption">
+							<span>{String(index + 1).padStart(2, '0')}</span>
+							<strong>{event.title}</strong>
+						</span>
+					</button>
+				))}
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	let cleanUpEvents = () => {};
+
+	function prepareEventSection(section: HTMLElement) {
+		const cards = Array.from(section.querySelectorAll<HTMLButtonElement>('[data-event-card]'));
+		const backgrounds = Array.from(
+			section.querySelectorAll<HTMLImageElement>('[data-events-background]'),
+		);
+		const title = section.querySelector<HTMLElement>('[data-event-title]');
+		const type = section.querySelector<HTMLElement>('[data-event-type]');
+		const date = section.querySelector<HTMLElement>('[data-event-date]');
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+		const slots = [0, 1, 2, -2, -1];
+		let selectedIndex = 0;
+		let visibleBackground = 0;
+		let changeSequence = 0;
+		let sectionIsVisible = false;
+		let rotationTimer: number | undefined;
+
+		function stopRotation() {
+			if (rotationTimer === undefined) return;
+			window.clearInterval(rotationTimer);
+			rotationTimer = undefined;
+		}
+
+		function startRotation() {
+			stopRotation();
+			if (!sectionIsVisible || document.hidden || cards.length < 2) {
+				return;
+			}
+
+			rotationTimer = window.setInterval(() => {
+				void selectEvent((selectedIndex + 1) % cards.length);
+			}, 4_000);
+		}
+
+		function layoutCards() {
+			cards.forEach((card, index) => {
+				const order = (index - selectedIndex + cards.length) % cards.length;
+				const slot = slots[order] ?? order;
+				const distance = Math.abs(slot);
+
+				card.style.setProperty('--event-slot', String(slot));
+				card.style.setProperty('--event-distance', String(distance));
+				card.style.setProperty('--event-layer', String(cards.length - distance));
+				card.classList.toggle('is-active', index === selectedIndex);
+				card.setAttribute('aria-pressed', index === selectedIndex ? 'true' : 'false');
+			});
+		}
+
+		async function selectEvent(index: number) {
+			const card = cards[index];
+			if (!card || index === selectedIndex) return;
+			const currentChange = ++changeSequence;
+
+			selectedIndex = index;
+			layoutCards();
+
+			if (title) title.textContent = card.dataset.title ?? '';
+			if (type) type.textContent = card.dataset.type ?? '';
+			if (date) date.textContent = card.dataset.date ?? '';
+
+			const nextBackgroundIndex = visibleBackground === 0 ? 1 : 0;
+			const nextBackground = backgrounds[nextBackgroundIndex];
+			const currentBackground = backgrounds[visibleBackground];
+			if (!nextBackground || !currentBackground || !card.dataset.image) return;
+
+			nextBackground.src = card.dataset.image;
+			nextBackground.style.objectPosition = card.dataset.position ?? 'center';
+			if (!reduceMotion.matches) {
+				try {
+					await nextBackground.decode();
+				} catch {
+					// The browser can still display the image if decode is interrupted.
+				}
+			}
+			if (currentChange !== changeSequence) return;
+
+			nextBackground.classList.add('is-visible');
+			currentBackground.classList.remove('is-visible');
+			visibleBackground = nextBackgroundIndex;
+		}
+
+		cards.forEach((card, index) => {
+			card.addEventListener('click', () => {
+				void selectEvent(index);
+				startRotation();
+			});
+		});
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					sectionIsVisible = entry.isIntersecting;
+					if (entry.isIntersecting) {
+						section.classList.add('is-in-view');
+						startRotation();
+					} else {
+						stopRotation();
+					}
+				});
+			},
+			{ threshold: 0.18 },
+		);
+
+		layoutCards();
+		observer.observe(section);
+		document.addEventListener('visibilitychange', startRotation);
+
+		return () => {
+			stopRotation();
+			observer.disconnect();
+			document.removeEventListener('visibilitychange', startRotation);
+		};
+	}
+
+	function prepareEvents() {
+		cleanUpEvents();
+		const cleanups = Array.from(
+			document.querySelectorAll<HTMLElement>('[data-events]'),
+			prepareEventSection,
+		);
+
+		cleanUpEvents = () => cleanups.forEach(cleanup => cleanup());
+	}
+
+	document.addEventListener('astro:page-load', prepareEvents);
+	document.addEventListener('astro:before-swap', () => cleanUpEvents());
+</script>
+
+<style>
+	.events-section {
+		position: relative;
+		isolation: isolate;
+		min-height: max(52rem, 100svh);
+		overflow: hidden;
+		color: #fffaf0;
+		background: #081f27;
+	}
+
+	.events-background,
+	.events-background-image,
+	.events-background-wash {
+		position: absolute;
+		inset: 0;
+	}
+
+	.events-background {
+		z-index: -2;
+		overflow: hidden;
+	}
+
+	.events-background-image {
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		object-fit: cover;
+		filter: saturate(82%);
+		transform: scale(1.035);
+		opacity: 0;
+		transition: opacity 700ms ease, transform 6s ease;
+	}
+
+	.events-background-image.is-visible {
+		transform: scale(1);
+		opacity: 1;
+	}
+
+	.events-background-wash {
+		background:
+			linear-gradient(180deg, rgb(4 18 24 / 0.82) 0%, rgb(4 19 26 / 0.38) 40%, rgb(3 13 18 / 0.9) 100%),
+			linear-gradient(90deg, rgb(3 17 22 / 0.34), transparent 45%, rgb(3 17 22 / 0.3));
+		backdrop-filter: blur(1px);
+	}
+
+	.events-header {
+		position: absolute;
+		top: clamp(6.5rem, 13vh, 9rem);
+		left: clamp(1.25rem, 5vw, 5rem);
+		z-index: 2;
+		max-width: min(43rem, 70vw);
+		opacity: 0;
+		transform: translateY(1.5rem);
+		transition: opacity 700ms ease, transform 700ms cubic-bezier(0.2, 0.75, 0.2, 1);
+	}
+
+	.events-section.is-in-view .events-header {
+		transform: translateY(0);
+		opacity: 1;
+	}
+
+	.events-kicker {
+		margin: 0 0 1rem;
+		color: rgb(255 250 240 / 0.64);
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.events-header h2 {
+		margin: 0;
+		font-family: 'Mondwest', 'Times New Roman', Times, serif;
+		font-size: clamp(2.65rem, 5vw, 5.5rem);
+		font-weight: 400;
+		letter-spacing: -0.045em;
+		line-height: 0.84;
+		text-wrap: balance;
+	}
+
+	.events-calendar-link {
+		margin-top: 1.65rem;
+		transition: gap 180ms ease, color 180ms ease;
+	}
+
+	.events-selected {
+		position: absolute;
+		top: clamp(10rem, 24vh, 15rem);
+		right: clamp(1.25rem, 5vw, 5rem);
+		z-index: 2;
+		width: min(23rem, 30vw);
+		padding-left: 1rem;
+		border-left: 1px solid rgb(255 250 240 / 0.42);
+		text-align: right;
+	}
+
+	.events-selected p,
+	.events-selected h3 {
+		margin: 0;
+	}
+
+	.events-selected p {
+		color: rgb(255 250 240 / 0.62);
+		font-size: 0.68rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.events-selected h3 {
+		margin-block: 0.45rem;
+		font-family: 'Mondwest', 'Times New Roman', Times, serif;
+		font-size: clamp(1.2rem, 1.8vw, 2.15rem);
+		font-weight: 400;
+		line-height: 0.95;
+	}
+
+	.events-deck {
+		position: absolute;
+		right: 0;
+		bottom: clamp(-4.5rem, -7vh, -2.5rem);
+		left: 0;
+		z-index: 3;
+		height: clamp(21rem, 47vh, 35rem);
+		perspective: 1200px;
+		pointer-events: none;
+	}
+
+	.event-card {
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		z-index: var(--event-layer, 1);
+		display: block;
+		width: clamp(14rem, 25vw, 24rem);
+		aspect-ratio: 0.75;
+		margin: 0;
+		padding: 0.5rem;
+		overflow: hidden;
+		border: 1px solid rgb(255 255 255 / 0.35);
+		border-radius: 1.15rem;
+		color: #fff;
+		background: rgb(241 235 220 / 0.16);
+		box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 0.42);
+		font: inherit;
+		text-align: left;
+		cursor: pointer;
+		pointer-events: auto;
+		transform:
+			translateX(calc(-50% + var(--event-slot, 0) * min(20vw, 16.5rem)))
+			translateY(calc(var(--event-distance, 0) * 2.1rem))
+			rotate(calc(var(--event-slot, 0) * 4deg))
+			scale(calc(1 - var(--event-distance, 0) * 0.08));
+		transform-origin: 50% 100%;
+		opacity: 0;
+		transition:
+			transform 760ms cubic-bezier(0.2, 0.8, 0.2, 1),
+			opacity 500ms ease,
+			box-shadow 300ms ease,
+			border-color 300ms ease;
+		will-change: transform;
+	}
+
+	.events-section.is-in-view .event-card {
+		opacity: 1;
+	}
+
+	.events-section.is-in-view .event-card:nth-child(1) { transition-delay: 60ms; }
+	.events-section.is-in-view .event-card:nth-child(2) { transition-delay: 110ms; }
+	.events-section.is-in-view .event-card:nth-child(3) { transition-delay: 160ms; }
+	.events-section.is-in-view .event-card:nth-child(4) { transition-delay: 210ms; }
+	.events-section.is-in-view .event-card:nth-child(5) { transition-delay: 260ms; }
+
+	.event-card:hover,
+	.event-card:focus-visible {
+		border-color: rgb(255 255 255 / 0.72);
+		box-shadow: 0 1.8rem 5rem rgb(0 0 0 / 0.55);
+	}
+
+	.event-card:focus-visible {
+		outline: 2px solid #f4c785;
+		outline-offset: 4px;
+	}
+
+	.event-card.is-active {
+		border-color: rgb(255 255 255 / 0.68);
+	}
+
+	.event-card-image-wrap {
+		display: block;
+		overflow: hidden;
+		width: 100%;
+		height: calc(100% - 3rem);
+		border-radius: 0.75rem;
+		background: #102b2a;
+	}
+
+	.event-card-image {
+		display: block;
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		object-fit: cover;
+		transform: scale(1.04);
+		transition: transform 900ms cubic-bezier(0.2, 0.75, 0.2, 1), filter 400ms ease;
+	}
+
+	.event-card:not(.is-active) .event-card-image {
+		filter: saturate(72%) brightness(0.78);
+	}
+
+	.event-card:hover .event-card-image,
+	.event-card:focus-visible .event-card-image,
+	.event-card.is-active .event-card-image {
+		transform: scale(1);
+	}
+
+	.event-card-caption {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		height: 3rem;
+		padding-inline: 0.35rem;
+		font-size: 0.72rem;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+
+	.event-card-caption span {
+		color: rgb(255 255 255 / 0.54);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.event-card-caption strong {
+		overflow: hidden;
+		font-weight: 700;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	@media (max-width: 700px) {
+		.events-section {
+			min-height: max(48rem, 100svh);
+		}
+
+		.events-header {
+			top: 6.75rem;
+			left: 1.25rem;
+			max-width: calc(100% - 2.5rem);
+		}
+
+		.events-header h2 {
+			font-size: clamp(2.35rem, 10.5vw, 3.6rem);
+			line-height: 0.88;
+		}
+
+		.events-calendar-link {
+			margin-top: 1.2rem;
+		}
+
+		.events-selected {
+			top: auto;
+			right: 1.25rem;
+			bottom: clamp(19.5rem, 39vh, 24rem);
+			width: calc(100% - 2.5rem);
+			padding: 0;
+			border: 0;
+			text-align: right;
+		}
+
+		.events-selected h3 {
+			font-size: 1.35rem;
+		}
+
+		.events-deck {
+			bottom: -2.7rem;
+			height: clamp(18rem, 36vh, 22rem);
+		}
+
+		.event-card {
+			width: clamp(11.5rem, 48vw, 14.5rem);
+			padding: 0.35rem;
+			border-radius: 0.9rem;
+			transform:
+				translateX(calc(-50% + var(--event-slot, 0) * 38vw))
+				translateY(calc(var(--event-distance, 0) * 1.35rem))
+				rotate(calc(var(--event-slot, 0) * 5deg))
+				scale(calc(1 - var(--event-distance, 0) * 0.1));
+		}
+
+		.event-card-image-wrap {
+			height: calc(100% - 2.45rem);
+			border-radius: 0.62rem;
+		}
+
+		.event-card-caption {
+			height: 2.45rem;
+			font-size: 0.6rem;
+		}
+
+	}
+
+	@media (max-height: 720px) and (min-width: 701px) {
+		.events-header {
+			top: 6.5rem;
+		}
+
+		.events-header h2 {
+			font-size: clamp(2.65rem, 4.5vw, 4.2rem);
+		}
+
+		.events-selected {
+			top: 8.5rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.events-background-image,
+		.events-header,
+		.event-card,
+		.event-card-image {
+			transition-duration: 1ms;
+		}
+
+		.events-header,
+		.event-card {
+			opacity: 1;
+		}
+	}
+
+	/* Framed editorial layout aligned with the homepage design system. */
+	.events-section {
+		min-height: 100dvh;
+		padding: 1rem;
+		color: #f4f7fc;
+		background: #06090f;
+	}
+
+	.events-frame {
+		position: relative;
+		display: grid;
+		grid-template-columns: minmax(19rem, 0.38fr) minmax(0, 0.62fr);
+		min-height: calc(100dvh - 2rem);
+		overflow: hidden;
+		border: 1px solid rgb(115 152 207 / 0.72);
+		border-radius: 1rem;
+		background: #06090f;
+	}
+
+	.events-copy-panel {
+		position: relative;
+		z-index: 4;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		min-width: 0;
+		padding: clamp(2.5rem, 5vw, 5rem) clamp(2rem, 4vw, 4rem) clamp(2rem, 4vw, 3.5rem);
+		border-right: 1px solid rgb(115 152 207 / 0.72);
+		background: #06090f;
+	}
+
+	.events-visual {
+		position: relative;
+		isolation: isolate;
+		min-width: 0;
+		overflow: hidden;
+		background: #0a1422;
+	}
+
+	.events-background,
+	.events-background-image,
+	.events-background-wash {
+		position: absolute;
+		inset: 0;
+	}
+
+	.events-background {
+		z-index: 0;
+		overflow: hidden;
+	}
+
+	.events-background-image {
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		object-fit: cover;
+		filter: saturate(76%) contrast(1.03);
+		transform: scale(1.025);
+		opacity: 0;
+		transition: opacity 700ms ease, transform 6s ease;
+	}
+
+	.events-background-image.is-visible {
+		transform: scale(1);
+		opacity: 1;
+	}
+
+	.events-background-wash {
+		background:
+			linear-gradient(180deg, rgb(5 10 17 / 0.08) 0%, rgb(5 10 17 / 0.24) 46%, rgb(5 9 15 / 0.92) 100%),
+			linear-gradient(90deg, rgb(5 10 17 / 0.2), transparent 48%);
+		backdrop-filter: none;
+	}
+
+	.events-header {
+		position: static;
+		z-index: auto;
+		max-width: 31rem;
+		opacity: 0;
+		transform: translateY(1rem);
+		transition: opacity 650ms ease, transform 650ms cubic-bezier(0.2, 0.75, 0.2, 1);
+	}
+
+	.events-kicker {
+		margin: 0 0 1.15rem;
+		color: rgb(188 208 238 / 0.72);
+		font-size: 0.72rem;
+		font-weight: 400;
+		letter-spacing: 0.13em;
+		text-transform: uppercase;
+	}
+
+	.events-header h2 {
+		margin: 0;
+		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-size: clamp(3.15rem, 4.7vw, 5.25rem);
+		font-weight: 400;
+		letter-spacing: -0.035em;
+		line-height: 0.88;
+		text-wrap: balance;
+	}
+
+	.events-calendar-link {
+		width: fit-content;
+		margin-top: 1.7rem;
+		transition: gap 180ms ease, background 180ms ease, transform 180ms ease;
+	}
+
+	.events-calendar-link:hover,
+	.events-calendar-link:focus-visible {
+		transform: translateY(-1px);
+	}
+
+	.events-selected {
+		position: static;
+		z-index: auto;
+		width: 100%;
+		padding: 1.5rem 0 0;
+		border: 0;
+		border-top: 1px solid rgb(115 152 207 / 0.4);
+		text-align: left;
+	}
+
+	.events-selected p {
+		color: rgb(210 223 242 / 0.62);
+		font-size: 0.68rem;
+		font-weight: 400;
+		letter-spacing: 0.09em;
+	}
+
+	.events-selected h3 {
+		margin-block: 0.55rem;
+		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-size: clamp(1.8rem, 2.6vw, 2.7rem);
+		font-weight: 400;
+		line-height: 0.95;
+	}
+
+	.events-deck {
+		position: absolute;
+		right: 0;
+		bottom: -2.75rem;
+		left: 0;
+		z-index: 3;
+		height: min(55%, 31rem);
+		perspective: 1200px;
+		pointer-events: none;
+	}
+
+	.event-card {
+		width: clamp(13rem, 19vw, 19rem);
+		aspect-ratio: 0.78;
+		padding: 0.42rem;
+		border: 1px solid rgb(115 152 207 / 0.52);
+		border-radius: 0.9rem;
+		background: rgb(6 9 15 / 0.9);
+		box-shadow: 0 1.4rem 3.5rem rgb(0 0 0 / 0.45);
+		transform:
+			translateX(calc(-50% + var(--event-slot, 0) * min(15vw, 11rem)))
+			translateY(calc(var(--event-distance, 0) * 1.7rem))
+			rotate(calc(var(--event-slot, 0) * 3deg))
+			scale(calc(1 - var(--event-distance, 0) * 0.075));
+	}
+
+	.event-card:hover,
+	.event-card:focus-visible,
+	.event-card.is-active {
+		border-color: rgb(151 184 231 / 0.9);
+	}
+
+	.event-card:focus-visible {
+		outline: 2px solid #97b8e7;
+	}
+
+	.event-card-image-wrap {
+		height: calc(100% - 2.8rem);
+		border-radius: 0.62rem;
+		background: #0a1422;
+	}
+
+	.event-card-caption {
+		height: 2.8rem;
+		padding-inline: 0.3rem;
+		font-size: 0.66rem;
+		font-weight: 400;
+	}
+
+	.event-card-caption strong {
+		font-weight: 400;
+	}
+
+	@media (max-width: 800px) {
+		.events-section {
+			min-height: 100svh;
+			padding: 0.6rem;
+		}
+
+		.events-frame {
+			grid-template-columns: 1fr;
+			grid-template-rows: auto minmax(31rem, 1fr);
+			min-height: calc(100svh - 1.2rem);
+			border-radius: 0.75rem;
+		}
+
+		.events-copy-panel {
+			padding: 2.25rem 1.5rem 1.5rem;
+			border-right: 0;
+			border-bottom: 1px solid rgb(115 152 207 / 0.72);
+		}
+
+		.events-header {
+			max-width: 28rem;
+		}
+
+		.events-header h2 {
+			font-size: clamp(2.65rem, 11vw, 3.75rem);
+		}
+
+		.events-calendar-link {
+			margin-top: 1.25rem;
+		}
+
+		.events-selected {
+			display: grid;
+			grid-template-columns: 1fr auto;
+			align-items: end;
+			gap: 0.35rem 1rem;
+			margin-top: 2rem;
+			padding-top: 1rem;
+		}
+
+		.events-selected h3 {
+			grid-column: 1;
+			font-size: 1.65rem;
+		}
+
+		.events-selected p:last-child {
+			grid-column: 2;
+			grid-row: 1 / span 2;
+			max-width: 9rem;
+			text-align: right;
+		}
+
+		.events-visual {
+			min-height: 31rem;
+		}
+
+		.events-deck {
+			bottom: -2.25rem;
+			height: 23rem;
+		}
+
+		.event-card {
+			width: clamp(11rem, 44vw, 13.5rem);
+			transform:
+				translateX(calc(-50% + var(--event-slot, 0) * 36vw))
+				translateY(calc(var(--event-distance, 0) * 1.2rem))
+				rotate(calc(var(--event-slot, 0) * 4deg))
+				scale(calc(1 - var(--event-distance, 0) * 0.09));
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.events-background-image,
+		.events-header,
+		.event-card,
+		.event-card-image {
+			transition-duration: 1ms;
+		}
+
+		.events-header,
+		.event-card {
+			opacity: 1;
+		}
+	}
+
+	/* Full-frame event image with all editorial content inside the image boundary. */
+	.events-section {
+		min-height: 100dvh;
+		padding: 0;
+	}
+
+	.events-frame {
+		display: block;
+		min-height: 100dvh;
+		border: 0;
+		border-radius: 0;
+	}
+
+	.events-copy-panel {
+		position: absolute;
+		z-index: 4;
+		inset: 0;
+		display: block;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		pointer-events: none;
+	}
+
+	.events-visual {
+		position: absolute;
+		inset: 0;
+		min-height: 100dvh;
+	}
+
+	.events-visual::after {
+		display: none;
+	}
+
+	.events-outline {
+		position: absolute;
+		z-index: 2;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		fill: none;
+		stroke: rgb(151 184 231 / 0.82);
+		stroke-width: 1;
+		vector-effect: non-scaling-stroke;
+		pointer-events: none;
+	}
+
+.events-outline path {
+  vector-effect: non-scaling-stroke;
+}
+
+.events-outline-matte {
+  fill: #06090f;
+  stroke: none;
+}
+
+.events-outline-line {
+  fill: none;
+  stroke: rgb(151 184 231 / 0.82);
+  stroke-width: 1;
+}
+
+	.events-background-wash {
+		background:
+			linear-gradient(180deg, rgb(4 8 14 / 0.66) 0%, rgb(4 8 14 / 0.08) 38%, rgb(4 8 14 / 0.9) 100%),
+			linear-gradient(90deg, rgb(4 8 14 / 0.48), transparent 42%, rgb(4 8 14 / 0.36));
+	}
+
+	.events-header {
+		position: absolute;
+		top: clamp(3rem, 6vw, 5.5rem);
+		right: auto;
+		left: clamp(4rem, 6.5vw, 6rem);
+		max-width: min(30rem, 44vw);
+		text-align: left;
+		pointer-events: auto;
+	}
+
+	.events-header h2 {
+		font-size: clamp(2.25rem, 3.45vw, 3.8rem);
+		text-shadow: 0 0.15rem 1.75rem rgb(0 0 0 / 0.5);
+	}
+
+	.events-header .events-kicker {
+		font-size: 0.66rem;
+	}
+
+	.events-calendar-link {
+		margin-left: 0;
+		margin-top: 1.2rem;
+	}
+
+	.events-selected {
+		position: absolute;
+		top: clamp(3rem, 6vw, 5.5rem);
+		right: clamp(3rem, 4.5vw, 4.5rem);
+		left: auto;
+		width: min(13rem, 18vw);
+		padding: 0;
+		border: 0;
+		text-align: right;
+		pointer-events: auto;
+	}
+
+	.events-selected h3 {
+		text-shadow: 0 0.1rem 1.25rem rgb(0 0 0 / 0.55);
+	}
+
+	.events-selected p {
+		text-shadow: 0 0.1rem 0.8rem rgb(0 0 0 / 0.7);
+	}
+
+	.events-deck {
+		right: 0;
+		left: 0;
+		height: min(56%, 33rem);
+	}
+
+	.event-card {
+		width: clamp(13rem, 19vw, 19rem);
+		transform:
+			translateX(calc(-50% + var(--event-slot, 0) * min(17vw, 13rem)))
+			translateY(calc(var(--event-distance, 0) * 1.7rem))
+			rotate(calc(var(--event-slot, 0) * 3deg))
+			scale(calc(1 - var(--event-distance, 0) * 0.075));
+	}
+
+	@media (max-width: 800px) {
+		.events-section,
+		.events-frame,
+		.events-visual {
+			min-height: 100svh;
+		}
+
+		.events-frame {
+			display: block;
+			border-radius: 0;
+		}
+
+		.events-copy-panel {
+			padding: 0;
+			border: 0;
+		}
+
+		.events-visual::after {
+			position: absolute;
+			z-index: 2;
+			inset: 0.6rem;
+			display: block;
+			border: 1px solid rgb(151 184 231 / 0.82);
+			border-radius: 0.75rem;
+			content: '';
+			pointer-events: none;
+		}
+
+		.events-outline {
+			display: none;
+		}
+
+		.events-header {
+			top: 2rem;
+			right: auto;
+			left: 1.5rem;
+			max-width: min(23rem, calc(100% - 3rem));
+			text-align: left;
+		}
+
+		.events-header h2 {
+			font-size: clamp(2.2rem, 10vw, 3.2rem);
+		}
+
+		.events-calendar-link {
+			margin-left: 0;
+		}
+
+		.events-selected {
+			top: auto;
+			right: 1.5rem;
+			bottom: 23rem;
+			left: auto;
+			display: block;
+			width: min(17rem, calc(100% - 3rem));
+			margin: 0;
+			padding: 0 0.8rem 0 0;
+			border-right: 1px solid rgb(151 184 231 / 0.66);
+			border-left: 0;
+			text-align: right;
+		}
+
+		.events-selected h3,
+		.events-selected p:last-child {
+			display: block;
+			max-width: none;
+			text-align: right;
+		}
+
+		.events-deck {
+			bottom: -2.25rem;
+			height: 22rem;
+		}
+	}
+
+	/* Compact document-style event previews. */
+	.events-selected h3 {
+		font-size: clamp(1.35rem, 1.9vw, 2rem);
+		line-height: 0.96;
+	}
+
+	.events-deck {
+		bottom: 1rem;
+		height: clamp(8.5rem, 18vh, 11.5rem);
+	}
+
+	.event-card {
+		--preview-lift: 0rem;
+		--preview-scale: 1;
+		width: clamp(5.75rem, 7.4vw, 7.5rem);
+		padding: 0.25rem;
+		border-color: rgb(151 184 231 / 0.42);
+		border-radius: 0.6rem;
+		background: rgb(6 9 15 / 0.82);
+		box-shadow: 0 0.75rem 1.75rem rgb(0 0 0 / 0.34);
+		transform:
+			translateX(calc(-50% + var(--event-slot, 0) * min(8.4vw, 8.4rem)))
+			translateY(calc(var(--event-distance, 0) * 0.45rem + var(--preview-lift)))
+			rotate(calc(var(--event-slot, 0) * 1.5deg))
+			scale(calc(var(--preview-scale) - var(--event-distance, 0) * 0.035));
+	}
+
+	.events-section.is-in-view .event-card {
+		opacity: 0.66;
+	}
+
+	.events-section.is-in-view .event-card:hover,
+	.events-section.is-in-view .event-card:focus-visible,
+	.events-section.is-in-view .event-card.is-active {
+		--preview-lift: -0.75rem;
+		--preview-scale: 1.08;
+		opacity: 1;
+		border-color: rgb(174 204 242 / 0.95);
+		box-shadow:
+			0 1rem 2.5rem rgb(0 0 0 / 0.52),
+			0 0 0 1px rgb(174 204 242 / 0.3);
+	}
+
+	.event-card-image-wrap {
+		height: 100%;
+		border-radius: 0.4rem;
+	}
+
+	.event-card-caption {
+		display: none;
+	}
+
+	@media (max-width: 800px) {
+		.events-selected {
+			bottom: 12rem;
+		}
+
+		.events-selected h3 {
+			font-size: clamp(1.2rem, 5.5vw, 1.55rem);
+		}
+
+		.events-deck {
+			bottom: 0.75rem;
+			height: 8.5rem;
+		}
+
+		.event-card {
+			width: clamp(4.75rem, 19vw, 6rem);
+			transform:
+				translateX(calc(-50% + var(--event-slot, 0) * min(20vw, 6.2rem)))
+				translateY(calc(var(--event-distance, 0) * 0.35rem + var(--preview-lift)))
+				rotate(calc(var(--event-slot, 0) * 1.5deg))
+				scale(calc(var(--preview-scale) - var(--event-distance, 0) * 0.035));
+		}
+	}
+</style>

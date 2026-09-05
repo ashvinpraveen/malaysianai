@@ -1,0 +1,929 @@
+---
+import Layout from '../layouts/Layout.astro';
+import FramedChrome from '../components/FramedChrome.astro';
+import HeroImageToggle from '../components/HeroImageToggle.astro';
+import EventsSection from '../components/EventsSection.astro';
+import CommunitySection from '../components/CommunitySection.astro';
+import ResidencySection from '../components/ResidencySection.astro';
+import VoicesSection from '../components/VoicesSection.astro';
+import AboutHostSection from '../components/AboutHostSection.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+---
+
+<Layout
+	title={SITE_TITLE}
+	description={SITE_DESCRIPTION}
+	image="/images/malaysian-ai-kl-hero-restored-3840.webp"
+	immersive
+>
+	<div class="hero-shell">
+		<div class="hero-media">
+			<img
+				class="hero-art"
+				src="/images/malaysian-ai-kl-hero-fibonacci-v1.png"
+				alt=""
+				width="1672"
+				height="941"
+				fetchpriority="high"
+				decoding="async"
+			/>
+			<div class="hero-shade" aria-hidden="true"></div>
+		</div>
+
+		<FramedChrome home />
+
+		<a class="sky-wordmark" href="/" aria-label="Malaysian AI home">Malaysian AI</a>
+
+		<section class="hero-card" aria-labelledby="hero-title">
+			<div class="hero-copy">
+				<h1 id="hero-title">Driving Malaysia's<br />AI progress.</h1>
+				<p class="intro">
+					The home of AI builders in Malaysia. Start with a workshop, meet the people building
+					around you, and make something of your own.
+				</p>
+			</div>
+			<a class="card-link site-button" href="https://luma.com/malaysianai">Explore Malaysian AI</a>
+		</section>
+		{import.meta.env.DEV && <HeroImageToggle />}
+	</div>
+
+	<section class="mission-section light-nav-zone" id="about" aria-labelledby="mission-title">
+		<div class="mission-events">
+			<h2 id="mission-title">Your first step into AI starts here.</h2>
+			<figure class="mission-flower">
+				<img
+					class="mission-flower-image"
+					src="/images/malaysian-ai-bunga-raya-pixel.png"
+					alt="A pixel-art bunga raya plant with a red hibiscus bloom"
+					width="1122"
+					height="1402"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+
+			<div class="mission-calendar">
+				<div class="luma-frame">
+					<iframe
+						src="https://luma.com/embed/calendar/cal-pPgkuwCFrycSv1Z/events"
+						title="Malaysian AI upcoming events on Luma"
+						loading="lazy"
+						allow="clipboard-write; payment"
+					></iframe>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<EventsSection />
+	<CommunitySection />
+	<ResidencySection />
+	<VoicesSection />
+	<AboutHostSection />
+</Layout>
+
+<style>
+	.hero-shell {
+		position: relative;
+		isolation: isolate;
+		min-height: 100svh;
+		overflow: hidden;
+		color: #fffdf6;
+		background: #0b2741;
+	}
+
+	.hero-art,
+	.hero-shade {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.hero-art {
+		z-index: -3;
+		max-width: none;
+		object-fit: cover;
+		object-position: center;
+		animation: settle 1.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+	}
+
+	.hero-shade {
+		z-index: -2;
+		background:
+			linear-gradient(180deg, rgb(4 16 34 / 0.28) 0%, transparent 34%, rgb(3 19 28 / 0.32) 100%),
+			radial-gradient(circle at 50% 35%, transparent 25%, rgb(2 16 26 / 0.26) 100%);
+	}
+
+	.floating-nav {
+		position: fixed;
+		z-index: 20;
+		top: clamp(1rem, 3vw, 2rem);
+		left: 50%;
+		display: flex;
+		align-items: center;
+		gap: 0.35rem;
+		width: min(94vw, 570px);
+		padding: 0.3rem;
+		border: 1px solid rgb(255 255 255 / 0.3);
+		border-radius: 1.05rem;
+		color: #fffdf6;
+		background: linear-gradient(105deg, rgb(35 43 58 / 0.52), rgb(85 105 143 / 0.5));
+		box-shadow: 0 18px 60px rgb(3 12 28 / 0.23), inset 0 1px rgb(255 255 255 / 0.16);
+		backdrop-filter: blur(18px) saturate(125%);
+		transform: translateX(-50%);
+		transition: color 220ms ease, background 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+		animation: nav-in 0.75s 0.08s ease-out both;
+	}
+
+	.floating-nav.is-over-light {
+		border-color: rgb(23 58 56 / 0.1);
+		color: #173a38;
+		background: rgb(250 247 238 / 0.82);
+		box-shadow: 0 14px 35px rgb(62 73 48 / 0.12), inset 0 1px rgb(255 255 255 / 0.8);
+	}
+
+	nav {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: clamp(0.7rem, 1.5vw, 1rem);
+		min-width: 0;
+		margin-inline: auto;
+	}
+
+	nav a {
+		position: relative;
+		font-size: 0.82rem;
+		text-decoration: none;
+		text-shadow: 0 1px 10px rgb(0 0 0 / 0.26);
+	}
+
+	nav a::after {
+		position: absolute;
+		right: 0;
+		bottom: -0.28rem;
+		left: 0;
+		height: 1px;
+		background: currentColor;
+		content: '';
+		transform: scaleX(0);
+		transform-origin: right;
+		transition: transform 180ms ease;
+	}
+
+	nav a:hover::after,
+	nav a:focus-visible::after {
+		transform: scaleX(1);
+		transform-origin: left;
+	}
+
+	.sky-wordmark {
+		position: absolute;
+		z-index: 1;
+		top: clamp(6.5rem, 14vh, 8.5rem);
+		left: 50%;
+		color: #fffdf8;
+		font-family: 'Mondwest', 'Times New Roman', Times, serif;
+		font-size: clamp(1.55rem, 2.4vw, 2.15rem);
+		font-weight: 400;
+		line-height: 1;
+		text-align: center;
+		text-decoration: none;
+		text-shadow:
+			0 0 7px rgb(255 255 255 / 0.42),
+			0 3px 20px rgb(13 32 77 / 0.7);
+		transform: translateX(-50%);
+		animation: wordmark-in 0.85s 0.16s ease-out both;
+	}
+
+	.round-arrow {
+		display: grid;
+		width: 1.2rem;
+		height: 1.2rem;
+		place-items: center;
+		border: 1px solid rgb(255 255 255 / 0.42);
+		border-radius: 50%;
+		font-family: system-ui, sans-serif;
+		font-size: 0.68rem;
+	}
+
+	.hero-card {
+		position: absolute;
+		z-index: 1;
+		isolation: isolate;
+		bottom: clamp(1.5rem, 4vw, 3.5rem);
+		left: clamp(1rem, 3vw, 2.5rem);
+		overflow: hidden;
+		width: min(86vw, 510px);
+		padding: clamp(1.65rem, 3vw, 2.35rem);
+		border: 1px solid rgb(238 250 255 / 0.18);
+		border-radius: 1.4rem;
+		background:
+			linear-gradient(135deg, rgb(158 194 215 / 0.2), rgb(13 37 55 / 0.38) 34%, rgb(4 20 34 / 0.22) 72%, rgb(238 192 125 / 0.11));
+		box-shadow:
+			0 28px 80px rgb(1 12 22 / 0.28),
+			inset 0 1px rgb(255 255 255 / 0.22),
+			inset 0 -1px rgb(255 255 255 / 0.1);
+		-webkit-backdrop-filter: blur(26px) saturate(155%) contrast(104%);
+		backdrop-filter: blur(26px) saturate(155%) contrast(104%);
+		animation: card-in 0.85s 0.2s ease-out both;
+	}
+
+	.hero-card::before {
+		position: absolute;
+		z-index: 0;
+		inset: 0;
+		border-radius: inherit;
+		background:
+			linear-gradient(118deg, rgb(255 255 255 / 0.18), transparent 24%, transparent 70%, rgb(255 212 149 / 0.07)),
+			radial-gradient(circle at 12% 0%, rgb(255 255 255 / 0.16), transparent 34%);
+		content: '';
+		pointer-events: none;
+	}
+
+	.hero-card::after {
+		position: absolute;
+		z-index: 0;
+		top: 0;
+		left: 9%;
+		width: 54%;
+		height: 1px;
+		background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.45), transparent);
+		content: '';
+		pointer-events: none;
+	}
+
+	.hero-card > * {
+		position: relative;
+		z-index: 1;
+	}
+
+	h1 {
+		margin: 0;
+		font-family: 'Mondwest', 'Times New Roman', Times, serif;
+		font-size: clamp(1.9rem, 2.8vw, 2.35rem);
+		font-weight: 400;
+		letter-spacing: 0;
+		line-height: 1.04;
+		text-wrap: balance;
+	}
+
+	.intro {
+		max-width: 27rem;
+		margin: 1.25rem 0 1.35rem;
+		color: rgb(255 255 255 / 0.55);
+		font-size: 0.93rem;
+		line-height: 1.5;
+	}
+
+	.card-link {
+		width: fit-content;
+		transition: gap 180ms ease, color 180ms ease;
+	}
+
+	.card-link .round-arrow {
+		width: 1.4rem;
+		height: 1.4rem;
+	}
+
+	.malaysia-clock {
+		position: absolute;
+		z-index: 1;
+		top: clamp(0.85rem, 3vw, 2rem);
+		right: clamp(0.85rem, 3vw, 2rem);
+		display: flex;
+		align-items: center;
+		gap: 0.55rem;
+		color: rgb(255 255 255 / 0.68);
+		font-size: clamp(0.72rem, 1vw, 0.82rem);
+		font-variant-numeric: tabular-nums;
+		line-height: 1;
+		text-shadow: 0 1px 8px rgb(0 0 0 / 0.75);
+	}
+
+	.malaysia-clock svg {
+		width: 1.2rem;
+		height: 1.2rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		stroke-width: 1.8;
+	}
+
+	.clock-zone {
+		color: rgb(255 255 255 / 0.42);
+	}
+
+	.mission-section {
+		position: relative;
+		display: grid;
+		height: 100dvh;
+		max-height: 100dvh;
+		padding: clamp(2.5rem, 5vh, 4.5rem) clamp(1.25rem, 6vw, 6rem);
+		overflow: hidden;
+		color: #f4f7fc;
+		background: #06090f;
+	}
+
+	.mission-events {
+		display: grid;
+		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+		align-content: center;
+		align-items: center;
+		gap: clamp(2.5rem, 5vw, 5rem);
+		width: min(100%, 82rem);
+		height: 100%;
+		margin: auto;
+	}
+
+	.mission-flower {
+		display: grid;
+		align-self: center;
+		min-width: 0;
+		margin: 0;
+		place-items: center;
+	}
+
+	.mission-flower-image {
+		display: block;
+		width: min(100%, 30rem);
+		aspect-ratio: 1122 / 1402;
+		image-rendering: pixelated;
+		transform-origin: 50% 88%;
+		animation: flower-sway 5.5s ease-in-out infinite alternate;
+	}
+
+	.mission-calendar {
+		display: grid;
+		align-self: center;
+		gap: clamp(1.5rem, 3vh, 2.25rem);
+		min-width: 0;
+	}
+
+	.mission-events h2 {
+		grid-column: 1 / -1;
+		justify-self: center;
+		max-width: 36rem;
+		margin: 0;
+		text-align: center;
+		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-size: clamp(2.4rem, 3.4vw, 3.6rem);
+		font-weight: 400;
+		letter-spacing: -0.035em;
+		line-height: 0.9;
+		text-wrap: balance;
+	}
+
+	.luma-frame {
+		overflow: hidden;
+		width: 100%;
+		height: min(56dvh, 32rem);
+		padding: 0.35rem;
+		border: 1px solid rgb(115 152 207 / 0.55);
+		border-radius: 1rem;
+		background: #06090f;
+		content-visibility: auto;
+		contain-intrinsic-size: 720px;
+	}
+
+	.luma-frame iframe {
+		display: block;
+		width: 100%;
+		height: 100%;
+		border: 0;
+		border-radius: 0.75rem;
+		background: #06090f;
+	}
+
+	@media (max-width: 900px) {
+		.mission-section {
+			height: auto;
+			max-height: none;
+			overflow: visible;
+		}
+
+		.mission-events {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+			max-width: 38rem;
+			height: auto;
+		}
+
+		.mission-flower-image {
+			width: min(45vw, 14rem);
+		}
+
+		.mission-events h2 {
+			font-size: clamp(2.8rem, 13vw, 4.2rem);
+		}
+
+		.luma-frame iframe {
+			height: 100%;
+		}
+
+		.luma-frame {
+			height: min(62dvh, 32rem);
+		}
+	}
+
+	.mission-inner {
+		display: grid;
+		grid-template-columns: minmax(18rem, 0.82fr) minmax(24rem, 1.18fr);
+		gap: clamp(3rem, 8vw, 9rem);
+		width: min(100%, 82rem);
+		margin: auto;
+	}
+
+	.mission-art-wrap {
+		display: grid;
+		align-self: center;
+		min-width: 0;
+		margin: 0;
+		place-items: center;
+	}
+
+	.mission-flower-slot {
+		display: block;
+		width: min(100%, 32rem);
+		aspect-ratio: 1122 / 1402;
+		filter: none;
+		image-rendering: pixelated;
+		transform-origin: 50% 88%;
+		animation: flower-sway 5.5s ease-in-out infinite alternate;
+	}
+
+	.mission-copy {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		min-width: 0;
+		padding-block: clamp(1rem, 5vw, 5rem);
+	}
+
+	.mission-intro {
+		max-width: 37rem;
+		color: rgb(232 239 250 / 0.72);
+		font-size: clamp(1.05rem, 1.35vw, 1.3rem);
+		line-height: 1.55;
+	}
+
+	.mission-intro p {
+		margin: 0;
+	}
+
+	.mission-intro p + p {
+		margin-top: 1.6rem;
+	}
+
+	.mission-copy h2 {
+		max-width: 48rem;
+		margin: 0;
+		font-family: 'Mondwest', 'Times New Roman', Times, serif;
+		font-size: clamp(2.65rem, 4.3vw, 4.6rem);
+		font-weight: 400;
+		letter-spacing: -0.035em;
+		line-height: 0.96;
+		text-wrap: balance;
+	}
+
+	.mission-action {
+		margin-top: clamp(3.5rem, 10vh, 7rem);
+	}
+
+	.mission-cta {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.75rem;
+		width: fit-content;
+		margin-top: 1.75rem;
+		padding: 0.72rem 0.75rem 0.72rem 1rem;
+		border-radius: 0.9rem;
+		color: #0b1728;
+		background: #e8effa;
+		box-shadow: 0 0.8rem 2rem rgb(0 0 0 / 0.22);
+		font-size: 0.95rem;
+		text-decoration: none;
+		transition: background 180ms ease, transform 180ms ease;
+	}
+
+	.mission-cta:hover,
+	.mission-cta:focus-visible {
+		background: #fff;
+		transform: translateY(-2px);
+	}
+
+	.mission-cta .round-arrow {
+		width: 1.35rem;
+		height: 1.35rem;
+		border-color: rgb(11 23 40 / 0.35);
+	}
+
+	a:focus-visible {
+		outline: 2px solid #ffd29a;
+		outline-offset: 4px;
+	}
+
+	@keyframes nav-in {
+		from {
+			opacity: 0;
+			transform: translate(-50%, -0.8rem);
+		}
+	}
+
+	@keyframes card-in {
+		from {
+			opacity: 0;
+			transform: translateY(1.2rem);
+		}
+	}
+
+	@keyframes wordmark-in {
+		from {
+			opacity: 0;
+			transform: translate(-50%, 0.6rem);
+		}
+	}
+
+	@keyframes settle {
+		from {
+			opacity: 0.75;
+			transform: scale(1.025);
+		}
+	}
+
+	@keyframes flower-sway {
+		0% {
+			transform: translate3d(-0.2rem, 0.1rem, 0) rotate(-0.75deg);
+		}
+		55% {
+			transform: translate3d(0.12rem, -0.28rem, 0) rotate(0.2deg);
+		}
+		100% {
+			transform: translate3d(0.35rem, 0, 0) rotate(0.8deg);
+		}
+	}
+
+	@media (max-width: 700px) {
+		.hero-shell {
+			min-height: max(44rem, 100svh);
+		}
+
+		.hero-art {
+			object-position: 49% center;
+		}
+
+		.floating-nav {
+			top: 0.85rem;
+			width: min(calc(100vw - 1.5rem), 28rem);
+			border-radius: 1rem;
+		}
+
+		.sky-wordmark {
+			top: 8.15rem;
+			width: calc(100% - 2rem);
+			font-size: clamp(1.5rem, 6.5vw, 1.9rem);
+		}
+
+		.malaysia-clock {
+			top: 5.75rem;
+			right: 1rem;
+			font-size: 0.72rem;
+		}
+
+		nav {
+			gap: 1rem;
+		}
+
+		nav a {
+			font-size: 0.92rem;
+		}
+
+		.hero-card {
+			right: 0.75rem;
+			bottom: 0.75rem;
+			left: 0.75rem;
+			width: auto;
+			padding: 1.6rem;
+			border-radius: 1.3rem;
+		}
+
+		h1 {
+			font-size: clamp(1.85rem, 8vw, 2.2rem);
+		}
+
+		.intro {
+			margin-block: 1.1rem;
+			font-size: 0.9rem;
+		}
+
+		.mission-section {
+			min-height: auto;
+			padding: 7rem 1.25rem 5rem;
+		}
+
+		.mission-inner {
+			grid-template-columns: 1fr;
+			gap: 2.75rem;
+		}
+
+		.mission-art-wrap {
+			order: 2;
+		}
+
+		.mission-flower-slot {
+			width: min(88vw, 25rem);
+		}
+
+		.mission-copy {
+			order: 1;
+			padding: 0;
+		}
+
+		.mission-intro {
+			font-size: 1.05rem;
+		}
+
+		.mission-copy h2 {
+			font-size: clamp(2.65rem, 11.5vw, 3.6rem);
+		}
+
+		.mission-action {
+			margin-top: 3rem;
+		}
+
+		.mission-cta {
+			margin-top: 1.5rem;
+		}
+
+	}
+
+	@media (max-height: 760px) and (min-width: 701px) {
+		.hero-card {
+			bottom: 1rem;
+			padding: 1.6rem 2rem;
+		}
+
+		h1 {
+			font-size: 2.25rem;
+		}
+
+		.intro {
+			margin-block: 1rem;
+		}
+
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.hero-art,
+		.floating-nav,
+		.sky-wordmark,
+		.hero-card,
+		.mission-flower-slot {
+			animation: none;
+		}
+	}
+
+	/* Framed hero, based on the supplied reference layout. */
+	.hero-shell {
+		--hero-frame: #06090f;
+		--hero-line: #7398cf;
+		--hero-accent: #315d9f;
+		--hero-gap: 1rem;
+		--hero-panel-width: 29rem;
+		--hero-brand-width: 7.2rem;
+		--hero-control-height: 2.25rem;
+		--hero-header-height: calc(var(--hero-gap) * 2 + var(--hero-control-height));
+		min-height: max(46rem, 100svh);
+		padding: var(--hero-gap);
+		background: var(--hero-frame);
+	}
+
+	.hero-media {
+		position: absolute;
+		z-index: 0;
+		inset: var(--hero-gap);
+		overflow: hidden;
+		border: 1.5px solid var(--hero-line);
+		border-radius: 0.95rem;
+		background: #121a29;
+		animation: media-reveal 1.2s 0.05s cubic-bezier(0.2, 0.75, 0.2, 1) both;
+	}
+
+	.hero-art,
+	.hero-shade {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.hero-art {
+		z-index: 0;
+		max-width: none;
+		object-fit: cover;
+		object-position: center;
+		animation: hero-settle 1.8s 0.05s cubic-bezier(0.2, 0.72, 0.2, 1) both;
+	}
+
+	.hero-shade {
+		z-index: 1;
+		background:
+			linear-gradient(180deg, rgb(10 13 22 / 0.12), rgb(10 13 22 / 0.03) 35%, rgb(9 10 14 / 0.6) 100%),
+			linear-gradient(90deg, rgb(4 9 20 / 0.28), transparent 55%);
+	}
+
+	.sky-wordmark {
+		z-index: 2;
+		top: clamp(6.5rem, 14vh, 8.5rem);
+		font-size: clamp(1.35rem, 1.8vw, 1.7rem);
+		animation: soft-rise 0.75s 0.8s ease-out both;
+	}
+
+	.hero-card {
+		position: absolute;
+		z-index: 3;
+		bottom: 0;
+		left: 0;
+		overflow: visible;
+		width: var(--hero-panel-width);
+		max-width: calc(100% - var(--hero-gap));
+		padding: 2.1rem 3rem 2rem;
+		border: 0;
+		border-radius: 0 1rem 0 0;
+		background: var(--hero-frame);
+		box-shadow: none;
+		-webkit-backdrop-filter: none;
+		backdrop-filter: none;
+		animation: panel-arrive 0.8s 0.35s ease-out both;
+	}
+
+	.hero-card::before {
+		display: none;
+	}
+
+	.hero-card::after {
+		position: absolute;
+		z-index: 0;
+		top: 0;
+		right: 0;
+		bottom: var(--hero-gap);
+		left: var(--hero-gap);
+		display: block;
+		width: auto;
+		height: auto;
+		border-top: 1.5px solid var(--hero-line);
+		border-right: 1.5px solid var(--hero-line);
+		border-top-right-radius: 1rem;
+		background: none;
+		content: '';
+		pointer-events: none;
+	}
+
+	.hero-copy {
+		width: fit-content;
+		max-width: 100%;
+	}
+
+	/* Let the headline set the measure for its supporting copy. */
+	.hero-copy .intro {
+		width: 0;
+		min-width: 100%;
+		max-width: none;
+	}
+
+	.hero-card h1 {
+		margin: 0;
+		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-size: clamp(2.55rem, 3.1vw, 3.45rem);
+		font-weight: 400;
+		letter-spacing: -0.035em;
+		line-height: 0.88;
+		text-wrap: balance;
+		text-shadow: 0 2px 24px rgb(2 12 13 / 0.35);
+		animation: soft-rise 0.7s 0.7s ease-out both;
+	}
+
+	.intro {
+		max-width: 27rem;
+		margin: 1.2rem 0 1.3rem;
+		color: rgb(255 255 255 / 0.9);
+		font-size: clamp(0.86rem, 1vw, 0.94rem);
+		line-height: 1.42;
+		text-shadow: 0 1px 14px rgb(2 12 13 / 0.5);
+		animation: soft-rise 0.7s 0.85s ease-out both;
+	}
+
+	.card-link {
+		transition: background 180ms ease, transform 180ms ease;
+		animation: soft-rise 0.65s 1s ease-out both;
+	}
+
+	.card-link:hover,
+	.card-link:focus-visible {
+		transform: translateY(-2px);
+	}
+
+	@keyframes logo-stage-in {
+		from {
+			opacity: 0;
+		}
+	}
+
+	@keyframes soft-rise {
+		from {
+			opacity: 0;
+			transform: translateY(0.55rem);
+		}
+	}
+
+	@keyframes panel-arrive {
+		from {
+			opacity: 0;
+			transform: translateY(0.7rem);
+		}
+	}
+
+	@keyframes frame-piece-in {
+		from {
+			opacity: 0;
+		}
+	}
+
+	@keyframes media-reveal {
+		from {
+			opacity: 0;
+			clip-path: inset(2.5% 2.5% 2.5% 2.5% round 1.2rem);
+		}
+	}
+
+	@keyframes hero-settle {
+		from {
+			opacity: 0.72;
+			transform: scale(1.025);
+		}
+	}
+
+	@media (max-width: 700px) {
+		.hero-shell {
+			--hero-gap: 0.6rem;
+			--hero-panel-width: calc(100% - var(--hero-gap));
+			--hero-brand-width: 4.4rem;
+			--hero-control-height: 2rem;
+			min-height: max(42rem, 100svh);
+			padding: var(--hero-gap);
+		}
+
+		.hero-media {
+			inset: var(--hero-gap);
+			border-radius: 0.75rem;
+		}
+
+		.hero-art {
+			object-position: 51% center;
+		}
+
+		.sky-wordmark {
+			top: 6.5rem;
+			font-size: 1.25rem;
+		}
+
+		.hero-card {
+			right: auto;
+			bottom: 0;
+			left: 0;
+			width: var(--hero-panel-width);
+			padding: 1.5rem 2rem 1.4rem;
+			border-radius: 0 0.85rem 0 0;
+		}
+
+		.hero-card::after {
+			border-top-right-radius: 0.85rem;
+		}
+
+		.hero-card h1 {
+			font-size: clamp(2.15rem, 10vw, 2.75rem);
+			line-height: 0.86;
+		}
+
+		.intro {
+			max-width: 20rem;
+			margin: 0.95rem 0 1.05rem;
+			font-size: 0.8rem;
+		}
+	}
+
+
+	@media (prefers-reduced-motion: reduce) {
+		.hero-media,
+		.sky-wordmark,
+		.hero-card,
+		.hero-card h1,
+		.intro,
+		.card-link,
+		.hero-art {
+			animation: none;
+		}
+	}
+</style>

@@ -1,0 +1,805 @@
+---
+const communities = [
+	{
+		name: 'Build Club',
+		logo: '/build-club-logo-navbar.webp',
+		group: 'build',
+		logoClass: 'is-wide',
+		label: 'Learn by building',
+		description:
+			'A large Asia-Pacific builder community with bite-sized courses, role-based learning tracks, and project bounties. A useful place to learn AI by making real things.',
+	},
+	{
+		name: 'Build with AI',
+		logo: '/build_with_ai_logo.jpeg',
+		group: 'learn',
+		logoClass: 'is-square',
+		label: 'Open builder meetups',
+		description:
+			"Malaysia's home for developers and non-technical builders creating AI projects together. Its meetups welcome first-timers and experienced makers alike.",
+	},
+	{
+		name: 'AI Tinkerers',
+		logo: '/ai_tinkerers_logo.png',
+		group: 'meet',
+		logoClass: 'is-wide',
+		label: 'Technical deep dives',
+		description:
+			'The Kuala Lumpur chapter of a global AI engineering network. Monthly meetups put live demos, practical talks, and technical conversation in the same room.',
+	},
+	{
+		name: 'AI Hackerdorm',
+		logo: '/ai_hackerdorm.webp',
+		group: 'build',
+		logoClass: 'is-square',
+		label: 'Student-first builds',
+		description:
+			'A community for student coders, designers, and founders building AI projects together through weekly sprints, hackathons, and mentorship sessions.',
+	},
+	{
+		name: 'AI SEA',
+		logo: '/aisea_logo.png',
+		group: 'learn',
+		logoClass: 'is-square',
+		label: 'Southeast Asian network',
+		description:
+			'A regional builder network for people shipping AI products. It brings engineers together through hackathons, co-build sprints, and AI.SEA Week.',
+	},
+	{
+		name: 'Rakan Tutor',
+		logo: '/rakan-tutor-logo.png',
+		group: 'learn',
+		logoClass: 'is-wide',
+		label: 'AI education for all',
+		description:
+			'A Malaysian non-profit bringing free, hands-on AI education to underserved secondary school students and helping young people prepare for an AI-shaped future.',
+	},
+	{
+		name: 'CoderPuffs',
+		logo: '/coderpuffs_logo.png',
+		group: 'meet',
+		logoClass: 'is-square',
+		label: 'Women-first community',
+		description:
+			'Welcoming café-based build sessions that make coding and AI easier to enter. Its monthly meetups are designed for women at every experience level.',
+	},
+	{
+		name: 'Cursor KL',
+		logo: '/cursor-community-logo.png',
+		group: 'build',
+		logoClass: 'is-square',
+		label: 'Cursor builders in KL',
+		description:
+			'The Kuala Lumpur community for people building with Cursor. Join local hackathons, workshops, and conversations with other product-minded makers.',
+	},
+];
+
+const startIndex = 0;
+---
+
+<section class="community-chapter light-nav-zone" id="communities" aria-labelledby="community-title">
+	<div class="community-shell">
+		<div class="community-copy">
+			<div class="community-heading">
+				<h2 id="community-title">The people are<br />the platform.</h2>
+			</div>
+			<p class="community-lede">
+				There is no single front door into AI here. There are many. Pick the room that
+				feels like yours and say hello.
+			</p>
+		</div>
+
+		<div
+			class="community-stage"
+			id="community-stage"
+			tabindex="0"
+			aria-label="Interactive community filmstrip"
+		>
+			<p class="sr-only">Select a logo or use the arrow keys to browse the communities.</p>
+			<div class="community-deck" id="community-deck" data-community-deck>
+				{
+					communities.map((community, index) => (
+						<button
+							class:list={['community-card', community.logoClass]}
+							type="button"
+							data-community-card
+							data-index={String(index)}
+							data-name={community.name}
+							data-label={community.label}
+							data-description={community.description}
+							aria-label={`Focus ${community.name}, ${community.label}`}
+							aria-current={index === startIndex ? 'true' : 'false'}
+						>
+							<span class="community-portrait">
+								<img
+									src={community.logo}
+									alt={community.name}
+									width="220"
+									height="140"
+									loading="lazy"
+									decoding="async"
+								/>
+							</span>
+						</button>
+					))
+				}
+			</div>
+		</div>
+
+		<div class="community-focus" aria-live="polite" aria-atomic="true">
+			<div class="community-focus-title">
+				<p class="community-focus-kicker">
+					<span data-community-label>{communities[startIndex].label}</span>
+				</p>
+				<h3 data-community-name>{communities[startIndex].name}</h3>
+			</div>
+			<p data-community-description>{communities[startIndex].description}</p>
+		</div>
+	</div>
+</section>
+
+<script>
+	let cleanUpCommunity = () => {};
+
+	function prepareCommunitySection() {
+		const stage = document.querySelector<HTMLElement>('#community-stage');
+		const deck = document.querySelector<HTMLElement>('[data-community-deck]');
+		const cards = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-community-card]'));
+		const focusLabel = document.querySelector<HTMLElement>('[data-community-label]');
+		const focusName = document.querySelector<HTMLElement>('[data-community-name]');
+		const focusDescription = document.querySelector<HTMLElement>('[data-community-description]');
+
+		if (!stage || !deck || !cards.length) return () => {};
+
+		const count = cards.length;
+		const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+		const startIndex = 0;
+		const state = {
+			phase: startIndex,
+			target: startIndex,
+			base: startIndex,
+			hovering: false,
+			hoverStartedAt: 0,
+			lastInput: performance.now(),
+		};
+		let lastActiveIndex = startIndex;
+
+		function wrappedDelta(index: number, phase: number) {
+			let delta = index - phase;
+			while (delta > count / 2) delta -= count;
+			while (delta < -count / 2) delta += count;
+			return delta;
+		}
+
+		function nearestIndex() {
+			return ((Math.round(state.phase) % count) + count) % count;
+		}
+
+		function moveTo(index: number) {
+			const current = nearestIndex();
+			let delta = index - current;
+			if (delta > count / 2) delta -= count;
+			if (delta < -count / 2) delta += count;
+			state.base += delta;
+			state.target = state.base;
+			state.lastInput = performance.now();
+			updateFocus(index);
+			lastActiveIndex = index;
+		}
+
+		function updateFocus(index: number) {
+			const card = cards[index];
+			if (!card) return;
+			if (focusLabel) focusLabel.textContent = card.dataset.label ?? '';
+			if (focusName) focusName.textContent = card.dataset.name ?? '';
+			if (focusDescription) focusDescription.textContent = card.dataset.description ?? '';
+		}
+
+		cards.forEach((card, index) => {
+			card.addEventListener('click', () => moveTo(index));
+			card.addEventListener('focus', () => moveTo(index));
+			card.addEventListener('pointerenter', () => {
+				if (state.hovering) return;
+				state.hovering = true;
+				state.hoverStartedAt = performance.now();
+				state.target = state.phase;
+			});
+			card.addEventListener('pointerleave', () => {
+				if (!state.hovering) return;
+				const now = performance.now();
+				state.lastInput += now - state.hoverStartedAt;
+				state.hovering = false;
+			});
+		});
+
+		function handleKeydown(event: KeyboardEvent) {
+			const target = event.target;
+			const inSection =
+				target instanceof Node &&
+				(stage.contains(target) || document.getElementById('communities')?.contains(target));
+			if (!inSection) return;
+
+			const forward = event.key === 'ArrowRight' || event.key === 'ArrowDown';
+			const backward = event.key === 'ArrowLeft' || event.key === 'ArrowUp';
+			if (!forward && !backward) return;
+			event.preventDefault();
+			state.base += forward ? 1 : -1;
+			state.target = state.base;
+			state.lastInput = performance.now();
+		}
+
+		window.addEventListener('keydown', handleKeydown);
+
+		let previousTime = performance.now();
+		let frame = 0;
+
+		function render(time: number) {
+			const deltaTime = Math.min(32, time - previousTime);
+			previousTime = time;
+			const ease = reducedMotion ? 1 : 1 - Math.pow(0.001, deltaTime / 1000);
+
+			if (!reducedMotion && !state.hovering && time - state.lastInput > 2800) {
+				const elapsed = time - state.lastInput - 2800;
+				const cycle = (elapsed / 10500) % 2;
+				const sweep = cycle <= 1 ? cycle : 2 - cycle;
+				state.target = sweep * (count - 1);
+			}
+
+			state.phase += (state.target - state.phase) * ease;
+			const compact = innerWidth < 650;
+			const activeIndex = nearestIndex();
+			const horizontalSpacing = Math.min(138, Math.max(82, innerWidth * 0.095));
+			const verticalSpacing = Math.min(112, Math.max(78, innerHeight * 0.1));
+
+			if (activeIndex !== lastActiveIndex) {
+				lastActiveIndex = activeIndex;
+				updateFocus(activeIndex);
+			}
+
+			cards.forEach((card, index) => {
+				const delta = wrappedDelta(index, state.phase);
+				const distance = Math.abs(delta);
+				const focus = Math.exp(-distance * distance * 1.28);
+				const side = Math.max(0, 1 - distance / 5);
+				const direction = Math.sign(delta) || 0;
+				const x = compact
+					? delta * 24 + Math.sin(delta * 0.9) * 25
+					: delta * horizontalSpacing;
+				const y = compact
+					? delta * verticalSpacing
+					: distance * 6;
+				const z = focus * 145 - distance * 148;
+				const scale = 0.54 + side * 0.15 + focus * 0.54;
+				const rotateX = compact ? delta * 1.5 : 0;
+				const rotateY = compact
+					? -delta * 3.5
+					: -direction * (distance > 0.2 ? 9 + Math.min(distance, 3) * 3 : 0);
+				const rotateZ = compact ? delta * -1.4 : delta * 0.7;
+
+				card.style.setProperty('--focus', focus.toFixed(4));
+				card.style.zIndex = String(Math.round(1000 - distance * 100));
+				card.style.opacity = String(Math.max(0.42, side * 0.66 + focus * 0.34));
+				card.style.filter = 'none';
+				card.style.transform = [
+					'translate(-50%, -50%)',
+					`translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, ${z.toFixed(2)}px)`,
+					`rotateX(${rotateX.toFixed(2)}deg)`,
+					`rotateY(${rotateY.toFixed(2)}deg)`,
+					`rotateZ(${rotateZ.toFixed(2)}deg)`,
+					`scale(${scale.toFixed(4)})`,
+				].join(' ');
+				card.setAttribute('aria-current', index === activeIndex ? 'true' : 'false');
+			});
+
+			frame = requestAnimationFrame(render);
+		}
+
+		frame = requestAnimationFrame(render);
+		return () => {
+			cancelAnimationFrame(frame);
+			window.removeEventListener('keydown', handleKeydown);
+		};
+	}
+
+	function prepareCommunity() {
+		cleanUpCommunity();
+		cleanUpCommunity = prepareCommunitySection();
+	}
+
+	document.addEventListener('astro:page-load', prepareCommunity);
+	document.addEventListener('astro:before-swap', () => cleanUpCommunity());
+</script>
+
+<style>
+	.community-chapter {
+		--ink: #173a38;
+		--cream: #f0eadb;
+		--paper: #fffdf7;
+		--accent: #a65337;
+		padding: clamp(5.5rem, 9vw, 8rem) 0 clamp(4rem, 7vw, 6rem);
+		color: var(--ink);
+		background: var(--cream);
+	}
+
+	.community-copy {
+		width: min(42rem, calc(100% - 2.5rem));
+		margin: 0 auto 2.4rem;
+		text-align: center;
+	}
+
+	.community-kicker {
+		margin: 0 0 1.15rem;
+		color: rgb(23 58 56 / 0.55);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.13em;
+		text-transform: uppercase;
+	}
+
+	.community-copy h2 {
+		margin: 0;
+		font-family: 'Mondwest', 'Times New Roman', Times, serif;
+		font-size: clamp(3.4rem, 7vw, 5.45rem);
+		font-weight: 400;
+		letter-spacing: -0.045em;
+		line-height: 0.88;
+		text-wrap: balance;
+	}
+
+	.community-lede {
+		max-width: 34rem;
+		margin: 1.6rem auto 0;
+		color: rgb(23 58 56 / 0.66);
+		font-size: clamp(1rem, 1.35vw, 1.2rem);
+		line-height: 1.55;
+	}
+
+	.community-stage {
+		--pointer-x: 50%;
+		position: relative;
+		width: 100%;
+		height: clamp(28rem, 58vh, 38rem);
+		overflow: hidden;
+		isolation: isolate;
+		perspective: 1450px;
+		cursor: ew-resize;
+		touch-action: none;
+		background:
+			linear-gradient(90deg, rgb(23 58 56 / 0.07) 1px, transparent 1px) 50% 0 / 25% 100%,
+			repeating-linear-gradient(
+				0deg,
+				transparent 0,
+				transparent 109px,
+				rgb(23 58 56 / 0.1) 110px,
+				transparent 111px
+			),
+			radial-gradient(circle at var(--pointer-x) 48%, rgb(255 253 247 / 0.86), transparent 34%),
+			var(--cream);
+	}
+
+	.community-stage:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: -2px;
+	}
+
+	.community-stage::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: 5;
+		pointer-events: none;
+		opacity: 0.18;
+		background:
+			repeating-radial-gradient(circle at 12% 18%, rgb(23 58 56 / 0.16) 0 0.5px, transparent 0.7px 4px),
+			repeating-radial-gradient(circle at 78% 71%, rgb(255 255 255 / 0.4) 0 0.5px, transparent 0.8px 5px);
+		mix-blend-mode: multiply;
+	}
+
+	.community-stage::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: 4;
+		pointer-events: none;
+		background: linear-gradient(
+			90deg,
+			rgb(23 58 56 / 0.14),
+			transparent 14%,
+			transparent 86%,
+			rgb(23 58 56 / 0.14)
+		);
+	}
+
+	.community-deck {
+		position: absolute;
+		inset: 0;
+		z-index: 2;
+		transform-style: preserve-3d;
+	}
+
+	.community-card {
+		--focus: 0;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: clamp(154px, 16.8vw, 238px);
+		aspect-ratio: 0.72;
+		padding: 7px;
+		overflow: hidden;
+		border: 1px solid rgb(23 58 56 / 0.28);
+		border-radius: 4px;
+		color: var(--paper);
+		background: var(--paper);
+		box-shadow:
+			0 calc(10px + var(--focus) * 24px) calc(18px + var(--focus) * 36px)
+				rgb(23 58 56 / calc(0.12 + var(--focus) * 0.22)),
+			inset 0 0 0 1px rgb(255 255 255 / 0.72);
+		appearance: none;
+		outline: none;
+		transform-style: preserve-3d;
+		will-change: transform, opacity, filter;
+		cursor: pointer;
+	}
+
+	.community-card::before {
+		content: '';
+		position: absolute;
+		inset: 5px;
+		z-index: 3;
+		border: 1px solid rgb(23 58 56 / calc(0.08 + var(--focus) * 0.12));
+		pointer-events: none;
+	}
+
+	.community-card:focus-visible {
+		box-shadow:
+			0 26px 50px rgb(23 58 56 / 0.28),
+			0 0 0 4px rgb(166 83 55 / 0.34);
+	}
+
+	.community-portrait {
+		position: absolute;
+		inset: 7px 7px 25%;
+		display: grid;
+		place-items: center;
+		overflow: hidden;
+		background:
+			radial-gradient(circle at 50% 40%, rgb(255 255 255 / 0.7), transparent 62%),
+			#ece6d4;
+	}
+
+	.community-portrait img {
+		display: block;
+		width: 72%;
+		height: 72%;
+		object-fit: contain;
+		transform: scale(calc(1.02 + (1 - var(--focus)) * 0.04));
+		filter:
+			saturate(calc(0.72 + var(--focus) * 0.28))
+			contrast(1.04);
+	}
+
+	.community-card.is-wide .community-portrait img {
+		width: 86%;
+	}
+
+	.community-footer {
+		position: absolute;
+		right: 7px;
+		bottom: 7px;
+		left: 7px;
+		height: calc(25% - 7px);
+		display: grid;
+		grid-template-columns: clamp(26px, 3.2vw, 43px) 1fr;
+		align-items: center;
+		gap: clamp(6px, 0.7vw, 11px);
+		padding: clamp(7px, 0.8vw, 12px);
+		color: #f3eee2;
+		background: var(--ink);
+		text-align: left;
+	}
+
+	.community-index {
+		display: grid;
+		width: clamp(23px, 2.7vw, 37px);
+		aspect-ratio: 1;
+		place-items: center;
+		border: 1px solid var(--accent);
+		border-radius: 50%;
+		color: #d56a45;
+		font: 600 clamp(7px, 0.68vw, 11px) / 1 ui-monospace, 'SFMono-Regular', monospace;
+	}
+
+	.community-meta {
+		min-width: 0;
+	}
+
+	.community-name,
+	.community-role {
+		display: block;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		text-transform: uppercase;
+		white-space: nowrap;
+	}
+
+	.community-name {
+		color: #f3eee2;
+		font-size: clamp(8px, 0.86vw, 13px);
+		font-weight: 800;
+		letter-spacing: 0.08em;
+		line-height: 1.1;
+	}
+
+	.community-role {
+		margin-top: clamp(3px, 0.35vw, 5px);
+		color: #d56a45;
+		font-size: clamp(5px, 0.48vw, 7px);
+		font-weight: 700;
+		letter-spacing: 0.15em;
+		line-height: 1;
+	}
+
+	.community-focus {
+		width: min(38rem, calc(100% - 2.5rem));
+		margin: 1.75rem auto 0;
+		text-align: center;
+	}
+
+	.community-focus-kicker {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.55rem 0.8rem;
+		align-items: center;
+		justify-content: center;
+		margin: 0 0 0.7rem;
+		color: rgb(23 58 56 / 0.48);
+		font-size: 0.71rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.community-focus-kicker [data-community-label] {
+		color: var(--accent);
+	}
+
+	.community-focus h3 {
+		margin: 0;
+		font-family: 'Mondwest', 'Times New Roman', Times, serif;
+		font-size: clamp(2rem, 4vw, 3.2rem);
+		font-weight: 400;
+		letter-spacing: -0.035em;
+		line-height: 0.95;
+	}
+
+	.community-focus p:last-child {
+		margin: 0.85rem 0 0;
+		color: rgb(23 58 56 / 0.66);
+		font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+		line-height: 1.55;
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	@media (max-width: 650px) {
+		.community-stage {
+			height: clamp(34rem, 72vh, 44rem);
+			cursor: ns-resize;
+			background:
+				linear-gradient(90deg, rgb(23 58 56 / 0.07) 1px, transparent 1px) 50% 0 / 50% 100%,
+				repeating-linear-gradient(
+					0deg,
+					transparent 0,
+					transparent 87px,
+					rgb(23 58 56 / 0.1) 88px,
+					transparent 89px
+				),
+				radial-gradient(circle at 50% 50%, rgb(255 253 247 / 0.86), transparent 35%),
+				var(--cream);
+		}
+
+		.community-card {
+			width: clamp(142px, 47vw, 180px);
+		}
+
+		.community-copy h2 {
+			font-size: clamp(3.1rem, 14vw, 4.25rem);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.community-card {
+			will-change: auto;
+		}
+	}
+
+	/* Open, logo-only community composition. */
+	.community-chapter {
+		--ink: #f2f5fa;
+		--cream: #06090f;
+		--paper: #0d1622;
+		--accent: #9bbbe7;
+		display: grid;
+		min-height: 100dvh;
+		padding: clamp(4rem, 7vw, 6rem) clamp(1.5rem, 4vw, 4rem);
+		align-items: center;
+		color: var(--ink);
+		background: #06090f;
+	}
+
+	.community-shell {
+		display: grid;
+		gap: clamp(1.75rem, 3vw, 2.75rem);
+		width: min(92rem, 100%);
+		margin: 0 auto;
+		background: transparent;
+	}
+
+	.community-copy {
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+		align-items: center;
+		width: min(42rem, 100%);
+		margin: 0 auto;
+		padding: 0;
+		text-align: center;
+	}
+
+	.community-copy h2 {
+		margin: 0;
+		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-size: clamp(2.2rem, 3.6vw, 3.4rem);
+		font-weight: 400;
+		letter-spacing: -0.035em;
+		line-height: 0.9;
+	}
+
+	.community-lede {
+		max-width: 36rem;
+		margin: 0 auto;
+		color: rgb(224 232 244 / 0.72);
+		font-size: clamp(0.92rem, 1.25vw, 1.08rem);
+		line-height: 1.6;
+	}
+
+	.community-stage {
+		height: clamp(20rem, 34dvh, 27rem);
+		overflow: hidden;
+		cursor: default;
+		touch-action: pan-y;
+		background: transparent;
+	}
+
+	.community-stage::before,
+	.community-stage::after {
+		display: none;
+	}
+
+	.community-stage:focus-visible {
+		outline: none;
+	}
+
+	.community-card {
+		width: clamp(128px, 13vw, 188px);
+		aspect-ratio: 1.08;
+		padding: 0;
+		border: 0;
+		border-radius: 0.7rem;
+		background: transparent;
+		box-shadow: 0 calc(8px + var(--focus) * 16px) calc(18px + var(--focus) * 28px)
+			rgb(0 0 0 / calc(0.2 + var(--focus) * 0.22));
+	}
+
+	.community-card::before {
+		display: none;
+	}
+
+	.community-card:focus-visible {
+		box-shadow:
+			0 24px 48px rgb(0 0 0 / 0.48),
+			0 0 0 3px rgb(151 184 231 / 0.35);
+	}
+
+	.community-portrait {
+		inset: 0;
+		border-radius: 0.7rem;
+		background:
+			radial-gradient(circle at 50% 40%, rgb(255 255 255 / 0.9), transparent 62%),
+			#e9edf3;
+	}
+
+	.community-portrait img {
+		width: 76%;
+		height: 76%;
+	}
+
+	.community-card.is-wide .community-portrait img {
+		width: 86%;
+	}
+
+	.community-focus {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: 0.8rem;
+		align-items: center;
+		width: min(48rem, 100%);
+		margin: 0 auto;
+		padding: clamp(1.5rem, 2.5vw, 2rem) clamp(1.5rem, 4vw, 3.25rem);
+		border-radius: 1.15rem;
+		background: #0a1019;
+		box-shadow: 0 20px 55px rgb(0 0 0 / 0.22);
+		text-align: center;
+	}
+
+	.community-focus-kicker {
+		justify-content: center;
+		margin-bottom: 0.4rem;
+		color: #a9c7ef;
+		font-size: 0.66rem;
+		font-weight: 400;
+	}
+
+	.community-focus-kicker [data-community-label] {
+		color: #a9c7ef;
+	}
+
+	.community-focus h3 {
+		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
+		font-size: clamp(1.8rem, 2.8vw, 2.65rem);
+		font-weight: 400;
+		line-height: 0.95;
+	}
+
+	.community-focus > p:last-child {
+		max-width: 38rem;
+		margin: 0 auto;
+		color: rgb(224 232 244 / 0.68);
+		font-size: clamp(0.9rem, 1.15vw, 1.02rem);
+		line-height: 1.6;
+	}
+
+	@media (max-width: 700px) {
+		.community-chapter {
+			min-height: auto;
+			padding: 3rem 1rem;
+		}
+
+		.community-shell {
+			gap: 1.75rem;
+		}
+
+		.community-copy {
+			gap: 1.25rem;
+			padding: 0;
+		}
+
+		.community-copy h2 {
+			font-size: clamp(2.3rem, 10vw, 3.25rem);
+		}
+
+		.community-stage {
+			height: clamp(24rem, 55svh, 30rem);
+		}
+
+		.community-card {
+			width: clamp(116px, 38vw, 154px);
+		}
+
+		.community-focus {
+			gap: 1rem;
+			padding: 1.4rem 1rem;
+		}
+	}
+</style>

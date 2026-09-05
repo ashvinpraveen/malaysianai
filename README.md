@@ -1,52 +1,63 @@
-# Malaysian AI
+# Astro Starter Kit: Blog
 
-The website for Malaysia's AI Residency and Hub — [malaysian.ai](https://malaysian.ai).
+```sh
+bun create astro@latest -- --template blog
+```
 
-## Tech Stack
+> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
 
-- [Next.js 16](https://nextjs.org/) — React framework
-- [Tailwind CSS](https://tailwindcss.com/) — styling
-- [Supabase](https://supabase.com/) — backend / database
-- [Radix UI](https://www.radix-ui.com/) — accessible component primitives
-- [Framer Motion](https://www.framer.com/motion/) — animations
+Features:
 
-## Getting Started
+- ✅ Minimal styling (make it your own!)
+- ✅ 100/100 Lighthouse performance
+- ✅ SEO-friendly with canonical URLs and Open Graph data
+- ✅ Sitemap support
+- ✅ RSS Feed support
+- ✅ Markdown & MDX support
 
-### Prerequisites
+## 🚀 Project Structure
 
-- [Bun](https://bun.sh/) (recommended) or Node.js 20.9+
-- A [Supabase](https://supabase.com/) project (for form submissions)
+Inside of your Astro project, you'll see the following folders and files:
 
-### Setup
+```text
+├── public/
+├── src/
+│   ├── assets/
+│   ├── components/
+│   ├── content/
+│   ├── layouts/
+│   └── pages/
+├── astro.config.mjs
+├── README.md
+├── package.json
+└── tsconfig.json
+```
 
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/ashvinpraveen/malaysianai.git
-   cd malaysianai
-   ```
+Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
 
-2. Install dependencies:
-   ```bash
-   bun install
-   ```
+There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
 
-3. Copy the example environment file and fill in your values:
-   ```bash
-   cp .env.example .env.local
-   ```
+The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
 
-4. Start the development server:
-   ```bash
-   bun dev
-   ```
+Any static assets, like images, can be placed in the `public/` directory.
 
-   Open [http://localhost:3000](http://localhost:3000).
+## 🧞 Commands
 
-## Environment Variables
+All commands are run from the root of the project, from a terminal:
 
-See [`.env.example`](.env.example) for all required variables.
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `bun install`             | Installs dependencies                            |
+| `bun dev`             | Starts local dev server at `localhost:4321`      |
+| `bun build`           | Build your production site to `./dist/`          |
+| `bun preview`         | Preview your build locally, before deploying     |
+| `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `bun astro -- --help` | Get help using the Astro CLI                     |
 
-| Variable | Description |
-|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anonymous (public) key |
+## 👀 Want to learn more?
+
+Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+## Credit
+
+This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).

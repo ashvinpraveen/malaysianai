@@ -1,0 +1,92 @@
+<div class="hero-image-toggle" data-hero-image-toggle role="group" aria-label="Compare hero images" hidden>
+	<span aria-hidden="true">Image</span>
+	<button type="button" data-hero-image="original" aria-pressed="false">Original</button>
+	<button type="button" data-hero-image="fibonacci" aria-pressed="true">Fibonacci</button>
+</div>
+
+<script>
+	function prepareHeroImageToggle() {
+		const toggle = document.querySelector<HTMLElement>('[data-hero-image-toggle]');
+		const heroImage = toggle?.closest('.hero-shell')?.querySelector<HTMLImageElement>('.hero-art');
+
+		if (!toggle || !heroImage || toggle.dataset.ready === 'true') return;
+		toggle.dataset.ready = 'true';
+
+		const variants = {
+			original: {
+				src: '/images/malaysian-ai-kl-hero-restored-3840.webp',
+				srcset: '/images/malaysian-ai-kl-hero-restored-1920.webp 1920w, /images/malaysian-ai-kl-hero-restored-3840.webp 3840w, /images/malaysian-ai-kl-hero-restored-7680.webp 7680w',
+				width: 7680,
+				height: 4320,
+			},
+			fibonacci: {
+				src: '/images/malaysian-ai-kl-hero-fibonacci-v1.png',
+				srcset: '',
+				width: 1672,
+				height: 941,
+			},
+		};
+		const buttons = toggle.querySelectorAll<HTMLButtonElement>('[data-hero-image]');
+		buttons.forEach(button => {
+			button.addEventListener('click', () => {
+				const variant = variants[button.dataset.heroImage as keyof typeof variants];
+				if (!variant) return;
+				if (variant.srcset) {
+					heroImage.sizes = '100vw';
+					heroImage.srcset = variant.srcset;
+				} else {
+					heroImage.removeAttribute('srcset');
+					heroImage.removeAttribute('sizes');
+				}
+				heroImage.src = variant.src;
+				heroImage.width = variant.width;
+				heroImage.height = variant.height;
+				buttons.forEach(option => option.setAttribute('aria-pressed', String(option === button)));
+			});
+		});
+		toggle.hidden = false;
+	}
+
+	document.addEventListener('astro:page-load', prepareHeroImageToggle);
+</script>
+
+<style>
+	.hero-image-toggle:not([hidden]) {
+		position: absolute;
+		z-index: 3;
+		right: 2rem;
+		bottom: 2rem;
+		display: flex;
+		align-items: center;
+		gap: 0.15rem;
+		padding: 0.25rem;
+		border: 1px solid #ffffff2e;
+		border-radius: 0.65rem;
+		background: #06090fee;
+		color: #fffdf6;
+		font: 400 0.75rem / 1.2 'Atkinson', system-ui, sans-serif;
+	}
+	span { padding-inline: 0.55rem; color: #b4bdcb; font-size: 0.65rem; }
+	button {
+		min-height: 2.25rem;
+		padding: 0.4rem 0.65rem;
+		border: 0;
+		border-radius: 0.4rem;
+		color: #d8dfeb;
+		background: transparent;
+		font: inherit;
+		cursor: pointer;
+	}
+	button:hover { background: #ffffff14; }
+	button[aria-pressed='true'] { color: #101820; background: #fffdf6; }
+	button:focus-visible { outline: 2px solid #97b8e7; outline-offset: 2px; }
+	@media (max-width: 700px) {
+		.hero-image-toggle:not([hidden]) {
+			z-index: 2;
+			top: 9rem;
+			right: 1.2rem;
+			bottom: auto;
+		}
+		button { min-height: 2.75rem; }
+	}
+</style>

@@ -1,0 +1,154 @@
+@font-face {
+	font-family: 'Atkinson';
+	src: url('../assets/fonts/atkinson-regular.woff') format('woff');
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Atkinson';
+	src: url('../assets/fonts/atkinson-bold.woff') format('woff');
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Mondwest';
+	src: url('../assets/fonts/PPMondwest-Regular.woff2') format('woff2');
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+}
+
+:root {
+	--button-background: #fff;
+	--button-hover-background: #edf0f4;
+	--button-text: #101820;
+	--button-radius: 0.45rem;
+	font-family: 'Atkinson', system-ui, sans-serif;
+	color: #102b2a;
+	background: #07101a;
+	font-synthesis: none;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+	background-color: #07101a;
+}
+
+body {
+	margin: 0;
+	background-color: #07101a;
+}
+
+::view-transition {
+	background: #06090f;
+}
+
+::view-transition-old(root) {
+	animation: page-leave 280ms cubic-bezier(0.4, 0, 0.7, 0.2) both;
+}
+
+::view-transition-new(root) {
+	animation: page-arrive 520ms 45ms cubic-bezier(0.16, 0.82, 0.2, 1) both;
+}
+
+::view-transition-group(site-brand) {
+	z-index: 100;
+	animation-duration: 620ms;
+	animation-timing-function: cubic-bezier(0.16, 0.82, 0.2, 1);
+}
+
+::view-transition-old(site-brand),
+::view-transition-new(site-brand) {
+	mix-blend-mode: normal;
+}
+
+@keyframes page-leave {
+	to {
+		opacity: 0;
+		filter: blur(2px);
+		transform: scale(0.992);
+	}
+}
+
+@keyframes page-arrive {
+	from {
+		opacity: 0;
+		filter: blur(3px);
+		transform: translateY(0.65rem) scale(1.006);
+	}
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+a {
+	color: inherit;
+}
+
+.site-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.55rem;
+	min-height: 2.25rem;
+	padding: 0.35rem 0.85rem;
+	border: 0;
+	border-radius: var(--button-radius);
+	color: var(--button-text);
+	background: var(--button-background);
+	font: 400 0.82rem / 1.2 'Atkinson', system-ui, sans-serif;
+	text-decoration: none;
+	white-space: nowrap;
+	cursor: pointer;
+	transition: background 180ms ease, transform 180ms ease;
+}
+
+.site-button:hover,
+.site-button:focus-visible {
+	color: var(--button-text);
+	background: var(--button-hover-background);
+}
+
+.site-button:focus-visible {
+	outline: 2px solid #97b8e7;
+	outline-offset: 3px;
+}
+
+@media (max-width: 700px) {
+	.site-button {
+		min-height: 2rem;
+		padding: 0.3rem 0.6rem;
+		font-size: 0.68rem;
+	}
+}
+
+body.immersive {
+	background: #07101a;
+}
+
+.immersive-main {
+	min-height: 100svh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	::view-transition-old(root),
+	::view-transition-new(root),
+	::view-transition-group(site-brand) {
+		animation-duration: 1ms;
+		animation-delay: 0ms;
+	}
+}

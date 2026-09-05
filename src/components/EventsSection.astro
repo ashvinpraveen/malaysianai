@@ -1,4 +1,5 @@
 ---
+import { LUMA_URL } from '../consts';
 const events = [
 	{
 		title: 'Show & Tell with the Supabase CEO',
@@ -43,7 +44,7 @@ const events = [
 		<div class="events-copy-panel">
 			<div class="events-header">
 				<h2 id="events-title">There is always<br />something happening.</h2>
-				<a class="events-calendar-link site-button" href="https://luma.com/malaysianai">
+				<a class="events-calendar-link site-button" href={LUMA_URL}>
 					See the event calendar
 					<span aria-hidden="true">↗</span>
 				</a>
@@ -138,7 +139,6 @@ const events = [
 			section.querySelectorAll<HTMLImageElement>('[data-events-background]'),
 		);
 		const title = section.querySelector<HTMLElement>('[data-event-title]');
-		const type = section.querySelector<HTMLElement>('[data-event-type]');
 		const date = section.querySelector<HTMLElement>('[data-event-date]');
 		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 		const slots = [0, 1, 2, -2, -1];
@@ -146,7 +146,10 @@ const events = [
 		let visibleBackground = 0;
 		let changeSequence = 0;
 		let sectionIsVisible = false;
+		let hoveringCard = false;
 		let rotationTimer: number | undefined;
+		const controller = new AbortController();
+		const { signal } = controller;
 
 		function stopRotation() {
 			if (rotationTimer === undefined) return;
@@ -156,7 +159,8 @@ const events = [
 
 		function startRotation() {
 			stopRotation();
-			if (!sectionIsVisible || document.hidden || cards.length < 2) {
+			const keyboardFocus = cards.some(card => card.matches(':focus-visible'));
+			if (!sectionIsVisible || document.hidden || reduceMotion.matches || hoveringCard || keyboardFocus || cards.length < 2) {
 				return;
 			}
 
@@ -188,7 +192,6 @@ const events = [
 			layoutCards();
 
 			if (title) title.textContent = card.dataset.title ?? '';
-			if (type) type.textContent = card.dataset.type ?? '';
 			if (date) date.textContent = card.dataset.date ?? '';
 
 			const nextBackgroundIndex = visibleBackground === 0 ? 1 : 0;
@@ -213,10 +216,20 @@ const events = [
 		}
 
 		cards.forEach((card, index) => {
+			card.addEventListener('pointerenter', event => {
+				if (event.pointerType !== 'mouse') return;
+				hoveringCard = true;
+				startRotation();
+			}, { signal });
+			card.addEventListener('pointerleave', event => {
+				if (event.pointerType !== 'mouse') return;
+				hoveringCard = false;
+				startRotation();
+			}, { signal });
 			card.addEventListener('click', () => {
 				void selectEvent(index);
 				startRotation();
-			});
+			}, { signal });
 		});
 
 		const observer = new IntersectionObserver(
@@ -237,10 +250,21 @@ const events = [
 		layoutCards();
 		observer.observe(section);
 		document.addEventListener('visibilitychange', startRotation);
+		reduceMotion.addEventListener('change', startRotation);
+		section.addEventListener('focusin', startRotation, { signal });
+		section.addEventListener('focusout', () => {
+			// Wait until the browser has moved focus to the next element.
+			window.queueMicrotask(() => {
+				if (!signal.aborted) startRotation();
+			});
+		}, { signal });
 
 		return () => {
 			stopRotation();
 			observer.disconnect();
+			controller.abort();
+			reduceMotion.removeEventListener('change', startRotation);
+			changeSequence++;
 			document.removeEventListener('visibilitychange', startRotation);
 		};
 	}
@@ -263,56 +287,7 @@ const events = [
 	.events-section {
 		position: relative;
 		isolation: isolate;
-		min-height: max(52rem, 100svh);
 		overflow: hidden;
-		color: #fffaf0;
-		background: #081f27;
-	}
-
-	.events-background,
-	.events-background-image,
-	.events-background-wash {
-		position: absolute;
-		inset: 0;
-	}
-
-	.events-background {
-		z-index: -2;
-		overflow: hidden;
-	}
-
-	.events-background-image {
-		width: 100%;
-		height: 100%;
-		max-width: none;
-		object-fit: cover;
-		filter: saturate(82%);
-		transform: scale(1.035);
-		opacity: 0;
-		transition: opacity 700ms ease, transform 6s ease;
-	}
-
-	.events-background-image.is-visible {
-		transform: scale(1);
-		opacity: 1;
-	}
-
-	.events-background-wash {
-		background:
-			linear-gradient(180deg, rgb(4 18 24 / 0.82) 0%, rgb(4 19 26 / 0.38) 40%, rgb(3 13 18 / 0.9) 100%),
-			linear-gradient(90deg, rgb(3 17 22 / 0.34), transparent 45%, rgb(3 17 22 / 0.3));
-		backdrop-filter: blur(1px);
-	}
-
-	.events-header {
-		position: absolute;
-		top: clamp(6.5rem, 13vh, 9rem);
-		left: clamp(1.25rem, 5vw, 5rem);
-		z-index: 2;
-		max-width: min(43rem, 70vw);
-		opacity: 0;
-		transform: translateY(1.5rem);
-		transition: opacity 700ms ease, transform 700ms cubic-bezier(0.2, 0.75, 0.2, 1);
 	}
 
 	.events-section.is-in-view .events-header {
@@ -320,39 +295,9 @@ const events = [
 		opacity: 1;
 	}
 
-	.events-kicker {
-		margin: 0 0 1rem;
-		color: rgb(255 250 240 / 0.64);
-		font-size: 0.78rem;
-		font-weight: 700;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-	}
-
-	.events-header h2 {
-		margin: 0;
-		font-family: 'Mondwest', 'Times New Roman', Times, serif;
-		font-size: clamp(2.65rem, 5vw, 5.5rem);
-		font-weight: 400;
-		letter-spacing: -0.045em;
-		line-height: 0.84;
-		text-wrap: balance;
-	}
-
-	.events-calendar-link {
-		margin-top: 1.65rem;
-		transition: gap 180ms ease, color 180ms ease;
-	}
-
 	.events-selected {
-		position: absolute;
-		top: clamp(10rem, 24vh, 15rem);
-		right: clamp(1.25rem, 5vw, 5rem);
-		z-index: 2;
-		width: min(23rem, 30vw);
 		padding-left: 1rem;
 		border-left: 1px solid rgb(255 250 240 / 0.42);
-		text-align: right;
 	}
 
 	.events-selected p,
@@ -361,30 +306,7 @@ const events = [
 	}
 
 	.events-selected p {
-		color: rgb(255 250 240 / 0.62);
-		font-size: 0.68rem;
-		font-weight: 700;
-		letter-spacing: 0.08em;
 		text-transform: uppercase;
-	}
-
-	.events-selected h3 {
-		margin-block: 0.45rem;
-		font-family: 'Mondwest', 'Times New Roman', Times, serif;
-		font-size: clamp(1.2rem, 1.8vw, 2.15rem);
-		font-weight: 400;
-		line-height: 0.95;
-	}
-
-	.events-deck {
-		position: absolute;
-		right: 0;
-		bottom: clamp(-4.5rem, -7vh, -2.5rem);
-		left: 0;
-		z-index: 3;
-		height: clamp(21rem, 47vh, 35rem);
-		perspective: 1200px;
-		pointer-events: none;
 	}
 
 	.event-card {
@@ -393,25 +315,13 @@ const events = [
 		left: 50%;
 		z-index: var(--event-layer, 1);
 		display: block;
-		width: clamp(14rem, 25vw, 24rem);
-		aspect-ratio: 0.75;
 		margin: 0;
-		padding: 0.5rem;
 		overflow: hidden;
-		border: 1px solid rgb(255 255 255 / 0.35);
-		border-radius: 1.15rem;
 		color: #fff;
-		background: rgb(241 235 220 / 0.16);
-		box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 0.42);
 		font: inherit;
 		text-align: left;
 		cursor: pointer;
 		pointer-events: auto;
-		transform:
-			translateX(calc(-50% + var(--event-slot, 0) * min(20vw, 16.5rem)))
-			translateY(calc(var(--event-distance, 0) * 2.1rem))
-			rotate(calc(var(--event-slot, 0) * 4deg))
-			scale(calc(1 - var(--event-distance, 0) * 0.08));
 		transform-origin: 50% 100%;
 		opacity: 0;
 		transition:
@@ -422,10 +332,6 @@ const events = [
 		will-change: transform;
 	}
 
-	.events-section.is-in-view .event-card {
-		opacity: 1;
-	}
-
 	.events-section.is-in-view .event-card:nth-child(1) { transition-delay: 60ms; }
 	.events-section.is-in-view .event-card:nth-child(2) { transition-delay: 110ms; }
 	.events-section.is-in-view .event-card:nth-child(3) { transition-delay: 160ms; }
@@ -434,26 +340,17 @@ const events = [
 
 	.event-card:hover,
 	.event-card:focus-visible {
-		border-color: rgb(255 255 255 / 0.72);
 		box-shadow: 0 1.8rem 5rem rgb(0 0 0 / 0.55);
 	}
 
 	.event-card:focus-visible {
-		outline: 2px solid #f4c785;
 		outline-offset: 4px;
-	}
-
-	.event-card.is-active {
-		border-color: rgb(255 255 255 / 0.68);
 	}
 
 	.event-card-image-wrap {
 		display: block;
 		overflow: hidden;
 		width: 100%;
-		height: calc(100% - 3rem);
-		border-radius: 0.75rem;
-		background: #102b2a;
 	}
 
 	.event-card-image {
@@ -477,13 +374,9 @@ const events = [
 	}
 
 	.event-card-caption {
-		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		gap: 1rem;
-		height: 3rem;
-		padding-inline: 0.35rem;
-		font-size: 0.72rem;
 		letter-spacing: 0.06em;
 		text-transform: uppercase;
 	}
@@ -495,134 +388,37 @@ const events = [
 
 	.event-card-caption strong {
 		overflow: hidden;
-		font-weight: 700;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
 
 	@media (max-width: 700px) {
-		.events-section {
-			min-height: max(48rem, 100svh);
-		}
-
-		.events-header {
-			top: 6.75rem;
-			left: 1.25rem;
-			max-width: calc(100% - 2.5rem);
-		}
-
-		.events-header h2 {
-			font-size: clamp(2.35rem, 10.5vw, 3.6rem);
-			line-height: 0.88;
-		}
-
-		.events-calendar-link {
-			margin-top: 1.2rem;
-		}
 
 		.events-selected {
-			top: auto;
-			right: 1.25rem;
 			bottom: clamp(19.5rem, 39vh, 24rem);
-			width: calc(100% - 2.5rem);
-			padding: 0;
-			border: 0;
-			text-align: right;
-		}
-
-		.events-selected h3 {
-			font-size: 1.35rem;
-		}
-
-		.events-deck {
-			bottom: -2.7rem;
-			height: clamp(18rem, 36vh, 22rem);
-		}
-
-		.event-card {
-			width: clamp(11.5rem, 48vw, 14.5rem);
-			padding: 0.35rem;
-			border-radius: 0.9rem;
-			transform:
-				translateX(calc(-50% + var(--event-slot, 0) * 38vw))
-				translateY(calc(var(--event-distance, 0) * 1.35rem))
-				rotate(calc(var(--event-slot, 0) * 5deg))
-				scale(calc(1 - var(--event-distance, 0) * 0.1));
-		}
-
-		.event-card-image-wrap {
-			height: calc(100% - 2.45rem);
-			border-radius: 0.62rem;
-		}
-
-		.event-card-caption {
-			height: 2.45rem;
-			font-size: 0.6rem;
 		}
 
 	}
-
-	@media (max-height: 720px) and (min-width: 701px) {
-		.events-header {
-			top: 6.5rem;
-		}
-
-		.events-header h2 {
-			font-size: clamp(2.65rem, 4.5vw, 4.2rem);
-		}
-
-		.events-selected {
-			top: 8.5rem;
-		}
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.events-background-image,
-		.events-header,
-		.event-card,
-		.event-card-image {
-			transition-duration: 1ms;
-		}
-
-		.events-header,
-		.event-card {
-			opacity: 1;
-		}
-	}
-
-	/* Framed editorial layout aligned with the homepage design system. */
 	.events-section {
-		min-height: 100dvh;
-		padding: 1rem;
 		color: #f4f7fc;
 		background: #06090f;
 	}
 
 	.events-frame {
 		position: relative;
-		display: grid;
 		grid-template-columns: minmax(19rem, 0.38fr) minmax(0, 0.62fr);
-		min-height: calc(100dvh - 2rem);
 		overflow: hidden;
-		border: 1px solid rgb(115 152 207 / 0.72);
-		border-radius: 1rem;
 		background: #06090f;
 	}
 
 	.events-copy-panel {
-		position: relative;
-		z-index: 4;
-		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 		min-width: 0;
-		padding: clamp(2.5rem, 5vw, 5rem) clamp(2rem, 4vw, 4rem) clamp(2rem, 4vw, 3.5rem);
 		border-right: 1px solid rgb(115 152 207 / 0.72);
-		background: #06090f;
 	}
 
 	.events-visual {
-		position: relative;
 		isolation: isolate;
 		min-width: 0;
 		overflow: hidden;
@@ -658,34 +454,19 @@ const events = [
 	}
 
 	.events-background-wash {
-		background:
-			linear-gradient(180deg, rgb(5 10 17 / 0.08) 0%, rgb(5 10 17 / 0.24) 46%, rgb(5 9 15 / 0.92) 100%),
-			linear-gradient(90deg, rgb(5 10 17 / 0.2), transparent 48%);
 		backdrop-filter: none;
 	}
 
 	.events-header {
-		position: static;
 		z-index: auto;
-		max-width: 31rem;
 		opacity: 0;
 		transform: translateY(1rem);
 		transition: opacity 650ms ease, transform 650ms cubic-bezier(0.2, 0.75, 0.2, 1);
 	}
 
-	.events-kicker {
-		margin: 0 0 1.15rem;
-		color: rgb(188 208 238 / 0.72);
-		font-size: 0.72rem;
-		font-weight: 400;
-		letter-spacing: 0.13em;
-		text-transform: uppercase;
-	}
-
 	.events-header h2 {
 		margin: 0;
 		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
-		font-size: clamp(3.15rem, 4.7vw, 5.25rem);
 		font-weight: 400;
 		letter-spacing: -0.035em;
 		line-height: 0.88;
@@ -694,7 +475,6 @@ const events = [
 
 	.events-calendar-link {
 		width: fit-content;
-		margin-top: 1.7rem;
 		transition: gap 180ms ease, background 180ms ease, transform 180ms ease;
 	}
 
@@ -704,13 +484,8 @@ const events = [
 	}
 
 	.events-selected {
-		position: static;
 		z-index: auto;
-		width: 100%;
-		padding: 1.5rem 0 0;
-		border: 0;
 		border-top: 1px solid rgb(115 152 207 / 0.4);
-		text-align: left;
 	}
 
 	.events-selected p {
@@ -723,35 +498,19 @@ const events = [
 	.events-selected h3 {
 		margin-block: 0.55rem;
 		font-family: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
-		font-size: clamp(1.8rem, 2.6vw, 2.7rem);
 		font-weight: 400;
-		line-height: 0.95;
 	}
 
 	.events-deck {
 		position: absolute;
-		right: 0;
-		bottom: -2.75rem;
-		left: 0;
 		z-index: 3;
-		height: min(55%, 31rem);
 		perspective: 1200px;
 		pointer-events: none;
 	}
 
 	.event-card {
-		width: clamp(13rem, 19vw, 19rem);
 		aspect-ratio: 0.78;
-		padding: 0.42rem;
 		border: 1px solid rgb(115 152 207 / 0.52);
-		border-radius: 0.9rem;
-		background: rgb(6 9 15 / 0.9);
-		box-shadow: 0 1.4rem 3.5rem rgb(0 0 0 / 0.45);
-		transform:
-			translateX(calc(-50% + var(--event-slot, 0) * min(15vw, 11rem)))
-			translateY(calc(var(--event-distance, 0) * 1.7rem))
-			rotate(calc(var(--event-slot, 0) * 3deg))
-			scale(calc(1 - var(--event-distance, 0) * 0.075));
 	}
 
 	.event-card:hover,
@@ -765,8 +524,6 @@ const events = [
 	}
 
 	.event-card-image-wrap {
-		height: calc(100% - 2.8rem);
-		border-radius: 0.62rem;
 		background: #0a1422;
 	}
 
@@ -782,38 +539,18 @@ const events = [
 	}
 
 	@media (max-width: 800px) {
-		.events-section {
-			min-height: 100svh;
-			padding: 0.6rem;
-		}
 
 		.events-frame {
 			grid-template-columns: 1fr;
 			grid-template-rows: auto minmax(31rem, 1fr);
-			min-height: calc(100svh - 1.2rem);
-			border-radius: 0.75rem;
 		}
 
 		.events-copy-panel {
-			padding: 2.25rem 1.5rem 1.5rem;
 			border-right: 0;
 			border-bottom: 1px solid rgb(115 152 207 / 0.72);
 		}
 
-		.events-header {
-			max-width: 28rem;
-		}
-
-		.events-header h2 {
-			font-size: clamp(2.65rem, 11vw, 3.75rem);
-		}
-
-		.events-calendar-link {
-			margin-top: 1.25rem;
-		}
-
 		.events-selected {
-			display: grid;
 			grid-template-columns: 1fr auto;
 			align-items: end;
 			gap: 0.35rem 1rem;
@@ -823,32 +560,11 @@ const events = [
 
 		.events-selected h3 {
 			grid-column: 1;
-			font-size: 1.65rem;
 		}
 
 		.events-selected p:last-child {
 			grid-column: 2;
 			grid-row: 1 / span 2;
-			max-width: 9rem;
-			text-align: right;
-		}
-
-		.events-visual {
-			min-height: 31rem;
-		}
-
-		.events-deck {
-			bottom: -2.25rem;
-			height: 23rem;
-		}
-
-		.event-card {
-			width: clamp(11rem, 44vw, 13.5rem);
-			transform:
-				translateX(calc(-50% + var(--event-slot, 0) * 36vw))
-				translateY(calc(var(--event-distance, 0) * 1.2rem))
-				rotate(calc(var(--event-slot, 0) * 4deg))
-				scale(calc(1 - var(--event-distance, 0) * 0.09));
 		}
 	}
 
@@ -865,8 +581,6 @@ const events = [
 			opacity: 1;
 		}
 	}
-
-	/* Full-frame event image with all editorial content inside the image boundary. */
 	.events-section {
 		min-height: 100dvh;
 		padding: 0;
@@ -949,10 +663,6 @@ const events = [
 		text-shadow: 0 0.15rem 1.75rem rgb(0 0 0 / 0.5);
 	}
 
-	.events-header .events-kicker {
-		font-size: 0.66rem;
-	}
-
 	.events-calendar-link {
 		margin-left: 0;
 		margin-top: 1.2rem;
@@ -981,16 +691,6 @@ const events = [
 	.events-deck {
 		right: 0;
 		left: 0;
-		height: min(56%, 33rem);
-	}
-
-	.event-card {
-		width: clamp(13rem, 19vw, 19rem);
-		transform:
-			translateX(calc(-50% + var(--event-slot, 0) * min(17vw, 13rem)))
-			translateY(calc(var(--event-distance, 0) * 1.7rem))
-			rotate(calc(var(--event-slot, 0) * 3deg))
-			scale(calc(1 - var(--event-distance, 0) * 0.075));
 	}
 
 	@media (max-width: 800px) {
@@ -1044,7 +744,6 @@ const events = [
 		.events-selected {
 			top: auto;
 			right: 1.5rem;
-			bottom: 23rem;
 			left: auto;
 			display: block;
 			width: min(17rem, calc(100% - 3rem));
@@ -1061,14 +760,7 @@ const events = [
 			max-width: none;
 			text-align: right;
 		}
-
-		.events-deck {
-			bottom: -2.25rem;
-			height: 22rem;
-		}
 	}
-
-	/* Compact document-style event previews. */
 	.events-selected h3 {
 		font-size: clamp(1.35rem, 1.9vw, 2rem);
 		line-height: 0.96;

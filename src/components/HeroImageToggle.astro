@@ -20,8 +20,8 @@
 				height: 4320,
 			},
 			fibonacci: {
-				src: '/images/malaysian-ai-kl-hero-fibonacci-v1.png',
-				srcset: '',
+				src: heroImage.src,
+				srcset: heroImage.srcset,
 				width: 1672,
 				height: 941,
 			},
@@ -32,7 +32,7 @@
 				const variant = variants[button.dataset.heroImage as keyof typeof variants];
 				if (!variant) return;
 				if (variant.srcset) {
-					heroImage.sizes = '100vw';
+					heroImage.sizes = 'max(100vw, 178svh)';
 					heroImage.srcset = variant.srcset;
 				} else {
 					heroImage.removeAttribute('srcset');

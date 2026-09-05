@@ -1,0 +1,23 @@
+---
+import InfoPage from '../layouts/InfoPage.astro';
+import { residents } from '../data/residents';
+---
+<InfoPage title="Meet the residents" description="The founders and teams building at Malaysian AI.">
+	<div class="resident-grid">
+		{residents.map(resident => (
+			<section class="resident">
+				<h2><a href={resident.website}>{resident.name}</a></h2>
+				<p class="tag">{resident.tag}</p>
+				<p>{resident.description}</p>
+				<a href={resident.website}>Visit {resident.name} <span aria-hidden="true">↗</span></a>
+			</section>
+		))}
+	</div>
+	<div class="actions"><a class="site-button" href="/residency">Explore the residency</a></div>
+</InfoPage>
+<style>
+	.resident-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); gap: 1.5rem; }
+	.resident { padding: 1.5rem; border: 1px solid #7398cf66; border-radius: 0.75rem; background: #0b1422; }
+	.resident h2 { margin-top: 0; }
+	.tag { color: #a9c7ef; }
+</style>

@@ -7,7 +7,7 @@ import Layout from './Layout.astro';
 
 type Props = CollectionEntry<'blog'>['data'] & { slug?: string };
 
-const { title, description, image, pubDate, author, category, slug } = Astro.props;
+const { title, description, image, pubDate, author, imageAlt, slug } = Astro.props;
 const coverImage = slug === 'largest-ai-learnathon'
 	? '/images/blog/largest-ai-learnathon/hero.webp'
 	: image;
@@ -34,7 +34,7 @@ const coverImage = slug === 'largest-ai-learnathon'
 		<button class="story-cover" type="button" data-story-cover aria-label="View cover image full screen">
 			{
 				coverImage ? (
-					<img src={coverImage} alt="" width="2200" height="1467" loading="eager" fetchpriority="high" />
+					<img src={coverImage} alt={imageAlt ?? ''} width="2200" height="1467" loading="eager" fetchpriority="high" />
 				) : (
 					<Image src={fallbackCover} alt="" width={960} height={480} loading="eager" />
 				)
@@ -50,12 +50,12 @@ const coverImage = slug === 'largest-ai-learnathon'
 			<a class="site-button" href="/blog">More stories</a>
 		</footer>
 
-		<div class="image-viewer" data-image-viewer role="dialog" aria-modal="true" aria-label="Full-screen image viewer" hidden>
+		<dialog class="image-viewer" data-image-viewer aria-label="Full-screen image viewer">
 			<button class="image-viewer-close" type="button" data-image-viewer-close aria-label="Close full-screen image">
 				<span aria-hidden="true">×</span>
 			</button>
-			<img class="image-viewer-image" src="" alt="" />
-		</div>
+			<img class="image-viewer-image" alt="" />
+		</dialog>
 	</article>
 </Layout>
 
@@ -63,25 +63,21 @@ const coverImage = slug === 'largest-ai-learnathon'
 	let cleanUpStoryViewer = () => {};
 
 	function connectStoryViewer(
-		viewer: HTMLElement,
+		viewer: HTMLDialogElement,
 		viewerImage: HTMLImageElement | null,
 		cover: HTMLButtonElement | null,
 		closeViewer: HTMLButtonElement | null,
 	) {
 		let previousFocus: HTMLElement | null = null;
 
-		const hideViewer = () => {
-			viewer.hidden = true;
-			document.body.classList.remove('has-image-viewer');
-			previousFocus?.focus();
-		};
+		const hideViewer = () => viewer.close();
 
 		const openImage = (image: HTMLImageElement) => {
 			if (!viewerImage) return;
 			previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
 			viewerImage.src = image.currentSrc || image.src;
 			viewerImage.alt = image.alt;
-			viewer.hidden = false;
+			viewer.showModal();
 			document.body.classList.add('has-image-viewer');
 			closeViewer?.focus();
 		};
@@ -109,16 +105,20 @@ const coverImage = slug === 'largest-ai-learnathon'
 		viewer.addEventListener('click', event => {
 			if (event.target === viewer) hideViewer();
 		});
-		function handleViewerKeydown(event: KeyboardEvent) {
-			if (event.key === 'Escape' && !viewer.hidden) hideViewer();
-		}
-
-		document.addEventListener('keydown', handleViewerKeydown);
-		return () => document.removeEventListener('keydown', handleViewerKeydown);
+		const restoreFocus = () => {
+			document.body.classList.remove('has-image-viewer');
+			previousFocus?.focus();
+		};
+		viewer.addEventListener('close', restoreFocus);
+		return () => {
+			viewer.removeEventListener('close', restoreFocus);
+			if (viewer.open) viewer.close();
+			document.body.classList.remove('has-image-viewer');
+		};
 	}
 
 	function prepareStoryViewerForPage() {
-		const viewer = document.querySelector<HTMLElement>('[data-image-viewer]');
+		const viewer = document.querySelector<HTMLDialogElement>('[data-image-viewer]');
 		if (!viewer) return () => {};
 
 		return connectStoryViewer(
@@ -403,12 +403,12 @@ const coverImage = slug === 'largest-ai-learnathon'
 		background: #02050a !important;
 	}
 
-	.image-viewer:not([hidden]) {
+	.image-viewer[open] {
 		display: grid;
 		place-items: center;
 	}
 
-	.image-viewer[hidden] {
+	.image-viewer:not([open]) {
 		display: none;
 	}
 

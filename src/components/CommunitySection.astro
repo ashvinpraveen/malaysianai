@@ -152,7 +152,9 @@ const startIndex = 0;
 		if (!stage || !deck || !cards.length) return () => {};
 
 		const count = cards.length;
-		const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+		const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
+		let reducedMotion = motionPreference.matches;
+		let sectionIsVisible = false;
 		const startIndex = 0;
 		const state = {
 			phase: startIndex,
@@ -180,11 +182,12 @@ const startIndex = 0;
 			let delta = index - current;
 			if (delta > count / 2) delta -= count;
 			if (delta < -count / 2) delta += count;
-			state.base += delta;
+			state.base = Math.round(state.phase) + delta;
 			state.target = state.base;
 			state.lastInput = performance.now();
 			updateFocus(index);
 			lastActiveIndex = index;
+			scheduleRender();
 		}
 
 		function updateFocus(index: number) {
@@ -216,7 +219,7 @@ const startIndex = 0;
 			const target = event.target;
 			const inSection =
 				target instanceof Node &&
-				(stage.contains(target) || document.getElementById('communities')?.contains(target));
+				(stage?.contains(target) || document.getElementById('communities')?.contains(target));
 			if (!inSection) return;
 
 			const forward = event.key === 'ArrowRight' || event.key === 'ArrowDown';
@@ -226,6 +229,7 @@ const startIndex = 0;
 			state.base += forward ? 1 : -1;
 			state.target = state.base;
 			state.lastInput = performance.now();
+			scheduleRender();
 		}
 
 		window.addEventListener('keydown', handleKeydown);
@@ -234,11 +238,12 @@ const startIndex = 0;
 		let frame = 0;
 
 		function render(time: number) {
+			frame = 0;
 			const deltaTime = Math.min(32, time - previousTime);
 			previousTime = time;
 			const ease = reducedMotion ? 1 : 1 - Math.pow(0.001, deltaTime / 1000);
 
-			if (!reducedMotion && !state.hovering && time - state.lastInput > 2800) {
+			if (!reducedMotion && !state.hovering && !stage?.contains(document.activeElement) && time - state.lastInput > 2800) {
 				const elapsed = time - state.lastInput - 2800;
 				const cycle = (elapsed / 10500) % 2;
 				const sweep = cycle <= 1 ? cycle : 2 - cycle;
@@ -291,12 +296,40 @@ const startIndex = 0;
 				card.setAttribute('aria-current', index === activeIndex ? 'true' : 'false');
 			});
 
-			frame = requestAnimationFrame(render);
+			if (!reducedMotion) scheduleRender();
 		}
 
-		frame = requestAnimationFrame(render);
+		function scheduleRender() {
+			if (!frame && sectionIsVisible && !document.hidden) frame = requestAnimationFrame(render);
+		}
+
+		function updateVisibility() {
+			cancelAnimationFrame(frame);
+			frame = 0;
+			previousTime = performance.now();
+			state.lastInput = previousTime;
+			scheduleRender();
+		}
+
+		function updateMotionPreference() {
+			reducedMotion = motionPreference.matches;
+			updateVisibility();
+		}
+
+		const observer = new IntersectionObserver(([entry]) => {
+			sectionIsVisible = entry.isIntersecting;
+			updateVisibility();
+		});
+		observer.observe(stage);
+		document.addEventListener('visibilitychange', updateVisibility);
+		window.addEventListener('resize', scheduleRender);
+		motionPreference.addEventListener('change', updateMotionPreference);
 		return () => {
 			cancelAnimationFrame(frame);
+			observer.disconnect();
+			document.removeEventListener('visibilitychange', updateVisibility);
+			window.removeEventListener('resize', scheduleRender);
+			motionPreference.removeEventListener('change', updateMotionPreference);
 			window.removeEventListener('keydown', handleKeydown);
 		};
 	}

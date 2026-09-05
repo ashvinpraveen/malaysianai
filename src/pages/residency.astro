@@ -1,0 +1,19 @@
+---
+import InfoPage from '../layouts/InfoPage.astro';
+import { APPLY_FORM_URL, SHOW_AND_TELL_WHATSAPP, VENUE_ADDRESS, VENUE_MAPS_URL, VENUE_WAZE_URL } from '../consts';
+---
+<InfoPage title="The AI Residency" description="Build in Malaysia. Ship for the world. A working home for founders building AI products in Malaysia.">
+	<div class="actions"><a class="site-button" href={APPLY_FORM_URL}>Apply to the residency</a><a href="/residents">Meet the residents</a></div>
+	<h2>A place to build together</h2>
+	<ul>
+		<li>A co-working space for your daily work.</li>
+		<li>Weekly show and tells to share progress and learn from other builders.</li>
+		<li>Support with technical work, fundraising, product, and bringing your product to market.</li>
+	</ul>
+	<h2>Show and Tell Thursdays</h2>
+	<p>Join the community for co-working from 11am and Show and Tell at 4pm on Thursdays.</p>
+	<a class="site-button" href={SHOW_AND_TELL_WHATSAPP}>Ask to join on WhatsApp</a>
+	<h2>Our home at 500 Global</h2>
+	<p>{VENUE_ADDRESS}</p>
+	<div class="actions"><a href={VENUE_MAPS_URL}>Directions on Google Maps</a><a href={VENUE_WAZE_URL}>Directions on Waze</a></div>
+</InfoPage>

@@ -11,3 +11,5 @@ export const VENUE_ADDRESS = "500 Global, Bangunan AICB, 10 Jalan Dato' Onn, 504
 export const VENUE_MAPS_URL =
 	"https://www.google.com/maps/search/?api=1&query=500+Global+Bangunan+AICB+10+Jalan+Dato'+Onn+Kuala+Lumpur";
 export const VENUE_WAZE_URL = 'https://waze.com/ul?q=500%20Global%20Bangunan%20AICB%20Kuala%20Lumpur';
+
+export const CONTACT_WHATSAPP = 'https://wa.me/60109847954';

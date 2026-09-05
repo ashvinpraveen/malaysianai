@@ -1,0 +1,22 @@
+---
+import Layout from './Layout.astro';
+import { SITE_TITLE } from '../consts';
+interface Props { title: string; description: string }
+const { title, description } = Astro.props;
+---
+<Layout title={`${title} | ${SITE_TITLE}`} description={description}>
+	<article class="info-page">
+		<header><h1>{title}</h1><p>{description}</p></header>
+		<slot />
+	</article>
+</Layout>
+<style>
+	.info-page { max-width: 72rem; min-height: 65svh; margin: auto; padding: 3rem 1.5rem 6rem; color: #e0e8f4; }
+	header { max-width: 48rem; margin-bottom: 3rem; }
+	h1 { margin: 0; font: 400 clamp(2.5rem, 6vw, 4.5rem) / 1 'Instrument Serif', serif; }
+	p, .info-page :global(p), .info-page :global(li) { line-height: 1.65; }
+	.info-page :global(h2) { font: 400 2rem / 1.15 'Instrument Serif', serif; margin-top: 2.5rem; }
+	.info-page :global(a:not(.site-button)) { color: #a9c7ef; text-underline-offset: 0.2em; }
+	.info-page :global(a:focus-visible) { outline: 2px solid #97b8e7; outline-offset: 4px; }
+	.info-page :global(.actions) { display: flex; flex-wrap: wrap; gap: 1rem; margin-block: 1.5rem; align-items: center; }
+</style>

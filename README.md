@@ -1,63 +1,54 @@
-# Astro Starter Kit: Blog
+# Malaysian AI
+
+The public Malaysian AI community site, built with Astro and Bun. It generates static pages for the homepage, residency, residents, contact details, and blog, plus an RSS feed and sitemap.
+
+## Development
+
+Use Node.js 24 LTS and Bun 1.3.13. The supported Node.js minimum is 22.22.3.
 
 ```sh
-bun create astro@latest -- --template blog
+bun install --frozen-lockfile
+bun dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Astro prints the local URL. No environment variables or database are required.
 
-Features:
+## Checks
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and Open Graph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+Install Chromium once for browser tests:
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-├── public/
-├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+```sh
+bunx playwright install chromium
+bun run verify
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+`verify` runs Astro type checking, ESLint, a production build, a local link and asset audit, and Playwright tests on desktop and mobile Chromium. The browser tests cover public routes, dialog focus, client navigation, reduced motion, and offscreen animation cleanup. They block external requests to keep third-party embeds out of the test run.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Individual commands:
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+| Command | Purpose |
+| --- | --- |
+| `bun run check` | Check Astro and TypeScript diagnostics |
+| `bun run lint` | Lint source, scripts, and tests |
+| `bun run build` | Generate the static site in `dist/` |
+| `bun run check:links` | Audit built local links, anchors, assets, and the hero image budget |
+| `bun run test` | Run browser tests against an existing build on port 4325 |
+| `bun run preview` | Preview the production build |
 
-Any static assets, like images, can be placed in the `public/` directory.
+GitHub Actions runs the same checks for pushes and pull requests.
 
-## 🧞 Commands
+## Editing content
 
-All commands are run from the root of the project, from a terminal:
+- `src/content/blog/` contains Markdown and MDX stories. Required frontmatter is defined in `src/content.config.ts`: title, description, publication date, author, and category. Images, image descriptions, and updated dates are optional.
+- `src/data/residents.ts` and `src/data/voices.ts` are the shared resident and testimonial lists.
+- `src/consts.ts` contains the site description, application, event, WhatsApp, and venue URLs.
+- `src/pages/` defines public routes. Layouts and section components live in `src/layouts/` and `src/components/`.
+- The hero source lives in `src/assets/hero-fibonacci.png`. Astro generates responsive WebP variants during the build. Other public assets live in `public/`.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `bun install`             | Installs dependencies                            |
-| `bun dev`             | Starts local dev server at `localhost:4321`      |
-| `bun build`           | Build your production site to `./dist/`          |
-| `bun preview`         | Preview your build locally, before deploying     |
-| `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `bun astro -- --help` | Get help using the Astro CLI                     |
+The Luma calendar loads from an external iframe. Applications open the configured Airtable form, and contact links open WhatsApp. This repository does not process submissions.
 
-## 👀 Want to learn more?
+`docs/site-inventory.md` records the previous site's content and routes. It is historical context, not a list of currently implemented pages.
 
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## Deployment
 
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+Run `bun run build` and serve `dist/` with a static host that resolves directory URLs to `index.html`. The canonical site URL is configured in `astro.config.mjs`. No server runtime is needed after the build.

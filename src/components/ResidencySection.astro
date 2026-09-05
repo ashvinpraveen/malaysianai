@@ -1,59 +1,5 @@
 ---
-interface Resident {
-	name: string;
-	tag: string;
-	href: string;
-	logo?: string;
-	logoClass?: string;
-	wordmark?: string;
-}
-
-const residents: Resident[] = [
-	{
-		name: 'Cleve',
-		tag: 'Personal AI content assistant',
-		href: 'https://cleve.ai',
-		logo: '/cleve-logo.svg',
-	},
-	{
-		name: 'ReplyrAI',
-		tag: 'AI growth platform for clinics',
-		href: 'https://replyr.ai',
-		wordmark: 'Replyr.AI',
-	},
-	{
-		name: 'Blue Bolt Labs',
-		tag: 'MVP studio for solo founders',
-		href: 'https://blueboltlabs.com',
-		logo: '/blueboltlabs.webp',
-	},
-	{
-		name: 'Seavoice',
-		tag: 'Enterprise voice AI agents',
-		href: 'https://seavoice.ai',
-		logo: '/seavoice_icon.png',
-	},
-	{
-		name: 'DocuAsk',
-		tag: 'Chat with your documents',
-		href: 'https://docuask.com',
-		wordmark: 'DocuAsk',
-	},
-	{
-		name: 'Klovr',
-		tag: 'AI copilot for real estate teams',
-		href: 'https://klovr.co',
-		logo: '/klovr_logo.webp',
-		logoClass: 'is-wide',
-	},
-	{
-		name: 'Kelas Sekejap',
-		tag: 'Learn English by speaking',
-		href: 'https://kelassekejap.com',
-		logo: '/kelassekejaplogo.svg',
-		logoClass: 'is-wide',
-	},
-];
+import { residents } from '../data/residents';
 ---
 
 <section class="residency-chapter light-nav-zone" id="residency" aria-labelledby="residency-title">
@@ -89,7 +35,7 @@ const residents: Resident[] = [
 							<li>
 								<a
 									class="resident-tile"
-									href={resident.href}
+									href={resident.website}
 									target="_blank"
 									rel="noopener"
 									tabindex={isClone ? -1 : undefined}

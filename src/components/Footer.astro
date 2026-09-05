@@ -1,11 +1,12 @@
 ---
+import { LUMA_URL } from '../consts';
 const year = new Date().getFullYear();
 
 const groups = [
 	{
 		title: 'Get involved',
 		links: [
-			{ label: 'View events', href: 'https://luma.com/malaysianai' },
+			{ label: 'View events', href: LUMA_URL },
 			{ label: 'Communities', href: '/#communities' },
 			{ label: 'Residency', href: '/residency' },
 		],
@@ -32,7 +33,7 @@ const groups = [
 				The home of AI builders in Malaysia. Join workshops, events, and a community
 				figuring out AI together.
 			</p>
-			<a class="footer-cta site-button" href="https://luma.com/malaysianai">
+			<a class="footer-cta site-button" href={LUMA_URL}>
 				<span>View events</span>
 				<span aria-hidden="true">↗</span>
 			</a>

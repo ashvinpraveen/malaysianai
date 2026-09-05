@@ -1,0 +1,10 @@
+---
+import InfoPage from '../layouts/InfoPage.astro';
+import { CONTACT_WHATSAPP, LUMA_URL, VENUE_ADDRESS, VENUE_MAPS_URL } from '../consts';
+---
+<InfoPage title="Get in touch" description="Questions about the community, residency, or events? Send the Malaysian AI team a message.">
+	<div class="actions"><a class="site-button" href={CONTACT_WHATSAPP}>Message us on WhatsApp</a><a href={LUMA_URL}>View upcoming events</a></div>
+	<h2>Find us</h2>
+	<p>{VENUE_ADDRESS}</p>
+	<a href={VENUE_MAPS_URL}>Directions on Google Maps</a>
+</InfoPage>

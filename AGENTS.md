@@ -34,7 +34,7 @@ Malaysia’s AI Residency and Hub website. It promotes the Malaysian AI initiati
 ## Key Content Sources
 - Blog content and categories: `src/lib/blog-data.ts`
 - Resident companies and logos: `src/lib/residents.ts` and `src/components/ResidentLogos.tsx`
-- Community partner directory data: `src/data/communityPartners.ts`
+- Community directory data: `src/data/communityPartners.ts`
 
 ## Core Page Files
 - Main landing and initiative overview: `src/views/MalaysianAI.tsx`

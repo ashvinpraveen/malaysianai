@@ -42,6 +42,13 @@ export const communityPartners: CommunityPartner[] = [
       "A 10,000+ builder network across Southeast Asia shipping real AI products. Organises regional hackathons, co-build sprints, and the flagship AI.SEA Week conference connecting engineers across the region.",
   },
   {
+    name: "KrackedDevs",
+    href: "https://krackeddevs.com",
+    logo: "/krackeddevs-logo.png",
+    summary:
+      "A grassroots Malaysian builder ecosystem helping technical and non-technical folks become AI builders. Runs guilds across the country, workshops, bounties, and project showcases — all about learning, building, and shipping together.",
+  },
+  {
     name: "Rakan Tutor",
     href: "https://rakantutor.org",
     logo: "/rakan-tutor-logo.png",

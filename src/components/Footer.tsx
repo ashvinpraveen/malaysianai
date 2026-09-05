@@ -12,7 +12,7 @@ const footerSections: FooterSection[] = [
     title: "Get involved",
     links: [
       { label: "View events", href: "/#events" },
-      { label: "Communities", href: "/community" },
+      { label: "Communities", href: "/#communities" },
       { label: "Residency", href: "/residency" },
     ],
   },

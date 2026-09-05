@@ -12,9 +12,11 @@ const CommunityPartners = () => {
         <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-start">
           <div className="w-full md:w-[35%]">
             <p className="label-default text-foreground/60 mb-3">Community</p>
-            <h2 className="section-title text-foreground">Community partners</h2>
+            <h2 className="section-title text-foreground">
+              Malaysia&apos;s AI communities
+            </h2>
             <p className="mt-4 text-base text-foreground/70">
-              In partnership with Malaysia&apos;s leading AI builder communities.
+              A growing directory of builder communities across the country — add yours anytime.
             </p>
             <a
               href="/community"

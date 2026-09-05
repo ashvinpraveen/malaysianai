@@ -282,11 +282,12 @@ const MalaysianAI = () => {
             <div className="relative z-10 flex-1 flex flex-col justify-center items-center mx-auto bg-transparent px-6 md:px-10 lg:px-16 max-w-[1440px] w-full pt-20 pb-16 [@media(min-height:800px)]:pt-32 [@media(min-height:800px)]:pb-20 text-center">
               <div className="max-w-4xl">
                 <h1 className="hero-title text-white mb-6 drop-shadow-lg">
-                  Driving Malaysia&apos;s AI progress
+                  Learn, build and experience Malaysian AI
                 </h1>
                 <p className="text-base md:text-xl font-normal leading-relaxed text-white/90 max-w-2xl mx-auto drop-shadow-md">
-                  The home of AI builders in Malaysia. Join workshops, events and get to know the
-                  communities that help you get started and get going with AI.
+                  Discover Malaysia&apos;s AI communities and events — meetups, builder groups, and
+                  workshops across the country. Find your people, join what&apos;s happening, or add
+                  your community to the list.
                 </p>
 
                 <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
@@ -298,7 +299,17 @@ const MalaysianAI = () => {
                     isExternal={false}
                     className="w-full sm:w-64"
                   >
-                    Join the next AI event
+                    View upcoming events
+                  </CTAButton>
+                  <CTAButton
+                    href="#communities"
+                    variant="outline"
+                    size="lg"
+                    showArrow
+                    isExternal={false}
+                    className="w-full sm:w-64 border-white/40 text-white hover:bg-white/10"
+                  >
+                    Explore communities
                   </CTAButton>
                 </div>
               </div>

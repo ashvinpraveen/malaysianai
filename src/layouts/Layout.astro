@@ -1,10 +1,10 @@
 ---
+import { Font } from 'astro:assets';
 import { ClientRouter } from 'astro:transitions';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import type { PageMetadata } from '../lib/seo';
-import '@fontsource/instrument-serif/400.css';
 
 interface Props extends PageMetadata {
 	immersive?: boolean;
@@ -18,6 +18,9 @@ const { immersive = false, neutral = false, ...metadata } = Astro.props;
 <html lang="en" class:list={{ 'neutral-page': neutral }}>
 	<head>
 		<BaseHead {...metadata} />
+		<Font cssVariable="--font-body" preload />
+		<Font cssVariable="--font-display" preload />
+		<Font cssVariable="--font-pixel" preload={immersive} />
 		<ClientRouter fallback="swap" />
 	</head>
 	<body class:list={{ immersive }}>

@@ -1,42 +1,56 @@
 ---
+import { Image, getImage } from 'astro:assets';
 import { LUMA_URL } from '../consts';
-const events = [
+import showAndTell from '../assets/events/show-and-tell-supabase-ceo.png';
+import learnathon from '../assets/events/aimto-learnathon.jpg';
+import hackathon from '../assets/events/anthropic-cursor-hackathon-malaysia.png';
+import workshops from '../assets/events/workshops.jpg';
+import allAges from '../assets/events/all-ages.jpg';
+
+const sources = [
 	{
 		title: 'Show & Tell with the Supabase CEO',
 		type: 'Founder show & tell',
 		date: 'Ideas, demos, and conversation',
-		image: '/images/events/show-and-tell-supabase-ceo.png',
+		image: showAndTell,
 		position: 'center center',
 	},
 	{
 		title: 'AIMTO Learnathon',
 		type: 'Hands-on learnathon',
 		date: 'AI Malaysia Takeover 2026',
-		image: '/images/events/aimto-learnathon.jpg',
+		image: learnathon,
 		position: 'center center',
 	},
 	{
 		title: 'Anthropic × Cursor Hackathon Malaysia',
 		type: 'Community hackathon',
 		date: 'Built in Malaysia',
-		image: '/images/events/anthropic-cursor-hackathon-malaysia.png',
+		image: hackathon,
 		position: 'center 56%',
 	},
 	{
 		title: 'Workshops',
 		type: 'Hands-on learning',
 		date: 'Learn with local builders',
-		image: '/images/events/workshops.jpg',
+		image: workshops,
 		position: 'center 42%',
 	},
 	{
 		title: 'AI for Every Age',
 		type: 'Open to everyone',
 		date: 'All ages, all experience levels',
-		image: '/images/events/all-ages.jpg',
+		image: allAges,
 		position: 'center center',
 	},
 ];
+
+// The background is swapped from JS, so pre-generate a responsive set for each event.
+const events = await Promise.all(sources.map(async event => {
+	const background = await getImage({ src: event.image, widths: [768, 1280, 1920], format: 'webp', quality: 80 });
+	return { ...event, background };
+}));
+const backgroundSizes = '100vw';
 ---
 
 <section class="events-section" id="events" aria-labelledby="events-title" data-events>
@@ -61,15 +75,27 @@ const events = [
 				<img
 					class="events-background-image is-visible"
 					data-events-background="0"
-					src={events[0].image}
+					src={events[0].background.src}
+					srcset={events[0].background.srcSet.attribute}
+					sizes={backgroundSizes}
+					width={events[0].background.attributes.width}
+					height={events[0].background.attributes.height}
 					alt=""
+					loading="lazy"
+					decoding="async"
 					style={`object-position: ${events[0].position}`}
 				/>
 				<img
 					class="events-background-image"
 					data-events-background="1"
-					src={events[1].image}
+					src={events[1].background.src}
+					srcset={events[1].background.srcSet.attribute}
+					sizes={backgroundSizes}
+					width={events[1].background.attributes.width}
+					height={events[1].background.attributes.height}
 					alt=""
+					loading="lazy"
+					decoding="async"
 					style={`object-position: ${events[1].position}`}
 				/>
 				<div class="events-background-wash"></div>
@@ -102,19 +128,22 @@ const events = [
 						data-title={event.title}
 						data-type={event.type}
 						data-date={event.date}
-						data-image={event.image}
+						data-image={event.background.src}
+						data-srcset={event.background.srcSet.attribute}
 						data-position={event.position}
 						aria-label={`Show ${event.title}`}
 						aria-pressed={index === 0 ? 'true' : 'false'}
 					>
 						<span class="event-card-image-wrap">
-							<img
+							<Image
 								class="event-card-image"
 								src={event.image}
 								alt=""
-								width="900"
-								height="600"
-								loading={index === 0 ? 'eager' : 'lazy'}
+								widths={[240, 480, 720]}
+								sizes="(max-width: 800px) 17rem, 7.5rem"
+								format="webp"
+								quality={80}
+								loading="lazy"
 								decoding="async"
 								style={`object-position: ${event.position}`}
 							/>
@@ -199,6 +228,7 @@ const events = [
 			const currentBackground = backgrounds[visibleBackground];
 			if (!nextBackground || !currentBackground || !card.dataset.image) return;
 
+			nextBackground.srcset = card.dataset.srcset ?? '';
 			nextBackground.src = card.dataset.image;
 			nextBackground.style.objectPosition = card.dataset.position ?? 'center';
 			if (!reduceMotion.matches) {

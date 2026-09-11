@@ -1,13 +1,20 @@
+---
+import { Image } from 'astro:assets';
+import bungaRaya from '../assets/malaysian-ai-bunga-raya-pixel.png';
+---
+
 <section class="mission-section light-nav-zone" id="about" aria-labelledby="mission-title">
 	<div class="mission-events">
 		<h2 id="mission-title">Your first step into AI starts here.</h2>
 		<figure class="mission-flower">
-			<img
+			<Image
 				class="mission-flower-image"
-				src="/images/malaysian-ai-bunga-raya-pixel.png"
+				src={bungaRaya}
 				alt="A pixel-art bunga raya plant with a red hibiscus bloom"
-				width="1122"
-				height="1402"
+				widths={[480, 960]}
+				sizes="(max-width: 900px) min(100vw, 30rem), 30rem"
+				format="webp"
+				quality={90}
 				loading="lazy"
 				decoding="async"
 			/>

@@ -1,29 +1,5 @@
 @import './tokens.css';
 
-@font-face {
-	font-family: 'Atkinson';
-	src: url('../assets/fonts/atkinson-regular.woff') format('woff');
-	font-style: normal;
-	font-weight: 400;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Atkinson';
-	src: url('../assets/fonts/atkinson-bold.woff') format('woff');
-	font-style: normal;
-	font-weight: 700;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Mondwest';
-	src: url('../assets/fonts/PPMondwest-Regular.woff2') format('woff2');
-	font-style: normal;
-	font-weight: 400;
-	font-display: swap;
-}
-
 :root {
 	font-family: var(--font-body);
 	color: var(--page-text);
@@ -51,17 +27,18 @@ body {
 	background: var(--page-background);
 }
 
+/* Opacity and transform only: both composite on the GPU. Blur was the jank source. */
 ::view-transition-old(root) {
-	animation: page-leave 280ms cubic-bezier(0.4, 0, 0.7, 0.2) both;
+	animation: page-leave 180ms cubic-bezier(0.4, 0, 0.7, 0.2) both;
 }
 
 ::view-transition-new(root) {
-	animation: page-arrive 520ms 45ms cubic-bezier(0.16, 0.82, 0.2, 1) both;
+	animation: page-arrive 300ms 30ms cubic-bezier(0.16, 0.82, 0.2, 1) both;
 }
 
 ::view-transition-group(site-brand) {
 	z-index: 100;
-	animation-duration: 620ms;
+	animation-duration: 380ms;
 	animation-timing-function: cubic-bezier(0.16, 0.82, 0.2, 1);
 }
 
@@ -73,7 +50,6 @@ body {
 @keyframes page-leave {
 	to {
 		opacity: 0;
-		filter: blur(2px);
 		transform: scale(0.992);
 	}
 }
@@ -81,8 +57,7 @@ body {
 @keyframes page-arrive {
 	from {
 		opacity: 0;
-		filter: blur(3px);
-		transform: translateY(0.65rem) scale(1.006);
+		transform: translateY(0.5rem);
 	}
 }
 

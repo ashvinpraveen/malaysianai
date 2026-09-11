@@ -1,10 +1,24 @@
 ---
+import { Image } from 'astro:assets';
 import { ADD_COMMUNITY_HREF, LUMA_URL } from '../consts';
+import buildClubLogo from '../assets/communities/build-club-logo-navbar.webp';
+import buildWithAiLogo from '../assets/communities/build_with_ai_logo.jpeg';
+import aiTinkerersLogo from '../assets/communities/ai_tinkerers_logo.png';
+import aiHackerdormLogo from '../assets/communities/ai_hackerdorm.webp';
+import aiSeaLogo from '../assets/communities/aisea_logo.png';
+import krackedDevsLogo from '../assets/communities/krackeddevs-logo.png';
+import rakanTutorLogo from '../assets/communities/rakan-tutor-logo.png';
+import coderPuffsLogo from '../assets/communities/coderpuffs_logo.png';
+import cursorLogo from '../assets/communities/cursor-community-logo.png';
+
+// Logos render at most ~145px wide on desktop and ~85px on mobile.
+const logoWidths = [200, 400];
+const logoSizes = '200px';
 
 const communities = [
 	{
 		name: 'Build Club',
-		logo: '/build-club-logo-navbar.webp',
+		logo: buildClubLogo,
 		logoClass: 'is-wide',
 		label: 'Learn by building',
 		description:
@@ -12,7 +26,7 @@ const communities = [
 	},
 	{
 		name: 'Build with AI',
-		logo: '/build_with_ai_logo.jpeg',
+		logo: buildWithAiLogo,
 		logoClass: 'is-square',
 		label: 'Open builder meetups',
 		description:
@@ -20,7 +34,7 @@ const communities = [
 	},
 	{
 		name: 'AI Tinkerers',
-		logo: '/ai_tinkerers_logo.png',
+		logo: aiTinkerersLogo,
 		logoClass: 'is-wide',
 		label: 'Technical deep dives',
 		description:
@@ -28,7 +42,7 @@ const communities = [
 	},
 	{
 		name: 'AI Hackerdorm',
-		logo: '/ai_hackerdorm.webp',
+		logo: aiHackerdormLogo,
 		logoClass: 'is-square',
 		label: 'Student-first builds',
 		description:
@@ -36,7 +50,7 @@ const communities = [
 	},
 	{
 		name: 'AI SEA',
-		logo: '/aisea_logo.png',
+		logo: aiSeaLogo,
 		logoClass: 'is-square',
 		label: 'Southeast Asian network',
 		description:
@@ -44,7 +58,7 @@ const communities = [
 	},
 	{
 		name: 'KrackedDevs',
-		logo: '/krackeddevs-logo.png',
+		logo: krackedDevsLogo,
 		logoClass: 'is-square',
 		label: 'Grassroots builder guilds',
 		description:
@@ -52,7 +66,7 @@ const communities = [
 	},
 	{
 		name: 'Rakan Tutor',
-		logo: '/rakan-tutor-logo.png',
+		logo: rakanTutorLogo,
 		logoClass: 'is-wide',
 		label: 'AI education for all',
 		description:
@@ -60,7 +74,7 @@ const communities = [
 	},
 	{
 		name: 'CoderPuffs',
-		logo: '/coderpuffs_logo.png',
+		logo: coderPuffsLogo,
 		logoClass: 'is-square',
 		label: 'Women-first community',
 		description:
@@ -68,7 +82,7 @@ const communities = [
 	},
 	{
 		name: 'Cursor KL',
-		logo: '/cursor-community-logo.png',
+		logo: cursorLogo,
 		logoClass: 'is-square',
 		label: 'Cursor builders in KL',
 		description:
@@ -118,11 +132,12 @@ const startIndex = 0;
 							aria-current={index === startIndex ? 'true' : 'false'}
 						>
 							<span class="community-portrait">
-								<img
+								<Image
 									src={community.logo}
 									alt=""
-									width="220"
-									height="140"
+									widths={logoWidths}
+									sizes={logoSizes}
+									format="webp"
 									loading="lazy"
 									decoding="async"
 								/>
@@ -149,11 +164,12 @@ const startIndex = 0;
 					<li>
 						<article class="community-room">
 							<figure class:list={['community-mark', community.logoClass]}>
-								<img
+								<Image
 									src={community.logo}
 									alt=""
-									width="220"
-									height="140"
+									widths={logoWidths}
+									sizes={logoSizes}
+									format="webp"
 									loading="lazy"
 									decoding="async"
 								/>
@@ -176,7 +192,7 @@ const startIndex = 0;
 
 	function prepareCommunitySection() {
 		const desktopQuery = matchMedia('(min-width: 701px)');
-		const stage = document.querySelector<HTMLElement>('#community-stage');
+		const stageElement = document.querySelector<HTMLElement>('#community-stage');
 		const deck = document.querySelector<HTMLElement>('[data-community-deck]');
 		const cards = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-community-card]'));
 		const focusLabel = document.querySelector<HTMLElement>('[data-community-label]');
@@ -186,9 +202,12 @@ const startIndex = 0;
 		const onBreakpoint = () => prepareCommunity();
 		desktopQuery.addEventListener('change', onBreakpoint);
 
-		if (!desktopQuery.matches || !stage || !deck || !cards.length) {
+		if (!desktopQuery.matches || !stageElement || !deck || !cards.length) {
 			return () => desktopQuery.removeEventListener('change', onBreakpoint);
 		}
+
+		// Hoisted function declarations below don't see the narrowing above.
+		const stage: HTMLElement = stageElement;
 
 		const count = cards.length;
 		const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
@@ -314,7 +333,6 @@ const startIndex = 0;
 				card.style.setProperty('--focus', focus.toFixed(4));
 				card.style.zIndex = String(Math.round(1000 - distance * 100));
 				card.style.opacity = String(Math.max(0.42, side * 0.66 + focus * 0.34));
-				card.style.filter = 'none';
 				card.style.transform = [
 					'translate(-50%, -50%)',
 					`translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, ${z.toFixed(2)}px)`,
@@ -467,19 +485,30 @@ const startIndex = 0;
 		width: clamp(128px, 13vw, 188px);
 		aspect-ratio: 1.08;
 		padding: 0;
-		overflow: hidden;
 		border: 0;
 		border-radius: var(--radius-media);
 		color: #0d1622;
 		background: transparent;
-		box-shadow:
-			0 calc(8px + var(--focus) * 16px) calc(18px + var(--focus) * 28px)
-			rgb(0 0 0 / calc(0.2 + var(--focus) * 0.22));
+		box-shadow: 0 8px 18px rgb(0 0 0 / 0.2);
 		appearance: none;
 		outline: none;
 		transform-style: preserve-3d;
 		will-change: transform, opacity;
 		cursor: pointer;
+	}
+
+	/* The focus shadow and the desaturating wash live on their own layers and only
+	   animate opacity, so the per-frame loop never forces a repaint of the logo. */
+	.community-card::before {
+		position: absolute;
+		z-index: -1;
+		inset: 0;
+		border-radius: var(--radius-media);
+		box-shadow: 0 24px 46px rgb(0 0 0 / 0.42);
+		content: '';
+		opacity: var(--focus);
+		pointer-events: none;
+		will-change: opacity;
 	}
 
 	.community-card:focus-visible {
@@ -504,7 +533,16 @@ const startIndex = 0;
 		height: 76%;
 		object-fit: contain;
 		transform: scale(calc(1.02 + (1 - var(--focus)) * 0.04));
-		filter: saturate(calc(0.72 + var(--focus) * 0.28)) contrast(1.04);
+	}
+
+	.community-portrait::after {
+		position: absolute;
+		inset: 0;
+		background: rgb(233 237 243 / 0.34);
+		content: '';
+		opacity: calc(1 - var(--focus));
+		pointer-events: none;
+		will-change: opacity;
 	}
 
 	.community-card.is-wide .community-portrait img {
@@ -684,7 +722,9 @@ const startIndex = 0;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.community-card {
+		.community-card,
+		.community-card::before,
+		.community-portrait::after {
 			will-change: auto;
 		}
 	}

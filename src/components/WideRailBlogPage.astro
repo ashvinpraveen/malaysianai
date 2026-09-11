@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import FormattedDate from './FormattedDate.astro';
 import Layout from '../layouts/Layout.astro';
@@ -20,11 +21,13 @@ const [featuredPost, ...otherPosts] = posts;
 			<article class="lead-story">
 				<a class="lead-image" href={`/blog/${featuredPost.id}`} aria-label={`Read ${featuredPost.data.title}`}>
 					{featuredPost.data.image ? (
-						<img
+						<Image
 							src={featuredPost.data.image}
 							alt={featuredPost.data.imageAlt ?? ''}
-							width="1200"
-							height="800"
+							widths={[640, 960, 1280, 1600]}
+							sizes="(max-width: 820px) 100vw, min(60vw, 49rem)"
+							format="webp"
+							quality={82}
 							loading="eager"
 							fetchpriority="high"
 						/>

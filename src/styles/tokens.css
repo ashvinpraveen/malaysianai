@@ -1,9 +1,7 @@
-/* Shared typography and theme values. Component geometry stays with its component. */
+/* Shared typography and theme values. Component geometry stays with its component.
+   --font-body, --font-display and --font-pixel come from the fonts config in astro.config.mjs. */
 :root {
 	color-scheme: light dark;
-	--font-body: 'Atkinson', system-ui, sans-serif;
-	--font-display: 'Instrument Serif', Baskerville, 'Iowan Old Style', 'Times New Roman', serif;
-	--font-pixel: 'Mondwest', 'Times New Roman', Times, serif;
 	--text-xs: 0.75rem;
 	--text-sm: 0.875rem;
 	--text-base: 1rem;

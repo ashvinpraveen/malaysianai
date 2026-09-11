@@ -1,22 +1,20 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import fallbackCover from '../assets/blog-placeholder-2.jpg';
 import FormattedDate from '../components/FormattedDate.astro';
 import Layout from './Layout.astro';
 
-type Props = CollectionEntry<'blog'>['data'] & { slug?: string };
+type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, image, pubDate, author, authorType, imageAlt, imageWidth, imageHeight, updatedDate, slug } = Astro.props;
-const coverImage = slug === 'largest-ai-learnathon'
-	? '/images/blog/largest-ai-learnathon/hero.webp'
-	: image;
+const { title, description, image, pubDate, author, authorType, imageAlt, updatedDate } = Astro.props;
+const shareImage = image ? await getImage({ src: image, width: 1200, format: 'webp', quality: 82 }) : undefined;
 ---
 
 <Layout
 	title={title}
 	description={description}
-	image={coverImage ? { src: coverImage, width: imageWidth, height: imageHeight, alt: imageAlt } : undefined}
+	image={shareImage ? { src: shareImage.src, width: shareImage.attributes.width, height: shareImage.attributes.height, alt: imageAlt } : undefined}
 	article={{ published: pubDate, modified: updatedDate, author, authorType }}
 >
 	<article class="story-page">
@@ -36,10 +34,19 @@ const coverImage = slug === 'largest-ai-learnathon'
 			</div>
 		</header>
 
-		<button class="story-cover" type="button" data-story-cover aria-label="View cover image full screen">
+		<button class="story-cover" type="button" data-story-cover data-full-image={image?.src} aria-label="View cover image full screen">
 			{
-				coverImage ? (
-					<img src={coverImage} alt={imageAlt ?? ''} width="2200" height="1467" loading="eager" fetchpriority="high" />
+				image ? (
+					<Image
+						src={image}
+						alt={imageAlt ?? ''}
+						widths={[640, 960, 1280, 1728]}
+						sizes="(max-width: 66rem) calc(100vw - 2.5rem), 54rem"
+						format="webp"
+						quality={82}
+						loading="eager"
+						fetchpriority="high"
+					/>
 				) : (
 					<Image src={fallbackCover} alt="" width={960} height={480} loading="eager" />
 				)
@@ -77,10 +84,10 @@ const coverImage = slug === 'largest-ai-learnathon'
 
 		const hideViewer = () => viewer.close();
 
-		const openImage = (image: HTMLImageElement) => {
+		const openImage = (image: HTMLImageElement, fullSrc?: string) => {
 			if (!viewerImage) return;
 			previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-			viewerImage.src = image.currentSrc || image.src;
+			viewerImage.src = fullSrc || image.currentSrc || image.src;
 			viewerImage.alt = image.alt;
 			viewer.showModal();
 			document.body.classList.add('has-image-viewer');
@@ -88,7 +95,7 @@ const coverImage = slug === 'largest-ai-learnathon'
 		};
 
 		const coverImage = cover?.querySelector<HTMLImageElement>('img');
-		if (cover && coverImage) cover.addEventListener('click', () => openImage(coverImage));
+		if (cover && coverImage) cover.addEventListener('click', () => openImage(coverImage, cover.dataset.fullImage));
 		closeViewer?.addEventListener('click', event => {
 			event.preventDefault();
 			hideViewer();

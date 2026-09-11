@@ -70,7 +70,7 @@
 
 		const current = buttons.findIndex(button => button.getAttribute('aria-checked') === 'true');
 		const key = event.key as MoveKey;
-		let next = current < 0 ? 0 : current;
+		let next: number;
 		switch (key) {
 			case 'ArrowLeft':
 			case 'ArrowUp':

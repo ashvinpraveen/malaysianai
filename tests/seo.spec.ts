@@ -5,9 +5,67 @@ import { test, expect } from '@playwright/test';
 const origin = 'https://www.malaysian.ai';
 const pages = ['/', '/about', '/residency', '/residents', '/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon', '/blog/applications-open-2026', '/blog/inside-the-curriculum'];
 
+// Keep expectations independent of the production SEO map and article frontmatter.
+const expectedMetadata = [
+	{
+		path: '/',
+		title: 'Malaysian AI | Malaysia AI Community & Events',
+		description: 'Malaysian AI connects the Malaysia AI community. Discover AI events, workshops, hackathons and builder groups across Malaysia, plus our Kuala Lumpur residency.',
+	},
+	{
+		path: '/about',
+		title: 'About Our Malaysia AI Community | Malaysian AI',
+		description: 'Meet Malaysian AI, a Malaysian community for AI builders and curious learners. Find workshops, meetups and founder support in Kuala Lumpur and across Malaysia.',
+	},
+	{
+		path: '/residency',
+		title: 'AI Residency Malaysia | Build in Kuala Lumpur | Malaysian AI',
+		description: 'Build your AI startup at the Malaysian AI residency in Kuala Lumpur. Find co-working space, regular demos and support with product, engineering and fundraising.',
+	},
+	{
+		path: '/residents',
+		title: 'AI Startups Malaysia | Meet the Residents | Malaysian AI',
+		description: 'Meet the AI startups, founders and teams building products at Malaysian AI. Explore resident companies in our Kuala Lumpur AI residency.',
+	},
+	{
+		path: '/blog',
+		title: 'Malaysia AI Community Stories & Updates | Malaysian AI',
+		description: 'Read stories from the Malaysia AI community: AI events, hands-on learning, builder projects and updates from the Malaysian AI residency.',
+	},
+	{
+		path: '/contact',
+		title: 'Contact the Malaysia AI Community | Malaysian AI',
+		description: 'Contact Malaysian AI about community events, workshops or the Kuala Lumpur residency. Add your Malaysian community to the directory or find an upcoming event.',
+	},
+	{
+		path: '/blog/largest-ai-learnathon',
+		title: "We did it: Malaysia's largest AI Learn-a-thon | Malaysian AI",
+		description: 'How thousands of Malaysians, hundreds of builders and a floor full of volunteers turned AI Malaysia Takeover 2026 into a national record.',
+	},
+	{
+		path: '/blog/applications-open-2026',
+		title: 'Applications open for the 2026 cohort | Malaysian AI',
+		description: "We're now accepting applications for the next Malaysian AI Residency cohort.",
+	},
+	{
+		path: '/blog/inside-the-curriculum',
+		title: 'Inside the residency curriculum | Malaysian AI',
+		description: 'A closer look at the sprint cadence, mentor touchpoints, and deliverables.',
+	},
+];
+
 test.beforeEach(async ({ page }) => {
 	await page.route('**/*', route => new URL(route.request().url()).hostname === '127.0.0.1' ? route.continue() : route.abort());
 });
+
+for (const { path, title, description } of expectedMetadata) {
+	test(`SEO title and description match expected content for ${path}`, async ({ page }) => {
+		const response = await page.goto(path);
+		expect(response?.status()).toBe(200);
+		await expect(page).toHaveTitle(title);
+		await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', description);
+	});
+}
 
 test('public pages have consistent production metadata and valid share images', async ({ page, request }) => {
 	const titles = new Set<string>();

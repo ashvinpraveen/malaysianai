@@ -69,6 +69,8 @@ Astro reads the exact redirect entries from this same file to generate fallback 
 
 Set the production hostname in `astro.config.mjs`. `BaseHead.astro` uses it for canonical URLs, share metadata, and Organization/WebSite structured data. Blog posts also emit BlogPosting data. The shared `PageMetadata` type and default share image are in `src/lib/seo.ts`.
 
+Search-only titles, descriptions and keyword targets live in `src/lib/seo-content.ts`, keeping SEO edits separate from visible page copy. See [the keyword research notes](docs/seo-keywords.md) for the ten niche targets, sources and search-volume limitations.
+
 Blog authors default to `Organization` because the current posts are credited to editorial teams. Set `authorType: Person` for an individual author. When adding a cover image, supply `imageAlt`, `imageWidth`, and `imageHeight` in frontmatter so share metadata matches the asset. `updatedDate` is optional and should reflect a substantive content update.
 
 `robots.txt` and `llms.txt` are generated endpoints; the latter gets blog URLs from the content collection. The sitemap excludes redirects and the 404 page. Browser checks cover canonical URLs, actual share-image dimensions, structured data, crawl documents, and metadata updates during navigation.

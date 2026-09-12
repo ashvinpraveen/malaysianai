@@ -2,15 +2,20 @@
 import '../styles/global.css';
 import { SITE_TITLE, VENUE_ADDRESS } from '../consts';
 import { canonicalURL, defaultShareImage, serializeJsonLd, type PageMetadata } from '../lib/seo';
+import { communityDescription, seoContentByPath } from '../lib/seo-content';
 
 type Props = PageMetadata;
-const { title, description, image = defaultShareImage, article, noindex = false } = Astro.props;
+const { image = defaultShareImage, article, noindex = false } = Astro.props;
 if (!Astro.site) throw new Error('Configure the production site URL in astro.config.mjs.');
 const site = Astro.site;
 const canonical = canonicalURL(Astro.url.pathname, site);
+const searchMetadata = noindex ? undefined : seoContentByPath[canonical.pathname];
+const title = searchMetadata?.title ?? Astro.props.title;
+const description = searchMetadata?.description ?? Astro.props.description;
+const keywords = Astro.props.keywords ?? searchMetadata?.keywords ?? [];
 const pageTitle = title === SITE_TITLE
 	? `${SITE_TITLE} | Learn, build and experience Malaysian AI`
-	: title.endsWith(` | ${SITE_TITLE}`) ? title : `${title} | ${SITE_TITLE}`;
+	: title.startsWith(`${SITE_TITLE} | `) || title.endsWith(` | ${SITE_TITLE}`) ? title : `${title} | ${SITE_TITLE}`;
 const imageURL = new URL(image.src, site).href;
 const organizationId = new URL('#organization', site).href;
 const websiteId = new URL('#website', site).href;
@@ -20,17 +25,20 @@ const structuredData = {
 		{
 			'@type': 'Organization', '@id': organizationId,
 			name: SITE_TITLE, url: site.href,
+			description: communityDescription,
 			logo: new URL('/malaysian-ai-batik-logo.svg', site).href,
 			address: { '@type': 'PostalAddress', streetAddress: VENUE_ADDRESS, addressLocality: 'Kuala Lumpur', addressCountry: 'MY' },
 		},
 		{
 			'@type': 'WebSite', '@id': websiteId,
 			name: SITE_TITLE, url: site.href, inLanguage: 'en-MY',
+			description: communityDescription,
 			publisher: { '@id': organizationId },
 		},
 		...(article ? [{
 			'@type': 'BlogPosting', '@id': `${canonical.href}#article`,
-			headline: title, description, url: canonical.href,
+			headline: Astro.props.title, description, url: canonical.href,
+			...(keywords.length ? { keywords } : {}),
 			mainEntityOfPage: { '@type': 'WebPage', '@id': canonical.href },
 			isPartOf: { '@id': websiteId },
 			datePublished: article.published.toISOString(),
@@ -69,6 +77,7 @@ const structuredData = {
 {noindex && <meta name="robots" content="noindex, follow" />}
 <title>{pageTitle}</title>
 <meta name="description" content={description} />
+{!noindex && keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
 <meta property="og:type" content={article ? 'article' : 'website'} />
 <meta property="og:url" content={canonical} />
 <meta property="og:site_name" content={SITE_TITLE} />

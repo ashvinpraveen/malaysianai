@@ -8,6 +8,7 @@ export interface ShareImage {
 export interface PageMetadata {
 	title: string;
 	description: string;
+	keywords?: string[];
 	image?: ShareImage;
 	noindex?: boolean;
 	article?: {

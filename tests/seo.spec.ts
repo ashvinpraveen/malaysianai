@@ -24,6 +24,15 @@ test('public pages have consistent production metadata and valid share images', 
 		titles.add(title);
 		await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', title);
 		await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute('content', title);
+		const description = await page.locator('meta[name="description"]').getAttribute('content');
+		expect(description?.length, path).toBeGreaterThan(20);
+		await expect(page.locator('meta[property="og:description"]')).toHaveAttribute('content', description!);
+		await expect(page.locator('meta[name="twitter:description"]')).toHaveAttribute('content', description!);
+		if (path === '/privacy' || path === '/terms') {
+			await expect(page.locator('meta[name="keywords"]')).toHaveCount(0);
+		} else {
+			await expect(page.locator('meta[name="keywords"]')).toHaveAttribute('content', /Malaysian AI/);
+		}
 		await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
 		const image = await page.locator('meta[property="og:image"]').getAttribute('content');
 		expect(image).toMatch(/^https:\/\/www\.malaysian\.ai\//);
@@ -41,6 +50,7 @@ test('public pages have consistent production metadata and valid share images', 
 			expect(graph[2].headline).toBe(await page.locator('h1').textContent());
 			expect(graph[2].url).toBe(canonical);
 			expect(graph[2].image).toBe(image);
+			expect(graph[2].keywords.join(', ')).toBe(await page.locator('meta[name="keywords"]').getAttribute('content'));
 			await expect(page.locator('meta[property="article:published_time"]')).toHaveAttribute('content', graph[2].datePublished);
 		}
 		expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), path).toBe(true);
@@ -77,9 +87,15 @@ test('crawl documents list live canonical URLs and exclude retired pages', async
 
 test('About navigation updates metadata and unknown URLs show the custom 404', async ({ page }) => {
 	await page.goto('/');
+	await expect(page).toHaveTitle('Malaysian AI | Malaysia AI Community & Events');
+	const keywords = (await page.locator('meta[name="keywords"]').getAttribute('content'))!.split(', ');
+	expect(keywords).toEqual(expect.arrayContaining(['Malaysian AI', 'Malaysia AI community', 'Malaysian community', 'AI meetup Kuala Lumpur', 'AI hackathon Malaysia']));
+	expect(new Set(keywords).size).toBe(13);
 	await page.locator('.footer-company').getByRole('link', { name: 'About', exact: true }).click();
 	await expect(page).toHaveURL(/\/about$/);
 	await expect(page.locator('h1')).toHaveText('About Malaysian AI');
+	await expect(page).toHaveTitle('About Our Malaysia AI Community | Malaysian AI');
+	await expect(page.locator('.info-page header p')).toHaveText('A community for people learning, building, and starting companies with AI in Malaysia.');
 	await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `${origin}/about`);
 	await page.getByRole('link', { name: 'Read the story', exact: true }).click();
 	await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
@@ -89,6 +105,7 @@ test('About navigation updates metadata and unknown URLs show the custom 404', a
 	expect(response?.status()).toBe(404);
 	await expect(page.locator('h1')).toHaveText('Page not found');
 	await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
+	await expect(page.locator('meta[name="keywords"]')).toHaveCount(0);
 	await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
 	await page.getByRole('link', { name: 'Go to the homepage' }).click();
 	await expect(page.locator('meta[name="robots"]')).toHaveCount(0);

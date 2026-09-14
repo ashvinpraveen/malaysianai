@@ -512,8 +512,9 @@ const backgroundSizes = '100vw';
 		position: absolute;
 		top: clamp(3rem, 6vw, 5.5rem);
 		right: auto;
-		left: clamp(4rem, 6.5vw, 6rem);
-		max-width: min(30rem, 44vw);
+		/* SVG title pocket left wall is 4.8%; keep rem padding as width grows. */
+		left: calc(4.8% + clamp(2rem, 2.6vw, 3rem));
+		max-width: min(30rem, calc(33.2% - 4rem));
 		text-align: left;
 		pointer-events: auto;
 	}
@@ -545,7 +546,8 @@ const backgroundSizes = '100vw';
 		z-index: auto;
 		position: absolute;
 		top: clamp(3rem, 6vw, 5.5rem);
-		right: clamp(3rem, 4.5vw, 4.5rem);
+		/* SVG frame inset is 1.6%; keep rem padding as width grows. */
+		right: calc(1.6% + clamp(2rem, 2.6vw, 3rem));
 		left: auto;
 		width: min(13rem, 18vw);
 		padding: 0;
@@ -667,10 +669,10 @@ const backgroundSizes = '100vw';
 		}
 
 		.events-header {
-			top: 2rem;
+			top: 2.25rem;
 			right: auto;
-			left: 1.5rem;
-			max-width: min(23rem, calc(100% - 3rem));
+			left: 2rem;
+			max-width: min(23rem, calc(100% - 4rem));
 			text-align: left;
 		}
 

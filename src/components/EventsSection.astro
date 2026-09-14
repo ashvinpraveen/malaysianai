@@ -47,7 +47,13 @@ const sources = [
 
 // The background is swapped from JS, so pre-generate a responsive set for each event.
 const events = await Promise.all(sources.map(async event => {
-	const background = await getImage({ src: event.image, widths: [768, 1280, 1920], format: 'webp', quality: 80 });
+	// Cap at source width (~2200 for JPGs; PNGs are ~1K-wide and Astro will not upscale).
+	const background = await getImage({
+		src: event.image,
+		widths: [960, 1440, 1920, 2200],
+		format: 'webp',
+		quality: 88,
+	});
 	return { ...event, background };
 }));
 const backgroundSizes = '100vw';
@@ -139,10 +145,10 @@ const backgroundSizes = '100vw';
 								class="event-card-image"
 								src={event.image}
 								alt=""
-								widths={[240, 480, 720]}
-								sizes="(max-width: 800px) 17rem, 7.5rem"
+								widths={[360, 720, 1080]}
+								sizes="(max-width: 800px) 6rem, 7.5rem"
 								format="webp"
-								quality={80}
+								quality={88}
 								loading="lazy"
 								decoding="async"
 								style={`object-position: ${event.position}`}

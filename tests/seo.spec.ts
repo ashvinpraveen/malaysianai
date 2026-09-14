@@ -3,7 +3,7 @@ import hosting from '../vercel.json' with { type: 'json' };
 import { test, expect } from '@playwright/test';
 
 const origin = 'https://www.malaysian.ai';
-const pages = ['/', '/about', '/residency', '/residents', '/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon', '/blog/applications-open-2026'];
+const pages = ['/', '/about', '/residency', '/residents', '/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon'];
 
 // Keep expectations independent of the production SEO map and article frontmatter.
 const expectedMetadata = [
@@ -41,11 +41,6 @@ const expectedMetadata = [
 		path: '/blog/largest-ai-learnathon',
 		title: "We did it: Malaysia's largest AI Learn-a-thon | Malaysian AI",
 		description: 'How thousands of Malaysians, hundreds of builders and a floor full of volunteers turned AI Malaysia Takeover 2026 into a national record.',
-	},
-	{
-		path: '/blog/applications-open-2026',
-		title: 'Applications open for the 2026 cohort | Malaysian AI',
-		description: "We're now accepting applications for the next Malaysian AI Residency cohort.",
 	},
 ];
 

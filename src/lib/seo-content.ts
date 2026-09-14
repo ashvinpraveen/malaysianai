@@ -54,7 +54,4 @@ export const seoContentByPath: Record<string, Partial<Pick<PageMetadata, 'title'
 	'/blog/largest-ai-learnathon': {
 		keywords: ['Malaysian AI', 'Malaysia AI community', 'AI events Malaysia', 'AI workshops Malaysia', 'generative AI Malaysia'],
 	},
-	'/blog/applications-open-2026': {
-		keywords: ['Malaysian AI', 'AI residency Malaysia', 'AI startups Malaysia'],
-	},
 };

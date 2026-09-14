@@ -206,24 +206,22 @@ const startIndex = 0;
 			return () => desktopQuery.removeEventListener('change', onBreakpoint);
 		}
 
-		// Hoisted function declarations below don't see the narrowing above.
 		const stage: HTMLElement = stageElement;
-
 		const count = cards.length;
 		const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
-		const idleMs = 2400;
-		const stepMs = 2600;
+		const autoplayMs = 6000;
 		let reducedMotion = motionPreference.matches;
 		let sectionIsVisible = false;
 		const startIndex = 0;
 		const state = {
 			phase: startIndex,
 			target: startIndex,
-			base: startIndex,
 			hovering: false,
-			lastInput: performance.now(),
 		};
 		let lastActiveIndex = startIndex;
+		let previousTime = performance.now();
+		let frame = 0;
+		let autoplayTimer = 0;
 
 		function wrappedDelta(index: number, phase: number) {
 			let delta = index - phase;
@@ -236,17 +234,45 @@ const startIndex = 0;
 			return ((Math.round(state.phase) % count) + count) % count;
 		}
 
+		function clearAutoplay() {
+			if (!autoplayTimer) return;
+			window.clearTimeout(autoplayTimer);
+			autoplayTimer = 0;
+		}
+
+		function autoplayPaused() {
+			return (
+				reducedMotion ||
+				!sectionIsVisible ||
+				document.hidden ||
+				state.hovering ||
+				stage.contains(document.activeElement)
+			);
+		}
+
+		function armAutoplay() {
+			clearAutoplay();
+			if (autoplayPaused()) return;
+			// One timeout at a time. Never derive catch-up steps from wall-clock idle time.
+			autoplayTimer = window.setTimeout(() => {
+				autoplayTimer = 0;
+				if (autoplayPaused()) return;
+				state.target = Math.round(state.phase) + 1;
+				scheduleRender();
+				armAutoplay();
+			}, autoplayMs);
+		}
+
 		function moveTo(index: number) {
 			const current = nearestIndex();
 			let delta = index - current;
 			if (delta > count / 2) delta -= count;
 			if (delta < -count / 2) delta += count;
-			state.base = Math.round(state.phase) + delta;
-			state.target = state.base;
-			state.lastInput = performance.now();
+			state.target = Math.round(state.phase) + delta;
 			updateFocus(index);
 			lastActiveIndex = index;
 			scheduleRender();
+			armAutoplay();
 		}
 
 		function updateFocus(index: number) {
@@ -257,23 +283,67 @@ const startIndex = 0;
 			if (focusDescription) focusDescription.textContent = card.dataset.description ?? '';
 		}
 
-		cards.forEach((card, index) => {
-			card.addEventListener('click', () => moveTo(index));
-			card.addEventListener('focus', () => moveTo(index));
-			card.addEventListener('pointerenter', () => {
-				if (state.hovering) return;
-				state.hovering = true;
-				state.base = state.phase;
-				state.target = state.phase;
+		function cardIndexAtPoint(clientX: number, clientY: number) {
+			// Transformed cards share overlapping AABBs. Prefer the smallest box that
+			// contains the point so the scaled-up center does not steal side clicks.
+			let bestIndex = -1;
+			let bestScore = Number.POSITIVE_INFINITY;
+			cards.forEach((card, index) => {
+				const rect = card.getBoundingClientRect();
+				if (
+					clientX < rect.left ||
+					clientX > rect.right ||
+					clientY < rect.top ||
+					clientY > rect.bottom
+				) {
+					return;
+				}
+				const area = Math.max(1, rect.width * rect.height);
+				const dx = clientX - (rect.left + rect.width / 2);
+				const dy = clientY - (rect.top + rect.height / 2);
+				const score = area + (dx * dx + dy * dy) * 0.2;
+				if (score < bestScore) {
+					bestScore = score;
+					bestIndex = index;
+				}
 			});
-			card.addEventListener('pointerleave', () => {
-				if (!state.hovering) return;
-				state.hovering = false;
-				state.base = state.phase;
-				state.target = state.phase;
-				state.lastInput = performance.now();
-			});
-		});
+			return bestIndex;
+		}
+
+		function handlePointerDown(event: PointerEvent) {
+			if (event.button !== 0) return;
+			const index = cardIndexAtPoint(event.clientX, event.clientY);
+			if (index < 0 || index === nearestIndex()) return;
+			event.preventDefault();
+			moveTo(index);
+		}
+
+		function handleFocusIn(event: FocusEvent) {
+			const target = event.target;
+			if (!(target instanceof HTMLElement)) return;
+			const index = cards.indexOf(target as HTMLButtonElement);
+			if (index >= 0) moveTo(index);
+			else armAutoplay();
+		}
+
+		function handleFocusOut() {
+			window.queueMicrotask(() => armAutoplay());
+		}
+
+		function setHovering(next: boolean) {
+			if (state.hovering === next) return;
+			state.hovering = next;
+			armAutoplay();
+		}
+
+		const onPointerEnter = () => setHovering(true);
+		const onPointerLeave = () => setHovering(false);
+
+		deck.addEventListener('pointerdown', handlePointerDown);
+		stage.addEventListener('pointerenter', onPointerEnter);
+		stage.addEventListener('pointerleave', onPointerLeave);
+		stage.addEventListener('focusin', handleFocusIn);
+		stage.addEventListener('focusout', handleFocusOut);
 
 		function handleKeydown(event: KeyboardEvent) {
 			const target = event.target;
@@ -286,28 +356,18 @@ const startIndex = 0;
 			const backward = event.key === 'ArrowLeft' || event.key === 'ArrowUp';
 			if (!forward && !backward) return;
 			event.preventDefault();
-			state.base += forward ? 1 : -1;
-			state.target = state.base;
-			state.lastInput = performance.now();
+			state.target = Math.round(state.phase) + (forward ? 1 : -1);
 			scheduleRender();
+			armAutoplay();
 		}
 
 		window.addEventListener('keydown', handleKeydown);
-
-		let previousTime = performance.now();
-		let frame = 0;
 
 		function render(time: number) {
 			frame = 0;
 			const deltaTime = Math.min(32, time - previousTime);
 			previousTime = time;
 			const ease = reducedMotion ? 1 : 1 - Math.pow(0.001, deltaTime / 1000);
-			const keyboardFocus = stage.contains(document.activeElement);
-
-			if (!reducedMotion && !state.hovering && !keyboardFocus && time - state.lastInput > idleMs) {
-				const elapsed = time - state.lastInput - idleMs;
-				state.target = state.base + 1 + Math.floor(elapsed / stepMs);
-			}
 
 			state.phase += (state.target - state.phase) * ease;
 			const activeIndex = nearestIndex();
@@ -343,7 +403,7 @@ const startIndex = 0;
 				card.setAttribute('aria-current', index === activeIndex ? 'true' : 'false');
 			});
 
-			if (!reducedMotion) scheduleRender();
+			if (!reducedMotion && Math.abs(state.target - state.phase) > 0.001) scheduleRender();
 		}
 
 		function scheduleRender() {
@@ -354,8 +414,8 @@ const startIndex = 0;
 			cancelAnimationFrame(frame);
 			frame = 0;
 			previousTime = performance.now();
-			state.lastInput = previousTime;
 			scheduleRender();
+			armAutoplay();
 		}
 
 		function updateMotionPreference() {
@@ -371,14 +431,21 @@ const startIndex = 0;
 		document.addEventListener('visibilitychange', updateVisibility);
 		window.addEventListener('resize', scheduleRender);
 		motionPreference.addEventListener('change', updateMotionPreference);
+		armAutoplay();
 
 		return () => {
+			clearAutoplay();
 			cancelAnimationFrame(frame);
 			observer.disconnect();
 			document.removeEventListener('visibilitychange', updateVisibility);
 			window.removeEventListener('resize', scheduleRender);
 			motionPreference.removeEventListener('change', updateMotionPreference);
 			window.removeEventListener('keydown', handleKeydown);
+			deck.removeEventListener('pointerdown', handlePointerDown);
+			stage.removeEventListener('pointerenter', onPointerEnter);
+			stage.removeEventListener('pointerleave', onPointerLeave);
+			stage.removeEventListener('focusin', handleFocusIn);
+			stage.removeEventListener('focusout', handleFocusOut);
 			desktopQuery.removeEventListener('change', onBreakpoint);
 		};
 	}
@@ -475,6 +542,7 @@ const startIndex = 0;
 		inset: 0;
 		z-index: 2;
 		transform-style: preserve-3d;
+		cursor: pointer;
 	}
 
 	.community-card {
@@ -495,6 +563,8 @@ const startIndex = 0;
 		transform-style: preserve-3d;
 		will-change: transform, opacity;
 		cursor: pointer;
+		/* Clicks hit the deck; JS picks the nearest visual card under the pointer. */
+		pointer-events: none;
 	}
 
 	/* The focus shadow and the desaturating wash live on their own layers and only

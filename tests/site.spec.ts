@@ -82,12 +82,35 @@ const communityNames = [
 	'Cursor KL',
 ];
 
-test('community filmstrip cycles on desktop and reduced motion still allows keyboard selection', async ({ page, isMobile }) => {
+test('community filmstrip advances every 6s, accepts side-card clicks, and reduced motion still allows keyboard selection', async ({
+	page,
+	isMobile,
+}) => {
 	test.skip(isMobile, 'Filmstrip is desktop-only');
+	await page.emulateMedia({ reducedMotion: 'no-preference' });
 	await page.goto('/');
 	const stage = page.locator('#community-stage');
+	const focusName = page.locator('[data-community-name]');
 	await stage.scrollIntoViewIfNeeded();
 	await expect(page.locator('[data-community-card]').first()).toHaveAttribute('style', /translate3d/);
+
+	// Keep the pointer off the stage so hover does not pause autoplay.
+	await page.mouse.move(8, 8);
+	const initialName = await focusName.innerText();
+	await expect.poll(async () => focusName.innerText(), { timeout: 7500 }).not.toBe(initialName);
+	const afterFirst = await focusName.innerText();
+	await page.waitForTimeout(2500);
+	expect(await focusName.innerText()).toBe(afterFirst);
+
+	const sideCard = page.locator('[data-community-card][aria-current="false"]').nth(1);
+	const sideName = await sideCard.getAttribute('data-name');
+	expect(sideName).toBeTruthy();
+	const box = await sideCard.boundingBox();
+	expect(box).not.toBeNull();
+	// Click near the card's outer edge so the scaled center card does not steal the hit.
+	await page.mouse.click(box!.x + Math.min(12, box!.width / 5), box!.y + box!.height / 2);
+	await expect(focusName).toHaveText(sideName!);
+
 	await page.evaluate(() => {
 		const deck = document.querySelector('[data-community-deck]')!;
 		deck.setAttribute('data-test-mutations', '0');
@@ -97,17 +120,17 @@ test('community filmstrip cycles on desktop and reduced motion still allows keyb
 		}).observe(deck, { attributes: true, subtree: true, attributeFilter: ['style'] });
 	});
 	const mutations = () => page.locator('[data-community-deck]').getAttribute('data-test-mutations');
-	await expect.poll(mutations).not.toBe('0');
 	await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
 	await page.waitForTimeout(300);
 	const count = await mutations();
 	await page.waitForTimeout(300);
 	expect(await mutations()).toBe(count);
+
 	await page.emulateMedia({ reducedMotion: 'reduce' });
 	await stage.scrollIntoViewIfNeeded();
 	await stage.focus();
 	await page.keyboard.press('ArrowRight');
-	await expect(page.locator('[data-community-name]')).toHaveText('Build with AI');
+	await expect(focusName).not.toHaveText(sideName!);
 	await page.waitForTimeout(100);
 	const reducedCount = await mutations();
 	await page.waitForTimeout(300);

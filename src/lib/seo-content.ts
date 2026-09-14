@@ -57,7 +57,4 @@ export const seoContentByPath: Record<string, Partial<Pick<PageMetadata, 'title'
 	'/blog/applications-open-2026': {
 		keywords: ['Malaysian AI', 'AI residency Malaysia', 'AI startups Malaysia'],
 	},
-	'/blog/inside-the-curriculum': {
-		keywords: ['Malaysian AI', 'AI residency Malaysia'],
-	},
 };

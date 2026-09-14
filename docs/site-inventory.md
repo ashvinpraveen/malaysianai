@@ -33,7 +33,6 @@ Those jobs live in one repo, but they are two different sites in practice. The h
 | `/venue` | 500 Global KL space | Address, Waze, Google Maps, three highlights |
 | `/blog` | Blog index | Filter by category via query string |
 | `/blog/applications-open-2026` | Applications open for the 2026 cohort | Announcement |
-| `/blog/inside-the-curriculum` | Inside the residency curriculum | Curriculum |
 | `/contact` | Get in touch | Form opens WhatsApp (`60109847954`) |
 | `/privacy` | Privacy policy | Last updated 3 February 2026 |
 | `/terms` | Terms of service | Last updated 3 February 2026 |
@@ -160,15 +159,12 @@ The homepage duplicated this list in the page file. The residency page read `src
 
 Keep the blog as Markdown files in the new Astro app. Two posts is not a CMS problem. Astro content collections give you a Zod schema, typed frontmatter, and `getCollection('blog')` without Sanity.
 
-Three categories existed: Announcements, Cohort Stories, Curriculum. Cohort Stories has no posts.
+Three categories existed: Announcements, Cohort Stories, Curriculum. Cohort Stories has no posts. The curriculum stub (`inside-the-curriculum`) was unpublished because it was incomplete.
 
-Two posts, both dated 3 February 2026, both by "Residency Team":
+Published announcement post dated 3 February 2026, by "Residency Team":
 
 **Applications open for the 2026 cohort** (`applications-open-2026`)
 Who should apply, what to expect. Quote: "We're focused on shipping meaningful AI products with local impact."
-
-**Inside the residency curriculum** (`inside-the-curriculum`)
-Sprint cadence, deliverables (problem statement, prototype and pilot plan, demo day narrative).
 
 Posts were structured as heading / paragraphs / bullets / quote blocks. In the new app those become ordinary Markdown. Frontmatter can hold title, slug, category, author, date, summary, and cover. Move the blog into Sanity later if non-devs start publishing weekly. Not now.
 

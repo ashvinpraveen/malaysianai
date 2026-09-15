@@ -1,0 +1,53 @@
+import { expect, test } from '@playwright/test';
+import { QUESTIONS, ROLES } from '../src/domain';
+test.beforeEach(async ({ page }) => {
+  await page.route('**/*', route => new URL(route.request().url()).hostname === '127.0.0.1' ? route.continue() : route.abort());
+});
+test('application sections, saved draft, review and explicit submission', async ({ page }) => {
+  const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
+  await page.goto('/tests/fixture.html');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Make room');
+  await expect(page.getByRole('checkbox')).toHaveCount(ROLES.length);
+  await page.getByLabel('Name', { exact: true }).fill('Test Builder');
+  await page.getByLabel('Nationality', { exact: true }).fill('Malaysian');
+  await page.getByLabel('Phone Number', { exact: true }).fill('+60 12 345 6789');
+  await page.getByRole('checkbox', { name: 'Software Engineer', exact: true }).check();
+  await page.getByRole('checkbox', { name: 'Writer', exact: true }).check();
+  for (const question of QUESTIONS) await page.getByLabel(question.title, { exact: true }).fill('A thoughtful answer with evidence at https://example.com.');
+  await page.getByRole('button', { name: 'Save draft', exact: true }).click();
+  await expect(page.getByRole('status')).toContainText('Draft saved');
+  await expect(page.getByLabel('Email', { exact: true })).toBeDisabled();
+  await page.getByRole('button', { name: 'Review application' }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('One last look');
+  await expect(page.getByRole('link', { name: 'https://example.com. ↗' })).toHaveCount(4);
+  await expect(page.getByText('Test submission recorded.')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Submit application', exact: false }).click();
+  await expect(page.getByRole('status')).toHaveText('Test submission recorded.');
+  expect(errors).toEqual([]);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+});
+test('No requires a reason, displays the high-score flag, and abstention clears submitted scores', async ({ page }) => {
+  await page.goto('/tests/fixture.html?review');
+  for (const criterion of ['Degree of obsession', 'Vibes', 'Execution pace']) await page.getByLabel(criterion, { exact: true }).selectOption('8');
+  await page.getByRole('radio', { name: 'No', exact: true }).check();
+  await expect(page.getByRole('status')).toContainText('High score, No vote');
+  await page.getByRole('button', { name: 'Save my review' }).click();
+  await expect(page.getByLabel('Why are you voting No?')).toBeFocused();
+  await page.getByLabel('Why are you voting No?').fill('A concrete concern about the fit.');
+  await page.getByRole('button', { name: 'Save my review' }).click();
+  await expect(page.getByText('Your review has been saved.')).toBeVisible();
+  await page.getByRole('radio', { name: 'Abstain' }).check();
+  await expect(page.getByLabel('Degree of obsession')).toBeDisabled();
+  await page.getByRole('button', { name: 'Save my review' }).click();
+  expect(await page.evaluate(() => JSON.parse(sessionStorage.getItem('test-vote')!).scores)).toBeNull();
+});
+test('scroll reveals remain keyboard accessible and reduced-motion keeps fields visible', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/tests/fixture.html');
+  await page.getByRole('link', { name: /The fit/ }).click();
+  await expect(page.getByLabel(QUESTIONS[2].title, { exact: true })).toBeVisible();
+  expect(await page.locator('#fit').evaluate(element => getComputedStyle(element).opacity)).toBe('1');
+  await page.getByLabel(QUESTIONS[2].title, { exact: true }).focus();
+  await expect(page.getByLabel(QUESTIONS[2].title, { exact: true })).toBeFocused();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+});

@@ -1,0 +1,18 @@
+import { v } from 'convex/values';
+import { ROLES } from '../src/domain';
+export const profile = v.object({ name: v.string(), nationality: v.string(), roles: v.array(v.union(...ROLES.map(role => v.literal(role)))), phone: v.string(), linkedin: v.string(), x: v.string(), threads: v.string(), instagram: v.string() });
+export const answers = v.object({ built: v.string(), building: v.string(), motivation: v.string(), failure: v.string() });
+export const state = v.union(v.literal('draft'), v.literal('submitted'), v.literal('reviewing'), v.literal('discussion'), v.literal('admin_resolution'), v.literal('accepted'), v.literal('rejected'));
+export const decision = v.union(v.literal('yes'), v.literal('no'), v.literal('abstain'));
+export const scores = v.object({ obsession: v.number(), vibes: v.number(), executionPace: v.number() });
+export const vote = { decision, scores: v.union(v.null(), scores), reason: v.string() };
+export const userFields = { tokenIdentifier: v.string(), email: v.string(), profile, resident: v.boolean(), admin: v.boolean() };
+export const user = v.object({ _id: v.id('users'), _creationTime: v.number(), ...userFields });
+export const applicationFields = { owner: v.id('users'), profile, email: v.string(), answers, applicantName: v.string(), submitted: v.boolean(), state, voters: v.array(v.id('users')), flagged: v.boolean(), submittedAt: v.union(v.number(), v.null()), decidedAt: v.union(v.number(), v.null()), decisionReason: v.string() };
+export const application = v.object({ _id: v.id('applications'), _creationTime: v.number(), ...applicationFields });
+export const reviewFields = { applicationId: v.id('applications'), reviewer: v.id('users'), ...vote, updatedAt: v.number() };
+export const review = v.object({ _id: v.id('reviews'), _creationTime: v.number(), ...reviewFields });
+export const eventFields = { applicationId: v.union(v.id('applications'), v.null()), actor: v.id('users'), kind: v.string(), detail: v.string() };
+export const event = v.object({ _id: v.id('auditEvents'), _creationTime: v.number(), ...eventFields });
+export const emailFields = { applicationId: v.id('applications'), kind: v.union(v.literal('submitted'), v.literal('accepted'), v.literal('rejected')), email: v.string(), name: v.string(), state: v.union(v.literal('pending'), v.literal('sending'), v.literal('sent'), v.literal('failed')), attempts: v.number(), firstAttemptAt: v.union(v.number(), v.null()), lastError: v.string(), providerId: v.union(v.string(), v.null()) };
+export const email = v.object({ _id: v.id('emailDeliveries'), _creationTime: v.number(), ...emailFields });

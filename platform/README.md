@@ -68,6 +68,8 @@ Backend checks execute the actual functions against `convex-test`, with syntheti
 
 ## Release checklist
 
+See the [production setup and team to-dos](../documentation/production-setup.md) for current deployment targets, exact Clerk DNS records, environment locations, and owner checklists.
+
 1. Publish and verify the development backend on the exact deployment above. Test real Clerk sign-in, draft persistence across reloads and resident access with separate accounts.
 2. Configure separate production Convex and Clerk instances. Set Vercel production `CONVEX_DEPLOY_KEY`, `VITE_CONVEX_URL` and `VITE_CLERK_PUBLISHABLE_KEY`. Configure the matching backend issuer and mail environment. The build command deploys Convex before building the frontend.
 3. Add `platform.malaysian.ai` to the Vercel project and configure the DNS records Vercel provides. Verify TLS, deep links, sign-in and production isolation.

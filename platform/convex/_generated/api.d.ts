@@ -11,6 +11,8 @@
 import type * as access from "../access.js";
 import type * as applications from "../applications.js";
 import type * as emails from "../emails.js";
+import type * as luma from "../luma.js";
+import type * as lumaModel from "../lumaModel.js";
 import type * as users from "../users.js";
 import type * as validators from "../validators.js";
 
@@ -24,6 +26,8 @@ declare const fullApi: ApiFromModules<{
   access: typeof access;
   applications: typeof applications;
   emails: typeof emails;
+  luma: typeof luma;
+  lumaModel: typeof lumaModel;
   users: typeof users;
   validators: typeof validators;
 }>;

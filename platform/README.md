@@ -48,6 +48,12 @@ Set Convex `RESEND_API_KEY`, `EMAIL_FROM` (a verified sender) and `PLATFORM_URL`
 
 Provider calls use stable idempotency keys, limited automatic retries and interruption recovery. Unconfirmed attempts older than 23 hours require provider verification before manual resend. Test delivery to a controlled address before enabling public applications.
 
+## Calendar statistics
+
+Residents and admins can open **Resident room → Events & statistics** at `/admin/events`. Public Luma metadata and registration counts sync daily through GitHub Actions; admins record attendance separately with source notes. Daily observations preserve changes over time. Calendar ownership, curated listings, missing counts and sync freshness are explicitly labelled.
+
+See [Luma operations](../documentation/luma-operations.md) for deployment variables, cron activation, canary checks, metric definitions and limits. Scheduled writes remain disabled until `LUMA_SYNC_ENABLED=true` is configured after production backend deployment. Preview runs work without credentials.
+
 ## Checks
 
 ```sh

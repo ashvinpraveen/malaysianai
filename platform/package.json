@@ -9,7 +9,8 @@
     "preview": "vite preview --host 127.0.0.1 --port 5173",
     "check": "tsc --noEmit && tsc --noEmit -p convex/tsconfig.json",
     "test": "vitest run",
-    "test:browser": "playwright test"
+    "test:browser": "playwright test",
+    "sync:luma": "node scripts/sync-luma.ts"
   },
   "dependencies": {
     "@clerk/react": "^6.15.2",

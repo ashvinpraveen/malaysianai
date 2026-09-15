@@ -1,0 +1,43 @@
+name: Luma calendar sync
+on:
+  schedule:
+    - cron: '17 1 * * *'
+  workflow_dispatch:
+    inputs:
+      preview:
+        description: 'Fetch public metadata without writing to Convex'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: luma-calendar-sync
+  cancel-in-progress: false
+jobs:
+  sync:
+    # Enable after deploying the Malaysian AI backend and configuring its secrets.
+    if: github.event_name == 'workflow_dispatch' || vars.LUMA_SYNC_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: platform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: platform/package-lock.json
+      - run: npm ci
+      - name: Sync public calendar
+        env:
+          CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY }}
+          LUMA_CONVEX_URL: ${{ vars.LUMA_CONVEX_URL }}
+          PREVIEW: ${{ inputs.preview }}
+        run: |
+          if [ "$PREVIEW" = "true" ]; then
+            npm run sync:luma -- --preview
+          else
+            npm run sync:luma
+          fi

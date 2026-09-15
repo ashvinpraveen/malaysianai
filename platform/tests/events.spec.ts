@@ -1,0 +1,42 @@
+import { expect, test } from '@playwright/test';
+test.beforeEach(async ({ page }) => {
+  await page.route('**/*', route => new URL(route.request().url()).hostname === '127.0.0.1' ? route.continue() : route.abort());
+  await page.goto('/tests/fixture.html?events');
+});
+test('scope, coverage and date filters do not conflate curated events, cancellations or unknown counts', async ({ page }) => {
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('we bring people to');
+  await expect(page.getByText('The calendar has not refreshed in over 36 hours.', { exact: false })).toBeVisible();
+  const stats = page.getByLabel('Statistics for filtered events');
+  await expect(stats).toContainText('Counts available for 1 of 2 events');
+  await expect(stats).toContainText('1 known cancellations excluded');
+  await expect(stats).toContainText('Recorded for 0 of 2 events');
+  await expect(page.getByRole('link', { name: 'Curated session ↗' })).toHaveCount(0);
+  await page.getByLabel('Calendar scope').selectOption('all');
+  await expect(page.getByRole('link', { name: 'Curated session ↗' })).toBeVisible();
+  await expect(stats.locator('dd').nth(1)).toHaveText('42');
+  await page.getByLabel('Find an event').fill('No published count');
+  await expect(stats.locator('dd').nth(1)).toHaveText('Unknown');
+  await page.getByLabel('Find an event').fill('');
+  await page.getByLabel('Starts on or after').fill('2026-09-02');
+  await expect(page.getByText('No events match these filters.')).toBeVisible();
+  await page.getByLabel('Starts on or before').fill('2026-09-01');
+  await expect(page.getByText('The start date must be on or before the end date.')).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+});
+test('event history and attendance editor preserve zero and require a source note', async ({ page }) => {
+  await page.getByRole('button', { name: 'Details for Builder evening' }).click();
+  await expect(page.getByText('Most recent 90 observed days', { exact: false })).toBeVisible();
+  await expect(page.getByText('12 registrations', { exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Save attendance', exact: true })).toBeDisabled();
+  await page.getByLabel('Attendance total').fill('0');
+  await page.getByLabel('Source or correction note').fill('Organizer headcount: nobody arrived.');
+  await page.getByRole('button', { name: 'Save attendance', exact: true }).click();
+  await expect(page.getByText('Attendance saved with its source note.')).toBeVisible();
+  expect(await page.evaluate(() => JSON.parse(sessionStorage.getItem('test-attendance')!))).toEqual({ count: 0, note: 'Organizer headcount: nobody arrived.' });
+  await page.getByLabel('Attendance total').fill('');
+  await page.getByLabel('Source or correction note').fill('Awaiting a corrected total.');
+  await page.getByRole('button', { name: 'Save attendance', exact: true }).click();
+  expect(await page.evaluate(() => JSON.parse(sessionStorage.getItem('test-attendance')!).count)).toBeNull();
+  await page.emulateMedia({ reducedMotion: 'reduce', colorScheme: 'dark' });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+});

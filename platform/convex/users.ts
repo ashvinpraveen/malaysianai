@@ -1,19 +1,18 @@
 import { ConvexError, v } from 'convex/values';
 import { query, mutation, internalMutation } from './_generated/server';
-import { adminMutation, adminQuery, memberMutation } from './access';
+import { adminMutation, adminQuery, memberMutation, verifiedIdentity } from './access';
 import { profile, user } from './validators';
 import { EMPTY_PROFILE, validateProfile } from '../src/domain';
 
 export const me = query({ args: {}, returns: v.union(user, v.null()), handler: async ctx => {
   const identity = await ctx.auth.getUserIdentity();
   if (!identity) return null;
-  return ctx.db.query('users').withIndex('by_tokenIdentifier', q => q.eq('tokenIdentifier', identity.tokenIdentifier)).unique();
+  const verified = verifiedIdentity(identity);
+  const account = await ctx.db.query('users').withIndex('by_tokenIdentifier', q => q.eq('tokenIdentifier', verified.tokenIdentifier)).unique();
+  return account ? { ...account, email: verified.email } : null;
 } });
 export const ensure = mutation({ args: {}, returns: v.id('users'), handler: async ctx => {
-  const identity = await ctx.auth.getUserIdentity();
-  if (!identity) throw new ConvexError('Please sign in.');
-  if (!identity.email || typeof identity.emailVerified !== 'boolean') throw new ConvexError('Your sign-in token is missing email information. Please contact the residency team to check the sign-in configuration.');
-  if (!identity.emailVerified) throw new ConvexError('Sign in with a verified email address.');
+  const identity = verifiedIdentity(await ctx.auth.getUserIdentity());
   const existing = await ctx.db.query('users').withIndex('by_tokenIdentifier', q => q.eq('tokenIdentifier', identity.tokenIdentifier)).unique();
   if (existing) { if (existing.email !== identity.email) await ctx.db.patch(existing._id, { email: identity.email }); return existing._id; }
   return ctx.db.insert('users', { tokenIdentifier: identity.tokenIdentifier, email: identity.email, profile: { ...EMPTY_PROFILE, name: identity.name ?? '' }, resident: false, admin: false });

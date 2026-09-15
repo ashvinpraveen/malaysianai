@@ -124,3 +124,31 @@ test('email failures leave applications intact and retries stop outside the safe
   await f.t.run(ctx => ctx.db.patch(item._id, { state: 'failed', firstAttemptAt: Date.now() - 25 * 60 * 60 * 1000 }));
   await expect(f.admin.mutation(api.emails.retry, { id: item._id })).rejects.toThrow();
 });
+
+test('existing accounts require current verified claims and snapshot the current email without ensure', async () => {
+  const f = await setup();
+  const identity = (subject: string) => ({ tokenIdentifier: `https://test.clerk.accounts.dev|${subject}`, subject, issuer: 'https://test.clerk.accounts.dev' });
+  for (const claims of [{}, { email: 'new@example.com' }, { email: 'new@example.com', emailVerified: false }]) {
+    const applicant = f.t.withIdentity({ ...identity('applicant'), ...claims });
+    await expect(applicant.query(api.users.me, {})).rejects.toThrow();
+    await expect(applicant.query(api.applications.mine, {})).rejects.toThrow();
+    await expect(applicant.mutation(api.applications.saveDraft, { profile, answers })).rejects.toThrow();
+    await expect(applicant.mutation(api.applications.submit, { profile, answers })).rejects.toThrow();
+    const resident = f.t.withIdentity({ ...identity('resident0'), ...claims });
+    await expect(resident.query(api.applications.list, { search: '', paginationOpts: { numItems: 25, cursor: null } })).rejects.toThrow();
+    const admin = f.t.withIdentity({ ...identity('admin'), ...claims });
+    await expect(admin.mutation(api.users.setAccess, { userId: f.owner, resident: true, admin: true, reason: 'Invalid claims' })).rejects.toThrow();
+  }
+  expect(await f.applicant.query(api.applications.mine, {})).toBeNull();
+  const changed = f.t.withIdentity({ ...identity('applicant'), email: 'new@example.com', emailVerified: true });
+  expect((await changed.query(api.users.me, {}))?.email).toBe('new@example.com');
+  await changed.mutation(api.applications.saveDraft, { profile, answers });
+  expect((await changed.query(api.applications.mine, {}))?.email).toBe('new@example.com');
+  await changed.mutation(api.applications.submit, { profile, answers });
+  expect((await changed.query(api.applications.mine, {}))?.email).toBe('new@example.com');
+  const email = await f.t.run(ctx => ctx.db.query('emailDeliveries').first());
+  expect(email?.email).toBe('new@example.com');
+  const later = f.t.withIdentity({ ...identity('applicant'), email: 'later@example.com', emailVerified: true });
+  await later.mutation(api.users.ensure, {});
+  expect((await later.query(api.applications.mine, {}))?.email).toBe('new@example.com');
+});

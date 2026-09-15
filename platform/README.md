@@ -31,7 +31,7 @@ The current Clerk integration adds only `aud`. In Clerk → Configure → Sessio
 
 Clerk substitutes the verification shortcode with a boolean. After changing claims, reload with a fresh session token. Missing claims are a configuration error; unverified addresses remain blocked.
 
-An authenticated, verified email creates a private user record. Accounts begin with neither resident nor admin access. After the first designated admin signs in, use trusted Convex deployment access to run the internal `users:bootstrapAdmin` mutation with that user's exact `tokenIdentifier`. This initializer refuses to run once an admin exists. The admin can then grant resident/admin access to other signed-in accounts through `/admin/residents`. The final admin cannot be removed.
+Every protected request requires current signed, verified email claims. Drafts and submissions use that verified address; submitted applications retain their frozen email even if the account changes later. An authenticated, verified email creates a private user record. Accounts begin with neither resident nor admin access. After the first designated admin signs in, use trusted Convex deployment access to run the internal `users:bootstrapAdmin` mutation with that user's exact `tokenIdentifier`. This initializer refuses to run once an admin exists. The admin can then grant resident/admin access to other signed-in accounts through `/admin/residents`. The final admin cannot be removed.
 
 ## Review rules
 
@@ -72,6 +72,8 @@ Backend checks execute the actual functions against `convex-test`, with syntheti
 
 On 15 September 2026, the schema and functions were deployed successfully to `beloved-pheasant-288`, with the verified development Clerk issuer configured. Live checks passed for idempotent account creation, draft persistence, applicant isolation, resident access denial and signed-out access denial. Two clearly named QA accounts and one private QA draft remain in this development database.
 
-The development key is stored only in the ignored, owner-readable `.env.local`, expires one hour after creation, and was verified absent from the frontend build. Backend-specific TypeScript checks are included in `npm run check`.
+The temporary development key expired and was omitted when the ignored, owner-readable `.env.local` was recreated. Backend deployments require renewed deployment access. Backend-specific TypeScript checks are included in `npm run check`.
 
 The Clerk integration is active. Its initially missing email claims were added to the session token, and real browser authentication was verified by loading Brendan's profile successfully. The first designated admin is to be `malaysian.ai.community@gmail.com`, after that account signs in. Applicant email delivery is intentionally pending at the user's request. Production hosting, production credentials and the custom domain are not configured; public application links have not been switched.
+
+The security-review follow-up enforces verified email claims on every protected request and uses the current signed email when saving a draft or submitting. This follow-up passes local checks but has not been redeployed to Convex because the temporary deployment key expired.

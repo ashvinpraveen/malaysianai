@@ -1,10 +1,10 @@
 /* Shared typography and theme values. Component geometry stays with its component.
    --font-body, --font-display and --font-pixel come from the fonts config in astro.config.mjs.
 
-   Theme colors are plain values, not light-dark(). Custom properties store unknown
-   functions as specified values, so Tizen and other engines without light-dark()
-   would leave cutout fills and copy color invalid (transparent panels, black type). */
-:root {
+   Palettes are plain colors. Tizen cannot use light-dark() inside custom properties,
+   but it can follow prefers-color-scheme and html[data-theme]. */
+:root,
+html[data-theme='dark'] {
 	color-scheme: dark;
 	--text-xs: 0.75rem;
 	--text-sm: 0.875rem;
@@ -59,8 +59,63 @@
 	--footer-wordmark-color: rgba(155, 187, 231, 0.18);
 }
 
-html[data-theme='dark'] {
-	color-scheme: dark;
+@media (prefers-color-scheme: light) {
+	html:not([data-theme='dark']) {
+		color-scheme: light;
+		--site-background: #efe8d8;
+		--page-background: #f4efe6;
+		--surface-background: #e7dfd0;
+		--card-background: #fffaf2;
+		--card-raised: #fffaf2;
+		--image-background: #e7dfd0;
+		--page-text: #102b2a;
+		--text-heading: #0c2221;
+		--text-bright: #102b2a;
+		--text-accent: #2c5c59;
+		--text-link: #1d4f5c;
+		--text-muted: #4d6664;
+		--text-soft: rgba(16, 43, 42, 0.72);
+		--text-softer: rgba(16, 43, 42, 0.58);
+		--text-faint: rgba(16, 43, 42, 0.45);
+		--text-hover: #0c2221;
+		--quote-text: #102b2a;
+		--link-bright: #102b2a;
+		--story-copy: rgba(16, 43, 42, 0.86);
+		--focus-color: #102b2a;
+		--border-color: #8a9e9b;
+		--hairline: rgba(16, 43, 42, 0.16);
+		--hairline-soft: rgba(16, 43, 42, 0.12);
+		--hero-copy: #102b2a;
+		--hero-muted: rgba(16, 43, 42, 0.8);
+		--hero-focus: #102b2a;
+		--hero-title-shadow-color: transparent;
+		--hero-copy-shadow-color: transparent;
+		--button-background: #102b2a;
+		--button-hover-background: #1a3d3b;
+		--button-text: #f4efe6;
+		--footer-copy: rgba(16, 43, 42, 0.72);
+		--footer-link: rgba(16, 43, 42, 0.82);
+		--footer-meta: rgba(16, 43, 42, 0.45);
+		--footer-wordmark-color: rgba(16, 43, 42, 0.1);
+	}
+
+	html.neutral-page:not([data-theme='dark']) {
+		--site-background: #f3f0ea;
+		--page-background: #f3f0ea;
+		--page-text: #111;
+		--page-border: rgba(17, 17, 17, 0.16);
+		--card-background: #fff;
+		--focus-color: #111;
+		--footer-text: var(--page-text);
+		--footer-label: var(--page-text);
+		--footer-copy: var(--page-text);
+		--footer-link: var(--page-text);
+		--footer-meta: var(--page-text);
+		--footer-wordmark-color: rgba(17, 17, 17, 0.1);
+		--button-text: #f3f0ea;
+		--button-background: #111;
+		--button-hover-background: #2a2a2a;
+	}
 }
 
 html[data-theme='light'] {
@@ -102,8 +157,8 @@ html[data-theme='light'] {
 	--footer-wordmark-color: rgba(16, 43, 42, 0.1);
 }
 
-/* Information pages keep a quieter surface in both themes. */
-html.neutral-page:not([data-theme='light']) {
+html.neutral-page,
+html.neutral-page[data-theme='dark'] {
 	--site-background: #090909;
 	--page-background: #090909;
 	--page-text: var(--color-white);

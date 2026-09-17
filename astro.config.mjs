@@ -30,6 +30,11 @@ export default defineConfig({
 		// Speculation Rules in Chromium: the next page is rendered before the click.
 		clientPrerender: true,
 	},
+	vite: {
+		build: {
+			cssTarget: 'chrome69',
+		},
+	},
 	fonts: [
 		{
 			provider: fontProviders.local(),

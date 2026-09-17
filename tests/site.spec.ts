@@ -236,11 +236,17 @@ test('theme toggle follows the system scheme and can lock light or dark', async 
 	await page.goto('/');
 	await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 	await expect(page.locator('html')).toHaveAttribute('data-theme-preference', 'system');
+	await expect(page.locator('.hero-card')).toHaveCSS('background-color', 'rgb(6, 9, 15)');
+	await expect(page.locator('.hero-card h1')).toHaveCSS('color', 'rgb(255, 253, 246)');
+	await expect(page.locator('.hero-header .brand-panel')).toHaveCSS('background-color', 'rgb(6, 9, 15)');
 	await expect(page.getByRole('radio', { name: 'System' })).toHaveAttribute('aria-checked', 'true');
 	await expect(page.locator('.hero-cta-panel').getByRole('radio')).toHaveCount(0);
 	await page.getByRole('radio', { name: 'Light' }).click();
 	await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
 	await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(239, 232, 216)');
+	await expect(page.locator('.hero-card')).toHaveCSS('background-color', 'rgb(244, 239, 230)');
+	await expect(page.locator('.hero-card h1')).toHaveCSS('color', 'rgb(16, 43, 42)');
+	await expect(page.locator('.hero-header .brand-panel')).toHaveCSS('background-color', 'rgb(244, 239, 230)');
 	expect(await page.evaluate(() => localStorage.getItem('malaysianai-theme'))).toBe('light');
 	await page.locator('.footer-company').getByRole('link', { name: 'About', exact: true }).click();
 	await expect(page).toHaveURL(/\/about\/?$/);

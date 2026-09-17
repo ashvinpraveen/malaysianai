@@ -5,7 +5,8 @@
 </div>
 
 <script>
-	type Theme = 'light' | 'dark';
+	import { systemTheme, type Theme } from '../lib/theme';
+
 	type ThemePreference = 'light' | 'dark' | 'system';
 	const STORAGE_KEY = 'malaysianai-theme';
 	const LIGHT_THEME_COLOR = '#f4efe6';
@@ -13,10 +14,6 @@
 
 	function isPreference(value: string | null | undefined): value is ThemePreference {
 		return value === 'light' || value === 'dark' || value === 'system';
-	}
-
-	function systemTheme(): Theme {
-		return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
 	}
 
 	function currentPreference(): ThemePreference {

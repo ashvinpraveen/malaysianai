@@ -1,7 +1,9 @@
 ---
 import { Image } from 'astro:assets';
 import showAndTell from '../assets/events/show-and-tell-supabase-ceo.png';
+import FaqSection from '../components/FaqSection.astro';
 import ResidentLogo from '../components/ResidentLogo.astro';
+import { residencyFaqs } from '../data/faq';
 import { residents } from '../data/residents';
 import Layout from '../layouts/Layout.astro';
 import { SITE_TITLE, APPLY_FORM_URL, VENUE_ADDRESS, VENUE_MAPS_URL, VENUE_WAZE_URL } from '../consts';
@@ -65,6 +67,8 @@ const description = 'A working home for founders building AI products in Malaysi
 					<a href={VENUE_WAZE_URL}>Waze <span aria-hidden="true">↗</span></a>
 				</nav>
 			</section>
+
+			<FaqSection items={residencyFaqs} variant="page" />
 		</div>
 	</article>
 </Layout>

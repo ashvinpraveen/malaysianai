@@ -7,6 +7,8 @@ import CommunitySection from '../components/CommunitySection.astro';
 import ResidencySection from '../components/ResidencySection.astro';
 import VoicesSection from '../components/VoicesSection.astro';
 import AboutHostSection from '../components/AboutHostSection.astro';
+import FaqSection from '../components/FaqSection.astro';
+import { homepageFaqs } from '../data/faq';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 ---
 
@@ -21,5 +23,6 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	<CommunitySection />
 	<ResidencySection />
 	<VoicesSection />
+	<FaqSection items={homepageFaqs} />
 	<AboutHostSection />
 </Layout>

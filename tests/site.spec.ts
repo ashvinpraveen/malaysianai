@@ -96,6 +96,23 @@ test('homepage copy points people at communities and the add-community contact f
 	await expect(page.locator('#contact-whatsapp')).toHaveAttribute('href', /add%20my%20community/i);
 });
 
+test('FAQ accordion opens on the homepage and residency page', async ({ page }) => {
+	for (const [path, question, answer] of [
+		['/', 'What is Malaysian AI?', 'public community hub'],
+		['/residency', 'What is the AI Residency?', 'working home for founders'],
+	] as const) {
+		await page.goto(path);
+		const faq = page.locator('#faq');
+		await faq.scrollIntoViewIfNeeded();
+		await expect(faq.getByRole('heading', { level: 2, name: 'Questions and Answers' })).toBeVisible();
+		const item = faq.locator('details').filter({ hasText: question }).first();
+		await expect(item).not.toHaveAttribute('open', '');
+		await item.locator('summary').click();
+		await expect(item).toHaveAttribute('open', '');
+		await expect(item.locator('.faq-answer')).toContainText(answer);
+	}
+});
+
 test('image dialog contains keyboard focus, closes and survives page navigation', async ({ page }) => {
 	const errors: string[] = [];
 	page.on('pageerror', error => errors.push(error.message));

@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import showAndTell from '../assets/events/show-and-tell-supabase-ceo.png';
 import { residents } from '../data/residents';
-import { APPLY_FORM_URL, SHOW_AND_TELL_WHATSAPP } from '../consts';
+import { APPLY_FORM_URL, LUMA_URL } from '../consts';
 ---
 
 <section class="residency-chapter light-nav-zone" id="residency" aria-labelledby="residency-title">
@@ -34,7 +34,7 @@ import { APPLY_FORM_URL, SHOW_AND_TELL_WHATSAPP } from '../consts';
 					decoding="async"
 				/>
 				<figcaption>
-					<a href={SHOW_AND_TELL_WHATSAPP}>Thursday Show &amp; Tell</a>
+					<a href={LUMA_URL}>Thursday Show &amp; Tell</a>
 					— come meet the community and get a feel for the residency.
 				</figcaption>
 			</figure>

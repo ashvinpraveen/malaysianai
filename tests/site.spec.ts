@@ -380,3 +380,33 @@ test('residency announcement banner opens the residency page and can be dismisse
 	await expect(page).toHaveURL(/\/about\/?$/);
 	await expect(banner).toBeHidden();
 });
+
+test('residency show and tell points at Luma with clear section headings', async ({ page }) => {
+	await page.goto('/residency');
+	const visit = page.locator('.residency-visit');
+	const teams = page.locator('.resident-teams');
+	await expect(visit.getByRole('heading', { level: 2, name: 'Come on a Thursday' })).toBeVisible();
+	await expect(teams.getByRole('heading', { level: 2, name: 'Resident teams' })).toBeVisible();
+	await expect(visit.getByRole('link', { name: /Join a Thursday Show & Tell/i })).toHaveAttribute(
+		'href',
+		'https://luma.com/malaysianai',
+	);
+	const sizes = await page.evaluate(() => {
+		const visitTitle = document.querySelector('.residency-visit h2');
+		const teamsTitle = document.querySelector('.resident-teams h2');
+		if (!visitTitle || !teamsTitle) return null;
+		return {
+			visit: Number.parseFloat(getComputedStyle(visitTitle).fontSize),
+			teams: Number.parseFloat(getComputedStyle(teamsTitle).fontSize),
+		};
+	});
+	expect(sizes).not.toBeNull();
+	expect(sizes!.visit).toBeGreaterThanOrEqual(18);
+	expect(sizes!.teams).toBeGreaterThanOrEqual(18);
+
+	await page.goto('/');
+	await expect(page.locator('#residency').getByRole('link', { name: 'Thursday Show & Tell' })).toHaveAttribute(
+		'href',
+		'https://luma.com/malaysianai',
+	);
+});

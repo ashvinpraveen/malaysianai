@@ -91,13 +91,15 @@ test('public pages have consistent production metadata and valid share images', 
 		const actualImage = await sharp(await imageResponse.body()).metadata();
 		const dimensions = await page.locator('head').evaluate(head => ['width', 'height'].map(key => Number(head.querySelector(`meta[property="og:image:${key}"]`)?.getAttribute('content'))));
 		expect(dimensions).toEqual([actualImage.width, actualImage.height]);
-		const jsonLdScripts = page.locator('script[type="application/ld+json"]');
-		const graphScript = jsonLdScripts.filter({ hasText: '"@graph"' });
-		const graph = JSON.parse((await graphScript.textContent())!)['@graph'];
+		const structured = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) =>
+			scripts.map((script) => JSON.parse(script.textContent || '{}')),
+		);
+		const graph = structured.find((entry) => Array.isArray(entry['@graph']))?.['@graph'];
+		expect(graph, path).toBeTruthy();
 		expect(graph.map((item: { '@type': string }) => item['@type'])).toEqual(path.startsWith('/blog/') ? ['Organization', 'WebSite', 'BlogPosting'] : ['Organization', 'WebSite']);
 		if (path === '/' || path === '/residency') {
-			const faqPage = JSON.parse((await jsonLdScripts.filter({ hasText: '"FAQPage"' }).textContent())!);
-			expect(faqPage['@type']).toBe('FAQPage');
+			const faqPage = structured.find((entry) => entry['@type'] === 'FAQPage');
+			expect(faqPage, path).toBeTruthy();
 			expect(faqPage.mainEntity.length).toBeGreaterThan(5);
 		}
 		if (path.startsWith('/blog/')) {

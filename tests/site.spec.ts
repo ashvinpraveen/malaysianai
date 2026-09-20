@@ -10,7 +10,7 @@ test('public destinations load and the hero uses responsive images', async ({ pa
 	page.on('pageerror', error => errors.push(error.message));
 	for (const [path, heading] of [
 		['/', 'Learn, build and'], ['/residency', 'Join the Malaysian.ai residency'],
-		['/residents', 'Meet the residents'], ['/contact', 'Get in touch'], ['/blog', 'Malaysian AI Blog'],
+		['/residents', 'Meet the residents'], ['/contact', 'Get in touch'], ['/brand', 'Brand'], ['/blog', 'Malaysian AI Blog'],
 	]) {
 		const response = await page.goto(path);
 		expect(response?.status()).toBe(200);
@@ -308,6 +308,21 @@ test('homepage brand mark is visible on mobile', async ({ page, isMobile }) => {
 	const box = await mark.boundingBox();
 	expect(box?.width).toBeGreaterThan(24);
 	expect(box?.height).toBeGreaterThan(24);
+});
+
+test('brand page lists logos with descriptive alt text and footer links GitHub', async ({ page }) => {
+	await page.goto('/brand');
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Brand');
+	await expect(page.getByRole('heading', { level: 2, name: 'Logos' })).toBeVisible();
+	await expect(page.getByRole('heading', { level: 2, name: 'Colours' })).toBeVisible();
+	await expect(page.getByRole('heading', { level: 2, name: 'Typography' })).toBeVisible();
+	const logo = page.getByRole('img', { name: /Malaysian AI square logo mark/i });
+	await expect(logo).toBeVisible();
+	await expect(page.getByRole('link', { name: /PNG 512/i }).first()).toHaveAttribute('href', /\/brand\/malaysian-ai-mark-512\.png$/);
+	await expect(page.getByRole('link', { name: /SVG/i }).first()).toHaveAttribute('href', /\.svg$/);
+	const github = page.locator('.footer-company').getByRole('link', { name: 'GitHub', exact: true });
+	await expect(github).toHaveAttribute('href', 'https://github.com/ashvinpraveen/malaysianai');
+	await expect(page.locator('.footer-company')).toContainText('Open source');
 });
 
 test('theme toggle follows the system scheme and can lock light or dark', async ({ page }) => {

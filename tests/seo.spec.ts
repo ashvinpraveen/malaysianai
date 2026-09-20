@@ -3,7 +3,7 @@ import hosting from '../vercel.json' with { type: 'json' };
 import { test, expect } from '@playwright/test';
 
 const origin = 'https://www.malaysian.ai';
-const pages = ['/', '/about', '/residency', '/residents', '/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon'];
+const pages = ['/', '/about', '/brand', '/residency', '/residents', '/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon'];
 
 // Keep expectations independent of the production SEO map and article frontmatter.
 const expectedMetadata = [
@@ -36,6 +36,11 @@ const expectedMetadata = [
 		path: '/contact',
 		title: 'Contact the Malaysia AI Community | Malaysian AI',
 		description: 'Contact Malaysian AI about community events, workshops or the Kuala Lumpur residency. Add your Malaysian community to the directory or find an upcoming event.',
+	},
+	{
+		path: '/brand',
+		title: 'Malaysian AI Brand Kit | Logos, Colours & Fonts | Malaysian AI',
+		description: 'Download official Malaysian AI logos in SVG and PNG, plus brand colours and typography. Square marks, horizontal and stacked lockups for dark and light backgrounds.',
 	},
 	{
 		path: '/blog/largest-ai-learnathon',
@@ -126,6 +131,7 @@ test('crawl documents list live canonical URLs and exclude retired pages', async
 		expect((await request.get(url.pathname)).status(), url.href).toBe(200);
 	}
 	expect(listed.some(url => url.pathname === '/about')).toBe(true);
+	expect(listed.some(url => url.pathname === '/brand')).toBe(true);
 	expect(listed.some(url => url.pathname === '/residency/apply')).toBe(false);
 	const rss = await request.get('/rss.xml');
 	const feed = await rss.text();

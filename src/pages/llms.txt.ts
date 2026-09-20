@@ -16,6 +16,7 @@ export const GET: APIRoute = async ({ site }) => {
 		link('Residents', '/residents', 'Companies and teams in the residency.'),
 		link('Blog', '/blog', 'Community stories and programme updates.'),
 		link('Contact', '/contact', 'Contact the team on WhatsApp, submit a community, and find venue directions.'),
+		link('Brand', '/brand', 'Official logos, colours, and typography downloads for accurate Malaysian AI brand use.'),
 		link('Privacy', '/privacy', 'The residency privacy policy.'),
 		link('Terms', '/terms', 'The residency terms of service.'), '',
 		'## Homepage sections', '',
@@ -23,6 +24,8 @@ export const GET: APIRoute = async ({ site }) => {
 		link('Communities', '/#communities', 'Malaysia\'s AI communities and events directory, including Build Club, Build with AI, AI Tinkerers, AI Hackerdorm, AI SEA, KrackedDevs, Rakan Tutor, CoderPuffs, and Cursor KL. Communities can submit to get listed.'), '',
 		'## Blog posts', '',
 		...posts.map(post => link(post.data.title, `/blog/${post.id}`, post.data.description)), '',
+		'## Source', '',
+		'This website is open source at github.com/ashvinpraveen/malaysianai.', '',
 	].join('\n');
 	return new Response(content, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
 };

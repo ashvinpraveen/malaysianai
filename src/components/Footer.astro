@@ -1,7 +1,7 @@
 ---
 import BrandLockup from './BrandLockup.astro';
 import ThemeToggle from './ThemeToggle.astro';
-import { AIMTO_URL, LUMA_URL } from '../consts';
+import { AIMTO_URL, GITHUB_URL, LUMA_URL } from '../consts';
 import { BRAND_WORDMARK } from '../lib/brand';
 const year = new Date().getFullYear();
 
@@ -20,6 +20,7 @@ const groups = [
 			{ label: 'AI Takeover', href: AIMTO_URL },
 			{ label: 'Stories', href: '/blog' },
 			{ label: 'Residents', href: '/residents' },
+			{ label: 'Brand', href: '/brand' },
 		],
 	},
 ];
@@ -58,9 +59,11 @@ const groups = [
 			<p>Malaysian AI</p>
 			<a href="/about">About</a>
 			<a href="/contact">Contact</a>
+			<a href="/brand">Brand</a>
 			<a href="/privacy">Privacy</a>
 			<a href="/terms">Terms</a>
-			<span>© {year} Malaysian AI</span>
+			<a href={GITHUB_URL}>GitHub</a>
+			<span>© {year} Malaysian AI · Open source</span>
 		</div>
 	</div>
 

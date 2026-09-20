@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import heroArt from '../assets/hero-fibonacci.png';
+import heroArtDay from '../assets/hero-fibonacci-day.png';
 import FramedChrome from './FramedChrome.astro';
 import { LUMA_URL } from '../consts';
 ---
@@ -8,8 +9,22 @@ import { LUMA_URL } from '../consts';
 <div class="hero-shell">
 	<div class="hero-media">
 		<Image
-			class="hero-art"
+			class="hero-art hero-art-night"
 			src={heroArt}
+			format="webp"
+			widths={[640, 1024, 1672]}
+			sizes="max(100vw, 178svh)"
+			quality={85}
+			alt=""
+			width="1672"
+			height="941"
+			fetchpriority="high"
+			loading="eager"
+			decoding="async"
+		/>
+		<Image
+			class="hero-art hero-art-day"
+			src={heroArtDay}
 			format="webp"
 			widths={[640, 1024, 1672]}
 			sizes="max(100vw, 178svh)"
@@ -106,11 +121,45 @@ import { LUMA_URL } from '../consts';
 		animation: hero-settle 1.8s 0.05s cubic-bezier(0.2, 0.72, 0.2, 1) both;
 	}
 
+	.hero-art-day {
+		display: none;
+	}
+
+	:global(html[data-theme='light']) .hero-art-night {
+		display: none;
+	}
+
+	:global(html[data-theme='light']) .hero-art-day {
+		display: block;
+	}
+
 	.hero-shade {
 		z-index: 1;
 		background:
 			linear-gradient(180deg, rgb(10 13 22 / 0.12), rgb(10 13 22 / 0.03) 35%, rgb(9 10 14 / 0.6) 100%),
 			linear-gradient(90deg, rgb(4 9 20 / 0.28), transparent 55%);
+	}
+
+	:global(html[data-theme='light']) .hero-shade {
+		background:
+			linear-gradient(180deg, rgb(20 52 73 / 0.06), transparent 42%, rgb(16 43 42 / 0.16) 100%),
+			linear-gradient(90deg, rgb(9 35 53 / 0.12), transparent 48%);
+	}
+
+	@media (prefers-color-scheme: light) {
+		:global(html:not([data-theme='dark'])) .hero-art-night {
+			display: none;
+		}
+
+		:global(html:not([data-theme='dark'])) .hero-art-day {
+			display: block;
+		}
+
+		:global(html:not([data-theme='dark'])) .hero-shade {
+			background:
+				linear-gradient(180deg, rgb(20 52 73 / 0.06), transparent 42%, rgb(16 43 42 / 0.16) 100%),
+				linear-gradient(90deg, rgb(9 35 53 / 0.12), transparent 48%);
+		}
 	}
 
 	.sky-wordmark {

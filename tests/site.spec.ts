@@ -18,8 +18,15 @@ test('public destinations load and the hero uses responsive images', async ({ pa
 		expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
 	}
 	await page.goto('/');
-	await expect(page.locator('.hero-art')).toHaveAttribute('srcset', /640w.*1024w.*1672w/);
-	expect(await page.locator('.hero-art').evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
+	const heroImages = page.locator('.hero-art');
+	await expect(heroImages).toHaveCount(2);
+	const heroSources = await heroImages.evaluateAll((images: HTMLImageElement[]) =>
+		images.map(image => ({ loaded: image.complete && image.naturalWidth > 0, srcset: image.srcset })),
+	);
+	for (const image of heroSources) {
+		expect(image.srcset).toMatch(/640w.*1024w.*1672w/);
+		expect(image.loaded).toBe(true);
+	}
 	expect(errors).toEqual([]);
 });
 

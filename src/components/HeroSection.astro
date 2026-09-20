@@ -91,7 +91,7 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 
 	<FramedChrome home />
 
-	<svg class="hero-outline" aria-hidden="true" focusable="false">
+	<svg class="hero-outline" aria-hidden="true" focusable="false" preserveAspectRatio="none">
 		<path />
 	</svg>
 
@@ -196,6 +196,8 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 				'Z',
 			].join(' ');
 		} else {
+			// Mobile silhouette is a rounded rect between the header and card — convex
+			// bottom corners (cy - r), not the desktop card-notch geometry (cy + r).
 			const hy = Math.max(headerBox.b, radius);
 			const cy = cardBox.t;
 			const r = radius;
@@ -203,8 +205,8 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 				move(r, hy),
 				line(width - r, hy),
 				quarter(width - r, hy, width - r, hy + r, width, hy + r),
-				line(width, cy + r),
-				quarter(width, cy + r, width - r, cy + r, width - r, cy),
+				line(width, cy - r),
+				quarter(width, cy - r, width - r, cy - r, width - r, cy),
 				line(r, cy),
 				quarter(r, cy, r, cy - r, 0, cy - r),
 				line(0, hy + r),
@@ -214,6 +216,7 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 		}
 
 		svg.setAttribute('viewBox', `0 0 ${n(width)} ${n(height)}`);
+		svg.setAttribute('preserveAspectRatio', 'none');
 		path.setAttribute('d', outline);
 		media.style.clipPath = `path("${outline}")`;
 	}

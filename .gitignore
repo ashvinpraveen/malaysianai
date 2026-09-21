@@ -27,3 +27,8 @@ pnpm-debug.log*
 # browser test artifacts
 playwright-report/
 test-results/
+
+# local scratch / agent previews
+output/*.png
+output/*.webp
+output/*.jpg

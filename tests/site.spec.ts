@@ -30,6 +30,16 @@ test('public destinations load and the hero uses responsive images', async ({ pa
 	expect(errors).toEqual([]);
 });
 
+test('resident directory lists A47 Media with its website and logo', async ({ page }) => {
+	await page.goto('/residents');
+	const resident = page.locator('.resident').filter({ hasText: 'A47 Media' });
+	await expect(resident).toHaveCount(1);
+	await expect(resident.getByRole('link', { name: 'A47 Media', exact: true })).toHaveAttribute('href', 'https://a47media.com');
+	const logo = resident.locator('img');
+	await expect(logo).toHaveAttribute('src', '/a47media-icon.png');
+	await expect.poll(() => logo.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBeGreaterThanOrEqual(128);
+});
+
 test('hero fetches one theme and keeps artwork visible during a delayed theme switch', async ({ page }) => {
 	await page.emulateMedia({ colorScheme: 'dark' });
 	const heroRequests: string[] = [];

@@ -36,6 +36,12 @@ export const seoContentByPath: Record<string, Partial<Pick<PageMetadata, 'title'
 		description: 'Build your AI startup at the Malaysian AI residency in Kuala Lumpur. Find co-working space, regular demos and support with product, engineering and fundraising.',
 		keywords: ['Malaysian AI', 'AI residency Malaysia', 'AI startups Malaysia'],
 	},
+	'/residency2': {
+		title: 'Two months. A year of progress. | AI Residency Malaysia',
+		description:
+			'An eight-week, full-time AI residency in Kuala Lumpur for founders already shipping. Peer density, weekly demos, and a working home at 500 Global — 1 October to 30 November 2026.',
+		keywords: ['Malaysian AI', 'AI residency Malaysia', 'AI startups Malaysia'],
+	},
 	'/residents': {
 		title: 'AI Startups Malaysia | Meet the Residents',
 		description: 'Meet the AI startups, founders and teams building products at Malaysian AI. Explore resident companies in our Kuala Lumpur AI residency.',
@@ -53,7 +59,7 @@ export const seoContentByPath: Record<string, Partial<Pick<PageMetadata, 'title'
 	},
 	'/brand': {
 		title: 'Malaysian AI Brand Kit | Logos, Colours & Fonts',
-		description: 'Download official Malaysian AI logos in SVG and PNG, plus brand colours and typography. Square marks, horizontal and stacked lockups for dark and light backgrounds.',
+		description: 'Download official Malaysian AI logos in SVG and PNG, plus brand colours and typography. Geometric marks, wordmarks, horizontal and stacked lockups for dark and light backgrounds.',
 		keywords: [...communityKeywords, 'Malaysian AI logo', 'Malaysia AI brand', 'Malaysian AI brand kit'],
 	},
 	'/blog/largest-ai-learnathon': {

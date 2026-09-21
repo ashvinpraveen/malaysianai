@@ -67,10 +67,10 @@ const groups = [
 		</div>
 	</div>
 
-	<div class="footer-wordmark" aria-hidden="true">{BRAND_WORDMARK}</div>
-	<div class="footer-appearance">
+	<div class="footer-bar">
 		<ThemeToggle />
 	</div>
+	<div class="footer-wordmark" aria-hidden="true">{BRAND_WORDMARK}</div>
 </footer>
 
 <style>
@@ -170,27 +170,29 @@ const groups = [
 		font-size: 0.76rem;
 	}
 
-	.footer-wordmark {
-		position: relative;
-		width: min(92rem, 100%);
-		margin: clamp(5.5rem, 10vw, 9rem) auto 0;
-		color: var(--footer-wordmark-color);
-		font-family: var(--font-display);
-		font-size: clamp(5.5rem, 13vw, 13rem);
-		font-weight: 400;
-		letter-spacing: -0.04em;
-		line-height: 0.72;
-		text-align: center;
-		white-space: nowrap;
-		user-select: none;
-	}
-
-	.footer-appearance {
+	.footer-bar {
 		position: relative;
 		z-index: 1;
 		display: flex;
-		justify-content: center;
-		margin-top: 1.6rem;
+		justify-content: flex-end;
+		width: min(92rem, 100%);
+		margin: clamp(2.5rem, 5vw, 4rem) auto 0;
+	}
+
+	.footer-wordmark {
+		position: relative;
+		width: min(92rem, 100%);
+		margin: clamp(2rem, 4vw, 3.5rem) auto 0;
+		overflow: hidden;
+		color: var(--footer-wordmark-color);
+		font-family: var(--font-display);
+		font-size: clamp(3.25rem, 11vw, 13rem);
+		font-weight: 400;
+		letter-spacing: -0.04em;
+		line-height: 0.8;
+		text-align: center;
+		white-space: nowrap;
+		user-select: none;
 	}
 
 	@media (max-width: 900px) {
@@ -221,11 +223,15 @@ const groups = [
 			grid-column: 1 / -1;
 		}
 
+		.footer-bar {
+			justify-content: flex-start;
+			margin-top: 3rem;
+		}
+
 		.footer-wordmark {
-			margin-top: 5rem;
-			font-size: clamp(5rem, 23vw, 8rem);
-			line-height: 0.76;
-			white-space: normal;
+			margin-top: 1.75rem;
+			font-size: clamp(2.4rem, 11.5vw, 3.4rem);
+			line-height: 0.85;
 		}
 	}
 </style>

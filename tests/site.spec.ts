@@ -9,7 +9,7 @@ test('public destinations load and the hero uses responsive images', async ({ pa
 	const errors: string[] = [];
 	page.on('pageerror', error => errors.push(error.message));
 	for (const [path, heading] of [
-		['/', 'Learn, build and'], ['/residency', 'Join the Malaysian.ai residency'],
+		['/', 'Come learn, build and'], ['/residency', 'Join the Malaysian.ai residency'],
 		['/residents', 'Meet the residents'], ['/contact', 'Get in touch'], ['/brand', 'Brand'], ['/blog', 'Malaysian AI Blog'],
 	]) {
 		const response = await page.goto(path);
@@ -24,10 +24,20 @@ test('public destinations load and the hero uses responsive images', async ({ pa
 		images.map(image => ({ loaded: image.complete && image.naturalWidth > 0, srcset: image.srcset })),
 	);
 	for (const image of heroSources) {
-		expect(image.srcset).toMatch(/640w.*1024w.*1672w/);
+		expect(image.srcset).toMatch(/640w.*(1024w.*1672w|1122w)/);
 		expect(image.loaded).toBe(true);
 	}
 	expect(errors).toEqual([]);
+});
+
+test('resident directory lists A47 Media with its website and logo', async ({ page }) => {
+	await page.goto('/residents');
+	const resident = page.locator('.resident').filter({ hasText: 'A47 Media' });
+	await expect(resident).toHaveCount(1);
+	await expect(resident.getByRole('link', { name: 'A47 Media', exact: true })).toHaveAttribute('href', 'https://a47media.com');
+	const logo = resident.locator('img');
+	await expect(logo).toHaveAttribute('src', '/a47media-icon.png');
+	await expect.poll(() => logo.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBeGreaterThanOrEqual(128);
 });
 
 test('hero fetches one theme and keeps artwork visible during a delayed theme switch', async ({ page }) => {
@@ -84,16 +94,33 @@ test('event background preloading starts near the section', async ({ page }) => 
 
 test('homepage copy points people at communities and the add-community contact flow', async ({ page }) => {
 	await page.goto('/');
-	await expect(page.getByRole('heading', { level: 1 })).toContainText('Learn, build and');
+	await expect(page.getByRole('heading', { level: 1 })).toContainText('Come learn, build and');
 	await expect(page.getByRole('heading', { level: 1 })).toContainText('experience Malaysian AI.');
 	await expect(page.locator('.hero-card .intro')).toContainText("Discover Malaysia's AI communities and events.");
-	await expect(page.locator('.hero-card').getByRole('link', { name: 'Join residency' })).toHaveAttribute('href', '/residency');
+	await expect(page.locator('.hero-announcement').getByRole('link', { name: 'Join our Residency.' })).toHaveAttribute('href', 'https://platform.malaysian.ai');
 	await page.locator('#communities').scrollIntoViewIfNeeded();
 	await expect(page.getByRole('heading', { level: 2, name: /Malaysia's AI/ })).toBeVisible();
 	await page.getByRole('link', { name: 'Add your community' }).click();
 	await expect(page).toHaveURL(/subject=/);
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Add your community');
 	await expect(page.locator('#contact-whatsapp')).toHaveAttribute('href', /add%20my%20community/i);
+});
+
+test('FAQ accordion opens on the homepage and residency page', async ({ page }) => {
+	for (const [path, question, answer] of [
+		['/', 'What is Malaysian AI?', 'public community hub'],
+		['/residency', 'What is the AI Residency?', 'working home for founders'],
+	] as const) {
+		await page.goto(path);
+		const faq = page.locator('#faq');
+		await faq.scrollIntoViewIfNeeded();
+		await expect(faq.getByRole('heading', { level: 2, name: 'Questions and Answers' })).toBeVisible();
+		const item = faq.locator('details').filter({ hasText: question }).first();
+		await expect(item).not.toHaveAttribute('open', '');
+		await item.locator('summary').click();
+		await expect(item).toHaveAttribute('open', '');
+		await expect(item.locator('.faq-answer')).toContainText(answer);
+	}
 });
 
 test('image dialog contains keyboard focus, closes and survives page navigation', async ({ page }) => {
@@ -252,6 +279,100 @@ test('event autoplay advances over the background and resumes after card interac
 	}
 });
 
+test('events frame cutouts hug the title, calendar CTA, and selected event', async ({ page, isMobile }) => {
+	test.skip(isMobile, 'Desktop SVG frame only');
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	await page.goto('/');
+	const section = page.locator('#events');
+	await section.scrollIntoViewIfNeeded();
+	await expect(section).toHaveClass(/is-in-view/);
+	await expect.poll(async () => section.locator('.events-outline').getAttribute('data-header-bottom')).toBeTruthy();
+
+	const geometry = await page.evaluate(() => {
+		const root = document.querySelector('#events')!;
+		const visual = root.querySelector('.events-visual')!.getBoundingClientRect();
+		const headerEl = root.querySelector<HTMLElement>('.events-header')!;
+		const selectedEl = root.querySelector<HTMLElement>('.events-selected')!;
+		const button = root.querySelector('.events-calendar-link')!.getBoundingClientRect();
+		const svg = root.querySelector<SVGSVGElement>('.events-outline')!;
+		const shiftOf = (element: HTMLElement) => {
+			const transform = getComputedStyle(element).transform;
+			if (!transform || transform === 'none') return { x: 0, y: 0 };
+			const matrix = new DOMMatrixReadOnly(transform);
+			return { x: matrix.m41, y: matrix.m42 };
+		};
+		const layout = (element: HTMLElement) => {
+			const box = element.getBoundingClientRect();
+			const shift = shiftOf(element);
+			return {
+				right: box.right - visual.left - shift.x,
+				bottom: box.bottom - visual.top - shift.y,
+			};
+		};
+		const header = layout(headerEl);
+		const selected = layout(selectedEl);
+		const headerShift = shiftOf(headerEl);
+		return {
+			headerBottom: header.bottom,
+			headerRight: header.right,
+			buttonBottom: button.bottom - visual.top - headerShift.y,
+			selectedBottom: selected.bottom,
+			selectedLeft: selectedEl.getBoundingClientRect().left - visual.left,
+			pocketHeaderBottom: Number(svg.dataset.headerBottom),
+			pocketHeaderRight: Number(svg.dataset.headerRight),
+			pocketSelectedBottom: Number(svg.dataset.selectedBottom),
+			pocketSelectedLeft: Number(svg.dataset.selectedLeft),
+			clipPath: getComputedStyle(root.querySelector('.events-background')!).clipPath,
+		};
+	});
+	expect(geometry.clipPath).toMatch(/path\(/i);
+	expect(geometry.pocketHeaderBottom).toBeGreaterThanOrEqual(geometry.buttonBottom - 1);
+	expect(Math.abs(geometry.pocketHeaderBottom - geometry.headerBottom)).toBeLessThan(2);
+	expect(Math.abs(geometry.pocketHeaderRight - geometry.headerRight)).toBeLessThan(2);
+	expect(Math.abs(geometry.pocketSelectedBottom - geometry.selectedBottom)).toBeLessThan(2);
+	expect(Math.abs(geometry.pocketSelectedLeft - geometry.selectedLeft)).toBeLessThan(2);
+
+	await page.locator('[data-event-card]').nth(2).click();
+	await expect(page.locator('[data-event-title]')).toHaveText('Anthropic × Cursor Hackathon Malaysia');
+	await expect.poll(async () => page.evaluate(() => {
+		const root = document.querySelector('#events')!;
+		const selected = root.querySelector('.events-selected')!.getBoundingClientRect();
+		const visual = root.querySelector('.events-visual')!.getBoundingClientRect();
+		const svg = root.querySelector<SVGSVGElement>('.events-outline')!;
+		return Math.abs(Number(svg.dataset.selectedBottom) - (selected.bottom - visual.top));
+	})).toBeLessThan(2);
+});
+
+test('events title cutout does not jump when the entrance motion finishes', async ({ page, isMobile }) => {
+	test.skip(isMobile, 'Desktop SVG frame only');
+	await page.emulateMedia({ reducedMotion: 'no-preference' });
+	await page.goto('/');
+	const section = page.locator('#events');
+	await section.evaluate(node => node.scrollIntoView({ block: 'start', behavior: 'instant' }));
+	await expect(section).toHaveClass(/is-in-view/);
+	const measure = () => page.evaluate(() => {
+		const header = document.querySelector<HTMLElement>('.events-header')!;
+		const visual = document.querySelector('.events-visual')!;
+		const svg = document.querySelector<SVGSVGElement>('.events-outline')!;
+		const box = header.getBoundingClientRect();
+		const origin = visual.getBoundingClientRect();
+		const transform = getComputedStyle(header).transform;
+		const shiftY = transform && transform !== 'none' ? new DOMMatrixReadOnly(transform).m42 : 0;
+		return {
+			pocket: Number(svg.dataset.headerBottom),
+			restBottom: box.bottom - origin.top - shiftY,
+			shiftY,
+		};
+	});
+	await expect.poll(async () => (await measure()).pocket).toBeGreaterThan(0);
+	const duringMotion = await measure();
+	expect(Math.abs(duringMotion.pocket - duringMotion.restBottom)).toBeLessThan(2);
+	await expect.poll(async () => (await measure()).shiftY).toBe(0);
+	const afterMotion = await measure();
+	expect(afterMotion.pocket).toBe(duringMotion.pocket);
+	expect(Math.abs(afterMotion.pocket - afterMotion.restBottom)).toBeLessThan(2);
+});
+
 test('reduced motion disables event and testimonial autoplay', async ({ page }) => {
 	await page.emulateMedia({ reducedMotion: 'reduce' });
 	await page.goto('/');
@@ -302,12 +423,51 @@ test('mobile navigation closes on Escape and after selecting a destination', asy
 test('homepage brand mark is visible on mobile', async ({ page, isMobile }) => {
 	test.skip(!isMobile, 'Mobile logo layout only');
 	await page.goto('/');
-	const mark = page.locator('.hero-header .brand-mark img');
+	const mark = page.locator('.hero-header .brand-mark img:visible');
 	await expect(mark).toBeVisible();
 	expect(await mark.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
 	const box = await mark.boundingBox();
 	expect(box?.width).toBeGreaterThan(24);
 	expect(box?.height).toBeGreaterThan(24);
+});
+
+test('mobile hero photo fills the first screen with the card below it', async ({ page, isMobile }) => {
+	test.skip(!isMobile, 'Mobile hero frame only');
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	await page.goto('/');
+	const geometry = await page.evaluate(() => {
+		const media = document.querySelector<HTMLElement>('.hero-media');
+		const frame = document.querySelector<HTMLElement>('.hero-mobile-frame');
+		const card = document.querySelector<HTMLElement>('.hero-card');
+		const outline = document.querySelector<HTMLElement>('.hero-outline');
+		if (!media || !frame || !card || !outline) return null;
+		const mediaBox = media.getBoundingClientRect();
+		const frameBox = frame.getBoundingClientRect();
+		const cardBox = card.getBoundingClientRect();
+		return {
+			frameHidden: frame.hidden,
+			outlineDisplay: getComputedStyle(outline).display,
+			clipPath: getComputedStyle(media).clipPath,
+			frameBottom: frameBox.bottom,
+			mediaBottom: mediaBox.bottom,
+			cardTop: cardBox.top,
+			viewport: window.innerHeight,
+			frameTop: frameBox.top,
+			mediaLeft: mediaBox.left,
+			frameLeft: frameBox.left,
+			frameRight: frameBox.right,
+			mediaRight: mediaBox.right,
+		};
+	});
+	expect(geometry).not.toBeNull();
+	expect(geometry!.frameHidden).toBe(false);
+	expect(geometry!.outlineDisplay).toBe('none');
+	expect(geometry!.clipPath).toMatch(/inset\(/i);
+	expect(Math.abs(geometry!.frameBottom - geometry!.mediaBottom)).toBeLessThan(1.5);
+	expect(geometry!.frameBottom).toBeLessThanOrEqual(geometry!.viewport);
+	expect(geometry!.cardTop).toBeGreaterThanOrEqual(geometry!.frameBottom);
+	expect(Math.abs(geometry!.frameLeft - geometry!.mediaLeft)).toBeLessThan(1.5);
+	expect(Math.abs(geometry!.frameRight - geometry!.mediaRight)).toBeLessThan(1.5);
 });
 
 test('brand page lists logos with descriptive alt text and footer links GitHub', async ({ page }) => {
@@ -316,9 +476,9 @@ test('brand page lists logos with descriptive alt text and footer links GitHub',
 	await expect(page.getByRole('heading', { level: 2, name: 'Logos' })).toBeVisible();
 	await expect(page.getByRole('heading', { level: 2, name: 'Colours' })).toBeVisible();
 	await expect(page.getByRole('heading', { level: 2, name: 'Typography' })).toBeVisible();
-	const logo = page.getByRole('img', { name: /Malaysian AI square logo mark/i });
+	const logo = page.getByRole('img', { name: /Malaysian AI square logo mark/i }).first();
 	await expect(logo).toBeVisible();
-	await expect(page.getByRole('link', { name: /PNG 512/i }).first()).toHaveAttribute('href', /\/brand\/malaysian-ai-mark-512\.png$/);
+	await expect(page.getByRole('link', { name: /PNG 512/i }).first()).toHaveAttribute('href', /\/brand\/malaysian-ai-mark/);
 	await expect(page.getByRole('link', { name: /SVG/i }).first()).toHaveAttribute('href', /\.svg$/);
 	const github = page.locator('.footer-company').getByRole('link', { name: 'GitHub', exact: true });
 	await expect(github).toHaveAttribute('href', 'https://github.com/ashvinpraveen/malaysianai');
@@ -394,4 +554,58 @@ test('residency announcement banner opens the residency page and can be dismisse
 	await page.locator('.footer-company').getByRole('link', { name: 'About', exact: true }).click();
 	await expect(page).toHaveURL(/\/about\/?$/);
 	await expect(banner).toBeHidden();
+});
+
+test('residency show and tell points at Luma with clear section headings', async ({ page }) => {
+	await page.goto('/residency');
+	const visit = page.locator('.residency-visit');
+	const teams = page.locator('.resident-teams');
+	await expect(visit.getByRole('heading', { level: 2, name: 'Come on a Thursday' })).toBeVisible();
+	await expect(teams.getByRole('heading', { level: 2, name: 'Resident teams' })).toBeVisible();
+	await expect(visit.getByRole('link', { name: /Join a Thursday Show & Tell/i })).toHaveAttribute(
+		'href',
+		'https://luma.com/malaysianai',
+	);
+	const sizes = await page.evaluate(() => {
+		const visitTitle = document.querySelector('.residency-visit h2');
+		const teamsTitle = document.querySelector('.resident-teams h2');
+		if (!visitTitle || !teamsTitle) return null;
+		return {
+			visit: Number.parseFloat(getComputedStyle(visitTitle).fontSize),
+			teams: Number.parseFloat(getComputedStyle(teamsTitle).fontSize),
+		};
+	});
+	expect(sizes).not.toBeNull();
+	expect(sizes!.visit).toBeGreaterThanOrEqual(18);
+	expect(sizes!.teams).toBeGreaterThanOrEqual(18);
+
+	await page.goto('/');
+	await expect(page.locator('#residency').getByRole('link', { name: 'Thursday Show & Tell' })).toHaveAttribute(
+		'href',
+		'https://luma.com/malaysianai',
+	);
+});
+
+test('residency2 messaging draft sells the cohort thesis and stays noindex', async ({ page }) => {
+	const response = await page.goto('/residency2');
+	expect(response?.status()).toBe(200);
+	await expect(page.getByRole('heading', { level: 1 })).toContainText('Two months at Malaysian AI');
+	await expect(page.getByRole('heading', { level: 2, name: 'Who this is for' })).toBeVisible();
+	await expect(page.getByRole('heading', { level: 2, name: 'Who this is not for' })).toBeVisible();
+	await expect(page.getByRole('heading', { level: 2, name: 'What residents get' })).toBeVisible();
+	await expect(page.getByRole('heading', { level: 2, name: 'Resident stories' })).toBeVisible();
+	await expect(page.getByRole('heading', { level: 2, name: 'How applying works' })).toBeVisible();
+	await expect(page.locator('#stories')).toContainText('Cleve');
+	await expect(page.locator('#stories')).toContainText('Seavoice');
+	await expect(page.getByRole('link', { name: 'Apply now' }).first()).toHaveAttribute(
+		'href',
+		'https://platform.malaysian.ai',
+	);
+	await expect(page.getByRole('link', { name: /Join a Thursday Show & Tell/i })).toHaveAttribute(
+		'href',
+		'https://luma.com/malaysianai',
+	);
+	await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
+	await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
+	await expect(page.locator('#residency2-faq')).toContainText('Eight weeks, full-time and in person');
 });

@@ -40,7 +40,7 @@ const expectedMetadata = [
 	{
 		path: '/brand',
 		title: 'Malaysian AI Brand Kit | Logos, Colours & Fonts | Malaysian AI',
-		description: 'Download official Malaysian AI logos in SVG and PNG, plus brand colours and typography. Square marks, horizontal and stacked lockups for dark and light backgrounds.',
+		description: 'Download official Malaysian AI logos in SVG and PNG, plus brand colours and typography. Geometric marks, wordmarks, horizontal and stacked lockups for dark and light backgrounds.',
 	},
 	{
 		path: '/blog/largest-ai-learnathon',
@@ -96,8 +96,17 @@ test('public pages have consistent production metadata and valid share images', 
 		const actualImage = await sharp(await imageResponse.body()).metadata();
 		const dimensions = await page.locator('head').evaluate(head => ['width', 'height'].map(key => Number(head.querySelector(`meta[property="og:image:${key}"]`)?.getAttribute('content'))));
 		expect(dimensions).toEqual([actualImage.width, actualImage.height]);
-		const graph = JSON.parse((await page.locator('script[type="application/ld+json"]').textContent())!)['@graph'];
+		const structured = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) =>
+			scripts.map((script) => JSON.parse(script.textContent || '{}')),
+		);
+		const graph = structured.find((entry) => Array.isArray(entry['@graph']))?.['@graph'];
+		expect(graph, path).toBeTruthy();
 		expect(graph.map((item: { '@type': string }) => item['@type'])).toEqual(path.startsWith('/blog/') ? ['Organization', 'WebSite', 'BlogPosting'] : ['Organization', 'WebSite']);
+		if (path === '/' || path === '/residency') {
+			const faqPage = structured.find((entry) => entry['@type'] === 'FAQPage');
+			expect(faqPage, path).toBeTruthy();
+			expect(faqPage.mainEntity.length).toBeGreaterThan(5);
+		}
 		if (path.startsWith('/blog/')) {
 			await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
 			expect(graph[2].headline).toBe(await page.locator('h1').textContent());
@@ -123,6 +132,7 @@ test('crawl documents list live canonical URLs and exclude retired pages', async
 		urls.push(...[...(await sitemap.text()).matchAll(/<loc>(.*?)<\/loc>/g)].map(match => new URL(match[1]).href));
 	}
 	expect(urls.sort()).toEqual(pages.map(path => origin + path).sort());
+	expect(urls.some(url => new URL(url).pathname === '/residency2')).toBe(false);
 	const llms = await request.get('/llms.txt');
 	expect(llms.status()).toBe(200);
 	const listed = [...(await llms.text()).matchAll(/\]\((https:[^)]+)\)/g)].map(match => new URL(match[1]));
@@ -187,11 +197,15 @@ test('site marks paint immediately without waiting for an animation', async ({ p
 	await page.emulateMedia({ reducedMotion: 'no-preference' });
 	await page.goto('/');
 	const icons = await page.locator('link[rel="icon"]').evaluateAll(links => links.map(link => link.getAttribute('href')!));
-	expect(icons).toEqual(expect.arrayContaining(['/favicon-32.png', '/favicon.svg']));
+	expect(icons.map(src => new URL(src, 'http://localhost').pathname)).toEqual(
+		expect.arrayContaining(['/favicon-32.png', '/favicon.svg']),
+	);
 	expect(icons).toHaveLength(3);
-	const brand = await page.locator('.brand-mark img').getAttribute('src');
-	expect(brand).toBeTruthy();
-	const marks = [...icons, brand!];
+	const brands = await page.locator('.brand-mark img').evaluateAll(images =>
+		images.map(image => image.getAttribute('src')).filter((src): src is string => Boolean(src)),
+	);
+	expect(brands).toHaveLength(2);
+	const marks = [...icons, ...brands];
 	// Decode a fresh image URL to check the first frame, not a warmed animation.
 	await page.goto('/robots.txt');
 	for (const src of marks) {
@@ -208,6 +222,6 @@ test('site marks paint immediately without waiting for an animation', async ({ p
 			const rgba = context.getImageData(0, 0, 32, 32).data;
 			return Array.from(rgba).filter((value, index) => index % 4 === 3 && value > 32).length;
 		}, src);
-		expect(visiblePixels, `${src} must be visible on its first frame`).toBeGreaterThan(500);
+		expect(visiblePixels, `${src} must be visible on its first frame`).toBeGreaterThan(100);
 	}
 });

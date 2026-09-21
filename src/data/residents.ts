@@ -107,4 +107,17 @@ export const residents: Resident[] = [
 		tags: ['Learning', 'Content', 'Growth'],
 		tile: 'light',
 	},
+	{
+		name: 'A47 Media',
+		tag: 'AI-powered content operations for publishers',
+		logo: '/a47media-icon.png',
+		focus: 'Media & Publishing',
+		location: 'Kuala Lumpur',
+		cohort: '02',
+		website: 'https://a47media.com',
+		description:
+			'Agentic newsroom for digital publishers that monitors and verifies sources, writes in each publication’s voice, produces stories in multiple formats, and publishes across channels.',
+		tags: ['Publishing', 'Content', 'Automation'],
+		tile: 'dark',
+	},
 ];

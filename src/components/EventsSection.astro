@@ -1,7 +1,7 @@
 ---
 import { Image, getImage } from 'astro:assets';
 import { LUMA_URL } from '../consts';
-import showAndTell from '../assets/events/show-and-tell-supabase-ceo.png';
+import showAndTell from '../assets/events/show-and-tell-supabase-ceo.jpg';
 import learnathon from '../assets/events/aimto-learnathon.jpg';
 import hackathon from '../assets/events/anthropic-cursor-hackathon-malaysia.png';
 import workshops from '../assets/events/workshops.jpg';
@@ -47,12 +47,12 @@ const sources = [
 
 // The background is swapped from JS, so pre-generate a responsive set for each event.
 const events = await Promise.all(sources.map(async event => {
-	// Cap at source width (~2200 for JPGs; PNGs are ~1K-wide and Astro will not upscale).
+	// Cap at source width (~2200 for most JPGs; the Show & Tell original is 3840).
 	const background = await getImage({
 		src: event.image,
-		widths: [960, 1440, 1920, 2200],
+		widths: [960, 1440, 1920, 2560, 3840],
 		format: 'webp',
-		quality: 88,
+		quality: 90,
 	});
 	return { ...event, background };
 }));
@@ -111,15 +111,8 @@ const backgroundSizes = '100vw';
 				preserveAspectRatio="none"
 				aria-hidden="true"
 			>
-				<path
-					class="events-outline-matte"
-					fill-rule="evenodd"
-					d="M0 0H1000V1000H0ZM16 984V16H48V269Q48 285 64 285H364Q380 285 380 269V32Q380 16 396 16H764Q780 16 780 32V244Q780 260 796 260H968Q984 260 984 276V984H16Z"
-				/>
-				<path
-					class="events-outline-line"
-					d="M16 984V16H48V269Q48 285 64 285H364Q380 285 380 269V32Q380 16 396 16H764Q780 16 780 32V244Q780 260 796 260H968Q984 260 984 276V984H16"
-				/>
+				<path class="events-outline-matte" fill-rule="evenodd" />
+				<path class="events-outline-line" />
 			</svg>
 
 			<div class="events-deck" data-events-deck>
@@ -146,7 +139,7 @@ const backgroundSizes = '100vw';
 								widths={[360, 720, 1080]}
 								sizes="(max-width: 800px) 6rem, 7.5rem"
 								format="webp"
-								quality={88}
+								quality={90}
 								loading="lazy"
 								decoding="async"
 								style={`object-position: ${event.position}`}
@@ -166,6 +159,133 @@ const backgroundSizes = '100vw';
 <script>
 	let cleanUpEvents = () => {};
 
+	function roundCoord(value: number) {
+		return Math.round(value * 100) / 100;
+	}
+
+	function relativeBox(origin: DOMRect, element: Element) {
+		const box = element.getBoundingClientRect();
+		const transform = getComputedStyle(element).transform;
+		let shiftX = 0;
+		let shiftY = 0;
+		if (transform && transform !== 'none') {
+			const matrix = new DOMMatrixReadOnly(transform);
+			shiftX = matrix.m41;
+			shiftY = matrix.m42;
+		}
+		return {
+			l: box.left - origin.left - shiftX,
+			t: box.top - origin.top - shiftY,
+			r: box.right - origin.left - shiftX,
+			b: box.bottom - origin.top - shiftY,
+		};
+	}
+
+	function pixelLength(element: HTMLElement, value: string) {
+		const probe = document.createElement('div');
+		probe.style.cssText = `position:absolute;visibility:hidden;pointer-events:none;width:${value};font-size:${getComputedStyle(element).fontSize}`;
+		document.body.append(probe);
+		const pixels = probe.getBoundingClientRect().width;
+		probe.remove();
+		return pixels;
+	}
+
+	function drawEventsOutline(section: HTMLElement) {
+		const visual = section.querySelector<HTMLElement>('.events-visual');
+		const background = section.querySelector<HTMLElement>('.events-background');
+		const svg = section.querySelector<SVGSVGElement>('.events-outline');
+		const matte = svg?.querySelector<SVGPathElement>('.events-outline-matte');
+		const line = svg?.querySelector<SVGPathElement>('.events-outline-line');
+		const header = section.querySelector<HTMLElement>('.events-header');
+		const selected = section.querySelector<HTMLElement>('.events-selected');
+		if (!visual || !background || !svg || !matte || !line || !header || !selected) return;
+
+		const desktop = window.matchMedia('(min-width: 801px)').matches;
+		if (!desktop) {
+			svg.style.display = 'none';
+			matte.removeAttribute('d');
+			line.removeAttribute('d');
+			background.style.clipPath = '';
+			delete svg.dataset.headerBottom;
+			delete svg.dataset.headerRight;
+			delete svg.dataset.selectedLeft;
+			delete svg.dataset.selectedBottom;
+			return;
+		}
+
+		const origin = visual.getBoundingClientRect();
+		const width = origin.width;
+		const height = origin.height;
+		if (width < 8 || height < 8) return;
+
+		svg.style.display = '';
+		const styles = getComputedStyle(section);
+		const gap = pixelLength(section, styles.getPropertyValue('--events-gap').trim() || '1rem') || 16;
+		const radius = Math.min(
+			pixelLength(section, styles.getPropertyValue('--events-radius').trim() || '0.95rem') || 15,
+			width / 6,
+			height / 6,
+		);
+		const headerBox = relativeBox(origin, header);
+		const selectedBox = relativeBox(origin, selected);
+		const n = (value: number) => roundCoord(value).toString();
+		const move = (x: number, y: number) => `M ${n(x)} ${n(y)}`;
+		const lineTo = (x: number, y: number) => `L ${n(x)} ${n(y)}`;
+		const quarter = (
+			fromX: number,
+			fromY: number,
+			centerX: number,
+			centerY: number,
+			toX: number,
+			toY: number,
+		) => {
+			const cross = (fromX - centerX) * (toY - centerY) - (fromY - centerY) * (toX - centerX);
+			return `A ${n(radius)} ${n(radius)} 0 0 ${cross > 0 ? 1 : 0} ${n(toX)} ${n(toY)}`;
+		};
+
+		const g = gap;
+		const r = radius;
+		let hx = Math.max(headerBox.r, g + r * 2);
+		const hy = Math.max(headerBox.b, g + r * 2);
+		let sx = Math.min(selectedBox.l, width - g - r * 2);
+		const sy = Math.max(selectedBox.b, g + r * 2);
+		if (sx < hx + r * 2) {
+			const mid = (hx + sx) / 2;
+			hx = mid - r;
+			sx = mid + r;
+		}
+
+		const hole = [
+			move(hx + r, g),
+			lineTo(sx - r, g),
+			quarter(sx - r, g, sx - r, g + r, sx, g + r),
+			lineTo(sx, sy - r),
+			quarter(sx, sy - r, sx + r, sy - r, sx + r, sy),
+			lineTo(width - g - r, sy),
+			quarter(width - g - r, sy, width - g - r, sy + r, width - g, sy + r),
+			lineTo(width - g, height - g - r),
+			quarter(width - g, height - g - r, width - g - r, height - g - r, width - g - r, height - g),
+			lineTo(g + r, height - g),
+			quarter(g + r, height - g, g + r, height - g - r, g, height - g - r),
+			lineTo(g, hy + r),
+			quarter(g, hy + r, g + r, hy + r, g + r, hy),
+			lineTo(hx - r, hy),
+			quarter(hx - r, hy, hx - r, hy - r, hx, hy - r),
+			lineTo(hx, g + r),
+			quarter(hx, g + r, hx + r, g + r, hx + r, g),
+			'Z',
+		].join(' ');
+
+		svg.setAttribute('viewBox', `0 0 ${n(width)} ${n(height)}`);
+		matte.setAttribute('d', `M 0 0 H ${n(width)} V ${n(height)} H 0 Z ${hole}`);
+		line.setAttribute('d', hole);
+		background.style.clipPath = `path("${hole}")`;
+		svg.dataset.headerBottom = n(hy);
+		svg.dataset.headerRight = n(hx);
+		svg.dataset.selectedLeft = n(sx);
+		svg.dataset.selectedBottom = n(sy);
+	}
+
 	function prepareEventSection(section: HTMLElement) {
 		const cards = Array.from(section.querySelectorAll<HTMLButtonElement>('[data-event-card]'));
 		const backgrounds = Array.from(
@@ -181,9 +301,18 @@ const backgroundSizes = '100vw';
 		let sectionIsVisible = false;
 		let hoveringCard = false;
 		let rotationTimer: number | undefined;
+		let outlineFrame = 0;
 		const controller = new AbortController();
 		const { signal } = controller;
 		const warmedImages = new Map<string, HTMLImageElement>();
+		const header = section.querySelector<HTMLElement>('.events-header');
+		const selected = section.querySelector<HTMLElement>('.events-selected');
+		const visual = section.querySelector<HTMLElement>('.events-visual');
+
+		function scheduleOutline() {
+			cancelAnimationFrame(outlineFrame);
+			outlineFrame = requestAnimationFrame(() => drawEventsOutline(section));
+		}
 
 		function warmNextBackground() {
 			if (reduceMotion.matches || document.hidden) return;
@@ -239,6 +368,7 @@ const backgroundSizes = '100vw';
 
 			if (title) title.textContent = card.dataset.title ?? '';
 			if (date) date.textContent = card.dataset.date ?? '';
+			scheduleOutline();
 
 			const nextBackgroundIndex = visibleBackground === 0 ? 1 : 0;
 			const nextBackground = backgrounds[nextBackgroundIndex];
@@ -285,6 +415,7 @@ const backgroundSizes = '100vw';
 					if (entry.isIntersecting) {
 						section.classList.add('is-in-view');
 						startRotation();
+						scheduleOutline();
 					} else {
 						stopRotation();
 					}
@@ -303,6 +434,15 @@ const backgroundSizes = '100vw';
 
 		layoutCards();
 		observer.observe(section);
+		const outlineObserver = new ResizeObserver(scheduleOutline);
+		outlineObserver.observe(section);
+		if (visual) outlineObserver.observe(visual);
+		if (header) outlineObserver.observe(header);
+		if (selected) outlineObserver.observe(selected);
+		window.addEventListener('resize', scheduleOutline, { signal });
+		void document.fonts?.ready.then(scheduleOutline);
+		window.setTimeout(scheduleOutline, 1400);
+		scheduleOutline();
 		document.addEventListener('visibilitychange', startRotation);
 		reduceMotion.addEventListener('change', startRotation);
 		section.addEventListener('focusin', startRotation, { signal });
@@ -315,8 +455,10 @@ const backgroundSizes = '100vw';
 
 		return () => {
 			stopRotation();
+			cancelAnimationFrame(outlineFrame);
 			observer.disconnect();
 			preloadObserver.disconnect();
+			outlineObserver.disconnect();
 			controller.abort();
 			reduceMotion.removeEventListener('change', startRotation);
 			changeSequence++;
@@ -347,6 +489,8 @@ const backgroundSizes = '100vw';
 		background: var(--page-background);
 		min-height: 100dvh;
 		padding: 0;
+		--events-gap: 1rem;
+		--events-radius: 0.95rem;
 	}
 
 	.events-section.is-in-view .events-header {
@@ -489,7 +633,7 @@ const backgroundSizes = '100vw';
 		isolation: isolate;
 		min-width: 0;
 		overflow: hidden;
-		background: var(--surface-background);
+		background: var(--page-background);
 		position: absolute;
 		inset: 0;
 		min-height: 100dvh;
@@ -535,11 +679,15 @@ const backgroundSizes = '100vw';
 		transform: translateY(1rem);
 		transition: opacity 650ms ease, transform 650ms cubic-bezier(0.2, 0.75, 0.2, 1);
 		position: absolute;
-		top: clamp(3rem, 6vw, 5.5rem);
+		top: 0;
 		right: auto;
-		/* SVG title pocket left wall is 4.8%; keep rem padding as width grows. */
-		left: calc(4.8% + clamp(2rem, 2.6vw, 3rem));
-		max-width: min(30rem, calc(33.2% - 4rem));
+		left: 0;
+		max-width: min(32rem, 42vw);
+		padding:
+			calc(var(--events-gap) + clamp(2rem, 4vw, 3.25rem))
+			clamp(1.4rem, 2vw, 2.1rem)
+			1.2rem
+			calc(var(--events-gap) + clamp(1.5rem, 2.2vw, 2.25rem));
 		text-align: left;
 		pointer-events: auto;
 	}
@@ -570,12 +718,16 @@ const backgroundSizes = '100vw';
 	.events-selected {
 		z-index: auto;
 		position: absolute;
-		top: clamp(3rem, 6vw, 5.5rem);
-		/* SVG frame inset is 1.6%; keep rem padding as width grows. */
-		right: calc(1.6% + clamp(2rem, 2.6vw, 3rem));
+		top: 0;
+		right: 0;
 		left: auto;
-		width: min(13rem, 18vw);
-		padding: 0;
+		width: auto;
+		max-width: min(18rem, 26vw);
+		padding:
+			calc(var(--events-gap) + clamp(2rem, 4vw, 3.25rem))
+			calc(var(--events-gap) + clamp(1.5rem, 2.2vw, 2.25rem))
+			1.2rem
+			1.35rem;
 		border: 0;
 		text-align: right;
 		pointer-events: auto;
@@ -666,6 +818,7 @@ const backgroundSizes = '100vw';
 			left: auto;
 			display: block;
 			width: min(17rem, calc(100% - 3rem));
+			max-width: none;
 			margin: 0;
 			padding: 0 0.8rem 0 0;
 			border-right: 1px solid rgb(151 184 231 / 0.66);
@@ -699,6 +852,7 @@ const backgroundSizes = '100vw';
 			right: auto;
 			left: 2rem;
 			max-width: min(23rem, calc(100% - 4rem));
+			padding: 0;
 			text-align: left;
 		}
 

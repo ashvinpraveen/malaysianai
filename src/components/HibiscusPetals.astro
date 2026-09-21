@@ -1,0 +1,171 @@
+---
+// Decorative looping hibiscus petals (mobile only). Each petal plays one row of
+// the sprite sheet, and some are mirrored to double the variations.
+import { getImage } from 'astro:assets';
+import petalSheet from '../assets/hibiscus-petals.png';
+
+interface Petal {
+	/** Left offset within the positioned parent, e.g. '12%'. */
+	x: string;
+	/** Top offset within the positioned parent, e.g. '4rem'. */
+	y: string;
+	/** Sprite row, 0-3. */
+	row: 0 | 1 | 2 | 3;
+	/** Rendered size in px. */
+	size?: number;
+	flip?: boolean;
+	/** Seconds; offsets the loop so petals don't move in sync. */
+	delay?: number;
+	/** Seconds for one tumble cycle. */
+	speed?: number;
+	/**
+	 * Hidden until the petal scrolls up to this fraction of the screen height
+	 * (e.g. 0.6), then stays. Omit to show the petal from the start.
+	 */
+	appearAt?: number;
+}
+
+interface Props {
+	petals: Petal[];
+}
+
+const { petals } = Astro.props;
+const sheet = await getImage({ src: petalSheet, format: 'webp', width: 512, quality: 90 });
+---
+
+<div class="petals" aria-hidden="true" style={`--petal-sheet: url("${sheet.src}")`}>
+	{petals.map(({ x, y, row, size = 40, flip = false, delay = 0, speed = 1.2, appearAt }) => (
+		<span
+			class="petal"
+			data-appear-at={appearAt}
+			style={`--x: ${x}; --y: ${y}; --row: ${row}; --size: ${size}px; --flip: ${flip ? -1 : 1}; --delay: ${-delay}s; --speed: ${speed}s;`}
+		>
+			<span class="petal-sprite"></span>
+		</span>
+	))}
+</div>
+
+<script>
+	// Petals with data-appear-at pop in once they scroll high enough, and stay.
+	// They always arrive top to bottom: a petal waits for every petal above it,
+	// and several due at once are staggered.
+	const STAGGER_MS = 180;
+
+	function mountPetals() {
+		const petals = [...document.querySelectorAll<HTMLElement>('.petal[data-appear-at]')].sort(
+			(a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top,
+		);
+		if (!petals.length) return;
+		let revealed = 0;
+		let due = 0;
+		let timer = 0;
+		let frame = 0;
+
+		const revealNext = () => {
+			timer = 0;
+			if (revealed >= due) return;
+			petals[revealed++].classList.add('is-in');
+			if (revealed < due) timer = window.setTimeout(revealNext, STAGGER_MS);
+		};
+		const update = () => {
+			frame = 0;
+			// The lowest petal past its trigger point sets how far the sequence may go.
+			for (let index = petals.length - 1; index >= due; index--) {
+				const petal = petals[index];
+				if (petal.getBoundingClientRect().top < window.innerHeight * Number(petal.dataset.appearAt)) {
+					due = index + 1;
+					break;
+				}
+			}
+			if (!timer) revealNext();
+			if (due === petals.length) window.removeEventListener('scroll', schedule);
+		};
+		const schedule = () => {
+			if (!frame) frame = requestAnimationFrame(update);
+		};
+		window.addEventListener('scroll', schedule, { passive: true });
+		document.addEventListener(
+			'astro:before-swap',
+			() => {
+				window.removeEventListener('scroll', schedule);
+				clearTimeout(timer);
+			},
+			{ once: true },
+		);
+		update();
+	}
+
+	document.addEventListener('astro:page-load', mountPetals);
+</script>
+
+<style>
+	.petals {
+		display: none;
+		position: absolute;
+		z-index: 0;
+		inset: 0;
+		pointer-events: none;
+	}
+
+	.petal {
+		position: absolute;
+		top: var(--y);
+		left: var(--x);
+		width: var(--size);
+		height: var(--size);
+		animation: petal-drift calc(var(--speed) * 4) ease-in-out var(--delay) infinite alternate;
+		transition: opacity 500ms ease-out;
+	}
+
+	.petal[data-appear-at]:not(.is-in) {
+		opacity: 0;
+	}
+
+	.petal-sprite {
+		display: block;
+		width: 100%;
+		height: 100%;
+		background-image: var(--petal-sheet);
+		background-repeat: no-repeat;
+		background-size: calc(var(--size) * 4) calc(var(--size) * 4);
+		background-position: 0 calc(var(--row) * var(--size) * -1);
+		scale: var(--flip) 1;
+		animation: petal-tumble var(--speed) steps(1, end) var(--delay) infinite;
+	}
+
+	/* Frames 1 → 4 → 1 along the row, so the loop never jumps. */
+	@keyframes petal-tumble {
+		0% { background-position-x: 0; }
+		16.667% { background-position-x: calc(var(--size) * -1); }
+		33.333% { background-position-x: calc(var(--size) * -2); }
+		50% { background-position-x: calc(var(--size) * -3); }
+		66.667% { background-position-x: calc(var(--size) * -2); }
+		83.333% { background-position-x: calc(var(--size) * -1); }
+		100% { background-position-x: 0; }
+	}
+
+	@keyframes petal-drift {
+		from {
+			translate: 0 0;
+			rotate: -10deg;
+		}
+		to {
+			translate: 0.6rem 0.9rem;
+			rotate: 12deg;
+		}
+	}
+
+	@media (max-width: 700px) {
+		.petals {
+			display: block;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.petal,
+		.petal-sprite {
+			animation: none;
+			transition: none;
+		}
+	}
+</style>

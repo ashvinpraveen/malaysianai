@@ -1,5 +1,5 @@
 ---
-import { BRAND_MARK_SRC, BRAND_WORDMARK_PATH } from '../lib/brand';
+import { BRAND_LOCKUP_DARK_SRC, BRAND_LOCKUP_LIGHT_SRC } from '../lib/brand';
 
 interface Props {
 	loading?: 'eager' | 'lazy';
@@ -10,17 +10,23 @@ const { loading = 'eager' } = Astro.props;
 
 <span class="brand-lockup">
 	<img
-		class="brand-emblem"
-		src={BRAND_MARK_SRC}
-		alt=""
-		width="512"
-		height="512"
+		class="brand-lockup-image brand-lockup-image-light"
+		src={BRAND_LOCKUP_LIGHT_SRC}
+		alt="Malaysian AI"
+		width="4380"
+		height="1080"
 		loading={loading}
 		decoding="async"
 	/>
-	<svg class="brand-wordmark" viewBox="67.9183 0 284.0817 68" aria-hidden="true" focusable="false">
-		<path d={BRAND_WORDMARK_PATH} fill="currentColor" />
-	</svg>
+	<img
+		class="brand-lockup-image brand-lockup-image-dark"
+		src={BRAND_LOCKUP_DARK_SRC}
+		alt=""
+		width="4380"
+		height="1080"
+		loading={loading}
+		decoding="async"
+	/>
 </span>
 
 <style>
@@ -28,24 +34,17 @@ const { loading = 'eager' } = Astro.props;
 		display: inline-flex;
 		align-items: stretch;
 		height: 100%;
-		color: inherit;
 	}
 
-	.brand-emblem {
+	.brand-lockup-image {
 		display: block;
 		height: 100%;
 		width: auto;
 		max-width: none;
-		aspect-ratio: 1;
 		object-fit: contain;
 	}
 
-	.brand-wordmark {
-		display: block;
-		height: 100%;
-		width: auto;
-		aspect-ratio: 284.0817 / 68;
-		overflow: visible;
-		flex: 0 0 auto;
-	}
+	.brand-lockup-image-dark { display: none; }
+	:global(html[data-theme='light']) .brand-lockup-image-light { display: none; }
+	:global(html[data-theme='light']) .brand-lockup-image-dark { display: block; }
 </style>

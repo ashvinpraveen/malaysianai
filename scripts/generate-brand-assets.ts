@@ -1,6 +1,9 @@
 import sharp from 'sharp';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { BRAND_WORDMARK_PATH } from '../src/lib/brand';
+
+const wordmarkSource = readFileSync('public/malaysian-ai-wordmark.svg', 'utf8');
+const BRAND_WORDMARK_PATH = wordmarkSource.match(/<path d="([^"]+)"/)?.[1];
+if (!BRAND_WORDMARK_PATH) throw new Error('Could not read the Malaysian AI wordmark path.');
 
 mkdirSync('public/brand', { recursive: true });
 

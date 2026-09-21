@@ -6,7 +6,7 @@ import heroArtMobile from '../assets/hero-fibonacci-night-mobile.png';
 import heroArtDayMobile from '../assets/hero-fibonacci-day-mobile.png';
 import FramedChrome from './FramedChrome.astro';
 import HibiscusPetals from './HibiscusPetals.astro';
-import { APPLY_FORM_URL, LUMA_URL } from '../consts';
+import { APPLY_FORM_URL } from '../consts';
 
 const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672], format: 'webp', quality: 85 });
 ---
@@ -162,7 +162,7 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 			</p>
 		</div>
 		<div class="hero-actions">
-			<a class="card-link site-button" href={LUMA_URL}>View upcoming events</a>
+			<a class="card-link site-button" href={APPLY_FORM_URL}>Join residency</a>
 		</div>
 	</section>
 </div>

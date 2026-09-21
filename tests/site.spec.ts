@@ -97,6 +97,8 @@ test('homepage copy points people at communities and the add-community contact f
 	await expect(page.getByRole('heading', { level: 1 })).toContainText('Come learn, build and');
 	await expect(page.getByRole('heading', { level: 1 })).toContainText('experience Malaysian AI.');
 	await expect(page.locator('.hero-card .intro')).toContainText("Discover Malaysia's AI communities and events.");
+	await expect(page.locator('.hero-actions .card-link')).toHaveText('Join residency');
+	await expect(page.locator('.hero-actions .card-link')).toHaveAttribute('href', 'https://platform.malaysian.ai');
 	await expect(page.locator('.hero-announcement').getByRole('link', { name: 'Join our Residency.' })).toHaveAttribute('href', 'https://platform.malaysian.ai');
 	await page.locator('#communities').scrollIntoViewIfNeeded();
 	await expect(page.getByRole('heading', { level: 2, name: /Malaysia's AI/ })).toBeVisible();
@@ -407,7 +409,8 @@ test('mobile navigation closes on Escape and after selecting a destination', asy
 	expect(toggleBox).not.toBeNull();
 	expect(brandBox).not.toBeNull();
 	expect(toggleBox!.x).toBeLessThan(brandBox!.x);
-	await expect(page.locator('.nav-cta')).toHaveText('View events');
+	await expect(page.locator('.nav-cta')).toHaveText('Join residency');
+	await expect(page.locator('.nav-cta')).toHaveAttribute('href', 'https://platform.malaysian.ai');
 	await toggle.click();
 	await expect(dialog).toBeVisible();
 	await expect(dialog.getByRole('link', { name: 'View events' })).toBeVisible();

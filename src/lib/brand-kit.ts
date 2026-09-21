@@ -150,7 +150,7 @@ export type BrandAsset = {
 
 /** Build a distinct alt per downloadable file so each URL is indexable in Google Images. */
 export function brandDownloadAlt(assetAlt: string, label: string, format: string): string {
-	return `${assetAlt} — ${label} ${format.toUpperCase()} official Malaysian AI brand logo download`;
+	return `${assetAlt} — ${label} (${format.toUpperCase()}) official Malaysian AI brand logo download`;
 }
 
 function downloads(

@@ -121,6 +121,13 @@ a {
 	}
 }
 
+/* Scroll-linked word reveal (src/lib/word-reveal.ts), mobile only. No transition: words snap on. */
+@media (max-width: 700px) and (prefers-reduced-motion: no-preference) {
+	.reveal-word:not(.is-shown) {
+		opacity: 0.15;
+	}
+}
+
 body.immersive {
 	background: var(--site-background);
 }

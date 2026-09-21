@@ -9,7 +9,7 @@ test('public destinations load and the hero uses responsive images', async ({ pa
 	const errors: string[] = [];
 	page.on('pageerror', error => errors.push(error.message));
 	for (const [path, heading] of [
-		['/', 'Learn, build and'], ['/residency', 'Join the Malaysian.ai residency'],
+		['/', 'Come learn, build and'], ['/residency', 'Join the Malaysian.ai residency'],
 		['/residents', 'Meet the residents'], ['/contact', 'Get in touch'], ['/brand', 'Brand'], ['/blog', 'Malaysian AI Blog'],
 	]) {
 		const response = await page.goto(path);
@@ -24,7 +24,7 @@ test('public destinations load and the hero uses responsive images', async ({ pa
 		images.map(image => ({ loaded: image.complete && image.naturalWidth > 0, srcset: image.srcset })),
 	);
 	for (const image of heroSources) {
-		expect(image.srcset).toMatch(/640w.*1024w.*1672w/);
+		expect(image.srcset).toMatch(/640w.*(1024w.*1672w|1122w)/);
 		expect(image.loaded).toBe(true);
 	}
 	expect(errors).toEqual([]);
@@ -94,10 +94,10 @@ test('event background preloading starts near the section', async ({ page }) => 
 
 test('homepage copy points people at communities and the add-community contact flow', async ({ page }) => {
 	await page.goto('/');
-	await expect(page.getByRole('heading', { level: 1 })).toContainText('Learn, build and');
+	await expect(page.getByRole('heading', { level: 1 })).toContainText('Come learn, build and');
 	await expect(page.getByRole('heading', { level: 1 })).toContainText('experience Malaysian AI.');
 	await expect(page.locator('.hero-card .intro')).toContainText("Discover Malaysia's AI communities and events.");
-	await expect(page.locator('.hero-card').getByRole('link', { name: 'Join residency' })).toHaveAttribute('href', '/residency');
+	await expect(page.locator('.hero-announcement').getByRole('link', { name: 'Join our Residency.' })).toHaveAttribute('href', 'https://platform.malaysian.ai');
 	await page.locator('#communities').scrollIntoViewIfNeeded();
 	await expect(page.getByRole('heading', { level: 2, name: /Malaysia's AI/ })).toBeVisible();
 	await page.getByRole('link', { name: 'Add your community' }).click();
@@ -431,7 +431,7 @@ test('homepage brand mark is visible on mobile', async ({ page, isMobile }) => {
 	expect(box?.height).toBeGreaterThan(24);
 });
 
-test('mobile hero uses a simple rounded frame flush with the card', async ({ page, isMobile }) => {
+test('mobile hero photo fills the first screen with the card below it', async ({ page, isMobile }) => {
 	test.skip(!isMobile, 'Mobile hero frame only');
 	await page.emulateMedia({ reducedMotion: 'reduce' });
 	await page.goto('/');
@@ -449,7 +449,9 @@ test('mobile hero uses a simple rounded frame flush with the card', async ({ pag
 			outlineDisplay: getComputedStyle(outline).display,
 			clipPath: getComputedStyle(media).clipPath,
 			frameBottom: frameBox.bottom,
+			mediaBottom: mediaBox.bottom,
 			cardTop: cardBox.top,
+			viewport: window.innerHeight,
 			frameTop: frameBox.top,
 			mediaLeft: mediaBox.left,
 			frameLeft: frameBox.left,
@@ -461,7 +463,9 @@ test('mobile hero uses a simple rounded frame flush with the card', async ({ pag
 	expect(geometry!.frameHidden).toBe(false);
 	expect(geometry!.outlineDisplay).toBe('none');
 	expect(geometry!.clipPath).toMatch(/inset\(/i);
-	expect(Math.abs(geometry!.frameBottom - geometry!.cardTop)).toBeLessThan(1.5);
+	expect(Math.abs(geometry!.frameBottom - geometry!.mediaBottom)).toBeLessThan(1.5);
+	expect(geometry!.frameBottom).toBeLessThanOrEqual(geometry!.viewport);
+	expect(geometry!.cardTop).toBeGreaterThanOrEqual(geometry!.frameBottom);
 	expect(Math.abs(geometry!.frameLeft - geometry!.mediaLeft)).toBeLessThan(1.5);
 	expect(Math.abs(geometry!.frameRight - geometry!.mediaRight)).toBeLessThan(1.5);
 });

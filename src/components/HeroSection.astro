@@ -2,6 +2,8 @@
 import { Image, getImage } from 'astro:assets';
 import heroArt from '../assets/hero-fibonacci.png';
 import heroArtDay from '../assets/hero-fibonacci-day.png';
+import heroArtMobile from '../assets/hero-fibonacci-night-mobile.png';
+import heroArtDayMobile from '../assets/hero-fibonacci-day-mobile.png';
 import FramedChrome from './FramedChrome.astro';
 import HibiscusPetals from './HibiscusPetals.astro';
 import { APPLY_FORM_URL, LUMA_URL } from '../consts';
@@ -11,7 +13,35 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 
 <div class="hero-shell">
 	<div class="hero-media">
-		<template data-hero-theme="dark">
+		<template data-hero-theme="dark" data-hero-viewport="mobile">
+			<Image
+				class="hero-art hero-art-night"
+				src={heroArtMobile}
+				format="webp"
+				widths={[640, 1122]}
+				sizes="100vw"
+				quality={85}
+				alt=""
+				fetchpriority="high"
+				loading="eager"
+				decoding="async"
+			/>
+		</template>
+		<template data-hero-theme="light" data-hero-viewport="mobile">
+			<Image
+				class="hero-art hero-art-day"
+				src={heroArtDayMobile}
+				format="webp"
+				widths={[640, 1122]}
+				sizes="100vw"
+				quality={85}
+				alt=""
+				fetchpriority="high"
+				loading="eager"
+				decoding="async"
+			/>
+		</template>
+		<template data-hero-theme="dark" data-hero-viewport="desktop">
 			<Image
 				class="hero-art hero-art-night"
 				src={heroArt}
@@ -27,7 +57,7 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 				decoding="async"
 			/>
 		</template>
-		<template data-hero-theme="light">
+		<template data-hero-theme="light" data-hero-viewport="desktop">
 			<Image
 				class="hero-art hero-art-day"
 				src={heroArtDay}
@@ -54,14 +84,18 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 				// Templates keep the inactive theme out of the preload scanner. Run here,
 				// during parsing, so the active hero need not wait for the page-load event.
 				const media = document.currentScript.parentElement;
+				const mobile = window.matchMedia('(max-width: 700px)');
 				let selectedTheme;
 				let sequence = 0;
 				const update = async () => {
 					const theme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
-					if (theme === selectedTheme) return;
-					selectedTheme = theme;
+					const viewport = mobile.matches ? 'mobile' : 'desktop';
+					const key = `${theme}-${viewport}`;
+					if (key === selectedTheme) return;
+					selectedTheme = key;
 					const change = ++sequence;
-					const next = document.importNode(media.querySelector(`[data-hero-theme="${theme}"]`).content.querySelector('img'), true);
+					const template = media.querySelector(`[data-hero-theme="${theme}"][data-hero-viewport="${viewport}"]`);
+					const next = document.importNode(template.content.querySelector('img'), true);
 					const current = media.querySelector(':scope > .hero-art');
 					if (!current) {
 						media.append(next);
@@ -81,9 +115,11 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 				void update();
 				const observer = new MutationObserver(update);
 				observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+				mobile.addEventListener('change', update);
 				document.addEventListener('astro:before-swap', () => {
 					sequence++;
 					observer.disconnect();
+					mobile.removeEventListener('change', update);
 				}, { once: true });
 			})();
 		</script>
@@ -602,7 +638,7 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 			opacity: calc(1 - var(--hero-dim, 0) * 0.88);
 		}
 
-		/* Drop the towers below the headline; the sky colour fills the gap above. */
+		/* The sky colour shows through the faded top edge. */
 		.hero-media:has(.hero-art-night) {
 			background: rgb(1 23 72);
 		}
@@ -611,13 +647,12 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 			background: rgb(99 168 239);
 		}
 
+		/* The mobile artwork is composed for portrait, so no mirroring or offset. */
 		.hero-art {
-			object-position: 61.8% 38.2%;
-			translate: 0 29%;
+			scale: none;
 			-webkit-mask-image: linear-gradient(transparent, #000 12%);
 			mask-image: linear-gradient(transparent, #000 12%);
 		}
-
 
 		.hero-announcement {
 			/* A sixth of the way down the photo window. */

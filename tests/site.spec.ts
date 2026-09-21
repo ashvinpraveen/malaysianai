@@ -24,7 +24,7 @@ test('public destinations load and the hero uses responsive images', async ({ pa
 		images.map(image => ({ loaded: image.complete && image.naturalWidth > 0, srcset: image.srcset })),
 	);
 	for (const image of heroSources) {
-		expect(image.srcset).toMatch(/640w.*1024w.*1672w/);
+		expect(image.srcset).toMatch(/640w.*(1024w.*1672w|1122w)/);
 		expect(image.loaded).toBe(true);
 	}
 	expect(errors).toEqual([]);

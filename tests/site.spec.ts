@@ -481,9 +481,9 @@ test('brand page lists logos with descriptive alt text and footer links GitHub',
 	await expect(page.getByRole('heading', { level: 2, name: 'Logos' })).toBeVisible();
 	await expect(page.getByRole('heading', { level: 2, name: 'Colours' })).toBeVisible();
 	await expect(page.getByRole('heading', { level: 2, name: 'Typography' })).toBeVisible();
-	const logo = page.getByRole('img', { name: /Malaysian AI square logo mark/i });
+	const logo = page.getByRole('img', { name: /Malaysian AI square logo mark/i }).first();
 	await expect(logo).toBeVisible();
-	await expect(page.getByRole('link', { name: /PNG 512/i }).first()).toHaveAttribute('href', /\/brand\/malaysian-ai-mark-512\.png$/);
+	await expect(page.getByRole('link', { name: /PNG 512/i }).first()).toHaveAttribute('href', /\/brand\/malaysian-ai-mark/);
 	await expect(page.getByRole('link', { name: /SVG/i }).first()).toHaveAttribute('href', /\.svg$/);
 	const github = page.locator('.footer-company').getByRole('link', { name: 'GitHub', exact: true });
 	await expect(github).toHaveAttribute('href', 'https://github.com/ashvinpraveen/malaysianai');

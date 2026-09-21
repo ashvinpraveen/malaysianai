@@ -20,7 +20,6 @@ const groups = [
 			{ label: 'AI Takeover', href: AIMTO_URL },
 			{ label: 'Stories', href: '/blog' },
 			{ label: 'Residents', href: '/residents' },
-			{ label: 'Brand', href: '/brand' },
 		],
 	},
 ];
@@ -33,13 +32,13 @@ const groups = [
 				<BrandLockup loading="lazy" />
 			</a>
 			<p>
-				Discover Malaysia's AI communities and events — meetups, builder groups, and
-				workshops across the country.
+				Discover weekly events with Malaysia's AI Communities, and take your projects further
+				with an 8-week residency in Kuala Lumpur.
 			</p>
-			<a class="footer-cta site-button" href={LUMA_URL}>
-				<span>View events</span>
-				<span aria-hidden="true">↗</span>
-			</a>
+			<div class="footer-actions">
+				<a class="footer-cta site-button" href="/residency">Join residency</a>
+				<a class="footer-events" href={LUMA_URL}>View events</a>
+			</div>
 		</div>
 
 		{
@@ -63,13 +62,13 @@ const groups = [
 			<a href="/privacy">Privacy</a>
 			<a href="/terms">Terms</a>
 			<a href={GITHUB_URL}>GitHub</a>
-			<span>© {year} Malaysian AI · Open source</span>
+			<div class="footer-meta">
+				<span>© {year} Malaysian AI · Open source</span>
+				<ThemeToggle />
+			</div>
 		</div>
 	</div>
 
-	<div class="footer-bar">
-		<ThemeToggle />
-	</div>
 	<div class="footer-wordmark" aria-hidden="true">{BRAND_WORDMARK}</div>
 </footer>
 
@@ -108,9 +107,32 @@ const groups = [
 		line-height: 1.55;
 	}
 
+	.footer-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.7rem 1.1rem;
+		align-items: center;
+	}
+
 	.footer-cta {
-		width: 10.5rem;
+		width: fit-content;
 		transition: background 180ms ease, transform 180ms ease;
+	}
+
+	.footer-events {
+		color: var(--footer-link);
+		font-size: 0.86rem;
+		text-underline-offset: 0.22em;
+	}
+
+	.footer-events:hover,
+	.footer-events:focus-visible {
+		color: var(--text-hover);
+	}
+
+	.footer-events:focus-visible {
+		outline: 2px solid var(--focus-color);
+		outline-offset: 4px;
 	}
 
 	.footer-cta:hover,
@@ -164,32 +186,30 @@ const groups = [
 
 	.footer-company a + a { margin-top: 1rem; }
 
-	.footer-company span {
+	.footer-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.85rem 1.25rem;
+		width: 100%;
 		margin-top: 2rem;
-		color: var(--footer-meta);
-		font-size: 0.76rem;
 	}
 
-	.footer-bar {
-		position: relative;
-		z-index: 1;
-		display: flex;
-		justify-content: flex-end;
-		width: min(92rem, 100%);
-		margin: clamp(2.5rem, 5vw, 4rem) auto 0;
+	.footer-meta span {
+		color: var(--footer-meta);
+		font-size: 0.76rem;
 	}
 
 	.footer-wordmark {
 		position: relative;
 		width: min(92rem, 100%);
 		margin: clamp(2rem, 4vw, 3.5rem) auto 0;
-		overflow: hidden;
 		color: var(--footer-wordmark-color);
 		font-family: var(--font-display);
 		font-size: clamp(3.25rem, 11vw, 13rem);
 		font-weight: 400;
 		letter-spacing: -0.04em;
-		line-height: 0.8;
+		line-height: 1.12;
 		text-align: center;
 		white-space: nowrap;
 		user-select: none;
@@ -223,15 +243,9 @@ const groups = [
 			grid-column: 1 / -1;
 		}
 
-		.footer-bar {
-			justify-content: flex-start;
-			margin-top: 3rem;
-		}
-
 		.footer-wordmark {
 			margin-top: 1.75rem;
 			font-size: clamp(2.4rem, 11.5vw, 3.4rem);
-			line-height: 0.85;
 		}
 	}
 </style>

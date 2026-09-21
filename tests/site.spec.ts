@@ -9,7 +9,7 @@ test('public destinations load and the hero uses responsive images', async ({ pa
 	const errors: string[] = [];
 	page.on('pageerror', error => errors.push(error.message));
 	for (const [path, heading] of [
-		['/', 'Come learn, build and'], ['/residency', 'Join the Malaysian.ai residency'],
+		['/', 'Learn, build and'], ['/residency', 'Join the Malaysian.ai residency'],
 		['/residents', 'Meet the residents'], ['/contact', 'Get in touch'], ['/brand', 'Brand'], ['/blog', 'Malaysian AI Blog'],
 	]) {
 		const response = await page.goto(path);
@@ -94,18 +94,18 @@ test('event background preloading starts near the section', async ({ page }) => 
 
 test('homepage copy points people at communities and the add-community contact flow', async ({ page }) => {
 	await page.goto('/');
-	await expect(page.getByRole('heading', { level: 1 })).toContainText('Come learn, build and');
+	await expect(page.getByRole('heading', { level: 1 })).toContainText('Learn, build and');
 	await expect(page.getByRole('heading', { level: 1 })).toContainText('experience Malaysian AI.');
-	await expect(page.locator('.hero-card .intro')).toContainText("Discover Malaysia's AI communities and events.");
+	await expect(page.locator('.hero-card .intro')).toContainText("Discover weekly events with Malaysia's AI Communities");
 	await expect(page.locator('.hero-actions .card-link')).toHaveText('Join residency');
 	await expect(page.locator('.hero-actions .card-link')).toHaveAttribute('href', '/residency');
 	await expect(page.locator('.hero-actions .hero-events-link')).toHaveText('View events');
 	await expect(page.locator('.hero-actions .hero-events-link')).toHaveAttribute('href', 'https://luma.com/malaysianai');
-	await expect(page.locator('.hero-announcement').getByRole('link', { name: 'Join our Residency.' })).toHaveAttribute('href', 'https://platform.malaysian.ai');
 	await page.locator('#communities').scrollIntoViewIfNeeded();
-	await expect(page.getByRole('heading', { level: 2, name: /Malaysia's AI/ })).toBeVisible();
-	await page.getByRole('link', { name: 'Add your community' }).click();
-	await expect(page).toHaveURL(/subject=/);
+	await expect(page.getByRole('heading', { level: 2, name: /Discover the AI/ })).toBeVisible();
+	await expect(page.locator('#communities').getByRole('link', { name: 'View upcoming events' })).toHaveAttribute('href', 'https://luma.com/malaysianai');
+	await expect(page.getByRole('link', { name: 'Add your community' })).toHaveCount(0);
+	await page.goto('/contact?subject=' + encodeURIComponent('Add my community to the directory'));
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Add your community');
 	await expect(page.locator('#contact-whatsapp')).toHaveAttribute('href', /add%20my%20community/i);
 });
@@ -182,7 +182,7 @@ test('community filmstrip advances every 6s, accepts side-card clicks, and reduc
 	page,
 	isMobile,
 }) => {
-	test.skip(isMobile, 'Filmstrip is desktop-only');
+	test.skip(isMobile, 'Filmstrip interaction is checked on desktop');
 	await page.emulateMedia({ reducedMotion: 'no-preference' });
 	await page.goto('/');
 	const stage = page.locator('#community-stage');
@@ -233,19 +233,14 @@ test('community filmstrip advances every 6s, accepts side-card clicks, and reduc
 	expect(await mutations()).toBe(reducedCount);
 });
 
-test('community directory lists every partner without overflowing', async ({ page, isMobile }) => {
+test('community directory lists every partner without overflowing', async ({ page }) => {
 	await page.goto('/');
 	const section = page.locator('#communities');
 	await section.scrollIntoViewIfNeeded();
-	if (isMobile) {
-		for (const name of communityNames) {
-			await expect(section.getByRole('heading', { name, exact: true })).toBeVisible();
-		}
-	} else {
-		for (const name of communityNames) {
-			await expect(section.getByRole('button', { name: new RegExp(`Focus ${name}`) })).toBeAttached();
-		}
+	for (const name of communityNames) {
+		await expect(section.getByRole('button', { name: new RegExp(`Focus ${name}`) })).toBeAttached();
 	}
+	await expect(section.locator('[data-community-name]')).toBeVisible();
 	expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
 });
 
@@ -605,12 +600,6 @@ test('residency show and tell points at Luma with clear section headings', async
 	expect(sizes).not.toBeNull();
 	expect(sizes!.visit).toBeGreaterThanOrEqual(18);
 	expect(sizes!.teams).toBeGreaterThanOrEqual(18);
-
-	await page.goto('/');
-	await expect(page.locator('#residency').getByRole('link', { name: 'Thursday Show & Tell' })).toHaveAttribute(
-		'href',
-		'https://luma.com/malaysianai',
-	);
 });
 
 test('residency2 messaging draft sells the cohort thesis and stays noindex', async ({ page }) => {

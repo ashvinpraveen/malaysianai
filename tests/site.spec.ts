@@ -97,6 +97,10 @@ test('homepage copy points people at communities and the add-community contact f
 	await expect(page.getByRole('heading', { level: 1 })).toContainText('Come learn, build and');
 	await expect(page.getByRole('heading', { level: 1 })).toContainText('experience Malaysian AI.');
 	await expect(page.locator('.hero-card .intro')).toContainText("Discover Malaysia's AI communities and events.");
+	await expect(page.locator('.hero-actions .card-link')).toHaveText('Join residency');
+	await expect(page.locator('.hero-actions .card-link')).toHaveAttribute('href', 'https://platform.malaysian.ai');
+	await expect(page.locator('.hero-actions .hero-events-link')).toHaveText('View events');
+	await expect(page.locator('.hero-actions .hero-events-link')).toHaveAttribute('href', 'https://luma.com/malaysianai');
 	await expect(page.locator('.hero-announcement').getByRole('link', { name: 'Join our Residency.' })).toHaveAttribute('href', 'https://platform.malaysian.ai');
 	await page.locator('#communities').scrollIntoViewIfNeeded();
 	await expect(page.getByRole('heading', { level: 2, name: /Malaysia's AI/ })).toBeVisible();
@@ -407,7 +411,8 @@ test('mobile navigation closes on Escape and after selecting a destination', asy
 	expect(toggleBox).not.toBeNull();
 	expect(brandBox).not.toBeNull();
 	expect(toggleBox!.x).toBeLessThan(brandBox!.x);
-	await expect(page.locator('.nav-cta')).toHaveText('View events');
+	await expect(page.locator('.nav-cta')).toHaveText('Join residency');
+	await expect(page.locator('.nav-cta')).toHaveAttribute('href', 'https://platform.malaysian.ai');
 	await toggle.click();
 	await expect(dialog).toBeVisible();
 	await expect(dialog.getByRole('link', { name: 'View events' })).toBeVisible();
@@ -485,13 +490,15 @@ test('brand page lists logos with descriptive alt text and footer links GitHub',
 	await expect(page.locator('.footer-company')).toContainText('Open source');
 });
 
-test('theme toggle follows the system scheme and can lock light or dark', async ({ page }) => {
+test('theme toggle follows the system scheme and can lock light or dark', async ({ page, isMobile }) => {
+	const darkHeading = isMobile ? 'rgb(244, 247, 252)' : 'rgb(255, 253, 246)';
+	const lightHeading = isMobile ? 'rgb(12, 34, 33)' : 'rgb(16, 43, 42)';
 	await page.emulateMedia({ colorScheme: 'dark' });
 	await page.goto('/');
 	await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 	await expect(page.locator('html')).toHaveAttribute('data-theme-preference', 'system');
 	await expect(page.locator('.hero-card')).toHaveCSS('background-color', 'rgb(6, 9, 15)');
-	await expect(page.locator('.hero-card h1')).toHaveCSS('color', 'rgb(255, 253, 246)');
+	await expect(page.locator('.hero-card h1')).toHaveCSS('color', darkHeading);
 	await expect(page.locator('.hero-header .brand-panel')).toHaveCSS('background-color', 'rgb(6, 9, 15)');
 	await expect(page.getByRole('radio', { name: 'System' })).toHaveAttribute('aria-checked', 'true');
 	await expect(page.locator('.hero-cta-panel').getByRole('radio')).toHaveCount(0);
@@ -499,7 +506,7 @@ test('theme toggle follows the system scheme and can lock light or dark', async 
 	await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
 	await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(239, 232, 216)');
 	await expect(page.locator('.hero-card')).toHaveCSS('background-color', 'rgb(244, 239, 230)');
-	await expect(page.locator('.hero-card h1')).toHaveCSS('color', 'rgb(16, 43, 42)');
+	await expect(page.locator('.hero-card h1')).toHaveCSS('color', lightHeading);
 	await expect(page.locator('.hero-header .brand-panel')).toHaveCSS('background-color', 'rgb(244, 239, 230)');
 	expect(await page.evaluate(() => localStorage.getItem('malaysianai-theme'))).toBe('light');
 	await page.locator('.footer-company').getByRole('link', { name: 'About', exact: true }).click();
@@ -513,7 +520,9 @@ test('theme toggle follows the system scheme and can lock light or dark', async 
 	await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 });
 
-test('Tizen follows the system scheme and can lock dark cutouts', async ({ browser }) => {
+test('Tizen follows the system scheme and can lock dark cutouts', async ({ browser, isMobile }) => {
+	const darkHeading = isMobile ? 'rgb(244, 247, 252)' : 'rgb(255, 253, 246)';
+	const lightHeading = isMobile ? 'rgb(12, 34, 33)' : 'rgb(16, 43, 42)';
 	const context = await browser.newContext({
 		...test.info().project.use,
 		colorScheme: 'light',
@@ -524,11 +533,11 @@ test('Tizen follows the system scheme and can lock dark cutouts', async ({ brows
 	await page.goto('/');
 	await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
 	await expect(page.locator('.hero-card')).toHaveCSS('background-color', 'rgb(244, 239, 230)');
-	await expect(page.locator('.hero-card h1')).toHaveCSS('color', 'rgb(16, 43, 42)');
+	await expect(page.locator('.hero-card h1')).toHaveCSS('color', lightHeading);
 	await page.getByRole('radio', { name: 'Dark' }).click();
 	await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 	await expect(page.locator('.hero-card')).toHaveCSS('background-color', 'rgb(6, 9, 15)');
-	await expect(page.locator('.hero-card h1')).toHaveCSS('color', 'rgb(255, 253, 246)');
+	await expect(page.locator('.hero-card h1')).toHaveCSS('color', darkHeading);
 	await context.close();
 });
 

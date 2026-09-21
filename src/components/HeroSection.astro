@@ -162,7 +162,8 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 			</p>
 		</div>
 		<div class="hero-actions">
-			<a class="card-link site-button" href={LUMA_URL}>View upcoming events</a>
+			<a class="card-link site-button" href={APPLY_FORM_URL}>Join residency</a>
+			<a class="hero-events-link" href={LUMA_URL}>View events</a>
 		</div>
 	</section>
 </div>
@@ -574,6 +575,25 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 		transform: translateY(-2px);
 	}
 
+	.hero-events-link {
+		color: var(--hero-muted);
+		font-size: 0.84rem;
+		line-height: 1;
+		text-underline-offset: 0.22em;
+		text-shadow: 0 1px 14px var(--hero-copy-shadow-color);
+		animation: soft-rise 0.65s 1.08s ease-out both;
+	}
+
+	.hero-events-link:hover,
+	.hero-events-link:focus-visible {
+		color: var(--hero-copy);
+	}
+
+	.hero-events-link:focus-visible {
+		outline: 2px solid var(--focus-color);
+		outline-offset: 4px;
+	}
+
 	@keyframes soft-rise {
 		from {
 			opacity: 0;
@@ -734,6 +754,7 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 		.hero-card h1,
 		.intro,
 		.card-link,
+		.hero-events-link,
 		.hero-art {
 			animation: none;
 		}

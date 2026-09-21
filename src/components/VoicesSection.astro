@@ -4,6 +4,10 @@ import { voices } from '../data/voices';
 
 <section class="voices-chapter light-nav-zone" id="voices" aria-labelledby="voices-title">
 	<div class="voices-shell">
+		<div class="voices-heading">
+			<h2 id="voices-title">What the community<br />has to say.</h2>
+		</div>
+
 		<div
 			class="voices-deck"
 			data-voices-deck
@@ -20,19 +24,6 @@ import { voices } from '../data/voices';
 						data-pos={String(Math.min(index, 3))}
 						style={`z-index: ${voices.length - index}`}
 					>
-						<header class="voice-head">
-							<span
-								class="voice-avatar"
-								aria-hidden="true"
-								style={`--avatar-bg: ${voice.avatarColor}`}
-							>
-								{voice.avatar}
-							</span>
-							<span class="voice-who">
-								<span class="voice-author">{voice.author}</span>
-								<span class="voice-context">{voice.context}</span>
-							</span>
-						</header>
 						<blockquote>
 							<p>
 								{voice.segments.map((segment) =>
@@ -40,15 +31,13 @@ import { voices } from '../data/voices';
 								)}
 							</p>
 						</blockquote>
+						<footer class="voice-byline">
+							<span class="voice-author">{voice.author}</span>
+							<span class="voice-context">{voice.context}</span>
+						</footer>
 					</article>
 				))
 			}
-		</div>
-
-		<div class="voices-heading">
-			<p class="voices-kicker">Community voices</p>
-			<h2 id="voices-title">What the community<br />has to say.</h2>
-			<p class="voices-hint">Straight from event feedback forms. Tap a card for the next one.</p>
 		</div>
 	</div>
 </section>
@@ -126,48 +115,42 @@ import { voices } from '../data/voices';
 
 <style>
 	.voices-chapter {
-		padding: var(--section-space-half) clamp(0.75rem, 1.6vw, 1.5rem);
+		padding: clamp(2.5rem, 5vw, 4rem) clamp(0.75rem, 1.6vw, 1.5rem);
 		color: var(--text-bright);
 		background: var(--page-background);
 	}
 
 	.voices-shell {
 		display: grid;
-		grid-template-columns: minmax(19rem, 1.05fr) minmax(17rem, 0.95fr);
-		gap: clamp(2.5rem, 6vw, 6rem);
+		grid-template-columns: minmax(14rem, 18rem) minmax(0, 34rem);
+		justify-content: center;
 		align-items: center;
-		padding: clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 3.5vw, 3.25rem);
+		gap: clamp(2.25rem, 5vw, 4.5rem);
+		width: min(62rem, 100%);
+		margin-inline: auto;
+		padding: clamp(0.5rem, 1.5vw, 1rem) clamp(1.25rem, 3vw, 2rem);
 	}
 
-	.voices-kicker {
-		margin: 0 0 1.1rem;
-		color: var(--text-accent);
-		font-size: 0.7rem;
-		letter-spacing: 0.16em;
-		text-transform: uppercase;
+	.voices-heading {
+		padding-top: 2.15rem;
 	}
 
 	.voices-heading h2 {
 		margin: 0;
+		max-width: 11ch;
 		font-family: var(--font-display);
-		font-size: clamp(2.3rem, 3.8vw, 3.6rem);
+		font-size: clamp(2.3rem, 3.6vw, 3.35rem);
 		font-weight: 400;
 		letter-spacing: -0.035em;
-		line-height: 0.9;
+		line-height: 1.05;
 		text-wrap: balance;
 	}
 
-	.voices-hint {
-		max-width: 24rem;
-		margin: 1.4rem 0 0;
-		color: var(--text-softer);
-		font-size: 0.88rem;
-		line-height: 1.55;
-	}
-
 	.voices-deck {
+		position: relative;
 		display: grid;
-		padding-top: 3rem;
+		width: 100%;
+		padding-top: 2.15rem;
 		cursor: pointer;
 		-webkit-tap-highlight-color: transparent;
 	}
@@ -179,9 +162,9 @@ import { voices } from '../data/voices';
 	}
 
 	.voice-card {
+		display: flex;
 		grid-area: 1 / 1;
-		align-self: start;
-		min-height: 13rem;
+		flex-direction: column;
 		padding: clamp(1.35rem, 2vw, 1.75rem);
 		border: 1.5px solid var(--hairline);
 		border-radius: 0.95rem;
@@ -216,45 +199,32 @@ import { voices } from '../data/voices';
 	}
 
 	.voice-card[data-pos]:not([data-pos='0']) blockquote,
-	.voice-card[data-pos]:not([data-pos='0']) .voice-head {
+	.voice-card[data-pos]:not([data-pos='0']) .voice-byline {
 		visibility: hidden;
 	}
 
-	.voice-head {
+	.voice-byline {
 		display: flex;
-		align-items: center;
-		gap: 0.8rem;
-		margin-bottom: 1rem;
-	}
-
-	.voice-avatar {
-		display: grid;
-		flex: 0 0 auto;
-		width: 2.5rem;
-		height: 2.5rem;
-		place-items: center;
-		border: 0;
-		border-radius: 50%;
-		color: var(--color-white);
-		background: var(--avatar-bg, #1a73e8);
-		box-shadow: 0 0 0 1px rgb(255 255 255 / 0.12), 0 4px 12px rgb(0 0 0 / 0.24);
-		font-size: 0.9rem;
-		font-weight: 500;
-		letter-spacing: 0;
-	}
-
-	.voice-who {
-		display: grid;
-		gap: 0.2rem;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.35rem 0.5rem;
+		margin-top: auto;
+		padding-top: 1.35rem;
+		font-size: 0.82rem;
+		line-height: 1.35;
 	}
 
 	.voice-author {
-		font-size: 0.88rem;
+		font-weight: 500;
 	}
 
 	.voice-context {
 		color: var(--text-faint);
-		font-size: 0.76rem;
+	}
+
+	.voice-context::before {
+		content: '·';
+		margin-right: 0.5rem;
 	}
 
 	.voice-card blockquote {
@@ -276,7 +246,17 @@ import { voices } from '../data/voices';
 	@media (max-width: 860px) {
 		.voices-shell {
 			grid-template-columns: 1fr;
-			gap: 2rem;
+			justify-content: stretch;
+			width: 100%;
+			gap: 1.25rem;
+		}
+
+		.voices-heading {
+			padding-top: 0;
+		}
+
+		.voices-deck {
+			max-width: 36rem;
 		}
 	}
 
@@ -291,10 +271,6 @@ import { voices } from '../data/voices';
 
 		.voices-heading h2 {
 			font-size: clamp(2.3rem, 10vw, 3.25rem);
-		}
-
-		.voice-card {
-			min-height: 15rem;
 		}
 	}
 

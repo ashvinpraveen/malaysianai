@@ -30,7 +30,8 @@ export const residents: Resident[] = [
 	{
 		name: 'ReplyrAI',
 		tag: 'AI growth platform for clinics',
-		wordmark: 'Replyr.AI',
+		logo: '/replyr-logo.png',
+		logoClass: 'is-wide is-mono',
 		focus: 'Customer Experience',
 		location: 'Kuala Lumpur',
 		cohort: '02',
@@ -43,27 +44,15 @@ export const residents: Resident[] = [
 	{
 		name: 'DocuAsk',
 		tag: 'Chat with your documents',
-		wordmark: 'DocuAsk',
+		logo: '/docuask-logo.png',
+		logoClass: 'is-mono',
 		focus: 'Document AI',
 		location: 'Johor Bahru',
 		cohort: '02',
-		website: 'https://docuask.com',
+		website: 'https://www.docuask.ai',
 		description:
 			'No-code document chatbot platform that turns company files into searchable AI assistants. Teams can upload manuals, PDFs, and internal content so customers and staff can chat with their knowledge base.',
 		tags: ['Analysis', 'Knowledge', 'Workflow'],
-		tile: 'light',
-	},
-	{
-		name: 'Blue Bolt Labs',
-		tag: 'MVP studio for solo founders',
-		logo: '/blueboltlabs.webp',
-		focus: 'Industry 4.0',
-		location: 'Shah Alam',
-		cohort: '02',
-		website: 'https://blueboltlabs.com',
-		description:
-			'MVP studio for solo founders that ships launch-ready products in a focused 21-day sprint. Blue Bolt Labs handles scoping, build, and handover so founders can validate ideas quickly with real users.',
-		tags: ['Automation', 'IoT', 'Field Ops'],
 		tile: 'light',
 	},
 	{

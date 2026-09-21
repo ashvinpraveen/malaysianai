@@ -38,7 +38,7 @@ export const homepageFaqs: FaqItem[] = [
 	{
 		question: 'How can I add my community to the directory?',
 		answer:
-			'If you run an AI community, meetup, or builder group in Malaysia, use Add your community on the homepage or contact us on WhatsApp. We will review it and get back to you about listing.',
+			'If you run an AI community, meetup, or builder group in Malaysia, contact us on WhatsApp. We will review it and get back to you about listing.',
 	},
 	{
 		question: 'Who hosts Malaysian AI?',
@@ -87,7 +87,7 @@ export const residencyFaqs: FaqItem[] = [
 	{
 		question: 'What kind of startups are you looking for?',
 		answer:
-			'AI-native companies building real products — from knowledge tools and document AI to voice, education, and industry software. Current residents span customer experience, knowledge systems, document AI, Industry 4.0, voice, and education.',
+			'AI-native companies building real products — from knowledge tools and document AI to voice, education, and industry software. Current residents span customer experience, knowledge systems, document AI, voice, and education.',
 	},
 	{
 		question: 'How long does the residency last?',

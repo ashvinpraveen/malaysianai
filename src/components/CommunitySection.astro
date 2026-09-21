@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { ADD_COMMUNITY_HREF, LUMA_URL } from '../consts';
+import { LUMA_URL } from '../consts';
 import buildClubLogo from '../assets/communities/build-club-logo-navbar.webp';
 import buildWithAiLogo from '../assets/communities/build_with_ai_logo.jpeg';
 import aiTinkerersLogo from '../assets/communities/ai_tinkerers_logo.png';
@@ -97,19 +97,16 @@ const startIndex = 0;
 	<div class="community-shell">
 		<div class="community-copy">
 			<div class="community-heading">
-				<h2 id="community-title">Malaysia's AI<br /> Communities and Events.</h2>
+				<h2 id="community-title">Discover the AI<br /> communities for you</h2>
 			</div>
 			<p class="community-lede">
-				A growing map of AI communities across Malaysia — meetups, builder groups, student
-				chapters, and everyone in between. Join an event, find your people, or add your
-				community to the list. Many gatherings are free and very welcoming.
+				From deeply technical coding events for developers, to workshops for creators,
+				business owners, students and women building your first apps &amp; AI agents; there's
+				a community of people here to help you along your AI journey.
 			</p>
-			<div class="community-actions">
-				<a class="site-button" href={LUMA_URL}>View upcoming events</a>
-				<a href={ADD_COMMUNITY_HREF}>Add your community</a>
-			</div>
 		</div>
 
+		<div class="community-board">
 		<div
 			class="community-stage"
 			id="community-stage"
@@ -157,33 +154,10 @@ const startIndex = 0;
 			</div>
 			<p data-community-description>{communities[startIndex].description}</p>
 		</div>
-
-		<ul class="community-grid">
-			{
-				communities.map((community) => (
-					<li>
-						<article class="community-room">
-							<figure class:list={['community-mark', community.logoClass]}>
-								<Image
-									src={community.logo}
-									alt=""
-									widths={logoWidths}
-									sizes={logoSizes}
-									format="webp"
-									loading="lazy"
-									decoding="async"
-								/>
-							</figure>
-							<div class="community-body">
-								<p class="community-label">{community.label}</p>
-								<h3>{community.name}</h3>
-								<p>{community.description}</p>
-							</div>
-						</article>
-					</li>
-				))
-			}
-		</ul>
+		<div class="community-actions">
+			<a class="site-button" href={LUMA_URL}>View upcoming events</a>
+		</div>
+		</div>
 	</div>
 </section>
 
@@ -191,7 +165,6 @@ const startIndex = 0;
 	let cleanUpCommunity = () => {};
 
 	function prepareCommunitySection() {
-		const desktopQuery = matchMedia('(min-width: 701px)');
 		const stageElement = document.querySelector<HTMLElement>('#community-stage');
 		const deck = document.querySelector<HTMLElement>('[data-community-deck]');
 		const cards = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-community-card]'));
@@ -199,12 +172,7 @@ const startIndex = 0;
 		const focusName = document.querySelector<HTMLElement>('[data-community-name]');
 		const focusDescription = document.querySelector<HTMLElement>('[data-community-description]');
 
-		const onBreakpoint = () => prepareCommunity();
-		desktopQuery.addEventListener('change', onBreakpoint);
-
-		if (!desktopQuery.matches || !stageElement || !deck || !cards.length) {
-			return () => desktopQuery.removeEventListener('change', onBreakpoint);
-		}
+		if (!stageElement || !deck || !cards.length) return () => {};
 
 		const stage: HTMLElement = stageElement;
 		const count = cards.length;
@@ -371,7 +339,7 @@ const startIndex = 0;
 
 			state.phase += (state.target - state.phase) * ease;
 			const activeIndex = nearestIndex();
-			const horizontalSpacing = Math.min(138, Math.max(82, innerWidth * 0.095));
+			const horizontalSpacing = Math.min(118, Math.max(58, innerWidth * 0.09));
 
 			if (activeIndex !== lastActiveIndex) {
 				lastActiveIndex = activeIndex;
@@ -385,19 +353,19 @@ const startIndex = 0;
 				const side = Math.max(0, 1 - distance / 5);
 				const direction = Math.sign(delta) || 0;
 				const x = delta * horizontalSpacing;
-				const y = distance * 6;
-				const z = focus * 145 - distance * 148;
-				const scale = 0.54 + side * 0.15 + focus * 0.54;
-				const rotateY = -direction * (distance > 0.2 ? 9 + Math.min(distance, 3) * 3 : 0);
+				const y = distance * 2;
+				const z = focus * 64 - distance * 72;
+				const scale = 0.7 + side * 0.08 + focus * 0.36;
+				const rotateY = -direction * (distance > 0.2 ? 6 + Math.min(distance, 2) * 2 : 0);
 
 				card.style.setProperty('--focus', focus.toFixed(4));
 				card.style.zIndex = String(Math.round(1000 - distance * 100));
-				card.style.opacity = String(Math.max(0.42, side * 0.66 + focus * 0.34));
+				card.style.opacity = String(distance > 4.2 ? 0 : Math.max(0, 1 - distance / 4.6).toFixed(3));
 				card.style.transform = [
 					'translate(-50%, -50%)',
 					`translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, ${z.toFixed(2)}px)`,
 					`rotateY(${rotateY.toFixed(2)}deg)`,
-					`rotateZ(${(delta * 0.7).toFixed(2)}deg)`,
+					`rotateZ(${(delta * 0.28).toFixed(2)}deg)`,
 					`scale(${scale.toFixed(4)})`,
 				].join(' ');
 				card.setAttribute('aria-current', index === activeIndex ? 'true' : 'false');
@@ -446,7 +414,6 @@ const startIndex = 0;
 			stage.removeEventListener('pointerleave', onPointerLeave);
 			stage.removeEventListener('focusin', handleFocusIn);
 			stage.removeEventListener('focusout', handleFocusOut);
-			desktopQuery.removeEventListener('change', onBreakpoint);
 		};
 	}
 
@@ -462,16 +429,14 @@ const startIndex = 0;
 <style>
 	.community-chapter {
 		display: grid;
-		min-height: 100dvh;
 		padding: var(--section-space) clamp(1.5rem, 4vw, 4rem) var(--section-space-half);
-		align-items: center;
 		color: var(--text-bright);
 		background: var(--page-background);
 	}
 
 	.community-shell {
 		display: grid;
-		gap: clamp(1.75rem, 3vw, 2.75rem);
+		gap: clamp(1.25rem, 2.4vw, 1.75rem);
 		width: min(92rem, 100%);
 		margin: 0 auto;
 	}
@@ -479,9 +444,9 @@ const startIndex = 0;
 	.community-copy {
 		display: flex;
 		flex-direction: column;
-		gap: 1.25rem;
+		gap: 1rem;
 		align-items: center;
-		width: min(42rem, 100%);
+		width: min(40rem, 100%);
 		margin: 0 auto;
 		text-align: center;
 	}
@@ -492,13 +457,13 @@ const startIndex = 0;
 		font-size: clamp(2.2rem, 3.6vw, 3.4rem);
 		font-weight: 400;
 		letter-spacing: -0.035em;
-		line-height: 0.9;
+		line-height: 1.05;
 		text-wrap: balance;
 	}
 
 	.community-lede {
 		max-width: 36rem;
-		margin: 0 auto;
+		margin: 0;
 		color: var(--text-soft);
 		font-size: clamp(0.92rem, 1.25vw, 1.08rem);
 		line-height: var(--leading-body);
@@ -510,11 +475,7 @@ const startIndex = 0;
 		gap: 0.75rem 1.1rem;
 		align-items: center;
 		justify-content: center;
-	}
-
-	.community-actions a:not(.site-button) {
-		color: inherit;
-		text-underline-offset: 0.22em;
+		margin-top: 0.35rem;
 	}
 
 	.community-actions a:focus-visible {
@@ -522,15 +483,27 @@ const startIndex = 0;
 		outline-offset: 4px;
 	}
 
+	.community-board {
+		display: grid;
+		gap: 0.15rem;
+		width: min(68rem, 100%);
+		margin: 0.75rem auto 0;
+		padding: 1.35rem clamp(1.25rem, 2.8vw, 2.25rem) 2.1rem;
+		border: 1px solid var(--hairline-soft);
+		border-radius: 1.5rem;
+		background: var(--card-raised);
+	}
+
 	.community-stage {
 		position: relative;
 		width: 100%;
-		height: clamp(20rem, 34dvh, 27rem);
+		height: clamp(11.5rem, 22dvh, 15rem);
 		overflow: hidden;
 		isolation: isolate;
-		perspective: 1450px;
+		perspective: 1200px;
 		cursor: default;
 		touch-action: pan-y;
+		mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
 	}
 
 	.community-stage:focus-visible {
@@ -550,14 +523,14 @@ const startIndex = 0;
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		width: clamp(128px, 13vw, 188px);
+		width: clamp(104px, 11vw, 148px);
 		aspect-ratio: 1.08;
 		padding: 0;
 		border: 0;
 		border-radius: var(--radius-media);
 		color: #0d1622;
 		background: transparent;
-		box-shadow: 0 8px 18px rgb(0 0 0 / 0.2);
+		box-shadow: none;
 		appearance: none;
 		outline: none;
 		transform-style: preserve-3d;
@@ -567,22 +540,9 @@ const startIndex = 0;
 		pointer-events: none;
 	}
 
-	/* The focus shadow and the desaturating wash live on their own layers and only
-	   animate opacity, so the per-frame loop never forces a repaint of the logo. */
-	.community-card::before {
-		position: absolute;
-		z-index: -1;
-		inset: 0;
-		border-radius: var(--radius-media);
-		box-shadow: 0 24px 46px rgb(0 0 0 / 0.42);
-		content: '';
-		opacity: var(--focus);
-		pointer-events: none;
-		will-change: opacity;
-	}
-
 	.community-card:focus-visible {
-		box-shadow: 0 24px 48px rgb(0 0 0 / 0.48), 0 0 0 3px rgb(151 184 231 / 0.35);
+		outline: 2px solid var(--focus-color);
+		outline-offset: 3px;
 	}
 
 	.community-portrait {
@@ -591,10 +551,9 @@ const startIndex = 0;
 		display: grid;
 		place-items: center;
 		overflow: hidden;
+		border: 1px solid var(--hairline);
 		border-radius: var(--radius-media);
-		background:
-			radial-gradient(circle at 50% 40%, rgb(255 255 255 / 0.9), transparent 62%),
-			#e9edf3;
+		background: #f4f6f8;
 	}
 
 	.community-portrait img {
@@ -608,7 +567,7 @@ const startIndex = 0;
 	.community-portrait::after {
 		position: absolute;
 		inset: 0;
-		background: rgb(233 237 243 / 0.34);
+		background: rgb(244 246 248 / 0.28);
 		content: '';
 		opacity: calc(1 - var(--focus));
 		pointer-events: none;
@@ -620,28 +579,17 @@ const startIndex = 0;
 	}
 
 	.community-focus {
-		position: relative;
 		display: flex;
 		flex-direction: column;
-		gap: 0.8rem;
+		gap: 0.7rem;
 		align-items: center;
-		width: min(48rem, 100%);
+		width: min(36rem, 100%);
 		margin: 0 auto;
-		padding: clamp(1.5rem, 2.5vw, 2rem) clamp(1.5rem, 4vw, 3.25rem);
-		border-radius: 1.15rem;
-		background: var(--card-raised);
-		box-shadow: 0 20px 55px rgb(0 0 0 / 0.22);
-		border: 1px solid var(--page-border);
 		text-align: center;
 	}
 
 	.community-focus-kicker {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.55rem 0.8rem;
-		align-items: center;
-		justify-content: center;
-		margin: 0 0 0.4rem;
+		margin: 0 0 0.85rem;
 		color: var(--text-accent);
 		font-size: 0.66rem;
 		font-weight: 400;
@@ -652,25 +600,18 @@ const startIndex = 0;
 	.community-focus h3 {
 		margin: 0;
 		font-family: var(--font-display);
-		font-size: clamp(1.8rem, 2.8vw, 2.65rem);
+		font-size: clamp(1.55rem, 2.2vw, 2rem);
 		font-weight: 400;
-		letter-spacing: -0.035em;
-		line-height: 0.95;
+		letter-spacing: -0.03em;
+		line-height: 1.05;
 	}
 
 	.community-focus > p:last-child {
-		max-width: 38rem;
+		max-width: 34rem;
 		margin: 0 auto;
 		color: var(--text-soft);
 		font-size: clamp(0.9rem, 1.15vw, 1.02rem);
 		line-height: var(--leading-body);
-	}
-
-	.community-grid {
-		display: none;
-		margin: 0;
-		padding: 0;
-		list-style: none;
 	}
 
 	.sr-only {
@@ -687,113 +628,24 @@ const startIndex = 0;
 
 	@media (max-width: 700px) {
 		.community-chapter {
-			min-height: auto;
 			padding: 4.75rem 0.65rem 3rem;
-		}
-
-		.community-shell {
-			gap: 1.75rem;
-		}
-
-		.community-copy {
-			align-items: start;
-			width: 100%;
-			text-align: left;
 		}
 
 		.community-copy h2 {
 			font-size: clamp(2.3rem, 10vw, 3.25rem);
 		}
 
-		.community-lede {
-			max-width: none;
-			margin: 0;
+		.community-board {
+			padding: 1.65rem 1.75rem 2rem;
 		}
 
-		.community-actions {
-			justify-content: start;
-		}
-
-		.community-stage,
-		.community-focus {
-			display: none;
-		}
-
-		.community-grid {
-			display: grid;
-			grid-template-columns: 1fr;
-			gap: 0.75rem;
-		}
-
-		.community-room {
-			display: grid;
-			grid-template-columns: 6.5rem minmax(0, 1fr);
-			align-items: stretch;
-			overflow: hidden;
-			border: 1.5px solid var(--hairline);
-			border-radius: 0.95rem;
-			background: var(--card-raised);
-		}
-
-		.community-mark {
-			position: relative;
-			display: grid;
-			margin: 0;
-			min-height: 6.5rem;
-			place-items: center;
-			background:
-				radial-gradient(circle at 50% 40%, rgb(255 255 255 / 0.9), transparent 62%),
-				#e9edf3;
-		}
-
-		.community-mark img {
-			display: block;
-			width: 64%;
-			height: auto;
-			max-height: 4.2rem;
-			object-fit: contain;
-		}
-
-		.community-mark.is-wide img {
-			width: 78%;
-		}
-
-		.community-body {
-			display: grid;
-			gap: 0.4rem;
-			align-content: start;
-			min-width: 0;
-			padding: 0.9rem 0.95rem 1rem 0.85rem;
-		}
-
-		.community-label {
-			margin: 0;
-			color: var(--text-accent);
-			font-size: 0.66rem;
-			letter-spacing: 0.12em;
-			text-transform: uppercase;
-		}
-
-		.community-body h3 {
-			margin: 0;
-			font-family: var(--font-display);
-			font-size: 1.35rem;
-			font-weight: 400;
-			letter-spacing: -0.03em;
-			line-height: 1;
-		}
-
-		.community-body p:last-child {
-			margin: 0;
-			color: var(--text-soft);
-			font-size: 0.86rem;
-			line-height: var(--leading-body);
+		.community-stage {
+			height: 12.5rem;
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
 		.community-card,
-		.community-card::before,
 		.community-portrait::after {
 			will-change: auto;
 		}

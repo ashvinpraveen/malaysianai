@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import showAndTell from '../assets/events/show-and-tell-supabase-ceo.jpg';
 import { residents } from '../data/residents';
-import { APPLY_FORM_URL, LUMA_URL } from '../consts';
+import { APPLY_FORM_URL } from '../consts';
 ---
 
 <section class="residency-chapter light-nav-zone" id="residency" aria-labelledby="residency-title">
@@ -33,10 +33,6 @@ import { APPLY_FORM_URL, LUMA_URL } from '../consts';
 					loading="lazy"
 					decoding="async"
 				/>
-				<figcaption>
-					<a href={LUMA_URL}>Thursday Show &amp; Tell</a>
-					— come meet the community and get a feel for the residency.
-				</figcaption>
 			</figure>
 		</div>
 
@@ -44,40 +40,42 @@ import { APPLY_FORM_URL, LUMA_URL } from '../consts';
 			<p class="residency-residents-kicker">Current residents</p>
 			<div class="residency-frame">
 				<div class="residency-marquee" aria-label="Current resident startups">
-					{
-						[false, true].map((isClone) => (
-							<ul class="residency-track" aria-hidden={isClone ? 'true' : undefined}>
-								{residents.map((resident) => (
-									<li>
-										<a
-											class="resident-tile"
-											href={resident.website}
-											target="_blank"
-											rel="noopener"
-											tabindex={isClone ? -1 : undefined}
-										>
-											<span class="resident-face">
-												{resident.logo ? (
-													<img
-														class:list={['resident-logo', resident.logoClass]}
-														src={resident.logo}
-														alt=""
-														width="160"
-														height="160"
-														loading="lazy"
-														decoding="async"
-													/>
-												) : (
-													<span class="resident-wordmark">{resident.wordmark}</span>
-												)}
-											</span>
-											<span class="resident-name">{resident.name}</span>
-										</a>
-									</li>
-								))}
-							</ul>
-						))
-					}
+					<div class="residency-track">
+						{
+							[false, true].map((isClone) => (
+								<ul aria-hidden={isClone ? 'true' : undefined}>
+									{residents.map((resident) => (
+										<li>
+											<a
+												class="resident-tile"
+												href={resident.website}
+												target="_blank"
+												rel="noopener"
+												tabindex={isClone ? -1 : undefined}
+											>
+												<span class="resident-face">
+													{resident.logo ? (
+														<img
+															class:list={['resident-logo', resident.logoClass]}
+															src={resident.logo}
+															alt=""
+															width="160"
+															height="160"
+															loading="lazy"
+															decoding="async"
+														/>
+													) : (
+														<span class="resident-wordmark">{resident.wordmark}</span>
+													)}
+												</span>
+												<span class="resident-name">{resident.name}</span>
+											</a>
+										</li>
+									))}
+								</ul>
+							))
+						}
+					</div>
 				</div>
 			</div>
 		</div>
@@ -188,28 +186,6 @@ import { APPLY_FORM_URL, LUMA_URL } from '../consts';
 		background: var(--image-background);
 	}
 
-	.residency-photo figcaption {
-		margin-top: 0.7rem;
-		color: var(--text-softer);
-		font-size: 0.78rem;
-		line-height: 1.5;
-	}
-
-	.residency-photo figcaption a {
-		color: var(--text-accent);
-		text-underline-offset: 0.2em;
-	}
-
-	.residency-photo figcaption a:hover,
-	.residency-photo figcaption a:focus-visible {
-		color: var(--link-bright);
-	}
-
-	.residency-photo figcaption a:focus-visible {
-		outline: 2px solid var(--focus-color);
-		outline-offset: 3px;
-	}
-
 	.residency-panel {
 		min-width: 0;
 		overflow: hidden;
@@ -229,21 +205,39 @@ import { APPLY_FORM_URL, LUMA_URL } from '../consts';
 	}
 
 	.residency-marquee {
-		display: flex;
 		overflow: hidden;
-		-webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-		mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+		-webkit-mask-image: linear-gradient(
+			90deg,
+			transparent 0%,
+			rgb(0 0 0 / 0.08) 3%,
+			#000 12%,
+			#000 88%,
+			rgb(0 0 0 / 0.08) 97%,
+			transparent 100%
+		);
+		mask-image: linear-gradient(
+			90deg,
+			transparent 0%,
+			rgb(0 0 0 / 0.08) 3%,
+			#000 12%,
+			#000 88%,
+			rgb(0 0 0 / 0.08) 97%,
+			transparent 100%
+		);
 	}
 
 	.residency-track {
 		display: flex;
-		flex: 0 0 auto;
-		gap: clamp(1rem, 2vw, 1.6rem);
-		min-width: 100%;
+		width: max-content;
+		animation: residency-scroll 48s linear infinite;
+	}
+
+	.residency-track ul {
+		display: flex;
+		gap: clamp(1.15rem, 2vw, 1.75rem);
 		margin: 0;
-		padding: 0;
+		padding: 0 clamp(1.15rem, 2vw, 1.75rem) 0 0;
 		list-style: none;
-		animation: residency-scroll 42s linear infinite;
 	}
 
 	.residency-marquee:hover .residency-track,
@@ -268,9 +262,7 @@ import { APPLY_FORM_URL, LUMA_URL } from '../consts';
 		overflow: hidden;
 		border: 1px solid var(--hairline-soft);
 		border-radius: var(--radius-media);
-		background:
-			radial-gradient(circle at 50% 40%, rgb(255 255 255 / 0.9), transparent 62%),
-			#e9edf3;
+		background: var(--card-raised);
 		transition: transform 200ms ease;
 	}
 
@@ -292,7 +284,22 @@ import { APPLY_FORM_URL, LUMA_URL } from '../consts';
 	}
 
 	.resident-logo.is-wide {
-		width: 74%;
+		width: 78%;
+		height: 46%;
+	}
+
+	.resident-logo.is-mono {
+		filter: invert(1);
+	}
+
+	:global(html[data-theme='light']) .resident-logo.is-mono {
+		filter: none;
+	}
+
+	@media (prefers-color-scheme: light) {
+		:global(html:not([data-theme='dark'])) .resident-logo.is-mono {
+			filter: none;
+		}
 	}
 
 	.resident-wordmark {
@@ -313,7 +320,7 @@ import { APPLY_FORM_URL, LUMA_URL } from '../consts';
 
 	@keyframes residency-scroll {
 		to {
-			transform: translateX(-100%);
+			transform: translateX(-50%);
 		}
 	}
 
@@ -382,7 +389,7 @@ import { APPLY_FORM_URL, LUMA_URL } from '../consts';
 			mask-image: none;
 		}
 
-		.residency-track[aria-hidden='true'] {
+		.residency-track ul[aria-hidden='true'] {
 			display: none;
 		}
 	}

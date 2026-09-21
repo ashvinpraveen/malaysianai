@@ -1,7 +1,7 @@
 ---
 import { Image, getImage } from 'astro:assets';
 import { LUMA_URL } from '../consts';
-import showAndTell from '../assets/events/show-and-tell-supabase-ceo.png';
+import showAndTell from '../assets/events/show-and-tell-supabase-ceo.jpg';
 import learnathon from '../assets/events/aimto-learnathon.jpg';
 import hackathon from '../assets/events/anthropic-cursor-hackathon-malaysia.png';
 import workshops from '../assets/events/workshops.jpg';
@@ -47,12 +47,12 @@ const sources = [
 
 // The background is swapped from JS, so pre-generate a responsive set for each event.
 const events = await Promise.all(sources.map(async event => {
-	// Cap at source width (~2200 for JPGs; PNGs are ~1K-wide and Astro will not upscale).
+	// Cap at source width (~2200 for most JPGs; the Show & Tell original is 3840).
 	const background = await getImage({
 		src: event.image,
-		widths: [960, 1440, 1920, 2200],
+		widths: [960, 1440, 1920, 2560, 3840],
 		format: 'webp',
-		quality: 88,
+		quality: 90,
 	});
 	return { ...event, background };
 }));
@@ -139,7 +139,7 @@ const backgroundSizes = '100vw';
 								widths={[360, 720, 1080]}
 								sizes="(max-width: 800px) 6rem, 7.5rem"
 								format="webp"
-								quality={88}
+								quality={90}
 								loading="lazy"
 								decoding="async"
 								style={`object-position: ${event.position}`}

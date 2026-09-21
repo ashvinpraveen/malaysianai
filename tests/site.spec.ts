@@ -269,6 +269,53 @@ test('event autoplay advances over the background and resumes after card interac
 	}
 });
 
+test('events frame cutouts hug the title, calendar CTA, and selected event', async ({ page, isMobile }) => {
+	test.skip(isMobile, 'Desktop SVG frame only');
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	await page.goto('/');
+	const section = page.locator('#events');
+	await section.scrollIntoViewIfNeeded();
+	await expect(section).toHaveClass(/is-in-view/);
+	await expect.poll(async () => section.locator('.events-outline').getAttribute('data-header-bottom')).toBeTruthy();
+
+	const geometry = await page.evaluate(() => {
+		const root = document.querySelector('#events')!;
+		const visual = root.querySelector('.events-visual')!.getBoundingClientRect();
+		const header = root.querySelector('.events-header')!.getBoundingClientRect();
+		const button = root.querySelector('.events-calendar-link')!.getBoundingClientRect();
+		const selected = root.querySelector('.events-selected')!.getBoundingClientRect();
+		const svg = root.querySelector<SVGSVGElement>('.events-outline')!;
+		return {
+			headerBottom: header.bottom - visual.top,
+			headerRight: header.right - visual.left,
+			buttonBottom: button.bottom - visual.top,
+			selectedBottom: selected.bottom - visual.top,
+			selectedLeft: selected.left - visual.left,
+			pocketHeaderBottom: Number(svg.dataset.headerBottom),
+			pocketHeaderRight: Number(svg.dataset.headerRight),
+			pocketSelectedBottom: Number(svg.dataset.selectedBottom),
+			pocketSelectedLeft: Number(svg.dataset.selectedLeft),
+			clipPath: getComputedStyle(root.querySelector('.events-background')!).clipPath,
+		};
+	});
+	expect(geometry.clipPath).toMatch(/path\(/i);
+	expect(geometry.pocketHeaderBottom).toBeGreaterThanOrEqual(geometry.buttonBottom - 1);
+	expect(Math.abs(geometry.pocketHeaderBottom - geometry.headerBottom)).toBeLessThan(2);
+	expect(Math.abs(geometry.pocketHeaderRight - geometry.headerRight)).toBeLessThan(2);
+	expect(Math.abs(geometry.pocketSelectedBottom - geometry.selectedBottom)).toBeLessThan(2);
+	expect(Math.abs(geometry.pocketSelectedLeft - geometry.selectedLeft)).toBeLessThan(2);
+
+	await page.locator('[data-event-card]').nth(2).click();
+	await expect(page.locator('[data-event-title]')).toHaveText('Anthropic × Cursor Hackathon Malaysia');
+	await expect.poll(async () => page.evaluate(() => {
+		const root = document.querySelector('#events')!;
+		const selected = root.querySelector('.events-selected')!.getBoundingClientRect();
+		const visual = root.querySelector('.events-visual')!.getBoundingClientRect();
+		const svg = root.querySelector<SVGSVGElement>('.events-outline')!;
+		return Math.abs(Number(svg.dataset.selectedBottom) - (selected.bottom - visual.top));
+	})).toBeLessThan(2);
+});
+
 test('reduced motion disables event and testimonial autoplay', async ({ page }) => {
 	await page.emulateMedia({ reducedMotion: 'reduce' });
 	await page.goto('/');

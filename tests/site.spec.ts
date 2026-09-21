@@ -99,6 +99,8 @@ test('homepage copy points people at communities and the add-community contact f
 	await expect(page.locator('.hero-card .intro')).toContainText("Discover Malaysia's AI communities and events.");
 	await expect(page.locator('.hero-actions .card-link')).toHaveText('Join residency');
 	await expect(page.locator('.hero-actions .card-link')).toHaveAttribute('href', 'https://platform.malaysian.ai');
+	await expect(page.locator('.hero-actions .hero-events-link')).toHaveText('View events');
+	await expect(page.locator('.hero-actions .hero-events-link')).toHaveAttribute('href', 'https://luma.com/malaysianai');
 	await expect(page.locator('.hero-announcement').getByRole('link', { name: 'Join our Residency.' })).toHaveAttribute('href', 'https://platform.malaysian.ai');
 	await page.locator('#communities').scrollIntoViewIfNeeded();
 	await expect(page.getByRole('heading', { level: 2, name: /Malaysia's AI/ })).toBeVisible();

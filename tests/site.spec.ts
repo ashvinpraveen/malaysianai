@@ -585,3 +585,27 @@ test('residency show and tell points at Luma with clear section headings', async
 		'https://luma.com/malaysianai',
 	);
 });
+
+test('residency2 messaging draft sells the cohort thesis and stays noindex', async ({ page }) => {
+	const response = await page.goto('/residency2');
+	expect(response?.status()).toBe(200);
+	await expect(page.getByRole('heading', { level: 1 })).toContainText('Two months at Malaysian AI');
+	await expect(page.getByRole('heading', { level: 2, name: 'Who this is for' })).toBeVisible();
+	await expect(page.getByRole('heading', { level: 2, name: 'Who this is not for' })).toBeVisible();
+	await expect(page.getByRole('heading', { level: 2, name: 'What residents get' })).toBeVisible();
+	await expect(page.getByRole('heading', { level: 2, name: 'Resident stories' })).toBeVisible();
+	await expect(page.getByRole('heading', { level: 2, name: 'How applying works' })).toBeVisible();
+	await expect(page.locator('#stories')).toContainText('Cleve');
+	await expect(page.locator('#stories')).toContainText('Seavoice');
+	await expect(page.getByRole('link', { name: 'Apply now' }).first()).toHaveAttribute(
+		'href',
+		'https://platform.malaysian.ai',
+	);
+	await expect(page.getByRole('link', { name: /Join a Thursday Show & Tell/i })).toHaveAttribute(
+		'href',
+		'https://luma.com/malaysianai',
+	);
+	await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
+	await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
+	await expect(page.locator('#residency2-faq')).toContainText('Eight weeks, full-time and in person');
+});

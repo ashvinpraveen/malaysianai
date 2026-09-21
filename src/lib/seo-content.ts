@@ -36,6 +36,12 @@ export const seoContentByPath: Record<string, Partial<Pick<PageMetadata, 'title'
 		description: 'Build your AI startup at the Malaysian AI residency in Kuala Lumpur. Find co-working space, regular demos and support with product, engineering and fundraising.',
 		keywords: ['Malaysian AI', 'AI residency Malaysia', 'AI startups Malaysia'],
 	},
+	'/residency2': {
+		title: 'Two months. A year of progress. | AI Residency Malaysia',
+		description:
+			'An eight-week, full-time AI residency in Kuala Lumpur for founders already shipping. Peer density, weekly demos, and a working home at 500 Global — 1 October to 30 November 2026.',
+		keywords: ['Malaysian AI', 'AI residency Malaysia', 'AI startups Malaysia'],
+	},
 	'/residents': {
 		title: 'AI Startups Malaysia | Meet the Residents',
 		description: 'Meet the AI startups, founders and teams building products at Malaysian AI. Explore resident companies in our Kuala Lumpur AI residency.',

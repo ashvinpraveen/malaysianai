@@ -132,6 +132,7 @@ test('crawl documents list live canonical URLs and exclude retired pages', async
 		urls.push(...[...(await sitemap.text()).matchAll(/<loc>(.*?)<\/loc>/g)].map(match => new URL(match[1]).href));
 	}
 	expect(urls.sort()).toEqual(pages.map(path => origin + path).sort());
+	expect(urls.some(url => new URL(url).pathname === '/residency2')).toBe(false);
 	const llms = await request.get('/llms.txt');
 	expect(llms.status()).toBe(200);
 	const listed = [...(await llms.text()).matchAll(/\]\((https:[^)]+)\)/g)].map(match => new URL(match[1]));

@@ -165,11 +165,19 @@ const backgroundSizes = '100vw';
 
 	function relativeBox(origin: DOMRect, element: Element) {
 		const box = element.getBoundingClientRect();
+		const transform = getComputedStyle(element).transform;
+		let shiftX = 0;
+		let shiftY = 0;
+		if (transform && transform !== 'none') {
+			const matrix = new DOMMatrixReadOnly(transform);
+			shiftX = matrix.m41;
+			shiftY = matrix.m42;
+		}
 		return {
-			l: box.left - origin.left,
-			t: box.top - origin.top,
-			r: box.right - origin.left,
-			b: box.bottom - origin.top,
+			l: box.left - origin.left - shiftX,
+			t: box.top - origin.top - shiftY,
+			r: box.right - origin.left - shiftX,
+			b: box.bottom - origin.top - shiftY,
 		};
 	}
 
@@ -431,7 +439,6 @@ const backgroundSizes = '100vw';
 		if (visual) outlineObserver.observe(visual);
 		if (header) outlineObserver.observe(header);
 		if (selected) outlineObserver.observe(selected);
-		header?.addEventListener('transitionend', scheduleOutline, { signal });
 		window.addEventListener('resize', scheduleOutline, { signal });
 		void document.fonts?.ready.then(scheduleOutline);
 		window.setTimeout(scheduleOutline, 1400);

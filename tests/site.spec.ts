@@ -327,45 +327,39 @@ test('homepage brand mark is visible on mobile', async ({ page, isMobile }) => {
 	expect(box?.height).toBeGreaterThan(24);
 });
 
-test('mobile hero outline uses convex bottom corners flush with the card', async ({ page, isMobile }) => {
-	test.skip(!isMobile, 'Mobile hero silhouette only');
+test('mobile hero uses a simple rounded frame flush with the card', async ({ page, isMobile }) => {
+	test.skip(!isMobile, 'Mobile hero frame only');
 	await page.emulateMedia({ reducedMotion: 'reduce' });
 	await page.goto('/');
-	await expect(page.locator('.hero-outline path')).toHaveAttribute('d', /.+/);
 	const geometry = await page.evaluate(() => {
 		const media = document.querySelector<HTMLElement>('.hero-media');
-		const path = document.querySelector<SVGPathElement>('.hero-outline path');
+		const frame = document.querySelector<HTMLElement>('.hero-mobile-frame');
 		const card = document.querySelector<HTMLElement>('.hero-card');
-		const outline = document.querySelector('.hero-outline');
-		if (!media || !path || !card || !outline) return null;
+		const outline = document.querySelector<HTMLElement>('.hero-outline');
+		if (!media || !frame || !card || !outline) return null;
 		const mediaBox = media.getBoundingClientRect();
-		const cardTop = card.getBoundingClientRect().top - mediaBox.top;
-		const pathBox = path.getBBox();
-		const radius = Math.min(
-			parseFloat(getComputedStyle(media).borderTopLeftRadius) || 15,
-			mediaBox.width / 4,
-			mediaBox.height / 4,
-		);
-		const pathData = path.getAttribute('d') ?? '';
-		const rightEdge = [...pathData.matchAll(/L ([\d.]+) ([\d.]+)/g)]
-			.map(match => ({ x: Number(match[1]), y: Number(match[2]) }))
-			.find(point => Math.abs(point.x - mediaBox.width) < 1 && point.y > mediaBox.height * 0.4);
+		const frameBox = frame.getBoundingClientRect();
+		const cardBox = card.getBoundingClientRect();
 		return {
-			pathBottom: pathBox.y + pathBox.height,
-			cardTop,
-			radius,
-			rightEdgeY: rightEdge?.y ?? null,
-			preserveAspectRatio: outline.getAttribute('preserveAspectRatio'),
-			// Old bug drew the right edge to cy + r, then swept the long way with flag 0.
-			hasLegacyBottomBulge: /A [\d.]+ [\d.]+ 0 0 0/.test(pathData),
+			frameHidden: frame.hidden,
+			outlineDisplay: getComputedStyle(outline).display,
+			clipPath: getComputedStyle(media).clipPath,
+			frameBottom: frameBox.bottom,
+			cardTop: cardBox.top,
+			frameTop: frameBox.top,
+			mediaLeft: mediaBox.left,
+			frameLeft: frameBox.left,
+			frameRight: frameBox.right,
+			mediaRight: mediaBox.right,
 		};
 	});
 	expect(geometry).not.toBeNull();
-	expect(Math.abs(geometry!.pathBottom - geometry!.cardTop)).toBeLessThan(1);
-	expect(geometry!.rightEdgeY).not.toBeNull();
-	expect(Math.abs(geometry!.rightEdgeY! - (geometry!.cardTop - geometry!.radius))).toBeLessThan(1);
-	expect(geometry!.hasLegacyBottomBulge).toBe(false);
-	expect(geometry!.preserveAspectRatio).toBe('none');
+	expect(geometry!.frameHidden).toBe(false);
+	expect(geometry!.outlineDisplay).toBe('none');
+	expect(geometry!.clipPath).toMatch(/inset\(/i);
+	expect(Math.abs(geometry!.frameBottom - geometry!.cardTop)).toBeLessThan(1.5);
+	expect(Math.abs(geometry!.frameLeft - geometry!.mediaLeft)).toBeLessThan(1.5);
+	expect(Math.abs(geometry!.frameRight - geometry!.mediaRight)).toBeLessThan(1.5);
 });
 
 test('brand page lists logos with descriptive alt text and footer links GitHub', async ({ page }) => {

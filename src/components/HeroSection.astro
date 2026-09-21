@@ -94,6 +94,7 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 	<svg class="hero-outline" aria-hidden="true" focusable="false" preserveAspectRatio="none">
 		<path />
 	</svg>
+	<div class="hero-mobile-frame" hidden aria-hidden="true"></div>
 
 	<a class="sky-wordmark" href="/" aria-label="Malaysian AI home">malaysian.ai</a>
 
@@ -131,11 +132,12 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 		const shell = document.querySelector<HTMLElement>('.hero-shell');
 		const svg = shell?.querySelector<SVGSVGElement>('.hero-outline');
 		const path = svg?.querySelector('path');
+		const frame = shell?.querySelector<HTMLElement>('.hero-mobile-frame');
 		const media = shell?.querySelector<HTMLElement>('.hero-media');
 		const header = shell?.querySelector<HTMLElement>('.hero-header');
 		const cta = shell?.querySelector<HTMLElement>('.hero-cta-panel');
 		const card = shell?.querySelector<HTMLElement>('.hero-card');
-		if (!shell || !svg || !path || !media || !header || !cta || !card) return;
+		if (!shell || !svg || !path || !frame || !media || !header || !cta || !card) return;
 
 		const mediaBox = media.getBoundingClientRect();
 		const width = mediaBox.width;
@@ -163,57 +165,57 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 			return `A ${n(radius)} ${n(radius)} 0 0 ${cross > 0 ? 1 : 0} ${n(toX)} ${n(toY)}`;
 		};
 
-		let outline: string;
-		if (desktop) {
-			const hy = headerBox.b;
-			const hx = headerBox.r;
-			const cx = Math.max(ctaBox.l, hx + radius * 2);
-			const cy = cardBox.t;
-			const cr = cardBox.r;
-			const r = radius;
-			outline = [
-				move(hx + r, 0),
-				line(cx - r, 0),
-				quarter(cx - r, 0, cx - r, r, cx, r),
-				line(cx, hy - r),
-				quarter(cx, hy - r, cx + r, hy - r, cx + r, hy),
-				line(width - r, hy),
-				quarter(width - r, hy, width - r, hy + r, width, hy + r),
-				line(width, height - r),
-				quarter(width, height - r, width - r, height - r, width - r, height),
-				line(cr + r, height),
-				quarter(cr + r, height, cr + r, height - r, cr, height - r),
-				line(cr, cy + r),
-				quarter(cr, cy + r, cr - r, cy + r, cr - r, cy),
-				line(r, cy),
-				quarter(r, cy, r, cy - r, 0, cy - r),
-				line(0, hy + r),
-				quarter(0, hy + r, r, hy + r, r, hy),
-				line(hx - r, hy),
-				quarter(hx - r, hy, hx - r, hy - r, hx, hy - r),
-				line(hx, r),
-				quarter(hx, r, hx + r, r, hx + r, 0),
-				'Z',
-			].join(' ');
-		} else {
-			// Mobile silhouette is a rounded rect between the header and card — convex
-			// bottom corners (cy - r), not the desktop card-notch geometry (cy + r).
-			const hy = Math.max(headerBox.b, radius);
-			const cy = cardBox.t;
-			const r = radius;
-			outline = [
-				move(r, hy),
-				line(width - r, hy),
-				quarter(width - r, hy, width - r, hy + r, width, hy + r),
-				line(width, cy - r),
-				quarter(width, cy - r, width - r, cy - r, width - r, cy),
-				line(r, cy),
-				quarter(r, cy, r, cy - r, 0, cy - r),
-				line(0, hy + r),
-				quarter(0, hy + r, r, hy + r, r, hy),
-				'Z',
-			].join(' ');
+		if (!desktop) {
+			// Mobile is just a rounded photo window between the header and card.
+			const top = Math.max(headerBox.b, 0);
+			const bottom = Math.max(cardBox.t, top);
+			const gap = parseFloat(getComputedStyle(shell).paddingTop) || 0;
+			svg.style.display = 'none';
+			path.removeAttribute('d');
+			media.style.clipPath = `inset(${n(top)}px 0 ${n(Math.max(height - bottom, 0))}px 0 round ${n(radius)}px)`;
+			frame.hidden = false;
+			frame.style.top = `${n(gap + top)}px`;
+			frame.style.left = `${n(gap)}px`;
+			frame.style.right = `${n(gap)}px`;
+			frame.style.height = `${n(Math.max(bottom - top, 0))}px`;
+			frame.style.borderRadius = `${n(radius)}px`;
+			return;
 		}
+
+		svg.style.display = '';
+		frame.hidden = true;
+		frame.removeAttribute('style');
+
+		const hy = headerBox.b;
+		const hx = headerBox.r;
+		const cx = Math.max(ctaBox.l, hx + radius * 2);
+		const cy = cardBox.t;
+		const cr = cardBox.r;
+		const r = radius;
+		const outline = [
+			move(hx + r, 0),
+			line(cx - r, 0),
+			quarter(cx - r, 0, cx - r, r, cx, r),
+			line(cx, hy - r),
+			quarter(cx, hy - r, cx + r, hy - r, cx + r, hy),
+			line(width - r, hy),
+			quarter(width - r, hy, width - r, hy + r, width, hy + r),
+			line(width, height - r),
+			quarter(width, height - r, width - r, height - r, width - r, height),
+			line(cr + r, height),
+			quarter(cr + r, height, cr + r, height - r, cr, height - r),
+			line(cr, cy + r),
+			quarter(cr, cy + r, cr - r, cy + r, cr - r, cy),
+			line(r, cy),
+			quarter(r, cy, r, cy - r, 0, cy - r),
+			line(0, hy + r),
+			quarter(0, hy + r, r, hy + r, r, hy),
+			line(hx - r, hy),
+			quarter(hx - r, hy, hx - r, hy - r, hx, hy - r),
+			line(hx, r),
+			quarter(hx, r, hx + r, r, hx + r, 0),
+			'Z',
+		].join(' ');
 
 		svg.setAttribute('viewBox', `0 0 ${n(width)} ${n(height)}`);
 		svg.setAttribute('preserveAspectRatio', 'none');
@@ -319,6 +321,18 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 		stroke-linejoin: round;
 		stroke-linecap: round;
 		vector-effect: non-scaling-stroke;
+	}
+
+	.hero-mobile-frame {
+		position: absolute;
+		z-index: 5;
+		box-sizing: border-box;
+		border: 1.5px solid var(--hero-line);
+		pointer-events: none;
+	}
+
+	.hero-mobile-frame[hidden] {
+		display: none;
 	}
 
 	.hero-art,
@@ -520,7 +534,11 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 			right: var(--hero-gap);
 			bottom: var(--hero-gap);
 			left: var(--hero-gap);
-			border-radius: var(--hero-radius) var(--hero-radius) 0 0;
+			border-radius: var(--hero-radius);
+		}
+
+		.hero-outline {
+			display: none;
 		}
 
 		.hero-art {

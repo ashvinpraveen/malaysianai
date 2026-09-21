@@ -413,7 +413,7 @@ test('mobile navigation closes on Escape and after selecting a destination', asy
 test('homepage brand mark is visible on mobile', async ({ page, isMobile }) => {
 	test.skip(!isMobile, 'Mobile logo layout only');
 	await page.goto('/');
-	const mark = page.locator('.hero-header .brand-mark img');
+	const mark = page.locator('.hero-header .brand-mark img:visible');
 	await expect(mark).toBeVisible();
 	expect(await mark.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
 	const box = await mark.boundingBox();

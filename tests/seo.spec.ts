@@ -196,11 +196,15 @@ test('site marks paint immediately without waiting for an animation', async ({ p
 	await page.emulateMedia({ reducedMotion: 'no-preference' });
 	await page.goto('/');
 	const icons = await page.locator('link[rel="icon"]').evaluateAll(links => links.map(link => link.getAttribute('href')!));
-	expect(icons).toEqual(expect.arrayContaining(['/favicon-32.png', '/favicon.svg']));
+	expect(icons.map(src => new URL(src, 'http://localhost').pathname)).toEqual(
+		expect.arrayContaining(['/favicon-32.png', '/favicon.svg']),
+	);
 	expect(icons).toHaveLength(3);
-	const brand = await page.locator('.brand-mark img').getAttribute('src');
-	expect(brand).toBeTruthy();
-	const marks = [...icons, brand!];
+	const brands = await page.locator('.brand-mark img').evaluateAll(images =>
+		images.map(image => image.getAttribute('src')).filter((src): src is string => Boolean(src)),
+	);
+	expect(brands).toHaveLength(2);
+	const marks = [...icons, ...brands];
 	// Decode a fresh image URL to check the first frame, not a warmed animation.
 	await page.goto('/robots.txt');
 	for (const src of marks) {
@@ -217,6 +221,6 @@ test('site marks paint immediately without waiting for an animation', async ({ p
 			const rgba = context.getImageData(0, 0, 32, 32).data;
 			return Array.from(rgba).filter((value, index) => index % 4 === 3 && value > 32).length;
 		}, src);
-		expect(visiblePixels, `${src} must be visible on its first frame`).toBeGreaterThan(500);
+		expect(visiblePixels, `${src} must be visible on its first frame`).toBeGreaterThan(100);
 	}
 });

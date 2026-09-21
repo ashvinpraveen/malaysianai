@@ -40,7 +40,7 @@ const expectedMetadata = [
 	{
 		path: '/brand',
 		title: 'Malaysian AI Brand Kit | Logos, Colours & Fonts | Malaysian AI',
-		description: 'Download official Malaysian AI logos in SVG and PNG, plus brand colours and typography. Square marks, horizontal and stacked lockups for dark and light backgrounds.',
+		description: 'Download official Malaysian AI logos in SVG and PNG, plus brand colours and typography. Geometric marks, wordmarks, horizontal and stacked lockups for dark and light backgrounds.',
 	},
 	{
 		path: '/blog/largest-ai-learnathon',

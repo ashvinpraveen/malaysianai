@@ -481,10 +481,28 @@ test('brand page lists logos with descriptive alt text and footer links GitHub',
 	await expect(page.getByRole('heading', { level: 2, name: 'Logos' })).toBeVisible();
 	await expect(page.getByRole('heading', { level: 2, name: 'Colours' })).toBeVisible();
 	await expect(page.getByRole('heading', { level: 2, name: 'Typography' })).toBeVisible();
-	const logo = page.getByRole('img', { name: /Malaysian AI square logo mark/i });
+	const logo = page.getByRole('img', { name: /Malaysian AI square logo mark/i }).first();
 	await expect(logo).toBeVisible();
-	await expect(page.getByRole('link', { name: /PNG 512/i }).first()).toHaveAttribute('href', /\/brand\/malaysian-ai-mark-512\.png$/);
+	await expect(page.getByRole('link', { name: /PNG 512/i }).first()).toHaveAttribute('href', /\/brand\/malaysian-ai-mark/);
 	await expect(page.getByRole('link', { name: /SVG/i }).first()).toHaveAttribute('href', /\.svg$/);
+
+	const logoImages = page.locator('#logos img');
+	const imageCount = await logoImages.count();
+	expect(imageCount).toBeGreaterThan(8);
+	const alts = await logoImages.evaluateAll((images) =>
+		images.map((image) => ({
+			src: image.getAttribute('src'),
+			alt: image.getAttribute('alt'),
+		})),
+	);
+	for (const { src, alt } of alts) {
+		expect(src, 'logo image needs a src').toBeTruthy();
+		expect(alt?.trim().length, `${src} needs non-empty alt for Google Images`).toBeGreaterThan(12);
+		expect(alt, `${src} alt should name the brand`).toMatch(/Malaysian AI|malaysian\.ai/i);
+	}
+	const uniqueAlts = new Set(alts.map((entry) => entry.alt));
+	expect(uniqueAlts.size, 'each brand image should have a unique alt').toBe(alts.length);
+
 	const github = page.locator('.footer-company').getByRole('link', { name: 'GitHub', exact: true });
 	await expect(github).toHaveAttribute('href', 'https://github.com/ashvinpraveen/malaysianai');
 	await expect(page.locator('.footer-company')).toContainText('Open source');

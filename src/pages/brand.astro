@@ -21,8 +21,8 @@ const lightColors = brandColors.filter((color) => color.theme === 'light');
 	<section id="logos" aria-labelledby="logos-title">
 		<h2 id="logos-title">Logos</h2>
 		<p>
-			Download SVG for crisp scaling, or PNG at the size you need. Transparent SVGs are marked without a background;
-			“+ bg” files include the recommended dark or light field.
+			Masters come from the official Sept 2026 lockups. Download SVG wrappers or PNG at the size you need.
+			Transparent files keep the logo alone; “+ bg” and sized PNGs include the recommended dark or light field.
 		</p>
 
 		<ul class="asset-grid">
@@ -33,8 +33,8 @@ const lightColors = brandColors.filter((color) => color.theme === 'light');
 							<img
 								src={asset.preview}
 								alt={asset.alt}
-								width={asset.previewClass === 'square' ? 256 : asset.previewClass === 'stacked' ? 284 : 352}
-								height={asset.previewClass === 'square' ? 256 : asset.previewClass === 'stacked' ? 180 : 68}
+								width={asset.previewClass === 'square' ? 256 : asset.previewClass === 'stacked' ? 568 : 704}
+								height={asset.previewClass === 'square' ? 256 : asset.previewClass === 'stacked' ? 400 : 174}
 								loading="lazy"
 								decoding="async"
 							/>
@@ -46,8 +46,19 @@ const lightColors = brandColors.filter((color) => color.theme === 'light');
 								{asset.downloads.map((file) => (
 									<li>
 										<a href={file.href} download>
-											{file.label}
-											<span class="format">{file.format}</span>
+											<img
+												class="download-thumb"
+												src={file.href}
+												alt={file.alt}
+												width={48}
+												height={48}
+												loading="lazy"
+												decoding="async"
+											/>
+											<span class="download-label">
+												{file.label}
+												<span class="format">{file.format}</span>
+											</span>
 										</a>
 									</li>
 								))}
@@ -123,7 +134,7 @@ const lightColors = brandColors.filter((color) => color.theme === 'light');
 		<ul class="guidelines">
 			<li>Keep clear space around the lockup roughly the height of the mark.</li>
 			<li>Do not stretch, recolour, outline, or add drop shadows to the logo.</li>
-			<li>Use the cream wordmark on dark fields and the deep-teal wordmark on light fields.</li>
+			<li>Use white marks and lockups on dark fields; use black marks and lockups on light fields.</li>
 			<li>Prefer the horizontal lockup; use the square mark alone only when the wordmark will not fit.</li>
 			<li>When writing about the brand in prose, “Malaysian AI” is fine; the product domain reads as malaysian.ai.</li>
 		</ul>
@@ -246,8 +257,8 @@ const lightColors = brandColors.filter((color) => color.theme === 'light');
 	.download-list a {
 		display: inline-flex;
 		align-items: center;
-		gap: 0.4rem;
-		padding: 0.4rem 0.7rem;
+		gap: 0.45rem;
+		padding: 0.35rem 0.65rem 0.35rem 0.35rem;
 		border: 1px solid var(--page-border);
 		border-radius: var(--button-radius);
 		color: var(--page-text);
@@ -261,6 +272,25 @@ const lightColors = brandColors.filter((color) => color.theme === 'light');
 	.download-list a:focus-visible {
 		border-color: var(--text-hover);
 		background: var(--surface-background);
+	}
+
+	.download-thumb {
+		display: block;
+		width: 1.65rem;
+		height: 1.65rem;
+		object-fit: contain;
+		flex-shrink: 0;
+		border-radius: 0.2rem;
+		background:
+			linear-gradient(45deg, rgba(127, 127, 127, 0.16) 25%, transparent 25%) 0 0 / 0.5rem 0.5rem,
+			linear-gradient(-45deg, rgba(127, 127, 127, 0.16) 25%, transparent 25%) 0 0.25rem / 0.5rem 0.5rem,
+			var(--surface-background);
+	}
+
+	.download-label {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
 	}
 
 	.format {

@@ -281,16 +281,33 @@ test('events frame cutouts hug the title, calendar CTA, and selected event', asy
 	const geometry = await page.evaluate(() => {
 		const root = document.querySelector('#events')!;
 		const visual = root.querySelector('.events-visual')!.getBoundingClientRect();
-		const header = root.querySelector('.events-header')!.getBoundingClientRect();
+		const headerEl = root.querySelector<HTMLElement>('.events-header')!;
+		const selectedEl = root.querySelector<HTMLElement>('.events-selected')!;
 		const button = root.querySelector('.events-calendar-link')!.getBoundingClientRect();
-		const selected = root.querySelector('.events-selected')!.getBoundingClientRect();
 		const svg = root.querySelector<SVGSVGElement>('.events-outline')!;
+		const shiftOf = (element: HTMLElement) => {
+			const transform = getComputedStyle(element).transform;
+			if (!transform || transform === 'none') return { x: 0, y: 0 };
+			const matrix = new DOMMatrixReadOnly(transform);
+			return { x: matrix.m41, y: matrix.m42 };
+		};
+		const layout = (element: HTMLElement) => {
+			const box = element.getBoundingClientRect();
+			const shift = shiftOf(element);
+			return {
+				right: box.right - visual.left - shift.x,
+				bottom: box.bottom - visual.top - shift.y,
+			};
+		};
+		const header = layout(headerEl);
+		const selected = layout(selectedEl);
+		const headerShift = shiftOf(headerEl);
 		return {
-			headerBottom: header.bottom - visual.top,
-			headerRight: header.right - visual.left,
-			buttonBottom: button.bottom - visual.top,
-			selectedBottom: selected.bottom - visual.top,
-			selectedLeft: selected.left - visual.left,
+			headerBottom: header.bottom,
+			headerRight: header.right,
+			buttonBottom: button.bottom - visual.top - headerShift.y,
+			selectedBottom: selected.bottom,
+			selectedLeft: selectedEl.getBoundingClientRect().left - visual.left,
 			pocketHeaderBottom: Number(svg.dataset.headerBottom),
 			pocketHeaderRight: Number(svg.dataset.headerRight),
 			pocketSelectedBottom: Number(svg.dataset.selectedBottom),
@@ -314,6 +331,36 @@ test('events frame cutouts hug the title, calendar CTA, and selected event', asy
 		const svg = root.querySelector<SVGSVGElement>('.events-outline')!;
 		return Math.abs(Number(svg.dataset.selectedBottom) - (selected.bottom - visual.top));
 	})).toBeLessThan(2);
+});
+
+test('events title cutout does not jump when the entrance motion finishes', async ({ page, isMobile }) => {
+	test.skip(isMobile, 'Desktop SVG frame only');
+	await page.emulateMedia({ reducedMotion: 'no-preference' });
+	await page.goto('/');
+	const section = page.locator('#events');
+	await section.evaluate(node => node.scrollIntoView({ block: 'start', behavior: 'instant' }));
+	await expect(section).toHaveClass(/is-in-view/);
+	const measure = () => page.evaluate(() => {
+		const header = document.querySelector<HTMLElement>('.events-header')!;
+		const visual = document.querySelector('.events-visual')!;
+		const svg = document.querySelector<SVGSVGElement>('.events-outline')!;
+		const box = header.getBoundingClientRect();
+		const origin = visual.getBoundingClientRect();
+		const transform = getComputedStyle(header).transform;
+		const shiftY = transform && transform !== 'none' ? new DOMMatrixReadOnly(transform).m42 : 0;
+		return {
+			pocket: Number(svg.dataset.headerBottom),
+			restBottom: box.bottom - origin.top - shiftY,
+			shiftY,
+		};
+	});
+	await expect.poll(async () => (await measure()).pocket).toBeGreaterThan(0);
+	const duringMotion = await measure();
+	expect(Math.abs(duringMotion.pocket - duringMotion.restBottom)).toBeLessThan(2);
+	await expect.poll(async () => (await measure()).shiftY).toBe(0);
+	const afterMotion = await measure();
+	expect(afterMotion.pocket).toBe(duringMotion.pocket);
+	expect(Math.abs(afterMotion.pocket - afterMotion.restBottom)).toBeLessThan(2);
 });
 
 test('reduced motion disables event and testimonial autoplay', async ({ page }) => {

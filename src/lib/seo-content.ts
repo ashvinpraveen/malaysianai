@@ -51,6 +51,11 @@ export const seoContentByPath: Record<string, Partial<Pick<PageMetadata, 'title'
 		description: 'Contact Malaysian AI about community events, workshops or the Kuala Lumpur residency. Add your Malaysian community to the directory or find an upcoming event.',
 		keywords: [...communityKeywords, 'AI events Malaysia', 'AI workshops Malaysia'],
 	},
+	'/brand': {
+		title: 'Malaysian AI Brand Kit | Logos, Colours & Fonts',
+		description: 'Download official Malaysian AI logos in SVG and PNG, plus brand colours and typography. Square marks, horizontal and stacked lockups for dark and light backgrounds.',
+		keywords: [...communityKeywords, 'Malaysian AI logo', 'Malaysia AI brand', 'Malaysian AI brand kit'],
+	},
 	'/blog/largest-ai-learnathon': {
 		keywords: ['Malaysian AI', 'Malaysia AI community', 'AI events Malaysia', 'AI workshops Malaysia', 'generative AI Malaysia'],
 	},

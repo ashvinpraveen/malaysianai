@@ -1,0 +1,398 @@
+---
+import InfoPage from '../layouts/InfoPage.astro';
+import { GITHUB_URL } from '../consts';
+import { brandAssets, brandColors, brandFonts } from '../lib/brand-kit';
+
+const darkColors = brandColors.filter((color) => color.theme === 'dark' || color.theme === 'shared');
+const lightColors = brandColors.filter((color) => color.theme === 'light');
+---
+
+<InfoPage
+	title="Brand"
+	description="Official Malaysian AI logos, colours, and type — download the right format so partners, press, and builders use the brand accurately."
+>
+	<nav class="brand-toc" aria-label="Brand sections">
+		<a href="#logos">Logos</a>
+		<a href="#colours">Colours</a>
+		<a href="#typography">Typography</a>
+		<a href="#usage">Usage</a>
+	</nav>
+
+	<section id="logos" aria-labelledby="logos-title">
+		<h2 id="logos-title">Logos</h2>
+		<p>
+			Download SVG for crisp scaling, or PNG at the size you need. Transparent SVGs are marked without a background;
+			“+ bg” files include the recommended dark or light field.
+		</p>
+
+		<ul class="asset-grid">
+			{
+				brandAssets.map((asset) => (
+					<li class="asset-card">
+						<figure class:list={['asset-preview', asset.previewClass, asset.previewTheme]}>
+							<img
+								src={asset.preview}
+								alt={asset.alt}
+								width={asset.previewClass === 'square' ? 256 : asset.previewClass === 'stacked' ? 284 : 352}
+								height={asset.previewClass === 'square' ? 256 : asset.previewClass === 'stacked' ? 180 : 68}
+								loading="lazy"
+								decoding="async"
+							/>
+						</figure>
+						<div class="asset-copy">
+							<h3>{asset.label}</h3>
+							<p>{asset.description}</p>
+							<ul class="download-list">
+								{asset.downloads.map((file) => (
+									<li>
+										<a href={file.href} download>
+											{file.label}
+											<span class="format">{file.format}</span>
+										</a>
+									</li>
+								))}
+							</ul>
+						</div>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	<section id="colours" aria-labelledby="colours-title">
+		<h2 id="colours-title">Colours</h2>
+		<p>Match the site themes. Prefer named CSS variables when you are working in this codebase.</p>
+
+		<h3 class="palette-label">Dark theme</h3>
+		<ul class="swatch-grid">
+			{
+				darkColors.map((color) => (
+					<li class="swatch">
+						<div class="chip" style={`background:${color.hex}`} aria-hidden="true"></div>
+						<div>
+							<p class="swatch-name">{color.name}</p>
+							<p class="swatch-hex"><code>{color.hex}</code>{color.cssVar ? <> · <code>{color.cssVar}</code></> : null}</p>
+							<p class="swatch-usage">{color.usage}</p>
+						</div>
+					</li>
+				))
+			}
+		</ul>
+
+		<h3 class="palette-label">Light theme</h3>
+		<ul class="swatch-grid">
+			{
+				lightColors.map((color) => (
+					<li class="swatch">
+						<div class="chip" style={`background:${color.hex}`} aria-hidden="true"></div>
+						<div>
+							<p class="swatch-name">{color.name}</p>
+							<p class="swatch-hex"><code>{color.hex}</code>{color.cssVar ? <> · <code>{color.cssVar}</code></> : null}</p>
+							<p class="swatch-usage">{color.usage}</p>
+						</div>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	<section id="typography" aria-labelledby="typography-title">
+		<h2 id="typography-title">Typography</h2>
+		<p>Three families carry the voice: a literary display, an accessible body sans, and a rare pixel accent.</p>
+
+		<ul class="font-list">
+			{
+				brandFonts.map((font) => (
+					<li class="font-card">
+						<p class="font-meta">
+							<span>{font.role}</span>
+							<code>{font.cssVar}</code>
+							<span>{font.weights}</span>
+						</p>
+						<p class:list={['font-sample', font.role.toLowerCase()]}>{font.sample}</p>
+						<p class="font-name">{font.name}</p>
+						<p>{font.notes}</p>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	<section id="usage" aria-labelledby="usage-title">
+		<h2 id="usage-title">Usage</h2>
+		<ul class="guidelines">
+			<li>Keep clear space around the lockup roughly the height of the mark.</li>
+			<li>Do not stretch, recolour, outline, or add drop shadows to the logo.</li>
+			<li>Use the cream wordmark on dark fields and the deep-teal wordmark on light fields.</li>
+			<li>Prefer the horizontal lockup; use the square mark alone only when the wordmark will not fit.</li>
+			<li>When writing about the brand in prose, “Malaysian AI” is fine; the product domain reads as malaysian.ai.</li>
+		</ul>
+		<p>
+			This website is open source. Suggest brand improvements or ship a fix on{' '}
+			<a href={GITHUB_URL}>GitHub</a>.
+		</p>
+	</section>
+</InfoPage>
+
+<style>
+	.brand-toc {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.85rem 1.35rem;
+		margin: -1rem 0 2.5rem;
+		font-size: var(--text-sm);
+	}
+
+	.brand-toc a {
+		text-decoration-thickness: 1px;
+	}
+
+	.asset-grid,
+	.swatch-grid,
+	.font-list,
+	.download-list,
+	.guidelines {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.asset-grid {
+		display: grid;
+		gap: 1.75rem;
+		margin-top: 1.75rem;
+	}
+
+	.asset-card {
+		display: grid;
+		grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+		gap: 1.5rem;
+		align-items: center;
+		padding-bottom: 1.75rem;
+		border-bottom: 1px solid var(--page-border);
+	}
+
+	.asset-card:last-child {
+		border-bottom: 0;
+		padding-bottom: 0;
+	}
+
+	.asset-preview {
+		display: grid;
+		place-items: center;
+		margin: 0;
+		min-height: 9rem;
+		padding: 1.25rem;
+		border: 1px solid var(--page-border);
+		border-radius: var(--radius-media);
+		background: var(--card-background);
+	}
+
+	.asset-preview.dark {
+		background: #06090f;
+		border-color: rgba(255, 255, 255, 0.12);
+	}
+
+	.asset-preview.light {
+		background: #f4efe6;
+		border-color: rgba(16, 43, 42, 0.16);
+	}
+
+	.asset-preview.neutral {
+		background:
+			linear-gradient(45deg, rgba(127, 127, 127, 0.18) 25%, transparent 25%) 0 0 / 1rem 1rem,
+			linear-gradient(-45deg, rgba(127, 127, 127, 0.18) 25%, transparent 25%) 0 0.5rem / 1rem 1rem,
+			var(--card-background);
+	}
+
+	.asset-preview img {
+		display: block;
+		width: auto;
+		max-width: 100%;
+		height: auto;
+	}
+
+	.asset-preview.square img {
+		width: min(8rem, 100%);
+		height: auto;
+	}
+
+	.asset-preview.wide img {
+		width: min(22rem, 100%);
+	}
+
+	.asset-preview.stacked img {
+		width: min(11rem, 100%);
+	}
+
+	.asset-copy h3 {
+		margin: 0 0 0.5rem;
+		font: 400 var(--text-section-title) / 1.1 var(--font-display);
+		letter-spacing: -0.03em;
+	}
+
+	.asset-copy > p {
+		margin: 0 0 1rem;
+		max-width: 36rem;
+		color: var(--text-soft);
+	}
+
+	.download-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.55rem;
+	}
+
+	.download-list a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding: 0.4rem 0.7rem;
+		border: 1px solid var(--page-border);
+		border-radius: var(--button-radius);
+		color: var(--page-text);
+		background: var(--card-background);
+		font-size: var(--text-sm);
+		text-decoration: none;
+		transition: border-color 160ms ease, background 160ms ease;
+	}
+
+	.download-list a:hover,
+	.download-list a:focus-visible {
+		border-color: var(--text-hover);
+		background: var(--surface-background);
+	}
+
+	.format {
+		color: var(--text-muted);
+		font-size: var(--text-xs);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+	}
+
+	.palette-label {
+		margin: 2rem 0 1rem;
+		font-size: var(--text-sm);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--text-muted);
+	}
+
+	.swatch-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1rem 1.5rem;
+	}
+
+	.swatch {
+		display: grid;
+		grid-template-columns: 3.5rem minmax(0, 1fr);
+		gap: 0.9rem;
+		align-items: start;
+	}
+
+	.chip {
+		width: 3.5rem;
+		height: 3.5rem;
+		border: 1px solid var(--page-border);
+		border-radius: 0.45rem;
+	}
+
+	.swatch-name {
+		margin: 0 0 0.2rem;
+		font-size: var(--text-sm);
+	}
+
+	.swatch-hex,
+	.swatch-usage {
+		margin: 0;
+		font-size: var(--text-xs);
+		line-height: var(--leading-body);
+		color: var(--text-soft);
+	}
+
+	.swatch-hex code {
+		font-size: 0.78rem;
+	}
+
+	.font-list {
+		display: grid;
+		gap: 1.5rem;
+		margin-top: 1.5rem;
+	}
+
+	.font-card {
+		padding-bottom: 1.5rem;
+		border-bottom: 1px solid var(--page-border);
+	}
+
+	.font-card:last-child {
+		border-bottom: 0;
+		padding-bottom: 0;
+	}
+
+	.font-meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem 1.25rem;
+		margin: 0 0 0.75rem;
+		font-size: var(--text-xs);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--text-muted);
+	}
+
+	.font-sample {
+		margin: 0 0 0.35rem;
+		color: var(--text-heading);
+		line-height: 1.15;
+	}
+
+	.font-sample.display {
+		font: 400 clamp(2rem, 4vw, 3rem) / 1 var(--font-display);
+		letter-spacing: -0.04em;
+	}
+
+	.font-sample.body {
+		font: 400 1.25rem / 1.45 var(--font-body);
+	}
+
+	.font-sample.accent {
+		font: 400 1.6rem / 1.2 var(--font-pixel);
+	}
+
+	.font-name {
+		margin: 0 0 0.35rem;
+		font-size: var(--text-sm);
+	}
+
+	.font-card > p:last-child {
+		margin: 0;
+		max-width: 40rem;
+		color: var(--text-soft);
+	}
+
+	.guidelines {
+		display: grid;
+		gap: 0.75rem;
+		margin: 1rem 0 1.5rem;
+		padding-left: 1.1rem;
+		list-style: disc;
+		max-width: 42rem;
+	}
+
+	.guidelines li {
+		padding-left: 0.15rem;
+	}
+
+	@media (max-width: 720px) {
+		.asset-card,
+		.swatch-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.asset-preview {
+			min-height: 7.5rem;
+		}
+	}
+</style>

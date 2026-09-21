@@ -10,7 +10,7 @@ test('public destinations load and the hero uses responsive images', async ({ pa
 	page.on('pageerror', error => errors.push(error.message));
 	for (const [path, heading] of [
 		['/', 'Learn, build and'], ['/residency', 'Join the Malaysian.ai residency'],
-		['/residents', 'Meet the residents'], ['/contact', 'Get in touch'], ['/blog', 'Malaysian AI Blog'],
+		['/residents', 'Meet the residents'], ['/contact', 'Get in touch'], ['/brand', 'Brand'], ['/blog', 'Malaysian AI Blog'],
 	]) {
 		const response = await page.goto(path);
 		expect(response?.status()).toBe(200);
@@ -351,6 +351,21 @@ test('mobile hero outline uses convex bottom corners flush with the card', async
 	expect(geometry!.preserveAspectRatio).toBe('none');
 });
 
+test('brand page lists logos with descriptive alt text and footer links GitHub', async ({ page }) => {
+	await page.goto('/brand');
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Brand');
+	await expect(page.getByRole('heading', { level: 2, name: 'Logos' })).toBeVisible();
+	await expect(page.getByRole('heading', { level: 2, name: 'Colours' })).toBeVisible();
+	await expect(page.getByRole('heading', { level: 2, name: 'Typography' })).toBeVisible();
+	const logo = page.getByRole('img', { name: /Malaysian AI square logo mark/i });
+	await expect(logo).toBeVisible();
+	await expect(page.getByRole('link', { name: /PNG 512/i }).first()).toHaveAttribute('href', /\/brand\/malaysian-ai-mark-512\.png$/);
+	await expect(page.getByRole('link', { name: /SVG/i }).first()).toHaveAttribute('href', /\.svg$/);
+	const github = page.locator('.footer-company').getByRole('link', { name: 'GitHub', exact: true });
+	await expect(github).toHaveAttribute('href', 'https://github.com/ashvinpraveen/malaysianai');
+	await expect(page.locator('.footer-company')).toContainText('Open source');
+});
+
 test('theme toggle follows the system scheme and can lock light or dark', async ({ page }) => {
 	await page.emulateMedia({ colorScheme: 'dark' });
 	await page.goto('/');
@@ -420,4 +435,34 @@ test('residency announcement banner opens the residency page and can be dismisse
 	await page.locator('.footer-company').getByRole('link', { name: 'About', exact: true }).click();
 	await expect(page).toHaveURL(/\/about\/?$/);
 	await expect(banner).toBeHidden();
+});
+
+test('residency show and tell points at Luma with clear section headings', async ({ page }) => {
+	await page.goto('/residency');
+	const visit = page.locator('.residency-visit');
+	const teams = page.locator('.resident-teams');
+	await expect(visit.getByRole('heading', { level: 2, name: 'Come on a Thursday' })).toBeVisible();
+	await expect(teams.getByRole('heading', { level: 2, name: 'Resident teams' })).toBeVisible();
+	await expect(visit.getByRole('link', { name: /Join a Thursday Show & Tell/i })).toHaveAttribute(
+		'href',
+		'https://luma.com/malaysianai',
+	);
+	const sizes = await page.evaluate(() => {
+		const visitTitle = document.querySelector('.residency-visit h2');
+		const teamsTitle = document.querySelector('.resident-teams h2');
+		if (!visitTitle || !teamsTitle) return null;
+		return {
+			visit: Number.parseFloat(getComputedStyle(visitTitle).fontSize),
+			teams: Number.parseFloat(getComputedStyle(teamsTitle).fontSize),
+		};
+	});
+	expect(sizes).not.toBeNull();
+	expect(sizes!.visit).toBeGreaterThanOrEqual(18);
+	expect(sizes!.teams).toBeGreaterThanOrEqual(18);
+
+	await page.goto('/');
+	await expect(page.locator('#residency').getByRole('link', { name: 'Thursday Show & Tell' })).toHaveAttribute(
+		'href',
+		'https://luma.com/malaysianai',
+	);
 });

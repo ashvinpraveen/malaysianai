@@ -1,6 +1,6 @@
 ---
 import BrandLockup from './BrandLockup.astro';
-import { APPLY_FORM_URL, LUMA_URL } from '../consts';
+import { LUMA_URL } from '../consts';
 
 interface Props {
 	home?: boolean;
@@ -42,7 +42,7 @@ const links = [
 					))}
 					<a class="mobile-menu-events" href={LUMA_URL}>View events</a>
 				</nav>
-				<a class="mobile-menu-join site-button" href={APPLY_FORM_URL}>Join residency</a>
+				<a class="mobile-menu-join site-button" href="/residency">Join residency</a>
 			</div>
 		</dialog>
 	</div>
@@ -61,7 +61,7 @@ const links = [
 </header>
 
 <div class:list={['hero-cta-panel', { 'is-minimal': minimal }]}>
-	<a class="nav-cta site-button" href={APPLY_FORM_URL}>Join residency</a>
+	<a class="nav-cta site-button" href="/residency">Join residency</a>
 </div>
 
 <script>

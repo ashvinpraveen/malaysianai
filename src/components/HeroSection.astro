@@ -620,17 +620,23 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 
 
 		.hero-announcement {
-			/* A quarter of the way down the photo window. */
-			top: calc(var(--hero-header-height) + (var(--hero-screen) - var(--hero-header-height) - var(--hero-gap)) * 0.25);
+			/* A sixth of the way down the photo window. */
+			top: calc(var(--hero-header-height) + (var(--hero-screen) - var(--hero-header-height) - var(--hero-gap)) / 6);
 			right: calc(var(--hero-gap) + 1rem);
+			left: calc(var(--hero-gap) + 1rem);
 			font-size: min(7.2vw, 2.4rem);
+			text-align: center;
+		}
+
+		.hero-announcement p > * {
+			margin-inline: auto;
 		}
 
 		.hero-apply {
 			display: flex;
 			width: fit-content;
 			min-height: 2.5rem;
-			margin: 0.9rem 0 0 auto;
+			margin: 0.9rem auto 0;
 			padding: 0.45rem 1.1rem;
 		}
 

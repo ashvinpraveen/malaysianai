@@ -7,6 +7,7 @@ const pages = ['/', '/about', '/brand', '/residency', '/residents', '/contact', 
 const expectedCommunityNames = [
 	'AI After Hours KL',
 	'AI HackerDorm',
+	'AISEA',
 	'AI Salon Kuala Lumpur',
 	'AI Tinkerers Kuala Lumpur',
 	'Build Club Kuala Lumpur',

@@ -169,6 +169,7 @@ test('image dialog contains keyboard focus, closes and survives page navigation'
 const communityDestinations = {
 	'AI After Hours KL': 'https://www.aiafterhours.app/',
 	'AI HackerDorm': 'https://www.aihackerdorm.com/',
+	AISEA: 'https://www.aisea.builders/',
 	'AI Salon Kuala Lumpur': 'https://www.meetup.com/ai-salon-kuala-lumpur-chapter/',
 	'AI Tinkerers Kuala Lumpur': 'https://kuala-lumpur.aitinkerers.org/',
 	'Build Club Kuala Lumpur': 'https://www.buildclub.ai/',
@@ -267,7 +268,7 @@ test('community directory lists every partner without overflowing', async ({ pag
 	const section = page.locator('#communities');
 	await section.scrollIntoViewIfNeeded();
 	const cards = section.locator('[data-community-card]');
-	await expect(cards).toHaveCount(17);
+	await expect(cards).toHaveCount(18);
 	for (const [name, href] of Object.entries(communityDestinations)) {
 		await expect(section.locator(`[data-community-card][data-name="${name}"]`)).toHaveAttribute('data-href', href);
 	}
@@ -276,7 +277,7 @@ test('community directory lists every partner without overflowing', async ({ pag
 	}
 	await expect(section.locator('[data-community-card][data-name="AI SEA"]')).toHaveCount(0);
 	await expect(section.locator('[data-community-card][data-name="Malaysian.AI"]')).toHaveCount(0);
-	await expect(cards.locator('img')).toHaveCount(17);
+	await expect(cards.locator('img')).toHaveCount(18);
 	await expect.poll(() => cards.locator('img').evaluateAll(images => images.every(image => {
 		const logo = image as HTMLImageElement;
 		return logo.complete && logo.naturalWidth > 0 && logo.naturalHeight > 0;

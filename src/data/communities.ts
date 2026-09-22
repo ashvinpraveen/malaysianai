@@ -1,6 +1,7 @@
 import aiAfterHoursLogo from '../assets/communities/ai-after-hours-logo.png';
 import aiHackerdormLogo from '../assets/communities/ai_hackerdorm.webp';
 import aiSalonLogo from '../assets/communities/ai-salon-logo.png';
+import aiseaLogo from '../assets/communities/aisea_logo.png';
 import aiTinkerersLogo from '../assets/communities/ai_tinkerers_logo.png';
 import buildClubLogo from '../assets/communities/build-club-logo-navbar.webp';
 import buildWithAiLogo from '../assets/communities/build_with_ai_logo.jpeg';
@@ -34,6 +35,15 @@ export const communities = [
 			'AI HackerDorm is a student-first Malaysian AI builder community that runs recurring build sessions, campus programmes and hackathons so students get repeated practice shipping technical work.',
 		href: 'https://www.aihackerdorm.com/',
 		logo: aiHackerdormLogo,
+		logoClass: 'is-square',
+	},
+	{
+		name: 'AISEA',
+		qualifier: 'Southeast Asian builder network',
+		description:
+			'AISEA is a federated network of locally led AI builder communities that shares infrastructure, regional programmes and partner access across Southeast Asia.',
+		href: 'https://www.aisea.builders/',
+		logo: aiseaLogo,
 		logoClass: 'is-square',
 	},
 	{

@@ -360,7 +360,9 @@ const startIndex = 0;
 
 				card.style.setProperty('--focus', focus.toFixed(4));
 				card.style.zIndex = String(Math.round(1000 - distance * 100));
-				card.style.opacity = String(distance > 4.2 ? 0 : Math.max(0, 1 - distance / 4.6).toFixed(3));
+				card.style.opacity = '1';
+				const blur = distance < 0.35 ? 0 : Math.min(8, distance * distance * 1.35);
+				card.style.filter = blur === 0 ? 'none' : `blur(${blur.toFixed(2)}px)`;
 				card.style.transform = [
 					'translate(-50%, -50%)',
 					`translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, ${z.toFixed(2)}px)`,
@@ -503,7 +505,6 @@ const startIndex = 0;
 		perspective: 1200px;
 		cursor: default;
 		touch-action: pan-y;
-		mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
 	}
 
 	.community-stage:focus-visible {
@@ -534,7 +535,7 @@ const startIndex = 0;
 		appearance: none;
 		outline: none;
 		transform-style: preserve-3d;
-		will-change: transform, opacity;
+		will-change: transform, filter;
 		cursor: pointer;
 		/* Clicks hit the deck; JS picks the nearest visual card under the pointer. */
 		pointer-events: none;
@@ -551,9 +552,9 @@ const startIndex = 0;
 		display: grid;
 		place-items: center;
 		overflow: hidden;
-		border: 1px solid var(--hairline);
+		border: 1px solid var(--hairline-soft);
 		border-radius: var(--radius-media);
-		background: #f4f6f8;
+		background: #fffdf8;
 	}
 
 	.community-portrait img {
@@ -562,16 +563,6 @@ const startIndex = 0;
 		height: 76%;
 		object-fit: contain;
 		transform: scale(calc(1.02 + (1 - var(--focus)) * 0.04));
-	}
-
-	.community-portrait::after {
-		position: absolute;
-		inset: 0;
-		background: rgb(244 246 248 / 0.28);
-		content: '';
-		opacity: calc(1 - var(--focus));
-		pointer-events: none;
-		will-change: opacity;
 	}
 
 	.community-card.is-wide .community-portrait img {
@@ -645,8 +636,7 @@ const startIndex = 0;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.community-card,
-		.community-portrait::after {
+		.community-card {
 			will-change: auto;
 		}
 	}

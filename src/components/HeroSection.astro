@@ -139,7 +139,7 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 			<span>Our first ever cohort is open.</span>
 			<a class="hero-announcement-link" href={APPLY_FORM_URL}>Join our Residency.</a>
 		</p>
-		<a class="site-button hero-apply" href={APPLY_FORM_URL}>Apply now</a>
+		<a class="site-button hero-apply" href="/residency">Learn more</a>
 	</div>
 
 	<section class="hero-card" aria-labelledby="hero-title">
@@ -654,6 +654,20 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 			text-shadow: 0 1px 20px rgb(255 255 255 / 0.7);
 		}
 
+		/* Night type is light, so the sky behind it goes darker. */
+		.hero-shade {
+			background:
+				linear-gradient(180deg, rgb(1 16 48 / 0.62) 0%, rgb(1 16 48 / 0.28) 22%, transparent 48%),
+				linear-gradient(180deg, transparent 68%, rgb(0 0 0 / 0.28) 100%);
+		}
+
+		/* Day type is dark, so the sky behind it goes lighter. */
+		:global(html[data-theme='light']) .hero-shade {
+			background:
+				linear-gradient(180deg, rgb(255 250 242 / 0.72) 0%, rgb(255 250 242 / 0.4) 18%, rgb(255 250 242 / 0.12) 36%, transparent 52%),
+				linear-gradient(180deg, transparent 72%, rgb(16 43 42 / 0.1) 100%);
+		}
+
 		/* The sky colour shows through the faded top edge. */
 		.hero-media:has(.hero-art-night) {
 			background: rgb(1 23 72);
@@ -713,6 +727,14 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 		/* "View all upcoming events" sits on the events calendar instead. */
 		.hero-actions {
 			display: none;
+		}
+	}
+
+	@media (max-width: 700px) and (prefers-color-scheme: light) {
+		:global(html:not([data-theme='dark'])) .hero-shade {
+			background:
+				linear-gradient(180deg, rgb(255 250 242 / 0.72) 0%, rgb(255 250 242 / 0.4) 18%, rgb(255 250 242 / 0.12) 36%, transparent 52%),
+				linear-gradient(180deg, transparent 72%, rgb(16 43 42 / 0.1) 100%);
 		}
 	}
 

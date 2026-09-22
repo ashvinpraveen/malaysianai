@@ -4,6 +4,25 @@ import { test, expect } from '@playwright/test';
 
 const origin = 'https://www.malaysian.ai';
 const pages = ['/', '/about', '/brand', '/residency', '/residents', '/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon'];
+const expectedCommunityNames = [
+	'AI After Hours KL',
+	'AI HackerDorm',
+	'AI Salon Kuala Lumpur',
+	'AI Tinkerers Kuala Lumpur',
+	'Build Club Kuala Lumpur',
+	'Build With AI Malaysia',
+	'Builders & Brews Kuala Lumpur',
+	'Cerebras Community Kuala Lumpur',
+	'Claw Collective',
+	'CoderPuffs',
+	'Codex Malaysia Community',
+	'Cursor Community Kuala Lumpur',
+	'Developer Kaki',
+	'KrackedDevs',
+	'Rakan Tutor',
+	'Supabase Community Events Kuala Lumpur',
+	'Superteam Malaysia',
+];
 
 // Keep expectations independent of the production SEO map and article frontmatter.
 const expectedMetadata = [
@@ -135,7 +154,8 @@ test('crawl documents list live canonical URLs and exclude retired pages', async
 	expect(urls.some(url => new URL(url).pathname === '/residency2')).toBe(false);
 	const llms = await request.get('/llms.txt');
 	expect(llms.status()).toBe(200);
-	const listed = [...(await llms.text()).matchAll(/\]\((https:[^)]+)\)/g)].map(match => new URL(match[1]));
+	const llmsText = await llms.text();
+	const listed = [...llmsText.matchAll(/\]\((https:[^)]+)\)/g)].map(match => new URL(match[1]));
 	for (const url of listed) {
 		expect(url.origin).toBe(origin);
 		expect((await request.get(url.pathname)).status(), url.href).toBe(200);
@@ -143,6 +163,8 @@ test('crawl documents list live canonical URLs and exclude retired pages', async
 	expect(listed.some(url => url.pathname === '/about')).toBe(true);
 	expect(listed.some(url => url.pathname === '/brand')).toBe(true);
 	expect(listed.some(url => url.pathname === '/residency/apply')).toBe(false);
+	const communityLine = llmsText.match(/^- \[Communities\]\([^)]+\): .*including (.+)\.$/m)?.[1];
+	expect(communityLine?.split(', ')).toEqual(expectedCommunityNames);
 	const rss = await request.get('/rss.xml');
 	const feed = await rss.text();
 	expect(feed).toContain(`${origin}/blog/largest-ai-learnathon`);

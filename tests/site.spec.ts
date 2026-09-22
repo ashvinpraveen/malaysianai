@@ -166,16 +166,36 @@ test('image dialog contains keyboard focus, closes and survives page navigation'
 	expect(errors).toEqual([]);
 });
 
-const communityNames = [
-	'Build Club',
-	'Build with AI',
-	'AI Tinkerers',
-	'AI Hackerdorm',
-	'AI SEA',
-	'KrackedDevs',
-	'Rakan Tutor',
-	'CoderPuffs',
-	'Cursor KL',
+const communityDestinations = {
+	'AI After Hours KL': 'https://www.aiafterhours.app/',
+	'AI HackerDorm': 'https://www.aihackerdorm.com/',
+	'AI Salon Kuala Lumpur': 'https://www.meetup.com/ai-salon-kuala-lumpur-chapter/',
+	'AI Tinkerers Kuala Lumpur': 'https://kuala-lumpur.aitinkerers.org/',
+	'Build Club Kuala Lumpur': 'https://www.buildclub.ai/',
+	'Build With AI Malaysia': 'https://buildwithai.my/',
+	'Builders & Brews Kuala Lumpur': 'https://www.nebius.cyou/events/builders-and-brews',
+	'Cerebras Community Kuala Lumpur': 'https://luma.com/cerebrasmalaysia',
+	'Claw Collective': 'https://clawcollective.dev/',
+	'CoderPuffs': 'https://coderpuffs.com/',
+	'Codex Malaysia Community': 'https://luma.com/CodexMY',
+	'Cursor Community Kuala Lumpur': 'https://www.instagram.com/cursor.my/',
+	'Developer Kaki': 'https://developerkaki.my/',
+	'KrackedDevs': 'https://krackeddevs.com/',
+	'Rakan Tutor': 'https://www.rakantutor.org/',
+	'Supabase Community Events Kuala Lumpur': 'https://luma.com/supabasekl',
+	'Superteam Malaysia': 'https://my.superteam.fun/',
+} as const;
+
+const internationalChapterNames = [
+	'AI Salon Kuala Lumpur',
+	'AI Tinkerers Kuala Lumpur',
+	'Build Club Kuala Lumpur',
+	'Builders & Brews Kuala Lumpur',
+	'Cerebras Community Kuala Lumpur',
+	'Codex Malaysia Community',
+	'Cursor Community Kuala Lumpur',
+	'Supabase Community Events Kuala Lumpur',
+	'Superteam Malaysia',
 ];
 
 test('community filmstrip advances every 6s, accepts side-card clicks, and reduced motion still allows keyboard selection', async ({
@@ -187,6 +207,7 @@ test('community filmstrip advances every 6s, accepts side-card clicks, and reduc
 	await page.goto('/');
 	const stage = page.locator('#community-stage');
 	const focusName = page.locator('[data-community-name]');
+	const focusLink = page.locator('[data-community-link]');
 	await stage.scrollIntoViewIfNeeded();
 	await expect(page.locator('[data-community-card]').first()).toHaveAttribute('style', /translate3d/);
 
@@ -200,12 +221,16 @@ test('community filmstrip advances every 6s, accepts side-card clicks, and reduc
 
 	const sideCard = page.locator('[data-community-card][aria-current="false"]').nth(1);
 	const sideName = await sideCard.getAttribute('data-name');
+	const sideHref = await sideCard.getAttribute('data-href');
 	expect(sideName).toBeTruthy();
+	expect(sideHref).toBeTruthy();
 	const box = await sideCard.boundingBox();
 	expect(box).not.toBeNull();
 	// Click near the card's outer edge so the scaled center card does not steal the hit.
 	await page.mouse.click(box!.x + Math.min(12, box!.width / 5), box!.y + box!.height / 2);
 	await expect(focusName).toHaveText(sideName!);
+	await expect(focusLink).toHaveText(`Visit ${sideName}`);
+	await expect(focusLink).toHaveAttribute('href', sideHref!);
 
 	await page.evaluate(() => {
 		const deck = document.querySelector('[data-community-deck]')!;
@@ -227,6 +252,10 @@ test('community filmstrip advances every 6s, accepts side-card clicks, and reduc
 	await stage.focus();
 	await page.keyboard.press('ArrowRight');
 	await expect(focusName).not.toHaveText(sideName!);
+	const keyboardName = await focusName.innerText();
+	const keyboardHref = await page.locator('[data-community-card][aria-current="true"]').getAttribute('data-href');
+	await expect(focusLink).toHaveText(`Visit ${keyboardName}`);
+	await expect(focusLink).toHaveAttribute('href', keyboardHref!);
 	await page.waitForTimeout(100);
 	const reducedCount = await mutations();
 	await page.waitForTimeout(300);
@@ -237,9 +266,21 @@ test('community directory lists every partner without overflowing', async ({ pag
 	await page.goto('/');
 	const section = page.locator('#communities');
 	await section.scrollIntoViewIfNeeded();
-	for (const name of communityNames) {
-		await expect(section.getByRole('button', { name: new RegExp(`Focus ${name}`) })).toBeAttached();
+	const cards = section.locator('[data-community-card]');
+	await expect(cards).toHaveCount(17);
+	for (const [name, href] of Object.entries(communityDestinations)) {
+		await expect(section.locator(`[data-community-card][data-name="${name}"]`)).toHaveAttribute('data-href', href);
 	}
+	for (const name of internationalChapterNames) {
+		await expect(section.locator(`[data-community-card][data-name="${name}"]`)).toBeAttached();
+	}
+	await expect(section.locator('[data-community-card][data-name="AI SEA"]')).toHaveCount(0);
+	await expect(section.locator('[data-community-card][data-name="Malaysian.AI"]')).toHaveCount(0);
+	await expect(cards.locator('img')).toHaveCount(17);
+	await expect.poll(() => cards.locator('img').evaluateAll(images => images.every(image => {
+		const logo = image as HTMLImageElement;
+		return logo.complete && logo.naturalWidth > 0 && logo.naturalHeight > 0;
+	}))).toBe(true);
 	await expect(section.locator('[data-community-name]')).toBeVisible();
 	expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
 });

@@ -1,94 +1,11 @@
 ---
 import { Image } from 'astro:assets';
 import { LUMA_URL } from '../consts';
-import buildClubLogo from '../assets/communities/build-club-logo-navbar.webp';
-import buildWithAiLogo from '../assets/communities/build_with_ai_logo.jpeg';
-import aiTinkerersLogo from '../assets/communities/ai_tinkerers_logo.png';
-import aiHackerdormLogo from '../assets/communities/ai_hackerdorm.webp';
-import aiSeaLogo from '../assets/communities/aisea_logo.png';
-import krackedDevsLogo from '../assets/communities/krackeddevs-logo.png';
-import rakanTutorLogo from '../assets/communities/rakan-tutor-logo.png';
-import coderPuffsLogo from '../assets/communities/coderpuffs_logo.png';
-import cursorLogo from '../assets/communities/cursor-community-logo.png';
+import { communities } from '../data/communities';
 
 // Logos render at most ~145px wide on desktop and ~85px on mobile.
 const logoWidths = [200, 400];
 const logoSizes = '200px';
-
-const communities = [
-	{
-		name: 'Build Club',
-		logo: buildClubLogo,
-		logoClass: 'is-wide',
-		label: 'Learn by building',
-		description:
-			'A large Asia-Pacific builder community with bite-sized courses, role-based learning tracks, and project bounties. A useful place to learn AI by making real things.',
-	},
-	{
-		name: 'Build with AI',
-		logo: buildWithAiLogo,
-		logoClass: 'is-square',
-		label: 'Open builder meetups',
-		description:
-			"Malaysia's home for developers and non-technical builders creating AI projects together. Its meetups welcome first-timers and experienced makers alike.",
-	},
-	{
-		name: 'AI Tinkerers',
-		logo: aiTinkerersLogo,
-		logoClass: 'is-wide',
-		label: 'Technical deep dives',
-		description:
-			'The Kuala Lumpur chapter of a global AI engineering network. Monthly meetups put live demos, practical talks, and technical conversation in the same room.',
-	},
-	{
-		name: 'AI Hackerdorm',
-		logo: aiHackerdormLogo,
-		logoClass: 'is-square',
-		label: 'Student-first builds',
-		description:
-			'A community for student coders, designers, and founders building AI projects together through weekly sprints, hackathons, and mentorship sessions.',
-	},
-	{
-		name: 'AI SEA',
-		logo: aiSeaLogo,
-		logoClass: 'is-square',
-		label: 'Southeast Asian network',
-		description:
-			'A regional builder network for people shipping AI products. It brings engineers together through hackathons, co-build sprints, and AI.SEA Week.',
-	},
-	{
-		name: 'KrackedDevs',
-		logo: krackedDevsLogo,
-		logoClass: 'is-square',
-		label: 'Grassroots builder guilds',
-		description:
-			'A Malaysian builder ecosystem helping technical and non-technical folks become AI builders through guilds, workshops, bounties, and project showcases.',
-	},
-	{
-		name: 'Rakan Tutor',
-		logo: rakanTutorLogo,
-		logoClass: 'is-wide',
-		label: 'AI education for all',
-		description:
-			'A Malaysian non-profit bringing free, hands-on AI education to underserved secondary school students and helping young people prepare for an AI-shaped future.',
-	},
-	{
-		name: 'CoderPuffs',
-		logo: coderPuffsLogo,
-		logoClass: 'is-square',
-		label: 'Women-first community',
-		description:
-			'Welcoming café-based build sessions that make coding and AI easier to enter. Its monthly meetups are designed for women at every experience level.',
-	},
-	{
-		name: 'Cursor KL',
-		logo: cursorLogo,
-		logoClass: 'is-square',
-		label: 'Cursor builders in KL',
-		description:
-			'The Kuala Lumpur community for people building with Cursor. Join local hackathons, workshops, and conversations with other product-minded makers.',
-	},
-];
 
 const startIndex = 0;
 ---
@@ -101,62 +18,67 @@ const startIndex = 0;
 			</div>
 			<p class="community-lede">
 				From deeply technical coding events for developers, to workshops for creators,
-				business owners, students and women building your first apps &amp; AI agents; there's
-				a community of people here to help you along your AI journey.
+				business owners, students and women building your first apps &amp; AI agents; there's a
+				community of people here to help you along your AI journey. Global networks are listed
+				through the Malaysian chapter or edition you can join.
 			</p>
 		</div>
 
 		<div class="community-board">
-		<div
-			class="community-stage"
-			id="community-stage"
-			tabindex="0"
-			aria-label="Interactive community filmstrip"
-		>
-			<p class="sr-only">Select a logo or use the arrow keys to browse the communities.</p>
-			<div class="community-deck" id="community-deck" data-community-deck>
-				{
-					communities.map((community, index) => (
-						<button
-							class:list={['community-card', community.logoClass]}
-							type="button"
-							data-community-card
-							data-index={String(index)}
-							data-name={community.name}
-							data-label={community.label}
-							data-description={community.description}
-							aria-label={`Focus ${community.name}, ${community.label}`}
-							aria-current={index === startIndex ? 'true' : 'false'}
-						>
-							<span class="community-portrait">
-								<Image
-									src={community.logo}
-									alt=""
-									widths={logoWidths}
-									sizes={logoSizes}
-									format="webp"
-									loading="lazy"
-									decoding="async"
-								/>
-							</span>
-						</button>
-					))
-				}
+			<div
+				class="community-stage"
+				id="community-stage"
+				tabindex="0"
+				aria-label="Interactive community filmstrip"
+			>
+				<p class="sr-only">Select a logo or use the arrow keys to browse the communities.</p>
+				<div class="community-deck" id="community-deck" data-community-deck>
+					{
+						communities.map((community, index) => (
+							<button
+								class:list={['community-card', community.logoClass]}
+								type="button"
+								data-community-card
+								data-index={String(index)}
+								data-name={community.name}
+								data-qualifier={community.qualifier}
+								data-description={community.description}
+								data-href={community.href}
+								aria-label={`Focus ${community.name}, ${community.qualifier}`}
+								aria-current={index === startIndex ? 'true' : 'false'}
+							>
+								<span class="community-portrait">
+									<Image
+										src={community.logo}
+										alt=""
+										widths={logoWidths}
+										sizes={logoSizes}
+										format="webp"
+										loading="lazy"
+										decoding="async"
+									/>
+								</span>
+							</button>
+						))
+					}
+				</div>
 			</div>
-		</div>
 
-		<div class="community-focus" aria-live="polite" aria-atomic="true">
-			<div class="community-focus-title">
-				<p class="community-focus-kicker">
-					<span data-community-label>{communities[startIndex].label}</span>
-				</p>
-				<h3 data-community-name>{communities[startIndex].name}</h3>
+			<div class="community-focus" aria-live="polite" aria-atomic="true">
+				<div class="community-focus-title">
+					<p class="community-focus-kicker">
+						<span data-community-qualifier>{communities[startIndex].qualifier}</span>
+					</p>
+					<h3 data-community-name>{communities[startIndex].name}</h3>
+				</div>
+				<p data-community-description>{communities[startIndex].description}</p>
+				<a data-community-link href={communities[startIndex].href}>
+					Visit {communities[startIndex].name}
+				</a>
 			</div>
-			<p data-community-description>{communities[startIndex].description}</p>
-		</div>
-		<div class="community-actions">
-			<a class="site-button" href={LUMA_URL}>View upcoming events</a>
-		</div>
+			<div class="community-actions">
+				<a class="site-button" href={LUMA_URL}>View upcoming events</a>
+			</div>
 		</div>
 	</div>
 </section>
@@ -165,15 +87,18 @@ const startIndex = 0;
 	let cleanUpCommunity = () => {};
 
 	function prepareCommunitySection() {
+		const sectionElement = document.getElementById('communities');
 		const stageElement = document.querySelector<HTMLElement>('#community-stage');
 		const deck = document.querySelector<HTMLElement>('[data-community-deck]');
 		const cards = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-community-card]'));
-		const focusLabel = document.querySelector<HTMLElement>('[data-community-label]');
+		const focusQualifier = document.querySelector<HTMLElement>('[data-community-qualifier]');
 		const focusName = document.querySelector<HTMLElement>('[data-community-name]');
 		const focusDescription = document.querySelector<HTMLElement>('[data-community-description]');
+		const focusLink = document.querySelector<HTMLAnchorElement>('[data-community-link]');
 
-		if (!stageElement || !deck || !cards.length) return () => {};
+		if (!sectionElement || !stageElement || !deck || !cards.length) return () => {};
 
+		const section: HTMLElement = sectionElement;
 		const stage: HTMLElement = stageElement;
 		const count = cards.length;
 		const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
@@ -214,7 +139,7 @@ const startIndex = 0;
 				!sectionIsVisible ||
 				document.hidden ||
 				state.hovering ||
-				stage.contains(document.activeElement)
+				section.contains(document.activeElement)
 			);
 		}
 
@@ -246,9 +171,14 @@ const startIndex = 0;
 		function updateFocus(index: number) {
 			const card = cards[index];
 			if (!card) return;
-			if (focusLabel) focusLabel.textContent = card.dataset.label ?? '';
-			if (focusName) focusName.textContent = card.dataset.name ?? '';
+			const name = card.dataset.name ?? '';
+			if (focusQualifier) focusQualifier.textContent = card.dataset.qualifier ?? '';
+			if (focusName) focusName.textContent = name;
 			if (focusDescription) focusDescription.textContent = card.dataset.description ?? '';
+			if (focusLink) {
+				focusLink.href = card.dataset.href ?? '';
+				focusLink.textContent = `Visit ${name}`;
+			}
 		}
 
 		function cardIndexAtPoint(clientX: number, clientY: number) {
@@ -310,8 +240,8 @@ const startIndex = 0;
 		deck.addEventListener('pointerdown', handlePointerDown);
 		stage.addEventListener('pointerenter', onPointerEnter);
 		stage.addEventListener('pointerleave', onPointerLeave);
-		stage.addEventListener('focusin', handleFocusIn);
-		stage.addEventListener('focusout', handleFocusOut);
+		section.addEventListener('focusin', handleFocusIn);
+		section.addEventListener('focusout', handleFocusOut);
 
 		function handleKeydown(event: KeyboardEvent) {
 			const target = event.target;
@@ -414,8 +344,8 @@ const startIndex = 0;
 			deck.removeEventListener('pointerdown', handlePointerDown);
 			stage.removeEventListener('pointerenter', onPointerEnter);
 			stage.removeEventListener('pointerleave', onPointerLeave);
-			stage.removeEventListener('focusin', handleFocusIn);
-			stage.removeEventListener('focusout', handleFocusOut);
+			section.removeEventListener('focusin', handleFocusIn);
+			section.removeEventListener('focusout', handleFocusOut);
 		};
 	}
 
@@ -569,6 +499,10 @@ const startIndex = 0;
 		width: 86%;
 	}
 
+	.community-card.is-dark .community-portrait {
+		background: #111;
+	}
+
 	.community-focus {
 		display: flex;
 		flex-direction: column;
@@ -597,12 +531,23 @@ const startIndex = 0;
 		line-height: 1.05;
 	}
 
-	.community-focus > p:last-child {
+	.community-focus [data-community-description] {
 		max-width: 34rem;
 		margin: 0 auto;
 		color: var(--text-soft);
 		font-size: clamp(0.9rem, 1.15vw, 1.02rem);
 		line-height: var(--leading-body);
+	}
+
+	.community-focus [data-community-link] {
+		color: var(--text-accent);
+		font-size: 0.9rem;
+		text-underline-offset: 0.22em;
+	}
+
+	.community-focus [data-community-link]:focus-visible {
+		outline: 2px solid var(--focus-color);
+		outline-offset: 4px;
 	}
 
 	.sr-only {

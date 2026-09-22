@@ -656,7 +656,7 @@ test('residency2 messaging draft sells the cohort thesis and stays noindex', asy
 	await expect(page.locator('#stories')).toContainText('Seavoice');
 	await expect(page.getByRole('link', { name: 'Apply now' }).first()).toHaveAttribute(
 		'href',
-		'https://platform.malaysian.ai',
+		'https://platform.malaysian.ai/application',
 	);
 	await expect(page.getByRole('link', { name: /Join a Thursday Show & Tell/i })).toHaveAttribute(
 		'href',

@@ -114,9 +114,9 @@ html[data-theme='dark'] {
 		--footer-link: var(--page-text);
 		--footer-meta: var(--page-text);
 		--footer-wordmark-color: rgba(17, 17, 17, 0.1);
-		--button-text: #f3f0ea;
-		--button-background: #111;
-		--button-hover-background: #2a2a2a;
+		--button-background: #102b2a;
+		--button-hover-background: #1a3d3b;
+		--button-text: #f4efe6;
 	}
 }
 
@@ -191,7 +191,7 @@ html.neutral-page[data-theme='light'] {
 	--footer-link: var(--page-text);
 	--footer-meta: var(--page-text);
 	--footer-wordmark-color: rgba(17, 17, 17, 0.1);
-	--button-text: #f3f0ea;
-	--button-background: #111;
-	--button-hover-background: #2a2a2a;
+	--button-background: #102b2a;
+	--button-hover-background: #1a3d3b;
+	--button-text: #f4efe6;
 }

@@ -75,9 +75,10 @@ const structuredData = {
 		if (themeColor) themeColor.setAttribute('content', theme === 'light' ? '#f4efe6' : '#06090f');
 	})();
 </script>
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=202609" />
-<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png?v=202609" />
-<link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=202609" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=20260922" media="(prefers-color-scheme: light)" />
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png?v=20260922" media="(prefers-color-scheme: light)" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=20260922" media="(prefers-color-scheme: light)" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/favicon-dark.svg?v=20260922" media="(prefers-color-scheme: dark)" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=202609" />
 <link rel="sitemap" href={new URL('sitemap-index.xml', site)} />
 <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href={new URL('rss.xml', site)} />

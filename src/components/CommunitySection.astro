@@ -269,7 +269,14 @@ const startIndex = 0;
 
 			state.phase += (state.target - state.phase) * ease;
 			const activeIndex = nearestIndex();
-			const horizontalSpacing = Math.min(118, Math.max(58, innerWidth * 0.09));
+			// Outer cards sit just past the stage edge, so the blur runs off the card
+			// instead of stopping in a cream margin. Perspective pulls distant cards inward.
+			const outerDistance = count / 2 - 0.5;
+			const projection = 1200 / (1200 + outerDistance * 72);
+			const horizontalSpacing = Math.max(
+				52,
+				(stage.clientWidth / 2 + 28) / (outerDistance * projection),
+			);
 
 			if (activeIndex !== lastActiveIndex) {
 				lastActiveIndex = activeIndex;
@@ -291,7 +298,7 @@ const startIndex = 0;
 				card.style.setProperty('--focus', focus.toFixed(4));
 				card.style.zIndex = String(Math.round(1000 - distance * 100));
 				card.style.opacity = '1';
-				const blur = distance < 0.35 ? 0 : Math.min(8, distance * distance * 1.35);
+				const blur = distance < 0.45 ? 0 : Math.min(3, (distance - 0.2) * (distance - 0.2) * 0.55);
 				card.style.filter = blur === 0 ? 'none' : `blur(${blur.toFixed(2)}px)`;
 				card.style.transform = [
 					'translate(-50%, -50%)',
@@ -407,7 +414,7 @@ const startIndex = 0;
 		gap: 0.75rem 1.1rem;
 		align-items: center;
 		justify-content: center;
-		margin-top: 0.35rem;
+		margin-top: 1.15rem;
 	}
 
 	.community-actions a:focus-visible {
@@ -421,6 +428,7 @@ const startIndex = 0;
 		width: min(68rem, 100%);
 		margin: 0.75rem auto 0;
 		padding: 1.35rem clamp(1.25rem, 2.8vw, 2.25rem) 2.1rem;
+		overflow: hidden;
 		border: 1px solid var(--hairline-soft);
 		border-radius: 1.5rem;
 		background: var(--card-raised);
@@ -428,8 +436,9 @@ const startIndex = 0;
 
 	.community-stage {
 		position: relative;
-		width: 100%;
+		width: auto;
 		height: clamp(11.5rem, 22dvh, 15rem);
+		margin-inline: calc(clamp(1.25rem, 2.8vw, 2.25rem) * -1);
 		overflow: hidden;
 		isolation: isolate;
 		perspective: 1200px;
@@ -533,6 +542,7 @@ const startIndex = 0;
 
 	.community-focus [data-community-description] {
 		max-width: 34rem;
+		min-height: 3lh;
 		margin: 0 auto;
 		color: var(--text-soft);
 		font-size: clamp(0.9rem, 1.15vw, 1.02rem);
@@ -577,6 +587,11 @@ const startIndex = 0;
 
 		.community-stage {
 			height: 12.5rem;
+			margin-inline: -1.75rem;
+		}
+
+		.community-focus > p:last-child {
+			min-height: 4lh;
 		}
 	}
 

@@ -6,7 +6,7 @@ import heroArtMobile from '../assets/hero-fibonacci-night-mobile.png';
 import heroArtDayMobile from '../assets/hero-fibonacci-day-mobile.png';
 import FramedChrome from './FramedChrome.astro';
 import HibiscusPetals from './HibiscusPetals.astro';
-import { LUMA_URL } from '../consts';
+import { APPLY_FORM_URL, LUMA_URL } from '../consts';
 
 const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672], format: 'webp', quality: 85 });
 ---
@@ -133,6 +133,14 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 		<path />
 	</svg>
 	<div class="hero-mobile-frame" hidden aria-hidden="true"></div>
+
+	<div class="hero-announcement">
+		<p>
+			<span>Our first ever cohort is open.</span>
+			<a class="hero-announcement-link" href={APPLY_FORM_URL}>Join our Residency.</a>
+		</p>
+		<a class="site-button hero-apply" href={APPLY_FORM_URL}>Apply now</a>
+	</div>
 
 	<section class="hero-card" aria-labelledby="hero-title">
 		<HibiscusPetals
@@ -427,7 +435,16 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 			linear-gradient(90deg, rgb(9 35 53 / 0.12), transparent 48%);
 	}
 
+	.hero-announcement {
+		display: none;
+	}
+
 	@media (prefers-color-scheme: light) {
+		:global(html:not([data-theme='dark'])) .hero-announcement {
+			color: #102b2a;
+			text-shadow: 0 1px 20px rgb(255 255 255 / 0.7);
+		}
+
 		:global(html:not([data-theme='dark'])) .hero-shade {
 			background:
 				linear-gradient(180deg, rgb(20 52 73 / 0.06), transparent 42%, rgb(16 43 42 / 0.16) 100%),
@@ -585,6 +602,58 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 			display: block;
 		}
 
+		.hero-announcement {
+			position: absolute;
+			z-index: 2;
+			top: calc(var(--hero-header-height) + (var(--hero-screen) - var(--hero-header-height) - var(--hero-gap)) / 6);
+			right: calc(var(--hero-gap) + 1rem);
+			left: calc(var(--hero-gap) + 1rem);
+			display: block;
+			margin: 0;
+			color: #fffdf8;
+			font-family: var(--font-display);
+			font-size: min(7.2vw, 2.4rem);
+			font-weight: 400;
+			letter-spacing: -0.035em;
+			line-height: 0.95;
+			text-align: center;
+			text-shadow: 0 3px 28px rgb(13 32 77 / 0.6);
+			animation: soft-rise 0.75s 0.9s ease-out both;
+			opacity: calc(1 - var(--hero-dim, 0) * 0.88);
+		}
+
+		.hero-announcement p {
+			margin: 0;
+		}
+
+		.hero-announcement p > * {
+			display: block;
+			width: fit-content;
+			margin-inline: auto;
+			white-space: nowrap;
+		}
+
+		.hero-announcement-link {
+			color: inherit;
+			text-decoration: none;
+			pointer-events: none;
+		}
+
+		.hero-apply {
+			display: flex;
+			width: fit-content;
+			min-height: 2.5rem;
+			margin: 0.9rem auto 0;
+			padding: 0.45rem 1.1rem;
+			letter-spacing: normal;
+			text-shadow: none;
+		}
+
+		:global(html[data-theme='light']) .hero-announcement {
+			color: #102b2a;
+			text-shadow: 0 1px 20px rgb(255 255 255 / 0.7);
+		}
+
 		/* The sky colour shows through the faded top edge. */
 		.hero-media:has(.hero-art-night) {
 			background: rgb(1 23 72);
@@ -649,6 +718,7 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 
 	@media (prefers-reduced-motion: reduce) {
 		.hero-media,
+		.hero-announcement,
 		.hero-card,
 		.hero-card h1,
 		.intro,

@@ -4,6 +4,12 @@
   "buildCommand": "bun run build",
   "outputDirectory": "dist",
   "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/api/luma-events",
+      "destination": "https://api.luma.com/calendar/get-items?calendar_api_id=cal-pPgkuwCFrycSv1Z&period=future&pagination_limit=20"
+    }
+  ],
   "redirects": [
     {
       "source": "/aimto",

@@ -32,6 +32,15 @@ export default defineConfig({
 		clientPrerender: true,
 	},
 	vite: {
+		server: {
+			proxy: {
+				'/api/luma-events': {
+					target: 'https://api.luma.com',
+					changeOrigin: true,
+					rewrite: () => '/calendar/get-items?calendar_api_id=cal-pPgkuwCFrycSv1Z&period=future&pagination_limit=20',
+				},
+			},
+		},
 		build: {
 			cssTarget: 'chrome69',
 		},

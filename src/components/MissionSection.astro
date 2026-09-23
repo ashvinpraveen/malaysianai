@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import bungaRaya from '../assets/malaysian-ai-bunga-raya-pixel.png';
-import { LUMA_URL } from '../consts';
+import UpcomingEvents from './UpcomingEvents.astro';
 import HibiscusPetals from './HibiscusPetals.astro';
 ---
 
@@ -32,17 +32,7 @@ import HibiscusPetals from './HibiscusPetals.astro';
 			/>
 		</figure>
 
-		<div class="mission-calendar">
-			<a class="site-button mission-events-link" href={LUMA_URL}>View all upcoming events</a>
-			<div class="luma-frame">
-				<iframe
-					src="https://luma.com/embed/calendar/cal-pPgkuwCFrycSv1Z/events"
-					title="Malaysian AI upcoming events on Luma"
-					loading="lazy"
-					allow="clipboard-write; payment"
-				></iframe>
-			</div>
-		</div>
+		<UpcomingEvents />
 	</div>
 </section>
 
@@ -102,13 +92,6 @@ import HibiscusPetals from './HibiscusPetals.astro';
 		animation: flower-sway 5.5s ease-in-out infinite alternate;
 	}
 
-	.mission-calendar {
-		display: grid;
-		align-self: center;
-		gap: clamp(1.5rem, 3vh, 2.25rem);
-		min-width: 0;
-	}
-
 	.mission-events h2 {
 		grid-column: 1 / -1;
 		justify-self: center;
@@ -121,32 +104,6 @@ import HibiscusPetals from './HibiscusPetals.astro';
 		letter-spacing: -0.035em;
 		line-height: 0.9;
 		text-wrap: balance;
-	}
-
-	/* Mobile only: replaces the hero card's events button. */
-	.mission-events-link {
-		display: none;
-	}
-
-	.luma-frame {
-		overflow: hidden;
-		width: 100%;
-		height: min(56dvh, 32rem);
-		padding: 0.35rem;
-		border: 1px solid var(--hairline);
-		border-radius: 1rem;
-		background: var(--page-background);
-		content-visibility: auto;
-		contain-intrinsic-size: 720px;
-	}
-
-	.luma-frame iframe {
-		display: block;
-		width: 100%;
-		height: 100%;
-		border: 0;
-		border-radius: 0.75rem;
-		background: var(--page-background);
 	}
 
 	@media (max-width: 900px) {
@@ -171,13 +128,6 @@ import HibiscusPetals from './HibiscusPetals.astro';
 			font-size: clamp(2.8rem, 13vw, 4.2rem);
 		}
 
-		.luma-frame iframe {
-			height: 100%;
-		}
-
-		.luma-frame {
-			height: min(62dvh, 32rem);
-		}
 	}
 
 	@keyframes flower-sway {
@@ -218,9 +168,6 @@ import HibiscusPetals from './HibiscusPetals.astro';
 			filter: brightness(var(--flower-reveal, 1));
 		}
 
-		.mission-calendar {
-			gap: 0.75rem;
-		}
 
 		/* Same size as the hero's centred copy above. */
 		.mission-events h2 {
@@ -230,10 +177,6 @@ import HibiscusPetals from './HibiscusPetals.astro';
 			padding-inline: 1.5rem;
 		}
 
-		.mission-events-link {
-			display: inline-flex;
-			justify-self: end;
-		}
 
 	}
 </style>

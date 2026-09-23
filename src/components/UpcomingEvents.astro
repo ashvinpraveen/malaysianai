@@ -1,0 +1,121 @@
+---
+import { LUMA_URL } from '../consts';
+import { CALENDAR_FEED, parseUpcomingEvents, nextEvents, eventDate, eventTime, type UpcomingEvent } from '../lib/upcoming-events';
+
+let events: UpcomingEvent[] = [];
+try {
+	const response = await fetch(CALENDAR_FEED, { signal: AbortSignal.timeout(8000) });
+	if (response.ok) events = parseUpcomingEvents(await response.json());
+} catch {
+	// A failed provider request must not prevent the rest of the site from building.
+	console.warn('Upcoming events unavailable at build time; the browser will retry.');
+}
+const upcoming = nextEvents(events);
+---
+
+<div class="mission-calendar" data-upcoming-events>
+	<div class="calendar-heading">
+		<h3>Upcoming events</h3>
+		<span>Malaysia time</span>
+	</div>
+	<ul class="upcoming-list" data-event-list>
+		{upcoming.map(event => (
+			<li>
+				<a class="upcoming-card" href={event.href} data-event-end={event.endAt}>
+					<div class="upcoming-copy">
+						<time datetime={event.startAt}>{eventDate(event.startAt)} · {eventTime(event.startAt)}</time>
+						<h4>{event.name}</h4>
+						<p>{event.location}</p>
+					</div>
+					{event.cover && <img src={event.cover} alt="" width="96" height="96" loading="lazy" decoding="async" />}
+				</a>
+			</li>
+		))}
+	</ul>
+	<p class="calendar-status" data-calendar-status hidden={upcoming.length > 0}>Find upcoming events on our Luma calendar.</p>
+	<a class="site-button mission-events-link" href={LUMA_URL}>View all upcoming events <span aria-hidden="true">↗</span></a>
+	<script is:inline type="application/json" data-calendar-snapshot set:html={JSON.stringify(events).replace(/</g, '\\u003c')} />
+	<template data-event-template>
+		<li>
+			<a class="upcoming-card">
+				<div class="upcoming-copy"><time></time><h4></h4><p></p></div>
+				<img alt="" width="96" height="96" loading="lazy" decoding="async" />
+			</a>
+		</li>
+	</template>
+</div>
+
+<script>
+	import { parseUpcomingEvents, nextEvents, eventDate, eventTime, type UpcomingEvent } from '../lib/upcoming-events';
+	let cleanup = () => {};
+
+	function mountEvents() {
+		const calendar = document.querySelector<HTMLElement>('[data-upcoming-events]');
+		const list = calendar?.querySelector<HTMLElement>('[data-event-list]');
+		const template = calendar?.querySelector<HTMLTemplateElement>('[data-event-template]');
+		const status = calendar?.querySelector<HTMLElement>('[data-calendar-status]');
+		if (!calendar || !list || !template || !status) return () => {};
+		const controller = new AbortController();
+		const render = (events: UpcomingEvent[]) => {
+			const upcoming = nextEvents(events);
+			list.replaceChildren(...upcoming.map(event => {
+				const card = template.content.cloneNode(true) as DocumentFragment;
+				const link = card.querySelector('a')!;
+				link.href = event.href;
+				link.dataset.eventEnd = event.endAt;
+				const time = card.querySelector('time')!;
+				time.dateTime = event.startAt;
+				time.textContent = `${eventDate(event.startAt)} · ${eventTime(event.startAt)}`;
+				card.querySelector('h4')!.textContent = event.name;
+				card.querySelector('p')!.textContent = event.location;
+				const image = card.querySelector('img')!;
+				if (event.cover) image.src = event.cover;
+				else image.remove();
+				return card;
+			}));
+			status.hidden = upcoming.length > 0;
+		};
+		// The build snapshot renders immediately, including in static previews.
+		// Filter it again on arrival so old events never remain on a long-lived deploy.
+		render(JSON.parse(calendar.querySelector('[data-calendar-snapshot]')?.textContent || '[]'));
+		const observer = new IntersectionObserver(async entries => {
+			if (!entries.some(entry => entry.isIntersecting)) return;
+			observer.disconnect();
+			try {
+				const response = await fetch('/api/luma-events', {
+					signal: AbortSignal.any([controller.signal, AbortSignal.timeout(8000)]),
+				});
+				if (response.ok && !controller.signal.aborted) render(parseUpcomingEvents(await response.json()));
+			} catch {
+				// Keep the current build snapshot and the direct calendar link on failure.
+			}
+		}, { rootMargin: '400px' });
+		observer.observe(calendar);
+		return () => { controller.abort(); observer.disconnect(); };
+	}
+
+	document.addEventListener('astro:page-load', () => { cleanup(); cleanup = mountEvents(); });
+	document.addEventListener('astro:before-swap', () => cleanup());
+</script>
+
+<style>
+	.mission-calendar { display: grid; gap: 1rem; min-width: 0; }
+	.calendar-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+	.calendar-heading h3 { margin: 0; font-size: 1.1rem; font-weight: 400; }
+	.calendar-heading > span { color: var(--text-soft); font-size: 0.8rem; }
+	.upcoming-list { display: grid; gap: 0.85rem; margin: 0; padding: 0; list-style: none; }
+	.upcoming-card { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.25rem; border: 1px solid var(--hairline-soft); border-radius: 1rem; background: var(--card-raised); color: var(--text-bright); text-decoration: none; }
+	.upcoming-card:hover { border-color: var(--text-accent); }
+	.upcoming-card:focus-visible { outline: 2px solid var(--focus-color); outline-offset: 4px; }
+	.upcoming-copy { min-width: 0; }
+	.upcoming-card time { color: var(--text-accent); font-size: 0.8rem; }
+	.upcoming-card h4 { margin: 0.45rem 0; font-size: clamp(1.05rem, 1.5vw, 1.3rem); line-height: 1.25; font-weight: 700; overflow-wrap: anywhere; }
+	.upcoming-card p { margin: 0; color: var(--text-soft); font-size: 0.85rem; }
+	.upcoming-card img { flex: 0 0 auto; width: 6rem; height: 6rem; object-fit: cover; border-radius: 0.6rem; }
+	.calendar-status { margin: 0; color: var(--text-soft); }
+	.mission-events-link { justify-self: end; gap: 0.65rem; }
+	@media (max-width: 700px) {
+		.upcoming-card { gap: 0.8rem; padding: 1rem; }
+		.upcoming-card img { width: 4.5rem; height: 4.5rem; }
+	}
+</style>

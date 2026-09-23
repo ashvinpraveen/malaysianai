@@ -269,8 +269,7 @@ const startIndex = 0;
 
 			state.phase += (state.target - state.phase) * ease;
 			const activeIndex = nearestIndex();
-			// Outer cards sit just past the stage edge, so the blur runs off the card
-			// instead of stopping in a cream margin. Perspective pulls distant cards inward.
+			// Outer cards extend into the edge fade. Perspective pulls distant cards inward.
 			const outerDistance = count / 2 - 0.5;
 			const projection = 1200 / (1200 + outerDistance * 72);
 			const horizontalSpacing = Math.max(
@@ -428,10 +427,6 @@ const startIndex = 0;
 		width: min(68rem, 100%);
 		margin: 0.75rem auto 0;
 		padding: 1.35rem clamp(1.25rem, 2.8vw, 2.25rem) 2.1rem;
-		overflow: hidden;
-		border: 1px solid var(--hairline-soft);
-		border-radius: 1.5rem;
-		background: var(--card-raised);
 	}
 
 	.community-stage {
@@ -440,6 +435,9 @@ const startIndex = 0;
 		height: clamp(11.5rem, 22dvh, 15rem);
 		margin-inline: calc(clamp(1.25rem, 2.8vw, 2.25rem) * -1);
 		overflow: hidden;
+		/* Fade to transparency so the filmstrip blends into either page theme. */
+		-webkit-mask-image: linear-gradient(to right, transparent, #000 16%, #000 84%, transparent);
+		mask-image: linear-gradient(to right, transparent, #000 16%, #000 84%, transparent);
 		isolation: isolate;
 		perspective: 1200px;
 		cursor: default;

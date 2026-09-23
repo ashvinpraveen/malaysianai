@@ -1,7 +1,7 @@
 ---
 import BrandLockup from './BrandLockup.astro';
 import ThemeToggle from './ThemeToggle.astro';
-import { AIMTO_URL, GITHUB_URL, LUMA_URL } from '../consts';
+import { GITHUB_URL, LUMA_URL } from '../consts';
 import { BRAND_WORDMARK } from '../lib/brand';
 const year = new Date().getFullYear();
 
@@ -17,7 +17,6 @@ const groups = [
 	{
 		title: 'Explore',
 		links: [
-			{ label: 'AI Takeover', href: AIMTO_URL },
 			{ label: 'Stories', href: '/blog' },
 			{ label: 'Residents', href: '/residents' },
 		],

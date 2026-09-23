@@ -45,7 +45,7 @@ GitHub Actions runs the same checks for pushes and pull requests.
 - `src/pages/` defines public routes. Layouts and section components live in `src/layouts/` and `src/components/`.
 - The hero source lives in `src/assets/hero-fibonacci.png`. Astro generates responsive WebP variants during the build. Other public assets live in `public/`.
 
-The Luma calendar loads from an external iframe. Applications open the configured Airtable form, and contact links open WhatsApp. This repository does not process submissions.
+Upcoming Luma events render as ordinary page links, so the calendar has no nested scroll area. The build fetches a public calendar snapshot; browsers refresh it through `/api/luma-events` when the section approaches the viewport. Vercel proxies this fixed route to Luma, and the dev server uses the same route. The static production preview uses the build snapshot. Failed refreshes preserve unexpired snapshot events and the calendar link. This public Luma endpoint is also used by Luma's embed, but is not their versioned API. Applications open the configured application page, and contact links open WhatsApp. This repository does not process submissions.
 
 `docs/site-inventory.md` records the previous site's content and routes. It is historical context, not a list of currently implemented pages.
 

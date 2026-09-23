@@ -567,7 +567,8 @@ test('theme toggle follows the system scheme and can lock light or dark', async 
 	await page.locator('.footer-company').getByRole('link', { name: 'About', exact: true }).click();
 	await expect(page).toHaveURL(/\/about\/?$/);
 	await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
-	await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(243, 240, 234)');
+	// About opts out of the neutral palette and uses the standard light background.
+	await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(239, 232, 216)');
 	await page.getByRole('radio', { name: 'Dark' }).click();
 	await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 	await page.getByRole('radio', { name: 'System' }).click();

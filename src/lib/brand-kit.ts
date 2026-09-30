@@ -250,7 +250,7 @@ export const brandAssets: BrandAsset[] = [
 	{
 		id: 'lockup-h-dark',
 		label: 'Horizontal lockup · on dark',
-		description: 'Primary lockup from the official master: mark beside wordmark in white. Prefer this on websites, decks, and banners.',
+		description: 'Primary lockup: mark beside wordmark in white with a tight gap. Prefer this on websites, decks, and banners.',
 		alt: lockupHDarkAlt,
 		preview: '/brand/malaysian-ai-lockup-horizontal-on-dark-704.png',
 		previewClass: 'wide',
@@ -269,7 +269,7 @@ export const brandAssets: BrandAsset[] = [
 	{
 		id: 'lockup-h-light',
 		label: 'Horizontal lockup · on light',
-		description: 'Official black lockup for sand surfaces and print on pale paper.',
+		description: 'Black lockup with the same tight mark–wordmark gap for sand surfaces and print on pale paper.',
 		alt: lockupHLightAlt,
 		preview: '/brand/malaysian-ai-lockup-horizontal-on-light-704.png',
 		previewClass: 'wide',

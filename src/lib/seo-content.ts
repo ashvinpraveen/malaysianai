@@ -42,6 +42,11 @@ export const seoContentByPath: Record<string, Partial<Pick<PageMetadata, 'title'
 			'An eight-week, full-time AI residency in Kuala Lumpur for founders already shipping. Peer density, weekly demos, and a working home at 500 Global — 1 October to 30 November 2026.',
 		keywords: ['Malaysian AI', 'AI residency Malaysia', 'AI startups Malaysia'],
 	},
+	'/residency/accountability': {
+		title: 'Accountability Mondays | AI Residency Malaysia',
+		description: 'How Malaysian AI residents run weekly accountability sessions in Kuala Lumpur: self-set tasks, 50 push-ups or RM50 per miss, and a plank calculator.',
+		keywords: ['Malaysian AI', 'AI residency Malaysia', 'founder accountability', 'accountability group Kuala Lumpur', 'startup accountability session', 'plank to push-up calculator'],
+	},
 	'/residents': {
 		title: 'AI Startups Malaysia | Meet the Residents',
 		description: 'Meet the AI startups, founders and teams building products at Malaysian AI. Explore resident companies in our Kuala Lumpur AI residency.',

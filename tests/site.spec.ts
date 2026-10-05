@@ -9,7 +9,7 @@ test('public destinations load and the hero uses responsive images', async ({ pa
 	const errors: string[] = [];
 	page.on('pageerror', error => errors.push(error.message));
 	for (const [path, heading] of [
-		['/', 'Learn, build and'], ['/residency', 'Join the Malaysian.ai residency'],
+		['/', 'Learn, build and'], ['/residency', 'Join the Malaysian.ai residency'], ['/residency/accountability', 'Accountability Mondays'],
 		['/residents', 'Meet the residents'], ['/contact', 'Get in touch'], ['/brand', 'Brand'], ['/blog', 'Malaysian AI Blog'],
 	]) {
 		const response = await page.goto(path);
@@ -643,6 +643,29 @@ test('residency show and tell points at Luma with clear section headings', async
 	expect(sizes).not.toBeNull();
 	expect(sizes!.visit).toBeGreaterThanOrEqual(18);
 	expect(sizes!.teams).toBeGreaterThanOrEqual(18);
+});
+
+test('accountability page explains the stakes and converts planks to push-ups', async ({ page }) => {
+	await page.goto('/residency');
+	await page.locator('.residency-visit').getByRole('link', { name: /keep each other accountable/i }).click();
+	await expect(page).toHaveURL(/\/residency\/accountability$/);
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Accountability Mondays');
+	await expect(page.locator('.stake-card')).toHaveCount(2);
+	await expect(page.locator('.stack-cell')).toHaveCount(10);
+
+	const calculator = page.locator('[data-plank-calculator]');
+	const pushUps = calculator.locator('[data-out="pushups"]');
+	await expect(calculator.locator('[data-out="hold"]')).toHaveText('2 min 20 s');
+	await expect(pushUps).toHaveText('50');
+	await calculator.getByRole('button', { name: '10 min' }).click();
+	await expect(pushUps).toHaveText('201');
+	await expect(calculator.getByRole('button', { name: '10 min' })).toHaveAttribute('aria-pressed', 'true');
+	await calculator.getByRole('button', { name: 'Best rate' }).click();
+	await expect(calculator.locator('[data-out="hold"]')).toHaveText('4 min 32 s');
+	await calculator.getByRole('slider', { name: 'Plank hold' }).fill('300');
+	await expect(calculator.locator('[data-out="summary"]')).toHaveText('A 5 min plank clears 120 push-ups.');
+	await expect(page.locator('.plank-table tbody tr')).toHaveCount(10);
+	expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
 });
 
 test('residency2 messaging draft sells the cohort thesis and stays noindex', async ({ page }) => {

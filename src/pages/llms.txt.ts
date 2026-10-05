@@ -15,6 +15,7 @@ export const GET: APIRoute = async ({ site }) => {
 		link('Home', '/', 'Learn, build and experience Malaysian AI through communities, events, and the residency.'),
 		link('About', '/about', 'Who we are, what we do, and how to take part.'),
 		link('Residency', '/residency', 'A working home for founders building AI products; includes an application link and venue details.'),
+		link('Accountability Mondays', '/residency/accountability', 'How residents run weekly accountability sessions: self-set tasks, push-up or ringgit stakes, and the plank-to-push-up formula.'),
 		link('Residency (messaging draft)', '/residency2', 'Draft residency landing with sharper cohort messaging; noindex while under review.'),
 		link('Residents', '/residents', 'Companies and teams in the residency.'),
 		link('Blog', '/blog', 'Community stories and programme updates.'),

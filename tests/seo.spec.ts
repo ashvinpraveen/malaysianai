@@ -3,7 +3,7 @@ import hosting from '../vercel.json' with { type: 'json' };
 import { test, expect } from '@playwright/test';
 
 const origin = 'https://www.malaysian.ai';
-const pages = ['/', '/about', '/brand', '/residency', '/residents', '/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon'];
+const pages = ['/', '/about', '/brand', '/residency', '/residency/accountability', '/residents', '/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon'];
 const expectedCommunityNames = [
 	'AI After Hours KL',
 	'AI HackerDorm',
@@ -41,6 +41,11 @@ const expectedMetadata = [
 		path: '/residency',
 		title: 'AI Residency Malaysia | Build in Kuala Lumpur | Malaysian AI',
 		description: 'Build your AI startup at the Malaysian AI residency in Kuala Lumpur. Find co-working space, regular demos and support with product, engineering and fundraising.',
+	},
+	{
+		path: '/residency/accountability',
+		title: 'Accountability Mondays | AI Residency Malaysia | Malaysian AI',
+		description: 'How Malaysian AI residents run weekly accountability sessions in Kuala Lumpur: self-set tasks, 50 push-ups or RM50 per miss, and a plank calculator.',
 	},
 	{
 		path: '/residents',
@@ -122,7 +127,7 @@ test('public pages have consistent production metadata and valid share images', 
 		const graph = structured.find((entry) => Array.isArray(entry['@graph']))?.['@graph'];
 		expect(graph, path).toBeTruthy();
 		expect(graph.map((item: { '@type': string }) => item['@type'])).toEqual(path.startsWith('/blog/') ? ['Organization', 'WebSite', 'BlogPosting'] : ['Organization', 'WebSite']);
-		if (path === '/' || path === '/residency') {
+		if (path === '/' || path === '/residency' || path === '/residency/accountability') {
 			const faqPage = structured.find((entry) => entry['@type'] === 'FAQPage');
 			expect(faqPage, path).toBeTruthy();
 			expect(faqPage.mainEntity.length).toBeGreaterThan(5);

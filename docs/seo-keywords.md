@@ -24,6 +24,8 @@ Research sources support relevance, not search volume:
 - [Malaia](https://malaia.net/) describes an AI conference, hackathon and workshops in Kuala Lumpur.
 - [Malaysian AI residency](https://www.malaysian.ai/residency) and [resident teams](https://www.malaysian.ai/residents) support the startup and residency targets. Repository content determines what the updated metadata claims.
 
+`/residency/accountability` also targets founder accountability, accountability group Kuala Lumpur, startup accountability session and plank to push-up calculator. They are long-tail phrases chosen for relevance to the page; no volume data was available for them either.
+
 `src/lib/seo-content.ts` holds search-only titles, descriptions and page-specific keyword lists. `BaseHead.astro` applies them to HTML head metadata and social cards. Organization and WebSite structured data describe the community; BlogPosting keywords match each article. Article headlines retain their editorial titles. Legal pages and the 404 receive no promotional keyword tags.
 
 [Google ignores the keywords meta tag](https://developers.google.com/search/docs/crawling-indexing/special-tags). It is included to record the requested phrases, with no claim of a ranking benefit. Search titles and natural descriptions provide the useful search-facing copy. No hidden keyword text, visible copy, styles or layout were changed. Structured data does not guarantee a ranking improvement or rich result.

@@ -109,4 +109,17 @@ export const residents: Resident[] = [
 		tags: ['Publishing', 'Content', 'Automation'],
 		tile: 'dark',
 	},
+	{
+		name: 'CodeKite',
+		tag: 'Self-maintaining API integrations',
+		logo: '/codekite-logo.svg',
+		focus: 'Developer Tools',
+		location: 'Kuala Lumpur',
+		cohort: '02',
+		website: 'https://codekite.app',
+		description:
+			'API monitoring platform that tracks changes across API providers, finds affected code in your integrations, and prepares fixes for review. CodeKite helps engineering teams avoid unexpected breakage from provider updates.',
+		tags: ['API', 'Integration', 'Monitoring'],
+		tile: 'light',
+	},
 ];

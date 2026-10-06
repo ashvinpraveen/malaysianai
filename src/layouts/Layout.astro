@@ -5,6 +5,7 @@ import AnnouncementBanner from '../components/AnnouncementBanner.astro';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import { SHOW_ANNOUNCEMENT } from '../lib/announcement';
 import type { PageMetadata } from '../lib/seo';
 
 interface Props extends PageMetadata {
@@ -24,7 +25,7 @@ const { immersive = false, neutral = false, ...metadata } = Astro.props;
 		<ClientRouter fallback="swap" />
 	</head>
 	<body class:list={{ immersive }}>
-		<AnnouncementBanner />
+		{SHOW_ANNOUNCEMENT && <AnnouncementBanner />}
 		{!immersive && <Header />}
 		<main class:list={{ 'immersive-main': immersive }}>
 			<slot />

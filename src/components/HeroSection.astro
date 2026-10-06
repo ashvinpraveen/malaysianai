@@ -6,7 +6,7 @@ import heroArtMobile from '../assets/hero-fibonacci-night-mobile.png';
 import heroArtDayMobile from '../assets/hero-fibonacci-day-mobile.png';
 import FramedChrome from './FramedChrome.astro';
 import HibiscusPetals from './HibiscusPetals.astro';
-import { APPLY_FORM_URL, LUMA_URL } from '../consts';
+import { LUMA_URL } from '../consts';
 
 const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672], format: 'webp', quality: 85 });
 ---
@@ -136,10 +136,10 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 
 	<div class="hero-announcement">
 		<p>
-			<span>Applications for our January cohort are open.</span>
-			<a class="hero-announcement-link" href={APPLY_FORM_URL}>Join our Residency.</a>
+			<span>Weekly AI events.</span>
+			<a class="hero-announcement-link" href={LUMA_URL}>Come build with us.</a>
 		</p>
-		<a class="site-button hero-apply" href="/residency">Learn more</a>
+		<a class="site-button hero-apply" href={LUMA_URL}>Find an event</a>
 	</div>
 
 	<section class="hero-card" aria-labelledby="hero-title">
@@ -162,8 +162,8 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 			</p>
 		</div>
 		<div class="hero-actions">
-			<a class="card-link site-button" href="/residency">Join residency</a>
-			<a class="hero-events-link" href={LUMA_URL}>View events</a>
+			<a class="card-link site-button" href={LUMA_URL}>View upcoming events</a>
+			<a class="hero-secondary-link" href="/residency">Join residency</a>
 		</div>
 	</section>
 </div>
@@ -524,7 +524,7 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 		transform: translateY(-2px);
 	}
 
-	.hero-events-link {
+	.hero-secondary-link {
 		color: var(--hero-muted);
 		font-size: 0.84rem;
 		line-height: 1;
@@ -533,12 +533,12 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 		animation: soft-rise 0.65s 1.08s ease-out both;
 	}
 
-	.hero-events-link:hover,
-	.hero-events-link:focus-visible {
+	.hero-secondary-link:hover,
+	.hero-secondary-link:focus-visible {
 		color: var(--hero-copy);
 	}
 
-	.hero-events-link:focus-visible {
+	.hero-secondary-link:focus-visible {
 		outline: 2px solid var(--focus-color);
 		outline-offset: 4px;
 	}
@@ -745,7 +745,7 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 		.hero-card h1,
 		.intro,
 		.card-link,
-		.hero-events-link,
+		.hero-secondary-link,
 		.hero-art {
 			animation: none;
 		}

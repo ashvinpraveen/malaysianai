@@ -128,7 +128,7 @@ export const residency2Faqs: FaqItem[] = [
 	{
 		question: 'How long is the cohort?',
 		answer:
-			'Eight weeks, full-time and in person, across January and February 2027. Exact dates will be confirmed soon. Applications are open now and reviewed on a rolling basis.',
+			'Eight weeks, full-time and in person, across January and February 2027. Applications are open now and reviewed on a rolling basis.',
 	},
 	{
 		question: 'Is there a fee?',

@@ -3,9 +3,9 @@ import { residents } from './residents';
 
 /** Programme facts shown in the residency2 hero strip. */
 export const residency2Facts = [
-	{ label: 'Cohort', value: '1 October – 30 November 2026' },
+	{ label: 'Cohort', value: 'January – February 2027' },
 	{ label: 'Format', value: 'Full-time, in person · Kuala Lumpur' },
-	{ label: 'Deadline', value: 'Apply by 1 October 2026' },
+	{ label: 'Applications', value: 'Open now · rolling review' },
 ] as const;
 
 export const residency2For = [
@@ -61,8 +61,8 @@ export const residency2ApplySteps = [
 		body: 'Selected teams talk with us about product, commitment, and how you will use the space.',
 	},
 	{
-		title: 'Start 1 October',
-		body: 'Accepted residents begin the eight-week cohort at 500 Global, Kuala Lumpur.',
+		title: 'Start in January',
+		body: 'Accepted residents begin the eight-week cohort at 500 Global, Kuala Lumpur, in January 2027.',
 	},
 ] as const;
 
@@ -128,7 +128,7 @@ export const residency2Faqs: FaqItem[] = [
 	{
 		question: 'How long is the cohort?',
 		answer:
-			'Eight weeks, full-time and in person: 1 October to 30 November 2026. Applications close 1 October 2026.',
+			'Eight weeks, full-time and in person, across January and February 2027. Applications are open now and reviewed on a rolling basis.',
 	},
 	{
 		question: 'Is there a fee?',

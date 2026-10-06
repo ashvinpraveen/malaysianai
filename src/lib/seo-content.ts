@@ -39,7 +39,7 @@ export const seoContentByPath: Record<string, Partial<Pick<PageMetadata, 'title'
 	'/residency2': {
 		title: 'Two months. A year of progress. | AI Residency Malaysia',
 		description:
-			'An eight-week, full-time AI residency in Kuala Lumpur for founders already shipping. Peer density, weekly demos, and a working home at 500 Global — 1 October to 30 November 2026.',
+			'An eight-week, full-time AI residency in Kuala Lumpur for founders already shipping. Peer density, weekly demos, and a working home at 500 Global — January to February 2027.',
 		keywords: ['Malaysian AI', 'AI residency Malaysia', 'AI startups Malaysia'],
 	},
 	'/residency/accountability': {

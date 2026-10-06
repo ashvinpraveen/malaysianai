@@ -36,8 +36,8 @@ const groups = [
 				with an 8-week residency in Kuala Lumpur.
 			</p>
 			<div class="footer-actions">
-				<a class="footer-cta site-button" href="/residency">Join residency</a>
-				<a class="footer-events" href={LUMA_URL}>View events</a>
+				<a class="footer-cta site-button" href={LUMA_URL}>View upcoming events</a>
+				<a class="footer-secondary" href="/residency">Join residency</a>
 			</div>
 		</div>
 
@@ -119,18 +119,18 @@ const groups = [
 		transition: background 180ms ease, transform 180ms ease;
 	}
 
-	.footer-events {
+	.footer-secondary {
 		color: var(--footer-link);
 		font-size: 0.86rem;
 		text-underline-offset: 0.22em;
 	}
 
-	.footer-events:hover,
-	.footer-events:focus-visible {
+	.footer-secondary:hover,
+	.footer-secondary:focus-visible {
 		color: var(--text-hover);
 	}
 
-	.footer-events:focus-visible {
+	.footer-secondary:focus-visible {
 		outline: 2px solid var(--focus-color);
 		outline-offset: 4px;
 	}

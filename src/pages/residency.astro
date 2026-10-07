@@ -9,7 +9,7 @@ import Layout from '../layouts/Layout.astro';
 import { SITE_TITLE, APPLY_FORM_URL, LUMA_URL, VENUE_ADDRESS, VENUE_MAPS_URL, VENUE_WAZE_URL } from '../consts';
 
 const description =
-	'A full-time, in-person 8-week residency at the Malaysian.ai space, January to February 2027, for founders, builders, marketers, designers and creators building with AI.';
+	'A full-time, in-person 8-week residency at the Malaysian.ai space, for founders, builders, marketers, designers and creators building with AI.';
 ---
 
 <Layout title={`Join the Malaysian.ai residency | ${SITE_TITLE}`} description={description} neutral>
@@ -18,7 +18,7 @@ const description =
 			<header class="residency-header">
 				<div class="residency-title">
 					<h1>Join the Malaysian.ai residency.</h1>
-					<p>Full-time, in person · January – February 2027</p>
+					<p>Full-time, in person · <span data-intake-text="term">Residency dates to be announced</span></p>
 				</div>
 				<div class="residency-intro">
 					<p>
@@ -28,12 +28,11 @@ const description =
 						progress, surrounded by ambitious people like you.
 					</p>
 					<p>
-						The next cohort runs for eight weeks across January and February 2027.
-						Applications are open now. You'll have a working home, regular demos, and support with
+						<span data-intake-text="status">Check application dates on the platform.</span> You'll have a working home, regular demos, and support with
 						product, engineering, and fundraising.
 					</p>
 					<div class="residency-actions" id="apply">
-						<a class="site-button" href={APPLY_FORM_URL}>Apply now</a>
+						<a class="site-button" data-intake-apply href={APPLY_FORM_URL}>Apply now</a>
 						<a class="residents-link" href="/residents">Meet the residents <span aria-hidden="true">↗</span></a>
 					</div>
 				</div>
@@ -42,15 +41,15 @@ const description =
 			<dl class="residency-facts">
 				<div>
 					<dt>Cohort</dt>
-					<dd>January – February 2027</dd>
+					<dd><span data-intake-text="cohort">Next cohort</span><br /><span data-intake-text="term">Dates to be announced</span></dd>
 				</div>
 				<div>
 					<dt>Format</dt>
 					<dd>Full-time, in person</dd>
 				</div>
 				<div>
-					<dt>Applications</dt>
-					<dd>Open now · rolling review</dd>
+					<dt>Application deadline, KL time</dt>
+					<dd data-intake-text="deadline">Check the platform for the current deadline</dd>
 				</div>
 			</dl>
 

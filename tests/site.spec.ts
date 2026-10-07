@@ -674,3 +674,19 @@ test('residency2 messaging draft sells the cohort thesis and stays noindex', asy
 	await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
 	await expect(page.locator('#residency2-faq')).toContainText('Eight weeks, full-time and in person');
 });
+
+test('residency dates follow platform settings in KL time', async ({ page }) => {
+  await page.route('https://hushed-schnauzer-311.convex.cloud/api/query', route => route.fulfill({ json: { status: 'success', value: [{ number: 2, current: true, opensAt: 0, closesAt: Date.parse('2027-01-15T23:59:00+08:00'), enabled: true, residencyStart: '', residencyEnd: '' }] } }));
+  await page.goto('/residency');
+  await expect(page.locator('[data-intake-text="deadline"]')).toHaveText('15 January 2027 at 11:59 PM MYT');
+  await expect(page.locator('[data-intake-text="status"]')).toHaveText('Cohort 2 applications are open');
+  await expect(page.locator('[data-intake-apply]')).toHaveAttribute('href', 'https://platform.malaysian.ai/application?cohort=2');
+  await expect(page.locator('[data-intake-text="term"]').first()).toHaveText('Residency dates to be announced');
+});
+
+test('a closed platform intake is not advertised as open', async ({ page }) => {
+  await page.route('https://hushed-schnauzer-311.convex.cloud/api/query', route => route.fulfill({ json: { status: 'success', value: [{ number: 2, current: true, opensAt: 0, closesAt: 1, enabled: true, residencyStart: '', residencyEnd: '' }] } }));
+  await page.goto('/residency');
+  await expect(page.locator('[data-intake-text="status"]')).toHaveText('Cohort 2 applications are closed');
+  await expect(page.locator('[data-intake-apply]')).toHaveText('View application');
+});

@@ -410,14 +410,14 @@ const startSeconds = oneTaskHold;
 
 	h1 {
 		margin: 0;
-		font: 400 var(--text-page-title) / 1 var(--font-display);
-		letter-spacing: -0.04em;
+		font: var(--display-weight) var(--text-page-title) / 1.05 var(--font-display);
+		letter-spacing: var(--tracking-display);
 	}
 
 	h2 {
 		margin: 0;
-		font: 400 clamp(1.75rem, 3vw, 2.4rem) / 1.05 var(--font-display);
-		letter-spacing: -0.035em;
+		font: var(--display-weight) clamp(1.75rem, 3vw, 2.4rem) / 1.08 var(--font-display);
+		letter-spacing: var(--tracking-display);
 	}
 
 	h3 {
@@ -758,7 +758,7 @@ const startSeconds = oneTaskHold;
 	}
 
 	.acc-page .acc-content :global(.faq-page .faq-shell) { padding-top: var(--space-section); }
-	.acc-page .acc-content :global(.faq-title) { max-width: none; font-size: clamp(1.75rem, 3vw, 2.4rem); line-height: 1.05; letter-spacing: -0.035em; }
+	.acc-page .acc-content :global(.faq-title) { max-width: none; font-size: clamp(1.75rem, 3vw, 2.4rem); line-height: 1.05; letter-spacing: var(--tracking-display); }
 	.acc-page .acc-content :global(.faq-panel) { border: 0; border-radius: 0; background: none; }
 	.acc-page .acc-content :global(.faq-item) { border-bottom: 0; }
 	.acc-page .acc-content :global(.faq-item summary) { padding-inline: 0; }

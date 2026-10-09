@@ -192,9 +192,9 @@ const shareImage = image ? await getImage({ src: image, width: 1200, format: 'we
 		margin: 0 auto;
 		font-family: var(--font-display);
 		font-size: clamp(2.1rem, 4vw, 3.25rem);
-		font-weight: 400;
-		letter-spacing: -0.04em;
-		line-height: 0.98;
+		font-weight: var(--display-weight);
+		letter-spacing: var(--tracking-display);
+		line-height: 1.05;
 		text-wrap: balance;
 	}
 
@@ -275,9 +275,9 @@ const shareImage = image ? await getImage({ src: image, width: 1200, format: 'we
 		margin: clamp(3.75rem, 7vw, 5.5rem) 0 1.35rem;
 		font-family: var(--font-display);
 		font-size: clamp(2.3rem, 5vw, 3.65rem);
-		font-weight: 400;
-		letter-spacing: -0.035em;
-		line-height: 0.98;
+		font-weight: var(--display-weight);
+		letter-spacing: var(--tracking-display);
+		line-height: 1.05;
 		text-wrap: balance;
 	}
 
@@ -308,9 +308,10 @@ const shareImage = image ? await getImage({ src: image, width: 1200, format: 'we
 	.story-body :global(blockquote p) {
 		margin: 0;
 		font-family: var(--font-display);
+		font-weight: var(--display-weight);
 		font-size: clamp(1.65rem, 3.2vw, 2.35rem);
 		letter-spacing: -0.02em;
-		line-height: 1.15;
+		line-height: 1.2;
 	}
 
 	.story-body :global(a) {

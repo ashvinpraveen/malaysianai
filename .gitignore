@@ -16,7 +16,20 @@ pnpm-debug.log*
 
 # environment variables
 .env
-.env.production
+.env.*
+!.env.example
+
+# Timeless Free Font License: the fonts may be embedded in the site, but this
+# public repository must not contain the files or any derivative. Build downloads
+# them from a private Vercel Blob store into src/assets/fonts/timeless/.
+src/assets/fonts/timeless/
+**/*[Tt]imeless*.woff2
+**/*[Tt]imeless*.woff
+**/*[Tt]imeless*.otf
+**/*[Tt]imeless*.ttf
+**/*[Tt]imeless*.ttc
+**/*[Tt]imeless*.eot
+**/*[Tt]imeless*.dfont
 
 # macOS-specific files
 .DS_Store

@@ -11,7 +11,31 @@ bun install --frozen-lockfile
 bun dev
 ```
 
-Astro prints the local URL. No environment variables or database are required.
+Astro prints the local URL. No database is required. The Timeless fonts are optional; without them the build uses the fallback stacks described below.
+
+## Timeless fonts
+
+Display type is Timeless Serif and body type is Timeless Sans, from the [Timeless](https://www.timeless.co/type) family published by Timeless Ventures. PP Mondwest stays as the pixel accent.
+
+The [Timeless Free Font License](https://www.timeless.co/type/license) allows these fonts to be embedded in a website, and only as part of that website. It does not allow putting them on a font service, a public server, or a public repository, and it does not allow redistribution. This repository is public, so the font files are not in git. `.gitignore` rejects Timeless files (woff, woff2, otf, ttf, and the other font extensions) anywhere in the tree.
+
+The files live in a private Vercel Blob store connected to the Vercel project, under `fonts/timeless/`:
+
+- `fonts/timeless/TimelessSerifVF.woff2`
+- `fonts/timeless/TimelessSerifItalicVF.woff2`
+- `fonts/timeless/TimelessSansVF.woff2`
+
+`scripts/fetch-fonts.mjs` runs at the start of `bun dev` and `bun run build`. It reads `BLOB_READ_WRITE_TOKEN`, which Vercel sets when a Blob store is connected, and downloads those three files into `src/assets/fonts/timeless/`. Astro's local font provider then bundles them into the site, so they are served only as part of the build under `/_astro/fonts/`. The script does not print Blob URLs.
+
+To build with the fonts on your machine, link the Vercel project, pull its env, and build:
+
+```sh
+vercel link
+vercel env pull .env.local
+bun run build
+```
+
+If `BLOB_READ_WRITE_TOKEN` is missing, or the download fails and no local copies are already present, the build still succeeds. Display falls back to Georgia, "Iowan Old Style", "Times New Roman", serif. Body falls back to system-ui, sans-serif. The script logs one warning.
 
 ## Checks
 

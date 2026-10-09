@@ -6,8 +6,8 @@
     "node": ">=22.22.3"
   },
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
+    "dev": "bun scripts/fetch-fonts.mjs && astro dev",
+    "build": "bun scripts/fetch-fonts.mjs && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
@@ -20,6 +20,7 @@
     "@astrojs/mdx": "^7.0.5",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
+    "@vercel/blob": "^2.8.1",
     "astro": "^7.2.2",
     "sharp": "^0.35.0"
   },

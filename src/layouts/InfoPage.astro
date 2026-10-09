@@ -13,9 +13,9 @@ const { title, description, noindex = false, neutral = true } = Astro.props;
 <style>
 	.info-page { max-width: 72rem; min-height: 65svh; margin: auto; padding: 3rem 1.5rem 6rem; color: var(--page-text); }
 	header { max-width: 48rem; margin-bottom: 3rem; }
-	h1 { margin: 0; font: 400 var(--text-page-title) / 1 var(--font-display); letter-spacing: -0.04em; }
+	h1 { margin: 0; font: var(--display-weight) var(--text-page-title) / 1.05 var(--font-display); letter-spacing: var(--tracking-display); }
 	p, .info-page :global(p), .info-page :global(li) { font-size: var(--text-base); line-height: var(--leading-body); }
-	.info-page :global(h2) { font: 400 var(--text-section-title) / 1.05 var(--font-display); margin-top: 2.5rem; }
+	.info-page :global(h2) { font: var(--display-weight) var(--text-section-title) / 1.08 var(--font-display); letter-spacing: var(--tracking-display); margin-top: 2.5rem; }
 	.info-page :global(a:not(.site-button)) { color: var(--page-text); text-underline-offset: 0.2em; }
 	.info-page :global(a:focus-visible) { outline: 2px solid var(--focus-color); outline-offset: 4px; }
 	.info-page :global(.actions) { display: flex; flex-wrap: wrap; gap: 1rem; margin-block: 1.5rem; align-items: center; }

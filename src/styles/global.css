@@ -2,6 +2,9 @@
 
 :root {
 	font-family: var(--font-body);
+	font-weight: 400;
+	line-height: var(--leading-body);
+	letter-spacing: 0.004em;
 	color: var(--page-text);
 	background: var(--site-background);
 	font-synthesis: none;

@@ -104,20 +104,20 @@ export type BrandFont = {
 
 export const brandFonts: BrandFont[] = [
 	{
-		name: 'Newsreader',
+		name: 'Timeless Serif',
 		role: 'Display',
 		cssVar: '--font-display',
-		weights: '400',
+		weights: '100–900',
 		sample: 'malaysian.ai',
-		notes: 'Serif display for page titles, section headings, and the malaysian.ai wordmark.',
+		notes: 'Variable serif from Timeless (Timeless Ventures) for page titles, section headings, and the wordmark. Display sits on the heavier optical cut.',
 	},
 	{
-		name: 'Atkinson',
+		name: 'Timeless Sans',
 		role: 'Body',
 		cssVar: '--font-body',
-		weights: '400, 700',
+		weights: '100–900',
 		sample: 'Learn, build and experience Malaysian AI.',
-		notes: 'Accessible sans for UI, body copy, and navigation.',
+		notes: 'Variable sans for UI, body copy, and navigation. The Grotesk cut is not used.',
 	},
 	{
 		name: 'Mondwest',
@@ -167,8 +167,8 @@ const markLightAlt =
 	'Malaysian AI square logo mark — black geometric songket-inspired emblem for light backgrounds';
 const markDarkAlt =
 	'Malaysian AI square logo mark — white geometric songket-inspired emblem for dark backgrounds';
-const wordmarkDarkAlt = 'malaysian.ai wordmark in white Newsreader type for dark backgrounds';
-const wordmarkLightAlt = 'malaysian.ai wordmark in black Newsreader type for light backgrounds';
+const wordmarkDarkAlt = 'malaysian.ai wordmark in white for dark backgrounds';
+const wordmarkLightAlt = 'malaysian.ai wordmark in black for light backgrounds';
 const lockupHDarkAlt =
 	'Malaysian AI horizontal logo lockup with geometric mark and malaysian.ai wordmark in white on dark navy';
 const lockupHLightAlt =
@@ -218,7 +218,7 @@ export const brandAssets: BrandAsset[] = [
 	{
 		id: 'wordmark-dark',
 		label: 'Wordmark · on dark',
-		description: 'Newsreader “malaysian.ai” wordmark in white. Prefer the full lockup when the mark fits.',
+		description: '“malaysian.ai” wordmark in white. Prefer the full lockup when the mark fits.',
 		alt: wordmarkDarkAlt,
 		preview: '/brand/malaysian-ai-wordmark-on-dark.png',
 		previewClass: 'wide',

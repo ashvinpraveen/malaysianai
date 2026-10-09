@@ -488,9 +488,9 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 		margin: 0;
 		font-family: var(--font-display);
 		font-size: calc(clamp(2.55rem, 3.1vw, 3.45rem) - 4px);
-		font-weight: 400;
-		letter-spacing: -0.035em;
-		line-height: 0.88;
+		font-weight: var(--display-weight);
+		letter-spacing: var(--tracking-display);
+		line-height: 1.04;
 		text-wrap: balance;
 		text-shadow: 0 2px 24px var(--hero-title-shadow-color);
 		animation: soft-rise 0.7s 0.7s ease-out both;
@@ -500,8 +500,8 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 		max-width: 30rem;
 		margin: 1.2rem 0 1.3rem;
 		color: var(--hero-muted);
-		font-size: clamp(0.86rem, 1vw, 0.94rem);
-		line-height: 1.42;
+		font-size: clamp(1rem, 1.15vw, 1.125rem);
+		line-height: 1.55;
 		text-shadow: 0 1px 14px var(--hero-copy-shadow-color);
 		animation: soft-rise 0.7s 0.85s ease-out both;
 	}
@@ -613,9 +613,9 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 			color: #fffdf8;
 			font-family: var(--font-display);
 			font-size: min(7.2vw, 2.4rem);
-			font-weight: 400;
-			letter-spacing: -0.035em;
-			line-height: 0.95;
+			font-weight: var(--display-weight);
+			letter-spacing: var(--tracking-display);
+			line-height: 1.05;
 			text-align: center;
 			text-shadow: 0 3px 28px rgb(13 32 77 / 0.6);
 			animation: soft-rise 0.75s 0.9s ease-out both;
@@ -706,9 +706,9 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 			color: var(--text-heading);
 			font-family: var(--font-display);
 			font-size: calc(min(7.2vw, 2.4rem) - 2px);
-			font-weight: 400;
-			letter-spacing: -0.035em;
-			line-height: 0.95;
+			font-weight: var(--display-weight);
+			letter-spacing: var(--tracking-display);
+			line-height: 1.05;
 			text-shadow: none;
 			animation: none;
 		}

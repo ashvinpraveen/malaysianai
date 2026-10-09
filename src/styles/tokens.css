@@ -1,5 +1,6 @@
 /* Shared typography and theme values. Component geometry stays with its component.
    --font-body, --font-display and --font-pixel come from the fonts config in astro.config.mjs.
+   --display-weight and --tracking-display are the shared serif display settings.
 
    Palettes are plain colors. Tizen cannot use light-dark() inside custom properties,
    but it can follow prefers-color-scheme and html[data-theme]. */
@@ -8,10 +9,12 @@ html[data-theme='dark'] {
 	color-scheme: dark;
 	--text-xs: 0.75rem;
 	--text-sm: 0.875rem;
-	--text-base: 1rem;
-	--text-page-title: clamp(2rem, 3.5vw, 3rem);
-	--text-section-title: clamp(1.3rem, 1.8vw, 1.7rem);
-	--leading-body: 1.6;
+	--text-base: 1.0625rem;
+	--text-page-title: clamp(2.2rem, 3.8vw, 3.35rem);
+	--text-section-title: clamp(1.45rem, 2.05vw, 1.9rem);
+	--leading-body: 1.65;
+	--display-weight: 540;
+	--tracking-display: -0.03em;
 	--radius-media: 0.7rem;
 	--section-space: clamp(5.5rem, 12vh, 9rem);
 	--section-space-half: clamp(2.75rem, 6vh, 4.5rem);

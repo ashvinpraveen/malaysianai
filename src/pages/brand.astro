@@ -109,7 +109,7 @@ const lightColors = brandColors.filter((color) => color.theme === 'light');
 
 	<section id="typography" aria-labelledby="typography-title">
 		<h2 id="typography-title">Typography</h2>
-		<p>Three families carry the voice: a literary display, an accessible body sans, and a rare pixel accent.</p>
+		<p>Three families carry the voice: Timeless Serif for display, Timeless Sans for reading, and a rare pixel accent.</p>
 
 		<ul class="font-list">
 			{
@@ -238,8 +238,8 @@ const lightColors = brandColors.filter((color) => color.theme === 'light');
 
 	.asset-copy h3 {
 		margin: 0 0 0.5rem;
-		font: 400 var(--text-section-title) / 1.1 var(--font-display);
-		letter-spacing: -0.03em;
+		font: var(--display-weight) var(--text-section-title) / 1.1 var(--font-display);
+		letter-spacing: var(--tracking-display);
 	}
 
 	.asset-copy > p {
@@ -379,12 +379,13 @@ const lightColors = brandColors.filter((color) => color.theme === 'light');
 	}
 
 	.font-sample.display {
-		font: 400 clamp(2rem, 4vw, 3rem) / 1 var(--font-display);
-		letter-spacing: -0.04em;
+		font: var(--display-weight) clamp(2.15rem, 4vw, 3.15rem) / 1.02 var(--font-display);
+		letter-spacing: var(--tracking-display);
 	}
 
 	.font-sample.body {
-		font: 400 1.25rem / 1.45 var(--font-body);
+		font: 400 1.1875rem / 1.6 var(--font-body);
+		letter-spacing: 0.004em;
 	}
 
 	.font-sample.accent {

@@ -4,6 +4,8 @@
  * - public/malaysian-ai-logo-light.png (white horizontal lockup for dark fields)
  * - public/malaysian-ai-logo-dark.png (black horizontal lockup for light fields)
  *
+ * Horizontal lockups are recomposed with a tighter mark→wordmark gap
+ * (HORIZONTAL_GAP_RATIO), then written back to the site masters and /brand exports.
  * Also derives wordmark-only crops, inverted white marks, stacked lockups,
  * sized PNGs, and SVG wrappers that embed the raster masters.
  */
@@ -17,6 +19,10 @@ const LOCKUP_ON_DARK_SRC = 'public/malaysian-ai-logo-light.png'; // white logo
 const LOCKUP_ON_LIGHT_SRC = 'public/malaysian-ai-logo-dark.png'; // black logo
 const BG_DARK = '#06090f';
 const BG_LIGHT = '#f4efe6';
+/** Mark→wordmark gap as a fraction of mark width (approved brand sample). */
+const HORIZONTAL_GAP_RATIO = 0.16;
+/** Clear space around the lockup as a fraction of mark height. */
+const HORIZONTAL_PAD_RATIO = 0.04;
 
 const wordmarkSource = readFileSync('public/malaysian-ai-wordmark.svg', 'utf8');
 const BRAND_WORDMARK_PATH = wordmarkSource.match(/<path d="([^"]+)"/)?.[1];
@@ -24,7 +30,14 @@ if (!BRAND_WORDMARK_PATH) throw new Error('Could not read the Malaysian AI wordm
 
 type Bounds = { left: number; top: number; width: number; height: number };
 
-async function contentBounds(path: string): Promise<{ width: number; height: number; bounds: Bounds; gap: { start: number; end: number } }> {
+async function contentBounds(path: string): Promise<{
+	width: number;
+	height: number;
+	bounds: Bounds;
+	gap: { start: number; end: number };
+	mark: Bounds;
+	word: Bounds;
+}> {
 	const { data, info } = await sharp(path).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
 	const w = info.width;
 	const h = info.height;
@@ -55,12 +68,43 @@ async function contentBounds(path: string): Promise<{ width: number; height: num
 		}
 	}
 	if (gapStart < 0 || gapEnd < 0) throw new Error(`Could not find mark/wordmark gap in ${path}`);
+	const contentH = bottom - top + 1;
 	return {
 		width: w,
 		height: h,
-		bounds: { left, top, width: right - left + 1, height: bottom - top + 1 },
+		bounds: { left, top, width: right - left + 1, height: contentH },
 		gap: { start: gapStart, end: gapEnd },
+		mark: { left, top, width: gapStart - left, height: contentH },
+		word: { left: gapEnd + 1, top, width: right - (gapEnd + 1) + 1, height: contentH },
 	};
+}
+
+async function composeHorizontalLockup(src: string, gapRatio = HORIZONTAL_GAP_RATIO, padRatio = HORIZONTAL_PAD_RATIO) {
+	const meta = await contentBounds(src);
+	const markBuf = await sharp(src).extract(meta.mark).png().toBuffer();
+	const wordBuf = await sharp(src).extract(meta.word).png().toBuffer();
+	const markW = meta.mark.width;
+	const markH = meta.mark.height;
+	const wordW = meta.word.width;
+	const wordH = meta.word.height;
+	const gap = Math.round(markW * gapRatio);
+	const pad = Math.round(markH * padRatio);
+	const contentH = Math.max(markH, wordH);
+	const canvasW = pad + markW + gap + wordW + pad;
+	const canvasH = pad + contentH + pad;
+	const markTop = pad + Math.round((contentH - markH) / 2);
+	const wordTop = pad + Math.round((contentH - wordH) / 2);
+	const lockup = await sharp({
+		create: { width: canvasW, height: canvasH, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } },
+	})
+		.composite([
+			{ input: markBuf, left: pad, top: markTop },
+			{ input: wordBuf, left: pad + markW + gap, top: wordTop },
+		])
+		.png()
+		.toBuffer();
+
+	return { lockup, canvasW, canvasH, gap, markW, gapRatio: gap / markW };
 }
 
 function pngSvg(filename: string, title: string, width: number, height: number, pngBase64: string) {
@@ -136,12 +180,7 @@ pngSvg('malaysian-ai-mark.svg', 'Malaysian AI mark', 512, 512, markOnLight512.to
 
 // --- Wordmarks from official lockups + vector outlines ---
 const lockupMeta = await contentBounds(LOCKUP_ON_DARK_SRC);
-const wordmarkRegion: Bounds = {
-	left: lockupMeta.gap.end + 1,
-	top: lockupMeta.bounds.top,
-	width: lockupMeta.bounds.left + lockupMeta.bounds.width - (lockupMeta.gap.end + 1),
-	height: lockupMeta.bounds.height,
-};
+const wordmarkRegion = lockupMeta.word;
 
 const wordmarkOnDarkPng = await sharp(LOCKUP_ON_DARK_SRC).extract(wordmarkRegion).png().toBuffer();
 const wordmarkOnLightPng = await sharp(LOCKUP_ON_LIGHT_SRC).extract(wordmarkRegion).png().toBuffer();
@@ -168,12 +207,10 @@ pngSvg(
 	wordmarkOnLightPng.toString('base64'),
 );
 
-// --- Horizontal lockups from official masters ---
-async function exportHorizontal(src: string, slug: string, bg: string) {
-	const master = await sharp(src).png().toBuffer();
-	const meta = await sharp(master).metadata();
-	const width = meta.width!;
-	const height = meta.height!;
+// --- Horizontal lockups: recompose masters with approved tighter gap, then export ---
+async function exportHorizontal(src: string, masterOut: string, slug: string, bg: string) {
+	const { lockup: master, canvasW: width, canvasH: height, gap, markW, gapRatio } = await composeHorizontalLockup(src);
+	await sharp(master).toFile(masterOut);
 	await sharp(master).toFile(`public/brand/malaysian-ai-lockup-horizontal-${slug}.png`);
 	pngSvg(
 		`malaysian-ai-lockup-horizontal-${slug}.svg`,
@@ -197,10 +234,12 @@ async function exportHorizontal(src: string, slug: string, bg: string) {
 		await sharp(padded).resize({ width: target }).png().toFile(`public/brand/malaysian-ai-lockup-horizontal-${slug}-${target}.png`);
 		await sharp(master).resize({ width: target }).png().toFile(`public/brand/malaysian-ai-lockup-horizontal-${slug}-transparent-${target}.png`);
 	}
+
+	return { width, height, gap, markW, gapRatio };
 }
 
-await exportHorizontal(LOCKUP_ON_DARK_SRC, 'on-dark', BG_DARK);
-await exportHorizontal(LOCKUP_ON_LIGHT_SRC, 'on-light', BG_LIGHT);
+const horizontalOnDark = await exportHorizontal(LOCKUP_ON_DARK_SRC, LOCKUP_ON_DARK_SRC, 'on-dark', BG_DARK);
+const horizontalOnLight = await exportHorizontal(LOCKUP_ON_LIGHT_SRC, LOCKUP_ON_LIGHT_SRC, 'on-light', BG_LIGHT);
 
 // --- Stacked lockups: mark above wordmark ---
 async function exportStacked(markBuf: Buffer, wordmarkBuf: Buffer, slug: string, bg: string) {
@@ -262,3 +301,8 @@ for (const stale of [
 
 console.log('Brand assets written to public/brand/');
 console.log(`Wordmark crop: x=${wordmarkRegion.left} w=${wordmarkRegion.width} h=${wordmarkRegion.height}`);
+console.log(
+	`Horizontal lockup gap: ${horizontalOnDark.gap}px (${(horizontalOnDark.gapRatio * 100).toFixed(1)}% of mark) → ${horizontalOnDark.width}×${horizontalOnDark.height}`,
+);
+console.log(`Site masters updated: ${LOCKUP_ON_DARK_SRC}, ${LOCKUP_ON_LIGHT_SRC}`);
+void horizontalOnLight;

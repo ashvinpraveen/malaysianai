@@ -57,6 +57,11 @@ export const seoContentByPath: Record<string, Partial<Pick<PageMetadata, 'title'
 		description: 'Read stories from the Malaysia AI community: AI events, hands-on learning, builder projects and updates from the Malaysian AI residency.',
 		keywords: ['Malaysian AI', 'Malaysia AI community', 'AI events Malaysia', 'AI workshops Malaysia'],
 	},
+	'/podcast': {
+		title: 'Malaysian AI Podcast',
+		description: 'Watch the Malaysian AI podcast hosted by Ashvin Praveen. Episodes cover building with AI in Malaysia, community events, and conversations with founders.',
+		keywords: ['Malaysian AI', 'Malaysian AI podcast', 'AI podcast Malaysia', 'Ashvin Praveen'],
+	},
 	'/contact': {
 		title: 'Contact the Malaysia AI Community',
 		description: 'Contact Malaysian AI about community events, workshops or the Kuala Lumpur residency. Add your Malaysian community to the directory or find an upcoming event.',

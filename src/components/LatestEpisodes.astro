@@ -1,0 +1,175 @@
+---
+import FormattedDate from './FormattedDate.astro';
+import { latestEpisodes, loadPodcastEpisodes, shortDescription } from '../lib/podcast';
+
+const episodes = latestEpisodes(await loadPodcastEpisodes());
+---
+
+{
+	episodes.length > 0 && (
+		<section class="podcast-strip light-nav-zone" id="podcast" aria-labelledby="podcast-strip-title">
+			<div class="podcast-strip-inner">
+				<div class="podcast-strip-head">
+					<div>
+						<p class="eyebrow">YouTube</p>
+						<h2 id="podcast-strip-title">Latest episodes</h2>
+					</div>
+					<a class="text-link" href="/podcast">All episodes <span aria-hidden="true">↗</span></a>
+				</div>
+				<ul>
+					{episodes.map((episode) => (
+						<li>
+							<a class="episode-card" href={`/podcast#episode-${episode.id}`}>
+								<span class="thumb">
+									<img src={`https://i.ytimg.com/vi/${episode.id}/hqdefault.jpg`} alt="" width="480" height="360" loading="lazy" decoding="async" />
+								</span>
+								<span class="copy">
+									<FormattedDate date={new Date(episode.published)} />
+									<strong>{episode.title}</strong>
+									<em>{shortDescription(episode.description, 140)}</em>
+								</span>
+							</a>
+						</li>
+					))}
+				</ul>
+			</div>
+		</section>
+	)
+}
+
+<style>
+	.podcast-strip {
+		padding: var(--section-space) clamp(1.25rem, 4vw, 4rem);
+		color: var(--text-heading);
+		background: var(--page-background);
+	}
+
+	.podcast-strip-inner {
+		width: min(92rem, 100%);
+		margin: 0 auto;
+	}
+
+	.podcast-strip-head {
+		display: flex;
+		gap: 1.5rem;
+		align-items: flex-end;
+		justify-content: space-between;
+		margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+	}
+
+	.eyebrow {
+		margin: 0 0 0.7rem;
+		color: var(--text-muted);
+		font-size: var(--text-xs);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	h2 {
+		margin: 0;
+		font-family: var(--font-display);
+		font-size: clamp(2.1rem, 4vw, 3.5rem);
+		font-weight: 400;
+		letter-spacing: -0.04em;
+		line-height: 0.95;
+	}
+
+	.text-link {
+		flex: none;
+		color: var(--link-bright);
+		font-size: 0.85rem;
+		text-decoration: none;
+		border-bottom: 1px solid var(--border-color);
+		padding-bottom: 0.2rem;
+	}
+
+	ul {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: clamp(1rem, 2vw, 1.6rem);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.episode-card {
+		display: grid;
+		gap: 0.9rem;
+		height: 100%;
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.thumb {
+		display: block;
+		overflow: hidden;
+		aspect-ratio: 16 / 9;
+		border-radius: var(--radius-media);
+		background: var(--image-background);
+	}
+
+	.thumb img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 380ms ease;
+	}
+
+	.episode-card:hover .thumb img,
+	.episode-card:focus-visible .thumb img {
+		transform: scale(1.03);
+	}
+
+	.episode-card:focus-visible {
+		outline: 2px solid var(--focus-color);
+		outline-offset: 4px;
+		border-radius: 0.4rem;
+	}
+
+	.copy {
+		display: grid;
+		gap: 0.45rem;
+	}
+
+	.copy :global(time) {
+		color: var(--text-muted);
+		font-size: var(--text-xs);
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	.copy strong {
+		font-family: var(--font-display);
+		font-size: clamp(1.25rem, 1.6vw, 1.55rem);
+		font-weight: 400;
+		letter-spacing: -0.03em;
+		line-height: 1.15;
+	}
+
+	.copy em {
+		color: var(--text-soft);
+		font-style: normal;
+		font-size: var(--text-sm);
+		line-height: var(--leading-body);
+	}
+
+	@media (max-width: 900px) {
+		ul {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 620px) {
+		.podcast-strip-head {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.thumb img {
+			transition: none;
+		}
+	}
+</style>

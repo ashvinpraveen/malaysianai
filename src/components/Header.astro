@@ -3,11 +3,13 @@ import FramedChrome from './FramedChrome.astro';
 
 const current = Astro.url.pathname.startsWith('/blog')
 	? 'stories'
-	: Astro.url.pathname === '/about'
-		? 'about'
-		: Astro.url.pathname.startsWith('/residency')
-			? 'residency'
-			: undefined;
+	: Astro.url.pathname.startsWith('/podcast')
+		? 'podcast'
+		: Astro.url.pathname === '/about'
+			? 'about'
+			: Astro.url.pathname.startsWith('/residency')
+				? 'residency'
+				: undefined;
 ---
 
 <div class="site-header">

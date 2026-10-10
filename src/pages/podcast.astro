@@ -1,0 +1,171 @@
+---
+import FormattedDate from '../components/FormattedDate.astro';
+import YouTubeFacade from '../components/YouTubeFacade.astro';
+import Layout from '../layouts/Layout.astro';
+import { SITE_TITLE } from '../consts';
+import { serializeJsonLd } from '../lib/seo';
+import {
+	PODCAST_CHANNEL_URL,
+	loadPodcastEpisodes,
+	shortDescription,
+} from '../lib/podcast';
+
+const episodes = (await loadPodcastEpisodes()).map((episode) => ({
+	...episode,
+	summary: shortDescription(episode.description),
+}));
+const description = 'Watch the Malaysian AI podcast hosted by Ashvin Praveen. Episodes cover building with AI in Malaysia, community events, and conversations with founders.';
+const itemList = {
+	'@context': 'https://schema.org',
+	'@type': 'ItemList',
+	name: 'Malaysian AI Podcast',
+	itemListOrder: 'https://schema.org/ItemListOrderDescending',
+	numberOfItems: episodes.length,
+	itemListElement: episodes.map((episode, index) => ({
+		'@type': 'ListItem',
+		position: index + 1,
+		url: episode.url,
+		name: episode.title,
+	})),
+};
+---
+
+<Layout title={`Podcast | ${SITE_TITLE}`} description={description}>
+	<section class="podcast-page" aria-labelledby="podcast-title">
+		<header class="page-heading">
+			<p class="eyebrow">YouTube · Hosted by Ashvin Praveen</p>
+			<h1 id="podcast-title">Malaysian AI podcast</h1>
+			<p class="lede">
+				Conversations with the people building Malaysia’s AI scene. New episodes from the
+				<a href={PODCAST_CHANNEL_URL}>Malaysian AI channel</a> are pulled in on each deploy.
+			</p>
+		</header>
+
+		{
+			episodes.length === 0 ? (
+				<p class="empty">Episodes will show up here when the YouTube feed is available.</p>
+			) : (
+				<ol class="episodes">
+					{episodes.map((episode, index) => (
+						<li>
+							<article id={`episode-${episode.id}`}>
+								<YouTubeFacade id={episode.id} title={episode.title} eager={index === 0} />
+								<div class="episode-copy">
+									<p class="eyebrow"><FormattedDate date={new Date(episode.published)} /></p>
+									<h2>{episode.title}</h2>
+									{episode.summary && <p>{episode.summary}</p>}
+									<a class="text-link" href={episode.url}>Watch on YouTube <span aria-hidden="true">↗</span></a>
+								</div>
+							</article>
+						</li>
+					))}
+				</ol>
+			)
+		}
+	</section>
+	{episodes.length > 0 && <script is:inline type="application/ld+json" set:html={serializeJsonLd(itemList)} />}
+</Layout>
+
+<style>
+	.podcast-page {
+		padding: clamp(1.25rem, 2vw, 2rem) clamp(1.25rem, 5vw, 4rem) clamp(5rem, 10vw, 8rem);
+		color: var(--text-heading);
+		background: var(--page-background);
+	}
+
+	.page-heading,
+	.episodes,
+	.empty {
+		width: min(100%, 76rem);
+		margin-inline: auto;
+	}
+
+	.page-heading {
+		max-width: 46rem;
+		margin-bottom: clamp(2rem, 4vw, 3.5rem);
+	}
+
+	.eyebrow {
+		margin: 0;
+		color: var(--text-muted);
+		font-size: var(--text-xs);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+
+	h1 {
+		margin: 0.8rem 0 0;
+		font-family: var(--font-display);
+		font-size: var(--text-page-title);
+		font-weight: 400;
+		letter-spacing: -0.04em;
+		line-height: 1;
+	}
+
+	.lede {
+		max-width: 38rem;
+		margin: 1.25rem 0 0;
+		color: var(--text-soft);
+		font-size: var(--text-base);
+		line-height: var(--leading-body);
+	}
+
+	.lede a {
+		color: var(--link-bright);
+	}
+
+	.empty {
+		margin: 0;
+		color: var(--text-soft);
+	}
+
+	.episodes {
+		display: grid;
+		gap: clamp(2.5rem, 5vw, 4rem);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	article {
+		display: grid;
+		grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.75fr);
+		gap: clamp(1.25rem, 3vw, 2.5rem);
+		align-items: center;
+		scroll-margin-top: 6.5rem;
+	}
+
+	.episode-copy h2 {
+		margin: 0.7rem 0 0;
+		font-family: var(--font-display);
+		font-size: clamp(1.7rem, 2.4vw, 2.4rem);
+		font-weight: 400;
+		letter-spacing: -0.04em;
+		line-height: 1.05;
+	}
+
+	.episode-copy p:not(.eyebrow) {
+		margin: 1rem 0 0;
+		color: var(--text-soft);
+		font-size: var(--text-base);
+		line-height: var(--leading-body);
+	}
+
+	.text-link {
+		display: inline-flex;
+		gap: 0.45rem;
+		margin-top: 1.25rem;
+		padding-bottom: 0.2rem;
+		border-bottom: 1px solid var(--border-color);
+		color: var(--link-bright);
+		font-size: 0.85rem;
+		text-decoration: none;
+	}
+
+	@media (max-width: 800px) {
+		article {
+			grid-template-columns: 1fr;
+			gap: 1rem;
+		}
+	}
+</style>

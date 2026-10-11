@@ -4,11 +4,11 @@ import PodcastHosts from '../components/PodcastHosts.astro';
 import YouTubeFacade from '../components/YouTubeFacade.astro';
 import Layout from '../layouts/Layout.astro';
 import { SITE_TITLE } from '../consts';
+import { displayTitle } from '../lib/podcast-title';
 import { serializeJsonLd } from '../lib/seo';
 import {
 	PODCAST_CHANNEL_URL,
 	PODCAST_DESCRIPTION,
-	displayTitle,
 	loadPodcastEpisodes,
 	shortDescription,
 } from '../lib/podcast';

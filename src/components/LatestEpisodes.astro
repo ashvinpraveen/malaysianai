@@ -1,5 +1,6 @@
 ---
 import FormattedDate from './FormattedDate.astro';
+import PodcastHosts from './PodcastHosts.astro';
 import { latestEpisodes, loadPodcastEpisodes, shortDescription } from '../lib/podcast';
 
 const episodes = latestEpisodes(await loadPodcastEpisodes());
@@ -13,7 +14,7 @@ const episodes = latestEpisodes(await loadPodcastEpisodes());
 					<div>
 						<p class="eyebrow">YouTube</p>
 						<h2 id="podcast-strip-title">Latest episodes</h2>
-						<p class="hosts">Hosted by Ashvin &amp; Ken</p>
+						<PodcastHosts compact />
 					</div>
 					<a class="text-link" href="/podcast">All episodes <span aria-hidden="true">↗</span></a>
 				</div>
@@ -73,13 +74,6 @@ const episodes = latestEpisodes(await loadPodcastEpisodes());
 		font-weight: 400;
 		letter-spacing: -0.04em;
 		line-height: 0.95;
-	}
-
-	.hosts {
-		margin: 0.85rem 0 0;
-		color: var(--text-soft);
-		font-size: var(--text-sm);
-		line-height: var(--leading-body);
 	}
 
 	.text-link {

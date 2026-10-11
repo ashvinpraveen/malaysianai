@@ -1,11 +1,13 @@
 ---
 import FormattedDate from '../components/FormattedDate.astro';
+import PodcastHosts from '../components/PodcastHosts.astro';
 import YouTubeFacade from '../components/YouTubeFacade.astro';
 import Layout from '../layouts/Layout.astro';
 import { SITE_TITLE } from '../consts';
 import { serializeJsonLd } from '../lib/seo';
 import {
 	PODCAST_CHANNEL_URL,
+	PODCAST_DESCRIPTION,
 	loadPodcastEpisodes,
 	shortDescription,
 } from '../lib/podcast';
@@ -14,7 +16,7 @@ const episodes = (await loadPodcastEpisodes()).map((episode) => ({
 	...episode,
 	summary: shortDescription(episode.description),
 }));
-const description = 'Watch the Malaysian AI podcast, hosted by Ashvin & Ken. Episodes cover building with AI in Malaysia, community events, and conversations with founders.';
+const description = PODCAST_DESCRIPTION;
 const itemList = {
 	'@context': 'https://schema.org',
 	'@type': 'ItemList',
@@ -35,7 +37,7 @@ const itemList = {
 		<header class="page-heading">
 			<p class="eyebrow">YouTube</p>
 			<h1 id="podcast-title">Malaysian AI podcast</h1>
-			<p class="hosts">Hosted by Ashvin &amp; Ken</p>
+			<PodcastHosts />
 			<p class="lede">
 				Conversations with the people building Malaysia’s AI scene. New episodes from the
 				<a href={PODCAST_CHANNEL_URL}>Malaysian AI channel</a> are pulled in on each deploy.
@@ -101,13 +103,6 @@ const itemList = {
 		font-weight: 400;
 		letter-spacing: -0.04em;
 		line-height: 1;
-	}
-
-	.hosts {
-		margin: 1rem 0 0;
-		color: var(--text-heading);
-		font-size: var(--text-base);
-		line-height: var(--leading-body);
 	}
 
 	.lede {

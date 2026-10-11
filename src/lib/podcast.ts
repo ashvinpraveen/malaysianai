@@ -4,9 +4,11 @@ import cachedEpisodes from '../data/podcast-cache.json';
 
 /**
  * Malaysian AI YouTube channel (@malaysian-ai), which publishes the podcast
- * hosted by Ashvin and Ken. There is no separate podcast playlist, so the
- * public channel feed is the episode source.
+ * hosted by Ashvin Praveen and Ken Ooi. There is no separate podcast playlist,
+ * so the public channel feed is the episode source.
  */
+
+export const PODCAST_DESCRIPTION = 'Watch the Malaysian AI podcast, hosted by Ashvin Praveen & Ken Ooi. Episodes cover building with AI in Malaysia, community events, and conversations with founders.';
 export const PODCAST_CHANNEL_ID = 'UCgshDGIYMQd7Yvk1ZhML4zw';
 
 export const PODCAST_CHANNEL_URL = `https://www.youtube.com/channel/${PODCAST_CHANNEL_ID}`;

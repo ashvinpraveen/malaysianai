@@ -439,7 +439,11 @@ test('reduced motion disables event and testimonial autoplay', async ({ page }) 
 
 test('podcast lists episodes behind a click-to-play player and the homepage links to them', async ({ page }) => {
 	await page.goto('/podcast');
-	await expect(page.locator('.hosts')).toHaveText('Hosted by Ashvin & Ken');
+	const hosts = page.locator('.hosts');
+	await expect(hosts).toHaveText('Hosted by Ashvin Praveen & Ken Ooi');
+	await expect(hosts.getByRole('link', { name: 'Ashvin Praveen' })).toHaveAttribute('href', 'https://ashvinpraveen.com');
+	await expect(hosts.getByRole('link', { name: 'Ken Ooi', exact: true })).toHaveAttribute('href', 'https://www.linkedin.com/in/ken-ooi-00926b218/');
+	await expect(hosts.getByRole('link', { name: 'Ken Ooi on Instagram' })).toHaveAttribute('href', 'https://instagram.com/kenbuilds.mp4');
 	await expect(page.locator('iframe')).toHaveCount(0);
 	const episodes = page.locator('.episodes article');
 	await expect(episodes).not.toHaveCount(0);
@@ -451,7 +455,11 @@ test('podcast lists episodes behind a click-to-play player and the homepage link
 	await page.goto('/');
 	const strip = page.locator('#podcast');
 	await expect(strip.getByRole('heading', { name: 'Latest episodes' })).toBeVisible();
-	await expect(strip.locator('.hosts')).toHaveText('Hosted by Ashvin & Ken');
+	const stripHosts = strip.locator('.hosts');
+	await expect(stripHosts).toHaveText('Hosted by Ashvin Praveen & Ken Ooi');
+	await expect(stripHosts.getByRole('link', { name: 'Ashvin Praveen' })).toHaveAttribute('href', 'https://ashvinpraveen.com');
+	await expect(stripHosts.getByRole('link', { name: 'Ken Ooi', exact: true })).toHaveAttribute('href', 'https://www.linkedin.com/in/ken-ooi-00926b218/');
+	await expect(stripHosts.getByRole('link', { name: 'Ken Ooi on Instagram' })).toHaveAttribute('href', 'https://instagram.com/kenbuilds.mp4');
 	await expect(strip.getByRole('link', { name: /All episodes/ })).toHaveAttribute('href', '/podcast');
 	const cards = strip.locator('a.episode-card');
 	await expect(cards).toHaveCount(3);

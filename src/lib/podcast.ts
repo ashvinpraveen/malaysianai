@@ -126,14 +126,6 @@ export function latestEpisodes(episodes: PodcastEpisode[]) {
 	return episodes.slice(0, LATEST_EPISODE_COUNT);
 }
 
-const TRAILING_SHOW_NAME = /\s*[|–—-]\s*(?:the\s+)?Malaysian(?:\.ai| AI)(?:\s+Podcast)?\s*$/i;
-
-/** Card titles drop a trailing show name such as "| Malaysian AI Podcast". */
-export function displayTitle(title: string) {
-	const cleaned = title.replace(TRAILING_SHOW_NAME, '').trim();
-	return cleaned || title.trim();
-}
-
 export function shortDescription(description: string, maxLength = 240) {
 	const paragraph = description
 		.replace(/\r\n/g, '\n')

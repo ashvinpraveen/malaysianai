@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { displayTitle } from '../src/lib/podcast';
+import { displayTitle } from '../src/lib/podcast-title';
 
 // Keep tests deterministic and avoid making requests to event/payment providers.
 test.beforeEach(async ({ page }) => {

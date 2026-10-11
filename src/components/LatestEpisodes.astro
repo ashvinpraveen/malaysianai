@@ -1,9 +1,12 @@
 ---
 import FormattedDate from './FormattedDate.astro';
-import PodcastHosts from './PodcastHosts.astro';
+import { displayTitle } from '../lib/podcast-title';
 import { latestEpisodes, loadPodcastEpisodes, shortDescription } from '../lib/podcast';
 
-const episodes = latestEpisodes(await loadPodcastEpisodes());
+const episodes = latestEpisodes(await loadPodcastEpisodes()).map((episode) => ({
+	...episode,
+	title: displayTitle(episode.title),
+}));
 ---
 
 {
@@ -11,11 +14,7 @@ const episodes = latestEpisodes(await loadPodcastEpisodes());
 		<section class="podcast-strip light-nav-zone" id="podcast" aria-labelledby="podcast-strip-title">
 			<div class="podcast-strip-inner">
 				<div class="podcast-strip-head">
-					<div>
-						<p class="eyebrow">YouTube</p>
-						<h2 id="podcast-strip-title">Latest episodes</h2>
-						<PodcastHosts compact />
-					</div>
+					<h2 id="podcast-strip-title">Latest episodes</h2>
 					<a class="text-link" href="/podcast">All episodes <span aria-hidden="true">↗</span></a>
 				</div>
 				<ul>
@@ -57,14 +56,6 @@ const episodes = latestEpisodes(await loadPodcastEpisodes());
 		align-items: flex-end;
 		justify-content: space-between;
 		margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
-	}
-
-	.eyebrow {
-		margin: 0 0 0.7rem;
-		color: var(--text-muted);
-		font-size: var(--text-xs);
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
 	}
 
 	h2 {

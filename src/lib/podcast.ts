@@ -4,7 +4,7 @@ import cachedEpisodes from '../data/podcast-cache.json';
 
 /**
  * Malaysian AI YouTube channel (@malaysian-ai), which publishes the podcast
- * hosted by Ashvin Praveen. There is no separate podcast playlist, so the
+ * hosted by Ashvin and Ken. There is no separate podcast playlist, so the
  * public channel feed is the episode source.
  */
 export const PODCAST_CHANNEL_ID = 'UCgshDGIYMQd7Yvk1ZhML4zw';

@@ -60,7 +60,7 @@ const expectedMetadata = [
 	{
 		path: '/podcast',
 		title: 'Malaysian AI Podcast | Malaysian AI',
-		description: 'Watch the Malaysian AI podcast hosted by Ashvin Praveen. Episodes cover building with AI in Malaysia, community events, and conversations with founders.',
+		description: 'Watch the Malaysian AI podcast, hosted by Ashvin & Ken. Episodes cover building with AI in Malaysia, community events, and conversations with founders.',
 	},
 	{
 		path: '/contact',

@@ -19,7 +19,7 @@ export const GET: APIRoute = async ({ site }) => {
 		link('Residency (messaging draft)', '/residency2', 'Draft residency landing with sharper cohort messaging; noindex while under review.'),
 		link('Residents', '/residents', 'Companies and teams in the residency.'),
 		link('Blog', '/blog', 'Community stories and programme updates.'),
-		link('Podcast', '/podcast', 'YouTube episodes hosted by Ashvin Praveen, loaded from the Malaysian AI channel feed.'),
+		link('Podcast', '/podcast', 'YouTube episodes hosted by Ashvin & Ken, loaded from the Malaysian AI channel feed.'),
 		link('Contact', '/contact', 'Contact the team on WhatsApp, submit a community, and find venue directions.'),
 		link('Brand', '/brand', 'Official logos, colours, and typography downloads for accurate Malaysian AI brand use.'),
 		link('Privacy', '/privacy', 'The residency privacy policy.'),

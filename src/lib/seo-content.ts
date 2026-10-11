@@ -59,7 +59,7 @@ export const seoContentByPath: Record<string, Partial<Pick<PageMetadata, 'title'
 	},
 	'/podcast': {
 		title: 'Malaysian AI Podcast',
-		description: 'Watch the Malaysian AI podcast hosted by Ashvin Praveen. Episodes cover building with AI in Malaysia, community events, and conversations with founders.',
+		description: 'Watch the Malaysian AI podcast, hosted by Ashvin & Ken. Episodes cover building with AI in Malaysia, community events, and conversations with founders.',
 		keywords: ['Malaysian AI', 'Malaysian AI podcast', 'AI podcast Malaysia', 'Ashvin Praveen'],
 	},
 	'/contact': {

@@ -439,6 +439,7 @@ test('reduced motion disables event and testimonial autoplay', async ({ page }) 
 
 test('podcast lists episodes behind a click-to-play player and the homepage links to them', async ({ page }) => {
 	await page.goto('/podcast');
+	await expect(page.locator('.hosts')).toHaveText('Hosted by Ashvin & Ken');
 	await expect(page.locator('iframe')).toHaveCount(0);
 	const episodes = page.locator('.episodes article');
 	await expect(episodes).not.toHaveCount(0);
@@ -450,6 +451,7 @@ test('podcast lists episodes behind a click-to-play player and the homepage link
 	await page.goto('/');
 	const strip = page.locator('#podcast');
 	await expect(strip.getByRole('heading', { name: 'Latest episodes' })).toBeVisible();
+	await expect(strip.locator('.hosts')).toHaveText('Hosted by Ashvin & Ken');
 	await expect(strip.getByRole('link', { name: /All episodes/ })).toHaveAttribute('href', '/podcast');
 	const cards = strip.locator('a.episode-card');
 	await expect(cards).toHaveCount(3);

@@ -8,12 +8,14 @@ import { serializeJsonLd } from '../lib/seo';
 import {
 	PODCAST_CHANNEL_URL,
 	PODCAST_DESCRIPTION,
+	displayTitle,
 	loadPodcastEpisodes,
 	shortDescription,
 } from '../lib/podcast';
 
 const episodes = (await loadPodcastEpisodes()).map((episode) => ({
 	...episode,
+	title: displayTitle(episode.title),
 	summary: shortDescription(episode.description),
 }));
 const description = PODCAST_DESCRIPTION;
@@ -39,7 +41,7 @@ const itemList = {
 			<h1 id="podcast-title">Malaysian AI podcast</h1>
 			<PodcastHosts />
 			<p class="lede">
-				Conversations with the people building Malaysia’s AI scene. New episodes from the
+				Conversations with the people building Malaysia’s AI scene. New episodes from the{' '}
 				<a href={PODCAST_CHANNEL_URL}>Malaysian AI channel</a> are pulled in on each deploy.
 			</p>
 		</header>

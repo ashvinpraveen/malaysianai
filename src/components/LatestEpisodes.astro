@@ -1,9 +1,12 @@
 ---
 import FormattedDate from './FormattedDate.astro';
 import PodcastHosts from './PodcastHosts.astro';
-import { latestEpisodes, loadPodcastEpisodes, shortDescription } from '../lib/podcast';
+import { displayTitle, latestEpisodes, loadPodcastEpisodes, shortDescription } from '../lib/podcast';
 
-const episodes = latestEpisodes(await loadPodcastEpisodes());
+const episodes = latestEpisodes(await loadPodcastEpisodes()).map((episode) => ({
+	...episode,
+	title: displayTitle(episode.title),
+}));
 ---
 
 {

@@ -447,13 +447,13 @@ test('podcast card titles drop a trailing show name', () => {
 
 test('podcast lists episodes behind a click-to-play player and the homepage links to them', async ({ page }) => {
 	await page.goto('/podcast');
-	await expect(page.locator('.lede')).toContainText('from the Malaysian AI channel');
-	await expect(page.locator('.lede')).not.toContainText('theMalaysian');
-	const hosts = page.locator('.hosts');
-	await expect(hosts).toHaveText('Hosted by Ashvin Praveen & Ken Ooi');
-	await expect(hosts.getByRole('link', { name: 'Ashvin Praveen' })).toHaveAttribute('href', 'https://ashvinpraveen.com');
-	await expect(hosts.getByRole('link', { name: 'Ken Ooi', exact: true })).toHaveAttribute('href', 'https://www.linkedin.com/in/ken-ooi-00926b218/');
-	await expect(hosts.getByRole('link', { name: 'Ken Ooi on Instagram' })).toHaveAttribute('href', 'https://instagram.com/kenbuilds.mp4');
+	const lede = page.locator('.lede');
+	await expect(lede).toHaveText('Conversations with the people building Malaysia’s AI scene. Watch every episode on our YouTube channel.');
+	await expect(lede.getByRole('link', { name: 'YouTube channel' })).toHaveAttribute('href', 'https://www.youtube.com/channel/UCgshDGIYMQd7Yvk1ZhML4zw');
+	await expect(lede).not.toContainText(/\b(deploy|feed|RSS|cache)\b/i);
+	await expect(page.locator('.page-heading .eyebrow')).toHaveCount(0);
+	await expect(page.locator('.hosts')).toHaveCount(0);
+	await expect(page.getByText('Hosted by')).toHaveCount(0);
 	await expect(page.locator('iframe')).toHaveCount(0);
 	const episodes = page.locator('.episodes article');
 	await expect(episodes).not.toHaveCount(0);
@@ -466,11 +466,9 @@ test('podcast lists episodes behind a click-to-play player and the homepage link
 	await page.goto('/');
 	const strip = page.locator('#podcast');
 	await expect(strip.getByRole('heading', { name: 'Latest episodes' })).toBeVisible();
-	const stripHosts = strip.locator('.hosts');
-	await expect(stripHosts).toHaveText('Hosted by Ashvin Praveen & Ken Ooi');
-	await expect(stripHosts.getByRole('link', { name: 'Ashvin Praveen' })).toHaveAttribute('href', 'https://ashvinpraveen.com');
-	await expect(stripHosts.getByRole('link', { name: 'Ken Ooi', exact: true })).toHaveAttribute('href', 'https://www.linkedin.com/in/ken-ooi-00926b218/');
-	await expect(stripHosts.getByRole('link', { name: 'Ken Ooi on Instagram' })).toHaveAttribute('href', 'https://instagram.com/kenbuilds.mp4');
+	await expect(strip.locator('.eyebrow')).toHaveCount(0);
+	await expect(strip.locator('.hosts')).toHaveCount(0);
+	await expect(strip.getByText('Hosted by')).toHaveCount(0);
 	await expect(strip.getByRole('link', { name: /All episodes/ })).toHaveAttribute('href', '/podcast');
 	const cards = strip.locator('a.episode-card');
 	await expect(cards).toHaveCount(3);

@@ -1,6 +1,5 @@
 ---
 import FormattedDate from '../components/FormattedDate.astro';
-import PodcastHosts from '../components/PodcastHosts.astro';
 import YouTubeFacade from '../components/YouTubeFacade.astro';
 import Layout from '../layouts/Layout.astro';
 import { SITE_TITLE } from '../consts';
@@ -37,18 +36,16 @@ const itemList = {
 <Layout title={`Podcast | ${SITE_TITLE}`} description={description}>
 	<section class="podcast-page" aria-labelledby="podcast-title">
 		<header class="page-heading">
-			<p class="eyebrow">YouTube</p>
 			<h1 id="podcast-title">Malaysian AI podcast</h1>
-			<PodcastHosts />
 			<p class="lede">
-				Conversations with the people building Malaysia’s AI scene. New episodes from the{' '}
-				<a href={PODCAST_CHANNEL_URL}>Malaysian AI channel</a> are pulled in on each deploy.
+				Conversations with the people building Malaysia’s AI scene. Watch every episode on our{' '}
+				<a href={PODCAST_CHANNEL_URL}>YouTube channel</a>.
 			</p>
 		</header>
 
 		{
 			episodes.length === 0 ? (
-				<p class="empty">Episodes will show up here when the YouTube feed is available.</p>
+				<p class="empty">Episodes will show up here soon.</p>
 			) : (
 				<ol class="episodes">
 					{episodes.map((episode, index) => (
@@ -99,7 +96,7 @@ const itemList = {
 	}
 
 	h1 {
-		margin: 0.8rem 0 0;
+		margin: 0;
 		font-family: var(--font-display);
 		font-size: var(--text-page-title);
 		font-weight: 400;

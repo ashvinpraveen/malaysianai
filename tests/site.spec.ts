@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { displayTitle } from '../src/lib/podcast';
 
 // Keep tests deterministic and avoid making requests to event/payment providers.
 test.beforeEach(async ({ page }) => {
@@ -437,8 +438,17 @@ test('reduced motion disables event and testimonial autoplay', async ({ page }) 
 	await expect(front).toContainText('Community member');
 });
 
+test('podcast card titles drop a trailing show name', () => {
+	expect(displayTitle('Inside Malaysia\'s Biggest AI Learn-A-Thon | Malaysian AI Podcast')).toBe('Inside Malaysia\'s Biggest AI Learn-A-Thon');
+	expect(displayTitle('A conversation - Malaysian.ai Podcast')).toBe('A conversation');
+	expect(displayTitle('A conversation — the Malaysian AI')).toBe('A conversation');
+	expect(displayTitle('Is the dream of building Malaysia’s AI scene too far fetched?')).toBe('Is the dream of building Malaysia’s AI scene too far fetched?');
+});
+
 test('podcast lists episodes behind a click-to-play player and the homepage links to them', async ({ page }) => {
 	await page.goto('/podcast');
+	await expect(page.locator('.lede')).toContainText('from the Malaysian AI channel');
+	await expect(page.locator('.lede')).not.toContainText('theMalaysian');
 	const hosts = page.locator('.hosts');
 	await expect(hosts).toHaveText('Hosted by Ashvin Praveen & Ken Ooi');
 	await expect(hosts.getByRole('link', { name: 'Ashvin Praveen' })).toHaveAttribute('href', 'https://ashvinpraveen.com');
@@ -447,7 +457,8 @@ test('podcast lists episodes behind a click-to-play player and the homepage link
 	await expect(page.locator('iframe')).toHaveCount(0);
 	const episodes = page.locator('.episodes article');
 	await expect(episodes).not.toHaveCount(0);
-	await expect(page.locator('.episodes')).toContainText('Inside Malaysia\'s Biggest AI Learn-A-Thon');
+	await expect(page.getByRole('heading', { name: 'Inside Malaysia\'s Biggest AI Learn-A-Thon', exact: true })).toBeVisible();
+	await expect(page.locator('.episodes')).not.toContainText('| Malaysian AI Podcast');
 	await page.locator('.yt-facade').first().click();
 	await expect(page.locator('.player iframe')).toHaveAttribute('src', /youtube-nocookie\.com\/embed\/[A-Za-z0-9_-]{11}\?autoplay=1/);
 	await expect(page.locator('.footer-link-group').getByRole('link', { name: 'Podcast' })).toHaveAttribute('href', '/podcast');
@@ -463,6 +474,8 @@ test('podcast lists episodes behind a click-to-play player and the homepage link
 	await expect(strip.getByRole('link', { name: /All episodes/ })).toHaveAttribute('href', '/podcast');
 	const cards = strip.locator('a.episode-card');
 	await expect(cards).toHaveCount(3);
+	await expect(strip.getByText('Inside Malaysia\'s Biggest AI Learn-A-Thon', { exact: true })).toBeVisible();
+	await expect(strip).not.toContainText('| Malaysian AI Podcast');
 	await expect(cards.first()).toHaveAttribute('href', /\/podcast#episode-/);
 	expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
 });

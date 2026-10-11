@@ -3,7 +3,7 @@ import hosting from '../vercel.json' with { type: 'json' };
 import { test, expect } from '@playwright/test';
 
 const origin = 'https://www.malaysian.ai';
-const pages = ['/', '/about', '/brand', '/residency', '/residency/accountability', '/residents', '/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon'];
+const pages = ['/', '/about', '/brand', '/residency', '/residency/accountability', '/residents', '/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon', '/podcast'];
 const expectedCommunityNames = [
 	'AI After Hours KL',
 	'AI HackerDorm',
@@ -56,6 +56,11 @@ const expectedMetadata = [
 		path: '/blog',
 		title: 'Malaysia AI Community Stories & Updates | Malaysian AI',
 		description: 'Read stories from the Malaysia AI community: AI events, hands-on learning, builder projects and updates from the Malaysian AI residency.',
+	},
+	{
+		path: '/podcast',
+		title: 'Malaysian AI Podcast | Malaysian AI',
+		description: 'Watch the Malaysian AI podcast, hosted by Ashvin Praveen & Ken Ooi. Episodes cover building with AI in Malaysia, community events, and conversations with founders.',
 	},
 	{
 		path: '/contact',

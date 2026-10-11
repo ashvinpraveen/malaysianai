@@ -1,3 +1,4 @@
+import { PODCAST_DESCRIPTION } from './podcast';
 import type { PageMetadata } from './seo';
 
 // Research-backed targets, not a ranking by search volume. See docs/seo-keywords.md.
@@ -56,6 +57,11 @@ export const seoContentByPath: Record<string, Partial<Pick<PageMetadata, 'title'
 		title: 'Malaysia AI Community Stories & Updates',
 		description: 'Read stories from the Malaysia AI community: AI events, hands-on learning, builder projects and updates from the Malaysian AI residency.',
 		keywords: ['Malaysian AI', 'Malaysia AI community', 'AI events Malaysia', 'AI workshops Malaysia'],
+	},
+	'/podcast': {
+		title: 'Malaysian AI Podcast',
+		description: PODCAST_DESCRIPTION,
+		keywords: ['Malaysian AI', 'Malaysian AI podcast', 'AI podcast Malaysia', 'Ashvin Praveen', 'Ken Ooi'],
 	},
 	'/contact': {
 		title: 'Contact the Malaysia AI Community',

@@ -4,7 +4,7 @@ import { LUMA_URL } from '../consts';
 
 interface Props {
 	home?: boolean;
-	current?: 'home' | 'about' | 'residency' | 'residents' | 'apply' | 'stories';
+	current?: 'home' | 'about' | 'residency' | 'residents' | 'apply' | 'stories' | 'podcast';
 	minimal?: boolean;
 }
 
@@ -15,6 +15,7 @@ const links = [
 	{ id: 'communities', href: home ? '#communities' : '/#communities', label: 'Communities' },
 	{ id: 'residency', href: '/residency', label: 'Residency' },
 	{ id: 'stories', href: '/blog', label: 'Stories' },
+	{ id: 'podcast', href: '/podcast', label: 'Podcast' },
 ] as const;
 ---
 
@@ -184,6 +185,11 @@ const links = [
 	.hero-nav a[aria-current='page'] {
 		text-decoration: underline;
 		text-underline-offset: 0.3rem;
+	}
+
+	@media (max-width: 860px) {
+		.hero-nav { gap: 0.7rem; }
+		.hero-nav a { font-size: 0.74rem; }
 	}
 
 	.hero-cta-panel {

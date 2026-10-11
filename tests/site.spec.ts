@@ -11,6 +11,7 @@ test('public destinations load and the hero uses responsive images', async ({ pa
 	for (const [path, heading] of [
 		['/', 'Learn, build and'], ['/residency', 'Join the Malaysian.ai residency'], ['/residency/accountability', 'Accountability Mondays'],
 		['/residents', 'Meet the residents'], ['/contact', 'Get in touch'], ['/brand', 'Brand'], ['/blog', 'Malaysian AI Blog'],
+		['/podcast', 'Malaysian AI podcast'],
 	]) {
 		const response = await page.goto(path);
 		expect(response?.status()).toBe(200);
@@ -434,6 +435,36 @@ test('reduced motion disables event and testimonial autoplay', async ({ page }) 
 	await deck.focus();
 	await page.keyboard.press('Enter');
 	await expect(front).toContainText('Community member');
+});
+
+test('podcast lists episodes behind a click-to-play player and the homepage links to them', async ({ page }) => {
+	await page.goto('/podcast');
+	const hosts = page.locator('.hosts');
+	await expect(hosts).toHaveText('Hosted by Ashvin Praveen & Ken Ooi');
+	await expect(hosts.getByRole('link', { name: 'Ashvin Praveen' })).toHaveAttribute('href', 'https://ashvinpraveen.com');
+	await expect(hosts.getByRole('link', { name: 'Ken Ooi', exact: true })).toHaveAttribute('href', 'https://www.linkedin.com/in/ken-ooi-00926b218/');
+	await expect(hosts.getByRole('link', { name: 'Ken Ooi on Instagram' })).toHaveAttribute('href', 'https://instagram.com/kenbuilds.mp4');
+	await expect(page.locator('iframe')).toHaveCount(0);
+	const episodes = page.locator('.episodes article');
+	await expect(episodes).not.toHaveCount(0);
+	await expect(page.locator('.episodes')).toContainText('Inside Malaysia\'s Biggest AI Learn-A-Thon');
+	await page.locator('.yt-facade').first().click();
+	await expect(page.locator('.player iframe')).toHaveAttribute('src', /youtube-nocookie\.com\/embed\/[A-Za-z0-9_-]{11}\?autoplay=1/);
+	await expect(page.locator('.footer-link-group').getByRole('link', { name: 'Podcast' })).toHaveAttribute('href', '/podcast');
+
+	await page.goto('/');
+	const strip = page.locator('#podcast');
+	await expect(strip.getByRole('heading', { name: 'Latest episodes' })).toBeVisible();
+	const stripHosts = strip.locator('.hosts');
+	await expect(stripHosts).toHaveText('Hosted by Ashvin Praveen & Ken Ooi');
+	await expect(stripHosts.getByRole('link', { name: 'Ashvin Praveen' })).toHaveAttribute('href', 'https://ashvinpraveen.com');
+	await expect(stripHosts.getByRole('link', { name: 'Ken Ooi', exact: true })).toHaveAttribute('href', 'https://www.linkedin.com/in/ken-ooi-00926b218/');
+	await expect(stripHosts.getByRole('link', { name: 'Ken Ooi on Instagram' })).toHaveAttribute('href', 'https://instagram.com/kenbuilds.mp4');
+	await expect(strip.getByRole('link', { name: /All episodes/ })).toHaveAttribute('href', '/podcast');
+	const cards = strip.locator('a.episode-card');
+	await expect(cards).toHaveCount(3);
+	await expect(cards.first()).toHaveAttribute('href', /\/podcast#episode-/);
+	expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
 });
 
 test('mobile navigation closes on Escape and after selecting a destination', async ({ page, isMobile }) => {

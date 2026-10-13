@@ -12,7 +12,7 @@ test('public destinations load and the hero uses responsive images', async ({ pa
 	page.on('pageerror', error => errors.push(error.message));
 	for (const [path, heading] of [
 		['/', 'Learn, build and'], ['/residency', 'Join the Malaysian.ai residency'], ['/residency/accountability', 'Accountability Mondays'],
-		['/residents', 'Meet the residents'], ['/residents/andrew-gostishchev', 'Andrew Gostishchev'], ['/contact', 'Get in touch'], ['/brand', 'Brand'], ['/blog', 'Malaysian AI Blog'],
+		['/residents', 'Meet the residents'], ['/resident-teams', 'Meet the resident teams'], ['/residents/andrew-gostishchev', 'Andrew Gostishchev'], ['/contact', 'Get in touch'], ['/brand', 'Brand'], ['/blog', 'Malaysian AI Blog'],
 		['/podcast', 'Malaysian AI podcast'],
 	]) {
 		const response = await page.goto(path);
@@ -46,8 +46,20 @@ test('every resident profile shows its portraits and links without overflowing',
 	}
 });
 
-test('resident directory lists A47 Media with its website and logo', async ({ page }) => {
+test('residents page links every resident to their profile', async ({ page }) => {
 	await page.goto('/residents');
+	await expect(page.locator('.person')).toHaveCount(profiles.length);
+	for (const profile of profiles) {
+		const card = page.locator(`a.person[href="/residents/${profile.slug}"]`);
+		await expect(card.getByRole('heading', { level: 2 })).toHaveText(profile.name);
+		await expect(card.locator('img')).toHaveCount(profile.portraits.length);
+	}
+	await expect(page.getByRole('link', { name: 'Meet the resident teams' })).toHaveAttribute('href', '/resident-teams');
+	expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
+});
+
+test('resident teams page lists A47 Media with its website and logo', async ({ page }) => {
+	await page.goto('/resident-teams');
 	const resident = page.locator('.resident').filter({ hasText: 'A47 Media' });
 	await expect(resident).toHaveCount(1);
 	await expect(resident.getByRole('link', { name: 'A47 Media', exact: true })).toHaveAttribute('href', 'https://a47media.com');

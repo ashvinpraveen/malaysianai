@@ -5,7 +5,7 @@ import { profiles } from '../src/data/profiles';
 
 const origin = 'https://www.malaysian.ai';
 const pages = [
-	'/', '/about', '/brand', '/residency', '/residency/accountability', '/residents', '/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon', '/podcast',
+	'/', '/about', '/brand', '/residency', '/residency/accountability', '/residents', '/resident-teams', '/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon', '/podcast',
 	...profiles.map(profile => `/residents/${profile.slug}`),
 ];
 const expectedCommunityNames = [
@@ -53,7 +53,12 @@ const expectedMetadata = [
 	},
 	{
 		path: '/residents',
-		title: 'AI Startups Malaysia | Meet the Residents | Malaysian AI',
+		title: 'AI Founders & Builders in Malaysia | Meet the Residents | Malaysian AI',
+		description: 'Meet the founders, engineers and researchers in the Malaysian AI residency in Kuala Lumpur, with a profile of each person and what they are building.',
+	},
+	{
+		path: '/resident-teams',
+		title: 'AI Startups Malaysia | Meet the Resident Teams | Malaysian AI',
 		description: 'Meet the AI startups, founders and teams building products at Malaysian AI. Explore resident companies in our Kuala Lumpur AI residency.',
 	},
 	{

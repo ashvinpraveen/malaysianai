@@ -1,6 +1,6 @@
 # Malaysian AI
 
-The public Malaysian AI community site, built with Astro and Bun. It generates static pages for the homepage, community profile, residency, residents, contact details, legal pages, and blog, plus an RSS feed and sitemap.
+The public Malaysian AI community site, built with Astro and Bun. It generates static pages for the homepage, community profile, residency, residents, company directory, contact details, legal pages, and blog, plus an RSS feed and sitemap.
 
 ## Development
 
@@ -51,7 +51,7 @@ Upcoming Luma events render as ordinary page links, so the calendar has no neste
 
 ## Styling
 
-`src/styles/tokens.css` owns shared fonts, text sizes, colors, and button values. Appearance follows `prefers-color-scheme` by default; the footer appearance control can lock light or dark. Dark colors live on `:root` and `html[data-theme='dark']`. Light colors live in the light media query and on `html[data-theme='light']`, so Tizen can switch without `light-dark()`. `Layout` accepts `neutral` for residency, residents, and contact; the `html.neutral-page` overrides define those pages in both themes. Change these values here when updating several pages together.
+`src/styles/tokens.css` owns shared fonts, text sizes, colors, and button values. Appearance follows `prefers-color-scheme` by default; the footer appearance control can lock light or dark. Dark colors live on `:root` and `html[data-theme='dark']`. Light colors live in the light media query and on `html[data-theme='light']`, so Tizen can switch without `light-dark()`. `Layout` accepts `neutral` for residency, residents, the company directory, and contact; the `html.neutral-page` overrides define those pages in both themes. Change these values here when updating several pages together.
 
 `src/styles/global.css` loads the tokens and fonts, then defines resets, shared buttons, and page transitions. Keep section layout, responsive rules, and animation styles in their Astro component. Hero and calendar styles live in `HeroSection.astro` and `MissionSection.astro`; `src/pages/index.astro` composes the homepage sections.
 

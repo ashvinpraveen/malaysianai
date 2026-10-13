@@ -18,6 +18,7 @@ export const GET: APIRoute = async ({ site }) => {
 		link('Accountability Mondays', '/residency/accountability', 'How residents run weekly accountability sessions: self-set tasks, push-up or ringgit stakes, and the plank-to-push-up formula.'),
 		link('Residency (messaging draft)', '/residency2', 'Draft residency landing with sharper cohort messaging; noindex while under review.'),
 		link('Residents', '/residents', 'Companies and teams in the residency.'),
+		link('Company directory', '/directory', 'Searchable directory of Malaysian AI resident companies, with filters for cohort, industry, location and tags.'),
 		link('Blog', '/blog', 'Community stories and programme updates.'),
 		link('Podcast', '/podcast', 'YouTube episodes hosted by Ashvin Praveen and Ken Ooi.'),
 		link('Contact', '/contact', 'Contact the team on WhatsApp, submit a community, and find venue directions.'),

@@ -1,9 +1,11 @@
 import sharp from 'sharp';
 import hosting from '../vercel.json' with { type: 'json' };
 import { test, expect } from '@playwright/test';
+import { residents } from '../src/data/residents';
+import { directoryPath } from '../src/lib/directory';
 
 const origin = 'https://www.malaysian.ai';
-const pages = ['/', '/about', '/brand', '/residency', '/residency/accountability', '/residents', '/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon', '/podcast'];
+const pages = ['/', '/about', '/brand', '/residency', '/residency/accountability', '/residents', '/directory', ...residents.map(resident => directoryPath(resident.name)), '/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon', '/podcast'];
 const expectedCommunityNames = [
 	'AI After Hours KL',
 	'AI HackerDorm',
@@ -51,6 +53,11 @@ const expectedMetadata = [
 		path: '/residents',
 		title: 'AI Startups Malaysia | Meet the Residents | Malaysian AI',
 		description: 'Meet the AI startups, founders and teams building products at Malaysian AI. Explore resident companies in our Kuala Lumpur AI residency.',
+	},
+	{
+		path: '/directory',
+		title: 'Malaysia AI Company Directory | Malaysian AI',
+		description: 'Search Malaysian AI companies and their founders. Filter residency startups by cohort, industry, location and tags.',
 	},
 	{
 		path: '/blog',

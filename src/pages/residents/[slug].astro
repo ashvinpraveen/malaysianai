@@ -12,30 +12,38 @@ interface Props { profile: Profile }
 const { profile } = Astro.props;
 
 // Pixel art only stays crisp at whole-number scales.
-const portraitScale = 3;
+const portraitScale = 2;
 const [mainLink, secondLink] = profile.workLinks;
 const links = [...profile.workLinks, ...profile.profileLinks];
+const keywords = [...new Set(['Malaysian AI', 'AI residency Malaysia', profile.name, ...profile.portraits.map(portrait => portrait.name), profile.building])];
 const shortURL = (href: string) => {
 	const url = new URL(href);
 	return `${url.host.replace(/^www\./, '')}${url.pathname}`.replace(/\/$/, '');
 };
 
+const people = profile.portraits.map(({ name, src }) => ({
+	'@type': 'Person',
+	name,
+	image: new URL(src, Astro.site).href,
+}));
+
 const structuredData = {
 	'@context': 'https://schema.org',
 	'@type': 'ProfilePage',
 	url: new URL(Astro.url.pathname, Astro.site).href,
-	mainEntity: {
+	// A pair page is about both people; their shared role and links belong to neither alone.
+	mainEntity: people.length > 1 ? people : {
 		'@type': 'Person',
 		name: profile.name,
 		jobTitle: profile.role,
 		description: profile.summary,
-		...(profile.portrait ? { image: new URL(profile.portrait.src, Astro.site).href } : {}),
+		...(people[0] ? { image: people[0].image } : {}),
 		sameAs: profile.profileLinks.map(link => link.href),
 	},
 };
 ---
 
-<Layout title={`${profile.name} | ${SITE_TITLE}`} description={profile.summary} neutral>
+<Layout title={`${profile.name} | ${SITE_TITLE}`} description={profile.summary} keywords={keywords} neutral>
 	<article
 		class="profile"
 		style={`--profile-accent-dark: ${profile.accent.dark}; --profile-accent-light: ${profile.accent.light}`}
@@ -43,15 +51,19 @@ const structuredData = {
 		<a class="profile-back" href="/residents"><span aria-hidden="true">←</span> All residents</a>
 
 		<header class="profile-header">
-			{profile.portrait && (
-				<img
-					class="profile-portrait"
-					src={profile.portrait.src}
-					width={profile.portrait.width * portraitScale}
-					height={profile.portrait.height * portraitScale}
-					alt={`Pixel-art portrait of ${profile.name}`}
-					decoding="async"
-				/>
+			{profile.portraits.length > 0 && (
+				<div class="profile-portraits">
+					{profile.portraits.map(portrait => (
+						<img
+							class="profile-portrait"
+							src={portrait.src}
+							width={portrait.width * portraitScale}
+							height={portrait.height * portraitScale}
+							alt={`Pixel-art portrait of ${portrait.name}`}
+							decoding="async"
+						/>
+					))}
+				</div>
 			)}
 			<p class="profile-kicker">Building {profile.building}</p>
 			<h1>{profile.name}</h1>
@@ -142,11 +154,20 @@ const structuredData = {
 		text-align: center;
 	}
 
+	.profile-portraits {
+		display: flex;
+		justify-content: center;
+		gap: 1rem;
+		max-width: 100%;
+		margin-bottom: 1.75rem;
+	}
+
+	/* A pair shares the column, so each portrait may shrink below its whole-number size on narrow screens. */
 	.profile-portrait {
 		display: block;
+		min-width: 0;
 		max-width: 100%;
 		height: auto;
-		margin-bottom: 1.75rem;
 		image-rendering: pixelated;
 	}
 

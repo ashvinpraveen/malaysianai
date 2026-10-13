@@ -1,5 +1,7 @@
 export type ProfileLink = { label: string; href: string };
 
+export type Portrait = { name: string; src: string; width: number; height: number };
+
 export type Profile = {
 	slug: string;
 	name: string;
@@ -8,8 +10,8 @@ export type Profile = {
 	building: string;
 	/** Search and share description. The page itself only shows the person's own words. */
 	summary: string;
-	/** Pixel portrait stored at 1x; the page scales it up by a whole number with nearest-neighbour. */
-	portrait?: { src: string; width: number; height: number };
+	/** Pixel portraits stored at 1x; the page scales them up by a whole number with nearest-neighbour. A pair gets one each. */
+	portraits: Portrait[];
 	/** Copy from the person's introduction doc. Wrap a phrase in *asterisks* to italicise it. */
 	about: string[];
 	work: string[];
@@ -20,6 +22,8 @@ export type Profile = {
 	accent: { dark: string; light: string };
 };
 
+const a47Accent = { dark: '#f0806e', light: '#973126' };
+
 export const profiles: Profile[] = [
 	{
 		slug: 'andrew-gostishchev',
@@ -29,7 +33,7 @@ export const profiles: Profile[] = [
 		building: 'Towards Artificial Life',
 		summary:
 			'Andrew Gostishchev is a senior software engineer and computational researcher building Towards Artificial Life, an open research project on embodied intelligence.',
-		portrait: { src: '/images/residents/andrew-gostishchev.png', width: 80, height: 80 },
+		portraits: [{ name: 'Andrew Gostishchev', src: '/images/residents/andrew-gostishchev.png', width: 120, height: 120 }],
 		about: [
 			'I am a senior software engineer and computational researcher working in artificial life and theoretical neuroscience. My work investigates the physical foundations of intelligence and consciousness from first principles. I apply a systems engineering discipline to computational biology, exploring neural dynamics, active inference, and embodied cognition.',
 		],
@@ -49,5 +53,216 @@ export const profiles: Profile[] = [
 			{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/arterialist/' },
 		],
 		accent: { dark: '#34d399', light: '#047857' },
+	},
+	{
+		slug: 'andre-teow',
+		name: 'Andre Teow',
+		firstName: 'Andre',
+		role: 'Co-founder of A47 Media and co-lead of the residency',
+		building: 'A47 Media',
+		summary:
+			'Andre Teow co-founded A47 Media, an AI content team that turns your industry’s news into ready-to-approve posts, and runs Build with AI, Malaysia’s most active builders community.',
+		portraits: [{ name: 'Andre Teow', src: '/images/residents/andre-teow.png', width: 120, height: 120 }],
+		about: [
+			'I’m Andre. I co-lead the residency and I’m also a co-founder of A47 Media. Besides that, I run Build with AI, Malaysia’s most active builders community. Members have launched 200+ products, many by people who’d never built anything before. Earlier, I co-founded Tiki, an Indian short-video app with 30M MAU. If you’re building with AI, come say hi.',
+		],
+		work: [
+			'*The content team you’ve been meaning to hire.*',
+			'Everyone wants more content, but marketing is usually one person. They’re expected to post every day, on every channel, with plenty of ideas and not enough hours.',
+			'We started as A47 News, an AI newsroom that checks its stories against independent sources. Now we repurpose that same engine to run content for companies. Each morning we read your industry’s news and trends and pick what your audience will care about. Then it writes the post and builds the Instagram graphic carousel in your voice, with a real source behind every story.',
+			'Human editors check everything from a central Mission Control, the control room we built so one editor can look after many brands.',
+			'We are live. Our new morning brief, where you wake up to posts ready to approve, is in paid beta.',
+		],
+		workLinks: [{ label: 'A47 Media website', href: 'https://a47media.com/' }],
+		profileLinks: [
+			{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/andreteow/' },
+			{ label: 'Instagram', href: 'https://www.instagram.com/andreteow01' },
+			{ label: 'X', href: 'https://x.com/andreteow' },
+		],
+		accent: a47Accent,
+	},
+	{
+		slug: 'hong-bing',
+		name: 'Hong Bing',
+		firstName: 'Hong Bing',
+		role: 'Founder, student builder and community lead',
+		building: 'CodeKite',
+		summary:
+			'Hong Bing is a Malaysian founder building CodeKite, AI agents that repair software when third-party APIs change, and co-founder of the AI Hackerdorm builder community.',
+		portraits: [{ name: 'Hong Bing', src: '/images/residents/hong-bing.png', width: 120, height: 120 }],
+		about: [
+			'I’m Hong Bing, a Malaysian founder and builder. I started coding at 12 and now build AI products, organise communities and bring people together to turn ideas into working projects.',
+			'I co-founded AI Hackerdorm and grew it to 500+ builders across four university chapters in Malaysia. My teams earned prizes across 15+ hackathons, including a wider track record of international wins such as HackMIT’s hardware special prize. I also founded and chaired KiyokoCon, bringing together a team, sponsors and partners to run a student-led convention. After winning Student Builder Champion at the ASEAN AI Summit, I was invited by Khailee Ng to join 500 Global’s AI residency.',
+			'Today, I’m building CodeKite and helping grow Malaysia’s AI builder community: more people building, sharing what they learn and taking their ideas beyond campus.',
+		],
+		work: [
+			'CodeKite helps engineering teams repair software when third-party APIs change. We’re building AI agents that identify affected code, propose fixes and verify that the user workflow still works, giving developers reviewable changes with evidence attached.',
+			'The goal is simple: keep your uptime, spend less time fixing broken integrations and more time building products.',
+		],
+		workLinks: [
+			{ label: 'CodeKite website', href: 'https://codekite.app/' },
+			{ label: 'AI Hackerdorm', href: 'https://www.aihackerdorm.com/' },
+		],
+		profileLinks: [{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/hong-bing' }],
+		accent: { dark: '#a19cf2', light: '#5148c4' },
+	},
+	{
+		slug: 'lizzie-tan',
+		name: 'Lizzie Tan',
+		firstName: 'Lizzie',
+		role: 'Co-founder of Cleve',
+		building: 'Cleve',
+		summary:
+			'Lizzie Tan is the co-founder of Cleve, an AI second brain that keeps your docs and notes in one place so your AI always works from your full context.',
+		portraits: [{ name: 'Lizzie Tan', src: '/images/residents/lizzie-tan.png', width: 120, height: 120 }],
+		about: [
+			'I studied psychology, then ended up running a content marketing agency for four years. I’ve always been super curious about what makes people tick and why some content works better than others.',
+			'Back in my agency, my biggest headache was keeping track of client context. When you have a team and a bunch of clients, context gets scattered everywhere. I got into AI to build the thing I wished existed — AI second brains, or company brains where everything lives in one AI-searchable workspace, so everyone always has the latest context they and their AI can work with.',
+			'These days, my life is split into two modes: product sprints and marketing sprints.',
+		],
+		work: [
+			'Cleve is a second brain where you keep all your docs and notes in one place. I personally use it to dump all my documents and context I want AI to remember. Built-in memory from ChatGPT and Claude mostly relies on compressed summaries of who you are, so the nuance of your actual work gets lost.',
+			'So Cleve acts as an external storage where all your docs live, and your AI can search through. Whenever you chat, it pulls from your full source documents so your context stays 100% intact. We’re live on web and mobile, with over 40,000 users.',
+		],
+		workLinks: [{ label: 'Cleve website', href: 'https://www.cleve.ai/' }],
+		profileLinks: [
+			{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/lizzietan' },
+			{ label: 'Instagram', href: 'https://www.instagram.com/lizzietanqi' },
+		],
+		accent: { dark: '#7fb0ee', light: '#1d4f9a' },
+	},
+	{
+		slug: 'mohtasham-murshid-madani',
+		name: 'Mohtasham Murshid Madani',
+		firstName: 'Mohtasham',
+		role: 'Founder of Oikina and full-time AI engineer',
+		building: 'Oikina',
+		summary:
+			'Mohtasham Murshid Madani is an AI engineer from Kashmir, now in Kuala Lumpur, building Oikina, a full-stack agent framework for deploying websites, and open-source tools for AI agents.',
+		portraits: [
+			{ name: 'Mohtasham Murshid Madani', src: '/images/residents/mohtasham-murshid-madani.png', width: 120, height: 120 },
+		],
+		about: [
+			'I’m Mohtasham, an engineer from Kashmir now based in Kuala Lumpur. I tend to describe myself in four parts: founder of Oikina, AI engineer, open-source builder, and researcher. Day to day, I work full time as an AI engineer.',
+		],
+		work: [
+			'Most of my own time goes into *Oikina*, my startup: a full-stack agent framework for deploying websites. I’m also building open-source tools for AI agents, like getdesign and md-to-docx.',
+		],
+		workLinks: [
+			{ label: 'Oikina website', href: 'https://www.oikina.com/' },
+			{ label: 'getdesign', href: 'https://www.getdesign.app/' },
+		],
+		profileLinks: [
+			{ label: 'Personal site', href: 'https://www.mohtasham.dev/' },
+			{ label: 'GitHub', href: 'https://github.com/MohtashamMurshid' },
+			{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/mohtashammurshid/' },
+			{ label: 'X', href: 'https://x.com/mohtashamdotdev' },
+		],
+		accent: { dark: '#f2b53a', light: '#8a5a00' },
+	},
+	{
+		slug: 'ken-ooi',
+		name: 'Ken Ooi',
+		firstName: 'Ken',
+		role: 'Product manager with a master’s in mechanical engineering with mechatronics',
+		building: 'A47 Media',
+		summary:
+			'Ken Ooi is a product manager and mechatronics engineer building A47 Media, which gives creators and video editors full control over what they make with AI.',
+		portraits: [{ name: 'Ken Ooi', src: '/images/residents/ken-ooi.png', width: 120, height: 120 }],
+		about: [
+			'Mechatronics engineer by training. Carrying the principles of engineering into the product world, I combined my interest in video editing and creation with the world of AI media.',
+		],
+		work: [
+			'My goal with A47 Media is to enable creators and video editors to have full control over their creation, so everyone can express their creativity, from the shallowest brainrot content to their wildest dream.',
+			'“Anyone can create” does not mean anyone can be a good creator, but a good creator can come from anywhere.',
+		],
+		workLinks: [{ label: 'A47 Media website', href: 'https://a47media.com/' }],
+		profileLinks: [{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/ken-ooi-00926b218' }],
+		accent: a47Accent,
+	},
+	{
+		slug: 'leong-shi-wei',
+		name: 'Leong Shi Wei',
+		firstName: 'Shi Wei',
+		role: 'Software engineer at A47 Media',
+		building: 'A47 Media',
+		summary:
+			'Leong Shi Wei is a software engineer at A47 Media, a content studio run with autonomous agents, and maintains Lostopedia, a campus lost and found app.',
+		portraits: [{ name: 'Leong Shi Wei', src: '/images/residents/leong-shi-wei.png', width: 120, height: 120 }],
+		about: [
+			'Hello! I’m Shi Wei. I hate AI but I sometimes find myself talking to it more than living human beings. Sometimes I enjoy building with it but more often I resent it for accidentally doing all the thinking for me. Honestly I’m somewhat of a hypocrite, though I’m on a mission to make sure these geniuses in data centres compound our capabilities rather than replace us. HMU if you think it’s relatable.',
+		],
+		work: [
+			'I’m helping Andre build A47 Media, a content studio for creators with autonomous agents streamlining content work. On the side, I tinker with AI projects with my AI buddies while I gradually transition from a vibe coder to a real engineer.',
+			'I’m also maintaining a campus lost and found app for my university called Lostopedia, for completely no compensation lol. If you have any idea how to keep this sustainable, I’d love to talk.',
+		],
+		workLinks: [
+			{ label: 'A47 Media website', href: 'https://a47media.com/' },
+			{ label: 'Lostopedia', href: 'https://lostopedia.com/' },
+		],
+		profileLinks: [
+			{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/shi-wei-leong' },
+			{ label: 'GitHub', href: 'https://github.com/S-W-Leong' },
+		],
+		accent: a47Accent,
+	},
+	{
+		slug: 'gabriel-yong',
+		name: 'Gabriel Yong',
+		firstName: 'Gabriel',
+		role: 'Technical founder at Zedech Solutions',
+		building: 'Zedech',
+		summary:
+			'Gabriel Yong is a technical founder at Zedech Solutions, building AutoFlow, an operations platform for automotive workshops, and HostPilot, AI agents for short-term rental hosts.',
+		portraits: [{ name: 'Gabriel Yong', src: '/images/residents/gabriel-yong.png', width: 120, height: 120 }],
+		about: [
+			'Hi, I’m Gabriel, a technical founder at Zedech Solutions. Alongside my co-founder, I build AI agents, workflow automations and software for daily business operations. I previously co-founded a crypto DeFi startup, Polystream.xyz, and spent 4 years as a blockchain engineer and security auditor.',
+		],
+		work: [
+			'AutoFlow is an operations platform for automotive workshops. It connects bookings, customer conversations, vehicle records, job stages, checklists, payments, parts, supplier orders, and reporting.',
+			'HostPilot gives short-term rental hosts AI agents to answer guest questions across WhatsApp. The agents use custom context, retain conversation history, and support multiple properties from one inbox. HostPilot is available for demos.',
+		],
+		workLinks: [
+			{ label: 'Zedech website', href: 'https://www.zedech.com/' },
+			{ label: 'AutoFlow', href: 'https://tryautoflow.app/' },
+			{ label: 'HostPilot', href: 'https://www.hostpilot.my/' },
+		],
+		profileLinks: [
+			{ label: 'GitHub', href: 'https://github.com/gabr1234iel' },
+			{ label: 'Instagram', href: 'https://www.instagram.com/gabrielyong.ai' },
+			{ label: 'X', href: 'https://x.com/jalldoes' },
+		],
+		accent: { dark: '#5ab4e6', light: '#0069a8' },
+	},
+	{
+		slug: 'vivien-and-kong',
+		name: 'Vivien & Kong',
+		firstName: 'Vivien & Kong',
+		role: 'Co-founders of Pebble Tech. Vivien runs product and business, Kong writes the code.',
+		building: 'Nudge',
+		summary:
+			'Vivien and Kong run Pebble Tech, a small product studio in Kuala Lumpur, and are building Nudge, an AI agent that answers enquiries, chases leads and remembers customers on WhatsApp.',
+		portraits: [
+			{ name: 'Vivien Wee', src: '/images/residents/vivien-wee.png', width: 120, height: 120 },
+			{ name: 'Kong', src: '/images/residents/kong.png', width: 120, height: 120 },
+		],
+		about: [
+			'We’re Vivien and Kong. We met as coursemates in 2012, started building things together, and never stopped. Today we run Pebble Tech, a small product studio in KL.',
+			'For almost ten years we’ve worked with Malaysian SMBs, the kind of businesses where the boss is also the salesperson, the customer service team and the person replying to WhatsApp at 11pm. We kept seeing the same thing: great owners, drowning in messages. When AI got good enough to actually help, we wanted to build something those owners would trust, not just something that looks cool in a demo.',
+		],
+		work: [
+			'Nudge is an AI agent that lives where Southeast Asian businesses already do their selling: WhatsApp. It answers enquiries, chases leads, reminds customers about appointments, and remembers who likes what. Think of it as that one staff member who knows every regular by name.',
+			'We’re not chasing fully autonomous AI. Nudge follows the workflows you already have, and all its agents share one memory of your customers, from what they bought to how they like to be talked to. Every conversation builds on the last one, so your customers feel known. Anything it’s unsure about goes straight to you.',
+			'Nudge is live with a few paying customers, and we’re currently focused on clinics and service businesses.',
+		],
+		// nudge.pebbletech.my, the link in their doc, does not resolve yet.
+		workLinks: [{ label: 'Pebble Tech website', href: 'https://www.pebbletech.my/' }],
+		profileLinks: [
+			{ label: 'Vivien on LinkedIn', href: 'https://www.linkedin.com/in/vivien-wee-857885120/' },
+			{ label: 'Kong on LinkedIn', href: 'https://www.linkedin.com/in/kongkw94/' },
+			{ label: 'Vivien on Instagram', href: 'https://www.instagram.com/vivien.unfiltered/' },
+			{ label: 'Kong on X', href: 'https://x.com/helloimkongv' },
+		],
+		accent: { dark: '#8aa5f5', light: '#1e40af' },
 	},
 ];

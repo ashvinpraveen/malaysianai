@@ -2,7 +2,7 @@
 
 Generated with the built-in image-generation tool, real transparency requested. The reference photo, hibiscus pixel art and original push-up sprite were inspected before generation and supplied as references.
 
-The 1254px output came back with an uneven grid (cells of roughly 12-16px), not the requested 64x64. It was snapped to an 80x80 grid by taking the median colour of the middle half of each cell, with alpha thresholded at 128, and saved to `public/images/residents/andrew-gostishchev.png`. The profile page scales it back up 3x with `image-rendering: pixelated`. The raw PNG is kept beside this note.
+The 1254px output came back with an uneven grid (cells of roughly 12-16px), not the requested 64x64. It was snapped to a 120x120 grid, to match the rest of the resident portraits, by taking the median colour of the middle half of each cell, with alpha thresholded at 128, and saved to `public/images/residents/andrew-gostishchev.png`. The profile page scales it back up 2x with `image-rendering: pixelated`. The raw PNG is kept beside this note.
 
 ## andrew-gostishchev-raw.png
 

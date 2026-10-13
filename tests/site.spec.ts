@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { displayTitle } from '../src/lib/podcast-title';
+import { profiles } from '../src/data/profiles';
 
 // Keep tests deterministic and avoid making requests to event/payment providers.
 test.beforeEach(async ({ page }) => {
@@ -30,6 +31,19 @@ test('public destinations load and the hero uses responsive images', async ({ pa
 		expect(image.loaded).toBe(true);
 	}
 	expect(errors).toEqual([]);
+});
+
+test('every resident profile shows its portraits and links without overflowing', async ({ page }) => {
+	for (const profile of profiles) {
+		const response = await page.goto(`/residents/${profile.slug}`);
+		expect(response?.status()).toBe(200);
+		await expect(page.getByRole('heading', { level: 1 })).toHaveText(profile.name);
+		const portraits = page.locator('.profile-portrait');
+		await expect(portraits).toHaveCount(profile.portraits.length);
+		expect(await portraits.evaluateAll((images: HTMLImageElement[]) => images.every(image => image.complete && image.naturalWidth > 0))).toBe(true);
+		await expect(page.locator('.profile-links a')).toHaveCount(profile.workLinks.length + profile.profileLinks.length);
+		expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
+	}
 });
 
 test('resident directory lists A47 Media with its website and logo', async ({ page }) => {

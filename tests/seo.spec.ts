@@ -1,9 +1,13 @@
 import sharp from 'sharp';
 import hosting from '../vercel.json' with { type: 'json' };
 import { test, expect } from '@playwright/test';
+import { profiles } from '../src/data/profiles';
 
 const origin = 'https://www.malaysian.ai';
-const pages = ['/', '/about', '/brand', '/residency', '/residency/accountability', '/residents', '/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon', '/podcast'];
+const pages = [
+	'/', '/about', '/brand', '/residency', '/residency/accountability', '/residents', '/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon', '/podcast',
+	...profiles.map(profile => `/residents/${profile.slug}`),
+];
 const expectedCommunityNames = [
 	'AI After Hours KL',
 	'AI HackerDorm',

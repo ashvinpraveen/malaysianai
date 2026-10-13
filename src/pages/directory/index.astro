@@ -107,12 +107,12 @@ const tags = uniqueSorted(residents.flatMap(resident => resident.tags));
 	.directory-controls { display: grid; gap: 1rem; margin-bottom: 1.25rem; }
 	.search, .filter-row label { display: grid; gap: 0.4rem; }
 	.search span, .filter-row span {
-		color: var(--text-muted);
+		color: var(--page-text);
 		font-size: var(--text-xs);
 		letter-spacing: 0.06em;
 		text-transform: uppercase;
 	}
-	input, select {
+	input, select, select option {
 		width: 100%;
 		min-height: 2.6rem;
 		padding: 0.45rem 0.7rem;
@@ -120,9 +120,11 @@ const tags = uniqueSorted(residents.flatMap(resident => resident.tags));
 		border-radius: 0.45rem;
 		color: var(--page-text);
 		background: var(--card-background);
+		accent-color: var(--page-text);
 		font: 400 var(--text-base) / 1.4 var(--font-body);
 	}
-	input::placeholder { color: var(--text-muted); }
+	select option { min-height: 0; padding: 0.2rem 0.4rem; }
+	input::placeholder { color: var(--page-text); opacity: 0.55; }
 	input:focus-visible, select:focus-visible, .clear:focus-visible {
 		outline: 2px solid var(--focus-color);
 		outline-offset: 3px;
@@ -145,7 +147,8 @@ const tags = uniqueSorted(residents.flatMap(resident => resident.tags));
 		white-space: nowrap;
 		cursor: pointer;
 	}
-	.count { margin: 0 0 1rem; color: var(--text-muted); font-size: var(--text-sm); }
+	.clear:hover, .clear:focus-visible { color: var(--text-hover); }
+	.count { margin: 0 0 1rem; color: var(--page-text); font-size: var(--text-sm); }
 	.empty { margin: 0 0 1rem; }
 	.company-list {
 		display: grid;
@@ -173,23 +176,26 @@ const tags = uniqueSorted(residents.flatMap(resident => resident.tags));
 		font: 400 1.45rem / 1.1 var(--font-display);
 		letter-spacing: -0.03em;
 	}
-	.company-card h2 a { text-decoration: none; }
+	.company-card h2 a { color: var(--page-text); text-decoration: none; }
 	.company-card h2 a::after { position: absolute; inset: 0; content: ''; }
-	.company-card h2 a:hover, .company-card h2 a:focus-visible { text-decoration: underline; text-underline-offset: 0.18em; }
-	.tagline, .founders { margin: 0.3rem 0 0; color: var(--text-muted); font-size: var(--text-sm); line-height: 1.45; }
-	.founders { color: var(--page-text); }
-	.meta { display: flex; flex-wrap: wrap; gap: 0.35rem 0.9rem; margin: 0; }
+	.company-card h2 a:hover,
+	.company-card h2 a:focus-visible { color: var(--text-hover); text-decoration: underline; text-underline-offset: 0.18em; }
+	.tagline, .founders { margin: 0.3rem 0 0; color: var(--page-text); font-size: var(--text-sm); line-height: 1.45; }
+	.meta { display: flex; flex-wrap: wrap; gap: 0.35rem 0.9rem; margin: 0; color: var(--page-text); }
 	.meta div { display: flex; gap: 0.35rem; align-items: baseline; }
-	.meta dt { color: var(--text-muted); font-size: var(--text-xs); letter-spacing: 0.04em; text-transform: uppercase; }
+	.meta dt, .meta dd { color: var(--page-text); }
+	.meta dt { font-size: var(--text-xs); letter-spacing: 0.04em; text-transform: uppercase; }
 	.meta dd { margin: 0; font-size: var(--text-sm); }
 	.tags { display: flex; flex-wrap: wrap; gap: 0.35rem; padding: 0; margin: 0; list-style: none; }
 	.tags li {
 		padding: 0.15rem 0.5rem;
 		border: 1px solid var(--page-border);
 		border-radius: 999px;
+		color: var(--page-text);
 		font-size: var(--text-xs);
 	}
-	.website { position: relative; z-index: 1; width: fit-content; margin-top: auto; font-size: var(--text-sm); }
+	.website { position: relative; z-index: 1; width: fit-content; margin-top: auto; color: var(--page-text); font-size: var(--text-sm); }
+	.website:hover, .website:focus-visible { color: var(--text-hover); }
 
 	@media (max-width: 900px) {
 		.filter-row { grid-template-columns: 1fr 1fr; }

@@ -65,18 +65,22 @@ const founders = resident.founders ?? [];
 
 <style>
 	.back { margin: 0 0 1.25rem; font-size: var(--text-sm); }
+	.back a { color: var(--page-text); }
+	.back a:hover, .back a:focus-visible { color: var(--text-hover); }
 	.identity { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: 1.5rem; }
-	.tagline { margin: 0; color: var(--text-muted); }
-	.meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 0.75rem; margin: 0 0 1.25rem; }
+	.tagline { margin: 0; color: var(--page-text); }
+	.meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 0.75rem; margin: 0 0 1.25rem; color: var(--page-text); }
 	.meta div { padding: 0.85rem 1rem; border: 1px solid var(--page-border); border-radius: 0.7rem; background: var(--card-background); }
-	.meta dt { margin: 0 0 0.25rem; color: var(--text-muted); font-size: var(--text-xs); letter-spacing: 0.04em; text-transform: uppercase; }
+	.meta dt, .meta dd { color: var(--page-text); }
+	.meta dt { margin: 0 0 0.25rem; font-size: var(--text-xs); letter-spacing: 0.04em; text-transform: uppercase; }
 	.meta dd { margin: 0; }
 	.tags { display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0; margin: 0 0 1.5rem; list-style: none; }
-	.tags li { padding: 0.2rem 0.55rem; border: 1px solid var(--page-border); border-radius: 999px; font-size: var(--text-xs); }
+	.tags li { padding: 0.2rem 0.55rem; border: 1px solid var(--page-border); border-radius: 999px; color: var(--page-text); font-size: var(--text-xs); }
 	.founder-list { display: grid; gap: 0.75rem; padding: 0; margin: 0; list-style: none; }
-	.founder-list li { display: grid; gap: 0.15rem; padding: 1rem; border: 1px solid var(--page-border); border-radius: 0.75rem; background: var(--card-background); }
+	.founder-list li { display: grid; gap: 0.15rem; padding: 1rem; border: 1px solid var(--page-border); border-radius: 0.75rem; background: var(--card-background); color: var(--page-text); }
 	.founder-photo { width: 3rem; height: 3rem; margin-bottom: 0.4rem; object-fit: cover; border-radius: 999px; }
-	.founder-name, .founder-role, .founder-links { margin: 0; }
-	.founder-role { color: var(--text-muted); }
+	.founder-name, .founder-role, .founder-links { margin: 0; color: var(--page-text); }
 	.founder-links { display: flex; gap: 0.9rem; margin-top: 0.45rem; }
+	.founder-links a { color: var(--page-text); }
+	.founder-links a:hover, .founder-links a:focus-visible { color: var(--text-hover); }
 </style>

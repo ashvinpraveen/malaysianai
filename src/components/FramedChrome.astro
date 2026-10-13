@@ -4,7 +4,7 @@ import { LUMA_URL } from '../consts';
 
 interface Props {
 	home?: boolean;
-	current?: 'home' | 'about' | 'residency' | 'residents' | 'apply' | 'stories' | 'podcast';
+	current?: 'home' | 'about' | 'residency' | 'residents' | 'apply' | 'stories' | 'podcast' | 'directory';
 	minimal?: boolean;
 }
 
@@ -14,6 +14,7 @@ const links = [
 	{ id: 'events', href: home ? '#events' : '/#events', label: 'Events' },
 	{ id: 'communities', href: home ? '#communities' : '/#communities', label: 'Communities' },
 	{ id: 'residency', href: '/residency', label: 'Residency' },
+	{ id: 'directory', href: '/directory', label: 'Directory' },
 	{ id: 'stories', href: '/blog', label: 'Stories' },
 	{ id: 'podcast', href: '/podcast', label: 'Podcast' },
 ] as const;

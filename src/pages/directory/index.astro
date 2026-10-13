@@ -1,0 +1,202 @@
+---
+import ResidentLogo from '../../components/ResidentLogo.astro';
+import { residents } from '../../data/residents';
+import { directoryPath, residentSlug, uniqueSorted } from '../../lib/directory';
+import InfoPage from '../../layouts/InfoPage.astro';
+
+const cohorts = uniqueSorted(residents.map(resident => resident.cohort));
+const focuses = uniqueSorted(residents.map(resident => resident.focus));
+const locations = uniqueSorted(residents.map(resident => resident.location));
+const tags = uniqueSorted(residents.flatMap(resident => resident.tags));
+---
+
+<InfoPage title="Company directory" description="Search Malaysian AI companies and the founders building them.">
+	<div data-directory>
+		<form class="directory-controls" action="/directory" method="get" role="search">
+			<label class="search">
+				<span>Search companies</span>
+				<input type="search" name="q" placeholder="Name, product, founder, or tag" autocomplete="off" enterkeyhint="search" />
+			</label>
+			<div class="filter-row">
+				<label>
+					<span>Cohort</span>
+					<select name="cohort">
+						<option value="">All cohorts</option>
+						{cohorts.map(cohort => <option value={cohort}>{cohort}</option>)}
+					</select>
+				</label>
+				<label>
+					<span>Industry</span>
+					<select name="focus">
+						<option value="">All industries</option>
+						{focuses.map(focus => <option value={focus}>{focus}</option>)}
+					</select>
+				</label>
+				<label>
+					<span>Location</span>
+					<select name="location">
+						<option value="">All locations</option>
+						{locations.map(location => <option value={location}>{location}</option>)}
+					</select>
+				</label>
+				<label>
+					<span>Tag</span>
+					<select name="tag">
+						<option value="">All tags</option>
+						{tags.map(tag => <option value={tag}>{tag}</option>)}
+					</select>
+				</label>
+				<button type="reset" class="clear">Clear filters</button>
+			</div>
+		</form>
+
+		<p class="count" data-count aria-live="polite">{residents.length} companies</p>
+		<p class="empty" data-empty hidden>No companies match these filters.</p>
+
+		<ul class="company-list">
+			{residents.map(resident => {
+				const founders = resident.founders ?? [];
+				return (
+					<li class="company-card" data-company data-slug={residentSlug(resident.name)}>
+						<div class="company-brand">
+							<ResidentLogo resident={resident} />
+							<div>
+								<h2><a href={directoryPath(resident.name)}>{resident.name}</a></h2>
+								<p class="tagline">{resident.tag}</p>
+							</div>
+						</div>
+						<dl class="meta">
+							<div><dt>Location</dt><dd>{resident.location}</dd></div>
+							<div><dt>Cohort</dt><dd>{resident.cohort}</dd></div>
+							<div><dt>Industry</dt><dd>{resident.focus}</dd></div>
+						</dl>
+						<ul class="tags">
+							{resident.tags.map(tag => <li>{tag}</li>)}
+						</ul>
+						{founders.length > 0 && (
+							<p class="founders">
+								{founders.map(founder => `${founder.name} · ${founder.role}`).join(', ')}
+							</p>
+						)}
+						<a class="website" href={resident.website}>Visit {resident.name} <span aria-hidden="true">↗</span></a>
+					</li>
+				);
+			})}
+		</ul>
+	</div>
+</InfoPage>
+
+<script>
+	import { mountDirectory } from '../../lib/directory-page';
+
+	let stop = () => {};
+
+	function start() {
+		stop();
+		stop = () => {};
+		const root = document.querySelector<HTMLElement>('[data-directory]');
+		if (!root) return;
+		stop = mountDirectory(root);
+	}
+
+	start();
+	document.addEventListener('astro:page-load', start);
+</script>
+
+<style>
+	.directory-controls { display: grid; gap: 1rem; margin-bottom: 1.25rem; }
+	.search, .filter-row label { display: grid; gap: 0.4rem; }
+	.search span, .filter-row span {
+		color: var(--text-muted);
+		font-size: var(--text-xs);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+	input, select {
+		width: 100%;
+		min-height: 2.6rem;
+		padding: 0.45rem 0.7rem;
+		border: 1px solid var(--page-border);
+		border-radius: 0.45rem;
+		color: var(--page-text);
+		background: var(--card-background);
+		font: 400 var(--text-base) / 1.4 var(--font-body);
+	}
+	input::placeholder { color: var(--text-muted); }
+	input:focus-visible, select:focus-visible, .clear:focus-visible {
+		outline: 2px solid var(--focus-color);
+		outline-offset: 3px;
+	}
+	.filter-row {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+		gap: 0.75rem;
+		align-items: end;
+	}
+	.clear {
+		min-height: 2.6rem;
+		padding: 0.45rem 0.15rem;
+		border: 0;
+		color: var(--page-text);
+		background: transparent;
+		font: 400 var(--text-sm) / 1.2 var(--font-body);
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+		white-space: nowrap;
+		cursor: pointer;
+	}
+	.count { margin: 0 0 1rem; color: var(--text-muted); font-size: var(--text-sm); }
+	.empty { margin: 0 0 1rem; }
+	.company-list {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+		gap: 1rem;
+		padding: 0;
+		margin: 0;
+		list-style: none;
+	}
+	.company-card {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: 0.85rem;
+		min-width: 0;
+		padding: 1.15rem;
+		border: 1px solid var(--page-border);
+		border-radius: 0.75rem;
+		background: var(--card-background);
+	}
+	.company-card[hidden] { display: none; }
+	.company-brand { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.9rem; align-items: center; }
+	:global(.info-page) .company-card h2 {
+		margin: 0;
+		font: 400 1.45rem / 1.1 var(--font-display);
+		letter-spacing: -0.03em;
+	}
+	.company-card h2 a { text-decoration: none; }
+	.company-card h2 a::after { position: absolute; inset: 0; content: ''; }
+	.company-card h2 a:hover, .company-card h2 a:focus-visible { text-decoration: underline; text-underline-offset: 0.18em; }
+	.tagline, .founders { margin: 0.3rem 0 0; color: var(--text-muted); font-size: var(--text-sm); line-height: 1.45; }
+	.founders { color: var(--page-text); }
+	.meta { display: flex; flex-wrap: wrap; gap: 0.35rem 0.9rem; margin: 0; }
+	.meta div { display: flex; gap: 0.35rem; align-items: baseline; }
+	.meta dt { color: var(--text-muted); font-size: var(--text-xs); letter-spacing: 0.04em; text-transform: uppercase; }
+	.meta dd { margin: 0; font-size: var(--text-sm); }
+	.tags { display: flex; flex-wrap: wrap; gap: 0.35rem; padding: 0; margin: 0; list-style: none; }
+	.tags li {
+		padding: 0.15rem 0.5rem;
+		border: 1px solid var(--page-border);
+		border-radius: 999px;
+		font-size: var(--text-xs);
+	}
+	.website { position: relative; z-index: 1; width: fit-content; margin-top: auto; font-size: var(--text-sm); }
+
+	@media (max-width: 900px) {
+		.filter-row { grid-template-columns: 1fr 1fr; }
+		.clear { justify-self: start; }
+	}
+
+	@media (max-width: 560px) {
+		.filter-row { grid-template-columns: 1fr; }
+	}
+</style>

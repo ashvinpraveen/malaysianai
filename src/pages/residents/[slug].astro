@@ -1,0 +1,251 @@
+---
+import { SITE_TITLE } from '../../consts';
+import { profiles, type Profile } from '../../data/profiles';
+import Layout from '../../layouts/Layout.astro';
+import { serializeJsonLd } from '../../lib/seo';
+
+export function getStaticPaths() {
+	return profiles.map(profile => ({ params: { slug: profile.slug }, props: { profile } }));
+}
+
+interface Props { profile: Profile }
+const { profile } = Astro.props;
+
+// Pixel art only stays crisp at whole-number scales.
+const portraitScale = 2;
+const [mainLink, secondLink] = profile.workLinks;
+const links = [...profile.workLinks, ...profile.profileLinks];
+const keywords = [...new Set(['Malaysian AI', 'AI residency Malaysia', profile.name, ...profile.portraits.map(portrait => portrait.name), profile.building])];
+const shortURL = (href: string) => {
+	const url = new URL(href);
+	return `${url.host.replace(/^www\./, '')}${url.pathname}`.replace(/\/$/, '');
+};
+
+const people = profile.portraits.map(({ name, src }) => ({
+	'@type': 'Person',
+	name,
+	image: new URL(src, Astro.site).href,
+}));
+
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'ProfilePage',
+	url: new URL(Astro.url.pathname, Astro.site).href,
+	// A pair page is about both people; their shared role and links belong to neither alone.
+	mainEntity: people.length > 1 ? people : {
+		'@type': 'Person',
+		name: profile.name,
+		jobTitle: profile.role,
+		description: profile.summary,
+		...(people[0] ? { image: people[0].image } : {}),
+		sameAs: profile.profileLinks.map(link => link.href),
+	},
+};
+---
+
+<Layout title={`${profile.name} | ${SITE_TITLE}`} description={profile.summary} keywords={keywords} neutral>
+	<article
+		class="profile"
+		style={`--profile-accent-dark: ${profile.accent.dark}; --profile-accent-light: ${profile.accent.light}`}
+	>
+		<a class="profile-back" href="/residents"><span aria-hidden="true">←</span> All residents</a>
+
+		<header class="profile-header">
+			{profile.portraits.length > 0 && (
+				<div class="profile-portraits">
+					{profile.portraits.map(portrait => (
+						<img
+							class="profile-portrait"
+							src={portrait.src}
+							width={portrait.width * portraitScale}
+							height={portrait.height * portraitScale}
+							alt={`Pixel-art portrait of ${portrait.name}`}
+							decoding="async"
+						/>
+					))}
+				</div>
+			)}
+			<p class="profile-kicker">Building {profile.building}</p>
+			<h1>{profile.name}</h1>
+			<p class="profile-role">{profile.role}</p>
+			{mainLink && (
+				<div class="profile-actions">
+					<a class="site-button" href={mainLink.href}>{mainLink.label}</a>
+					{secondLink && (
+						<a class="profile-text-link" href={secondLink.href}>{secondLink.label} <span aria-hidden="true">↗</span></a>
+					)}
+				</div>
+			)}
+		</header>
+
+		<section class="profile-section" aria-labelledby="about-title">
+			<h2 id="about-title">About</h2>
+			{profile.about.map(paragraph => (
+				<p>{paragraph.split('*').map((part, index) => index % 2 ? <em>{part}</em> : part)}</p>
+			))}
+		</section>
+
+		<section class="profile-section" aria-labelledby="work-title">
+			<h2 id="work-title">{profile.building}</h2>
+			{profile.work.map(paragraph => (
+				<p>{paragraph.split('*').map((part, index) => index % 2 ? <em>{part}</em> : part)}</p>
+			))}
+		</section>
+
+		<section class="profile-section" aria-labelledby="links-title">
+			<h2 id="links-title">Links</h2>
+			<ul class="profile-links">
+				{links.map(link => (
+					<li>
+						<a href={link.href}>
+							<span class="profile-link-label">{link.label}</span>
+							<span class="profile-link-url">{shortURL(link.href)}</span>
+							<span class="profile-link-arrow" aria-hidden="true">↗</span>
+						</a>
+					</li>
+				))}
+			</ul>
+		</section>
+	</article>
+	<script is:inline type="application/ld+json" set:html={serializeJsonLd(structuredData)} />
+</Layout>
+
+<style>
+	.profile {
+		--profile-accent: var(--profile-accent-dark);
+		max-width: 40rem;
+		margin-inline: auto;
+		padding: clamp(1.5rem, 3vw, 2.5rem) 1.5rem clamp(4rem, 8vw, 6rem);
+		color: var(--page-text);
+	}
+
+	@media (prefers-color-scheme: light) {
+		:global(html:not([data-theme='dark'])) .profile { --profile-accent: var(--profile-accent-light); }
+	}
+
+	:global(html[data-theme='light']) .profile { --profile-accent: var(--profile-accent-light); }
+
+	h1, h2 { margin: 0; color: var(--text-heading); font-weight: 400; font-family: var(--font-display); }
+
+	h1 { font-size: var(--text-page-title); line-height: 1; letter-spacing: -0.04em; }
+
+	h2 { font-size: var(--text-section-title); line-height: 1.1; letter-spacing: -0.03em; }
+
+	p { margin: 0; font-size: var(--text-base); line-height: var(--leading-body); }
+
+	a:focus-visible {
+		outline: 2px solid var(--focus-color);
+		outline-offset: 4px;
+	}
+
+	.profile-back {
+		display: inline-block;
+		color: var(--text-soft, var(--page-text));
+		font-size: var(--text-sm);
+		text-decoration: none;
+	}
+
+	.profile-back:hover { color: var(--text-hover); }
+
+	.profile-header {
+		display: grid;
+		justify-items: center;
+		margin-top: clamp(2rem, 5vw, 3.5rem);
+		text-align: center;
+	}
+
+	.profile-portraits {
+		display: flex;
+		justify-content: center;
+		gap: 1rem;
+		max-width: 100%;
+		margin-bottom: 1.75rem;
+	}
+
+	/* A pair shares the column, so each portrait may shrink below its whole-number size on narrow screens. */
+	.profile-portrait {
+		display: block;
+		min-width: 0;
+		max-width: 100%;
+		height: auto;
+		image-rendering: pixelated;
+	}
+
+	.profile-kicker {
+		display: flex;
+		align-items: center;
+		gap: 0.55rem;
+		margin-bottom: 0.9rem;
+		color: var(--profile-accent);
+		font-size: var(--text-sm);
+	}
+
+	.profile-kicker::before {
+		content: '';
+		width: 0.5rem;
+		height: 0.5rem;
+		border-radius: 50%;
+		background: currentColor;
+	}
+
+	.profile-role { max-width: 28rem; margin-top: 0.75rem; color: var(--text-soft, var(--page-text)); }
+
+	.profile-actions {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: center;
+		gap: 1rem 1.5rem;
+		margin-top: 1.75rem;
+	}
+
+	.profile-text-link {
+		color: var(--page-text);
+		font-size: 0.85rem;
+		text-decoration: none;
+	}
+
+	.profile-text-link span { margin-left: 0.25rem; color: var(--profile-accent); }
+
+	.profile-text-link:hover {
+		color: var(--text-hover);
+		text-decoration: underline;
+		text-underline-offset: 0.25em;
+	}
+
+	.profile-section { display: grid; gap: 1rem; margin-top: clamp(3.5rem, 8vw, 5rem); }
+
+	.profile-links { display: grid; gap: 0.25rem; margin: 0; padding: 0; list-style: none; }
+
+	.profile-links a {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto auto;
+		gap: 1rem;
+		align-items: baseline;
+		padding-block: 0.45rem;
+		color: var(--page-text);
+		text-decoration: none;
+	}
+
+	.profile-link-url {
+		overflow: hidden;
+		color: var(--text-soft, var(--page-text));
+		font: var(--text-xs) / 1.4 ui-monospace, 'SFMono-Regular', Menlo, monospace;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.profile-link-arrow { color: var(--profile-accent); transition: transform 160ms ease; }
+
+	.profile-links a:hover .profile-link-label { text-decoration: underline; text-underline-offset: 0.25em; }
+	.profile-links a:hover .profile-link-arrow { transform: translate(2px, -2px); }
+
+	@media (max-width: 560px) {
+		.profile-links a { grid-template-columns: minmax(0, 1fr) auto; }
+		.profile-link-url { display: none; }
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.profile-link-arrow { transition: none; }
+	}
+</style>

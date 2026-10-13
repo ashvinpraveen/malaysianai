@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { displayTitle } from '../src/lib/podcast-title';
+import { profiles } from '../src/data/profiles';
 
 // Keep tests deterministic and avoid making requests to event/payment providers.
 test.beforeEach(async ({ page }) => {
@@ -11,7 +12,7 @@ test('public destinations load and the hero uses responsive images', async ({ pa
 	page.on('pageerror', error => errors.push(error.message));
 	for (const [path, heading] of [
 		['/', 'Learn, build and'], ['/residency', 'Join the Malaysian.ai residency'], ['/residency/accountability', 'Accountability Mondays'],
-		['/residents', 'Meet the residents'], ['/contact', 'Get in touch'], ['/brand', 'Brand'], ['/blog', 'Malaysian AI Blog'],
+		['/residents', 'Meet the residents'], ['/resident-teams', 'Meet the resident teams'], ['/residents/andrew-gostishchev', 'Andrew Gostishchev'], ['/contact', 'Get in touch'], ['/brand', 'Brand'], ['/blog', 'Malaysian AI Blog'],
 		['/podcast', 'Malaysian AI podcast'],
 	]) {
 		const response = await page.goto(path);
@@ -32,8 +33,33 @@ test('public destinations load and the hero uses responsive images', async ({ pa
 	expect(errors).toEqual([]);
 });
 
-test('resident directory lists A47 Media with its website and logo', async ({ page }) => {
+test('every resident profile shows its portraits and links without overflowing', async ({ page }) => {
+	for (const profile of profiles) {
+		const response = await page.goto(`/residents/${profile.slug}`);
+		expect(response?.status()).toBe(200);
+		await expect(page.getByRole('heading', { level: 1 })).toHaveText(profile.name);
+		const portraits = page.locator('.profile-portrait');
+		await expect(portraits).toHaveCount(profile.portraits.length);
+		expect(await portraits.evaluateAll((images: HTMLImageElement[]) => images.every(image => image.complete && image.naturalWidth > 0))).toBe(true);
+		await expect(page.locator('.profile-links a')).toHaveCount(profile.workLinks.length + profile.profileLinks.length);
+		expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
+	}
+});
+
+test('residents page links every resident to their profile', async ({ page }) => {
 	await page.goto('/residents');
+	await expect(page.locator('.person')).toHaveCount(profiles.length);
+	for (const profile of profiles) {
+		const card = page.locator(`a.person[href="/residents/${profile.slug}"]`);
+		await expect(card.getByRole('heading', { level: 2 })).toHaveText(profile.name);
+		await expect(card.locator('img')).toHaveCount(profile.portraits.length);
+	}
+	await expect(page.getByRole('link', { name: 'Meet the resident teams' })).toHaveAttribute('href', '/resident-teams');
+	expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
+});
+
+test('resident teams page lists A47 Media with its website and logo', async ({ page }) => {
+	await page.goto('/resident-teams');
 	const resident = page.locator('.resident').filter({ hasText: 'A47 Media' });
 	await expect(resident).toHaveCount(1);
 	await expect(resident.getByRole('link', { name: 'A47 Media', exact: true })).toHaveAttribute('href', 'https://a47media.com');

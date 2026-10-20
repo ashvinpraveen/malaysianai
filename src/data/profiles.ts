@@ -265,4 +265,34 @@ export const profiles: Profile[] = [
 		],
 		accent: { dark: '#8aa5f5', light: '#1e40af' },
 	},
+	{
+		slug: 'maxine-lai',
+		name: 'Maxine Lai',
+		firstName: 'Maxine',
+		role: 'Co-founder of Hover Team',
+		building: 'Hover Team',
+		summary:
+			'Maxine Lai is the co-founder of Hover Team, which brings AI into the way a company already works, so teams get real value from it without changing their workflows.',
+		portraits: [{ name: 'Maxine Lai', src: '/images/residents/maxine-lai.png', width: 120, height: 120 }],
+		about: [
+			'I’m Maxine, co-founder of Hover Team. I started out as a data analyst at a property intelligence firm, where my co-founder and I turned messy market data into decisions businesses could act on.',
+			'My first build was *Klovr*, WhatsApp automation for sales teams. Working on it, I saw that the chats, sheets and inboxes a business runs on already hold most of what you need to automate it. The data was all there. Nobody was reading it.',
+			'I’m a data person at heart. I like finding the pattern behind why something works. After starting up, I went back for a computer science degree so I could build the product as well as I understand the problem.',
+		],
+		work: [
+			'Most companies don’t need another app to learn. They need AI that fits the way they already work. That’s our vision for Hover Team: AI that slots into a team’s current workflows, the group chats, inboxes and spreadsheets they already live in, and brings value from the first week.',
+			'Every day, Hover Team shows a team what needs attention before it becomes a problem: the customer who never got a reply, the payment that’s overdue, the question everyone keeps answering. When they’re ready, it takes routine work off their plate too, and people still approve anything that matters. It’s already running across hundreds of group chats.',
+		],
+		workLinks: [
+			{ label: 'Hover Team website', href: 'https://www.hover.team/' },
+			{ label: 'Klovr', href: 'https://klovr.co/' },
+		],
+		profileLinks: [
+			{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/mmtmr' },
+			{ label: 'GitHub', href: 'https://github.com/mmtmr' },
+			{ label: 'X', href: 'https://x.com/maxinel_ai' },
+			{ label: 'Instagram', href: 'https://www.instagram.com/maxinel.ai' },
+		],
+		accent: { dark: '#2297df', light: '#1a6fd1' },
+	},
 ];

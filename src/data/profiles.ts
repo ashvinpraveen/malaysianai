@@ -1,6 +1,13 @@
 export type ProfileLink = { label: string; href: string };
 
-export type Portrait = { name: string; src: string; width: number; height: number };
+export type Portrait = {
+	name: string;
+	src: string;
+	/** Shown instead of src on the light theme, for a portrait whose edge is cut for dark backgrounds. */
+	lightSrc?: string;
+	width: number;
+	height: number;
+};
 
 export type Profile = {
 	slug: string;
@@ -273,7 +280,7 @@ export const profiles: Profile[] = [
 		building: 'Hover Team',
 		summary:
 			'Maxine Lai is the co-founder of Hover Team, which gives companies a clear view of what’s going on in their business, built on the chats, email and spreadsheets they already use.',
-		portraits: [{ name: 'Maxine Lai', src: '/images/residents/maxine-lai.png', width: 120, height: 120 }],
+		portraits: [{ name: 'Maxine Lai', src: '/images/residents/maxine-lai.png', lightSrc: '/images/residents/maxine-lai-light.png', width: 120, height: 120 }],
 		about: [
 			'I’m Maxine, co-founder of Hover Team. I started out as a data analyst at a property intelligence firm, where my co-founder and I turned messy market data into decisions businesses could act on.',
 			'My first build was *Klovr*, WhatsApp automation for sales teams. Working on it, I saw that the chats, sheets and inboxes a business runs on already hold most of what you need to automate it. The data was all there. Nobody was reading it.',

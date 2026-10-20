@@ -70,15 +70,15 @@ export const residents: Resident[] = [
 	},
 	{
 		name: 'Hover Team',
-		tag: 'AI that fits the way your team already works',
+		tag: 'See what your business is telling you',
 		logo: '/hover-logo.svg',
 		focus: 'Operations',
-		location: 'Petaling Jaya',
+		location: 'Kuala Lumpur',
 		cohort: '02',
 		website: 'https://www.hover.team/',
 		description:
-			'Hover Team brings AI into the workflows a company already runs on, from WhatsApp groups to inboxes and spreadsheets. It shows the team what needs attention each day and takes routine work off their plate, with people approving anything that matters.',
-		tags: ['Workflows', 'WhatsApp', 'Automation'],
+			'Hover Team gives a company one clear view of what’s going on in the business, built from the WhatsApp groups, inboxes and spreadsheets it already runs on. It flags what needs attention each day and takes repeat work off the team’s plate, with people approving anything that matters.',
+		tags: ['Visibility', 'Workflows', 'Automation'],
 		tile: 'light',
 	},
 	{

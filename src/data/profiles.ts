@@ -272,7 +272,7 @@ export const profiles: Profile[] = [
 		role: 'Co-founder of Hover Team',
 		building: 'Hover Team',
 		summary:
-			'Maxine Lai is the co-founder of Hover Team, which brings AI into the way a company already works, so teams get real value from it without changing their workflows.',
+			'Maxine Lai is the co-founder of Hover Team, which gives companies a clear view of what’s going on in their business, built on the chats, email and spreadsheets they already use.',
 		portraits: [{ name: 'Maxine Lai', src: '/images/residents/maxine-lai.png', width: 120, height: 120 }],
 		about: [
 			'I’m Maxine, co-founder of Hover Team. I started out as a data analyst at a property intelligence firm, where my co-founder and I turned messy market data into decisions businesses could act on.',
@@ -280,8 +280,9 @@ export const profiles: Profile[] = [
 			'I’m a data person at heart. I like finding the pattern behind why something works. After starting up, I went back for a computer science degree so I could build the product as well as I understand the problem.',
 		],
 		work: [
-			'Most companies don’t need another app to learn. They need AI that fits the way they already work. That’s our vision for Hover Team: AI that slots into a team’s current workflows, the group chats, inboxes and spreadsheets they already live in, and brings value from the first week.',
-			'Every day, Hover Team shows a team what needs attention before it becomes a problem: the customer who never got a reply, the payment that’s overdue, the question everyone keeps answering. When they’re ready, it takes routine work off their plate too, and people still approve anything that matters. It’s already running across hundreds of group chats.',
+			'Most business owners can’t see half of how their company actually runs. What’s going on is scattered across group chats, inboxes and spreadsheets, and no single app shows the whole picture. Hover Team fits into the workflows a team already has and turns all of it into one clear view of the business.',
+			'Every day, it shows what needs attention before it becomes a problem: the customer who never got a reply, the payment that’s overdue, the question everyone keeps answering. Then it takes the work that repeats off the team’s plate, and people still approve anything that matters. It’s already running across hundreds of group chats.',
+			'Our vision is simple: every team knows what’s going on in its business, and the work that repeats runs itself.',
 		],
 		workLinks: [
 			{ label: 'Hover Team website', href: 'https://www.hover.team/' },

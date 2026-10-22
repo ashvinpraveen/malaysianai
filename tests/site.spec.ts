@@ -474,8 +474,10 @@ test('podcast card titles drop a trailing show name', () => {
 test('podcast lists episodes behind a click-to-play player and the homepage links to them', async ({ page }) => {
 	await page.goto('/podcast');
 	const lede = page.locator('.lede');
-	await expect(lede).toHaveText('Conversations with the people building Malaysia’s AI scene. Watch every episode on our YouTube channel.');
+	await expect(lede).toHaveText('Conversations with the people building Malaysia’s AI scene. Watch every episode on our YouTube channel, or listen on Spotify and Apple Podcasts.');
 	await expect(lede.getByRole('link', { name: 'YouTube channel' })).toHaveAttribute('href', 'https://www.youtube.com/channel/UCgshDGIYMQd7Yvk1ZhML4zw');
+	await expect(lede.getByRole('link', { name: 'Spotify' })).toHaveAttribute('href', 'https://open.spotify.com/show/7uE9K5hkF7ymBFaMx5ReXL');
+	await expect(lede.getByRole('link', { name: 'Apple Podcasts' })).toHaveAttribute('href', 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077');
 	await expect(lede).not.toContainText(/\b(deploy|feed|RSS|cache)\b/i);
 	await expect(page.locator('.page-heading .eyebrow')).toHaveCount(0);
 	await expect(page.locator('.hosts')).toHaveCount(0);
@@ -487,6 +489,10 @@ test('podcast lists episodes behind a click-to-play player and the homepage link
 	await expect(page.getByRole('heading', { name: '0 to 100k Users in 4 Weeks: How Cleve Got Funded and Went Viral', exact: true })).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Inside Malaysia\'s Biggest AI Learn-A-Thon', exact: true })).toBeVisible();
 	await expect(page.locator('.episodes')).not.toContainText('| Malaysian AI Podcast');
+	await expect(episodes.first().getByRole('link', { name: 'Listen on Spotify' })).toHaveCount(0);
+	const funded = page.locator('#episode-BAs18i68zvc');
+	await expect(funded.getByRole('link', { name: 'Listen on Spotify' })).toHaveAttribute('href', 'https://open.spotify.com/episode/7t3X7PEr1ruHsNeD40OAM2');
+	await expect(funded.getByRole('link', { name: 'Listen on Apple Podcasts' })).toHaveAttribute('href', 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000796940907');
 	await page.locator('.yt-facade').first().click();
 	await expect(page.locator('.player iframe')).toHaveAttribute('src', /youtube-nocookie\.com\/embed\/[A-Za-z0-9_-]{11}\?autoplay=1/);
 	await expect(page.locator('.footer-link-group').getByRole('link', { name: 'Podcast' })).toHaveAttribute('href', '/podcast');
@@ -494,6 +500,9 @@ test('podcast lists episodes behind a click-to-play player and the homepage link
 	await page.goto('/');
 	const strip = page.locator('#podcast');
 	await expect(strip.getByRole('heading', { name: 'Latest episodes' })).toBeVisible();
+	await expect(strip.locator('.show-links')).toHaveText('Listen on Spotify and Apple Podcasts');
+	await expect(strip.getByRole('link', { name: 'Spotify' })).toHaveAttribute('href', 'https://open.spotify.com/show/7uE9K5hkF7ymBFaMx5ReXL');
+	await expect(strip.getByRole('link', { name: 'Apple Podcasts' })).toHaveAttribute('href', 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077');
 	await expect(strip.locator('.eyebrow')).toHaveCount(0);
 	await expect(strip.locator('.hosts')).toHaveCount(0);
 	await expect(strip.getByText('Hosted by')).toHaveCount(0);

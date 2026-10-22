@@ -13,7 +13,31 @@ export const PODCAST_CHANNEL_ID = 'UCgshDGIYMQd7Yvk1ZhML4zw';
 
 export const PODCAST_CHANNEL_URL = `https://www.youtube.com/channel/${PODCAST_CHANNEL_ID}`;
 
+export const PODCAST_SPOTIFY_URL = 'https://open.spotify.com/show/7uE9K5hkF7ymBFaMx5ReXL';
+
+export const PODCAST_APPLE_URL = 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077';
+
 export const PODCAST_FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${PODCAST_CHANNEL_ID}`;
+
+/** Episodes published on the Spotify and Apple shows, keyed by YouTube video id. */
+const EPISODE_LISTEN_LINKS: Record<string, { spotify: string; apple: string }> = {
+	BAs18i68zvc: {
+		spotify: 'https://open.spotify.com/episode/7t3X7PEr1ruHsNeD40OAM2',
+		apple: 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000796940907',
+	},
+	OYqACwQJY9w: {
+		spotify: 'https://open.spotify.com/episode/6tpXPu1FEzvhihh5C7YHCx',
+		apple: 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000796940437',
+	},
+	tWTAF6PK4hM: {
+		spotify: 'https://open.spotify.com/episode/6L1jbWio2cZQueKlMbKO8H',
+		apple: 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000796941052',
+	},
+};
+
+export function episodeListenLinks(id: string) {
+	return EPISODE_LISTEN_LINKS[id];
+}
 
 const LATEST_EPISODE_COUNT = 3;
 const VIDEO_ID = /^[A-Za-z0-9_-]{11}$/;

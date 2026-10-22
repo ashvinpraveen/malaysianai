@@ -482,7 +482,9 @@ test('podcast lists episodes behind a click-to-play player and the homepage link
 	await expect(page.getByText('Hosted by')).toHaveCount(0);
 	await expect(page.locator('iframe')).toHaveCount(0);
 	const episodes = page.locator('.episodes article');
-	await expect(episodes).not.toHaveCount(0);
+	await expect(episodes.first()).toHaveAttribute('id', 'episode-Bj-8pQvkLa4');
+	await expect(page.getByRole('heading', { name: 'The Era of Agents Replacing Humans could finally be here', exact: true })).toBeVisible();
+	await expect(page.getByRole('heading', { name: '0 to 100k Users in 4 Weeks: How Cleve Got Funded and Went Viral', exact: true })).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Inside Malaysia\'s Biggest AI Learn-A-Thon', exact: true })).toBeVisible();
 	await expect(page.locator('.episodes')).not.toContainText('| Malaysian AI Podcast');
 	await page.locator('.yt-facade').first().click();
@@ -498,9 +500,11 @@ test('podcast lists episodes behind a click-to-play player and the homepage link
 	await expect(strip.getByRole('link', { name: /All episodes/ })).toHaveAttribute('href', '/podcast');
 	const cards = strip.locator('a.episode-card');
 	await expect(cards).toHaveCount(3);
+	await expect(cards.first()).toContainText('The Era of Agents Replacing Humans could finally be here');
+	await expect(cards.nth(1)).toContainText('0 to 100k Users in 4 Weeks: How Cleve Got Funded and Went Viral');
 	await expect(strip.getByText('Inside Malaysia\'s Biggest AI Learn-A-Thon', { exact: true })).toBeVisible();
 	await expect(strip).not.toContainText('| Malaysian AI Podcast');
-	await expect(cards.first()).toHaveAttribute('href', /\/podcast#episode-/);
+	await expect(cards.first()).toHaveAttribute('href', '/podcast#episode-Bj-8pQvkLa4');
 	expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
 });
 

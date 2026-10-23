@@ -12,7 +12,7 @@ test('public destinations load and the hero uses responsive images', async ({ pa
 	page.on('pageerror', error => errors.push(error.message));
 	for (const [path, heading] of [
 		['/', 'Learn, build and'], ['/residency', 'Join the Malaysian.ai residency'], ['/residency/accountability', 'Accountability Mondays'],
-		['/residents', 'Meet the residents'], ['/resident-teams', 'Meet the resident teams'], ['/residents/andrew-gostishchev', 'Andrew Gostishchev'], ['/contact', 'Get in touch'], ['/brand', 'Brand'], ['/blog', 'Malaysian AI Blog'],
+		['/residents', 'Meet the residents'], ['/resident-teams', 'Meet the resident teams'], ['/residents/andrew-gostishchev', 'Andrew Gostishchev'], ['/directory', 'Company directory'], ['/contact', 'Get in touch'], ['/brand', 'Brand'], ['/blog', 'Malaysian AI Blog'],
 		['/podcast', 'Malaysian AI podcast'],
 	]) {
 		const response = await page.goto(path);
@@ -328,6 +328,8 @@ test('event autoplay advances over the background and resumes after card interac
 	if (isMobile) {
 		await thirdCard.tap();
 		await expect(title).toHaveText('Anthropic × Cursor Hackathon Malaysia');
+		// The pointer can remain over a card after the carousel moves, which pauses autoplay.
+		await page.mouse.move(8, 8);
 		await expect(title).toHaveText('Workshops', { timeout: 6500 });
 	} else {
 		await thirdCard.hover();

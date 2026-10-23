@@ -1,0 +1,77 @@
+---
+import ResidentLogo from '../../components/ResidentLogo.astro';
+import { residents, type Resident } from '../../data/residents';
+import { peopleForCompany, residentSlug } from '../../lib/directory';
+import InfoPage from '../../layouts/InfoPage.astro';
+
+export function getStaticPaths() {
+	const seen = new Set<string>();
+	return residents.map(resident => {
+		const slug = residentSlug(resident.name);
+		if (seen.has(slug)) throw new Error(`Duplicate resident slug: ${slug}`);
+		seen.add(slug);
+		return { params: { slug }, props: { resident } };
+	});
+}
+
+interface Props {
+	resident: Resident;
+}
+
+const { resident } = Astro.props;
+const people = peopleForCompany(resident);
+---
+
+<InfoPage
+	title={resident.name}
+	description={resident.description}
+	keywords={['Malaysian AI', resident.name, resident.focus, 'AI startups Malaysia']}
+>
+	<p slot="before" class="back"><a href="/directory">All companies</a></p>
+	<div class="identity">
+		<ResidentLogo resident={resident} />
+		<p class="tagline">{resident.tag}</p>
+	</div>
+	<dl class="meta">
+		<div><dt>Location</dt><dd>{resident.location}</dd></div>
+		<div><dt>Cohort</dt><dd>{resident.cohort}</dd></div>
+		<div><dt>Industry</dt><dd>{resident.focus}</dd></div>
+	</dl>
+	<ul class="tags">
+		{resident.tags.map(tag => <li>{tag}</li>)}
+	</ul>
+	<p class="actions"><a class="site-button" href={resident.website}>Visit {resident.name} <span aria-hidden="true">↗</span></a></p>
+	{people.length > 0 && (
+		<section aria-labelledby="people-heading">
+			<h2 id="people-heading">People</h2>
+			<ul class="people-list">
+				{people.map(person => (
+					<li>
+						<p class="person-name"><a href={person.href}>{person.name}</a></p>
+						<p class="person-role">{person.role}</p>
+					</li>
+				))}
+			</ul>
+		</section>
+	)}
+</InfoPage>
+
+<style>
+	.back { margin: 0 0 1.25rem; font-size: var(--text-sm); }
+	.back a { color: var(--page-text); }
+	.back a:hover, .back a:focus-visible { color: var(--text-hover); }
+	.identity { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: 1.5rem; }
+	.tagline { margin: 0; color: var(--page-text); }
+	.meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 0.75rem; margin: 0 0 1.25rem; color: var(--page-text); }
+	.meta div { padding: 0.85rem 1rem; border: 1px solid var(--page-border); border-radius: 0.7rem; background: var(--card-background); }
+	.meta dt, .meta dd { color: var(--page-text); }
+	.meta dt { margin: 0 0 0.25rem; font-size: var(--text-xs); letter-spacing: 0.04em; text-transform: uppercase; }
+	.meta dd { margin: 0; }
+	.tags { display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0; margin: 0 0 1.5rem; list-style: none; }
+	.tags li { padding: 0.2rem 0.55rem; border: 1px solid var(--page-border); border-radius: 999px; color: var(--page-text); font-size: var(--text-xs); }
+	.people-list { display: grid; gap: 0.75rem; padding: 0; margin: 0; list-style: none; }
+	.people-list li { display: grid; gap: 0.15rem; padding: 1rem; border: 1px solid var(--page-border); border-radius: 0.75rem; background: var(--card-background); color: var(--page-text); }
+	.person-name, .person-role { margin: 0; color: var(--page-text); }
+	.person-name a { color: var(--page-text); }
+	.person-name a:hover, .person-name a:focus-visible { color: var(--text-hover); }
+</style>

@@ -2,10 +2,14 @@ import sharp from 'sharp';
 import hosting from '../vercel.json' with { type: 'json' };
 import { test, expect } from '@playwright/test';
 import { profiles } from '../src/data/profiles';
+import { residents } from '../src/data/residents';
+import { directoryPath } from '../src/lib/directory';
 
 const origin = 'https://www.malaysian.ai';
 const pages = [
-	'/', '/about', '/brand', '/residency', '/residency/accountability', '/residents', '/resident-teams', '/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon', '/podcast',
+	'/', '/about', '/brand', '/residency', '/residency/accountability', '/residents', '/resident-teams', '/directory',
+	...residents.map(resident => directoryPath(resident.name)),
+	'/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon', '/podcast',
 	...profiles.map(profile => `/residents/${profile.slug}`),
 ];
 const expectedCommunityNames = [
@@ -60,6 +64,11 @@ const expectedMetadata = [
 		path: '/resident-teams',
 		title: 'AI Startups Malaysia | Meet the Resident Teams | Malaysian AI',
 		description: 'Meet the AI startups, founders and teams building products at Malaysian AI. Explore resident companies in our Kuala Lumpur AI residency.',
+	},
+	{
+		path: '/directory',
+		title: 'Malaysia AI Company Directory | Malaysian AI',
+		description: 'Search Malaysian AI companies and their founders. Filter residency startups by cohort, industry, location and tags.',
 	},
 	{
 		path: '/blog',

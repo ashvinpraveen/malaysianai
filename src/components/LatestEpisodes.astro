@@ -1,7 +1,7 @@
 ---
 import FormattedDate from './FormattedDate.astro';
 import { displayTitle } from '../lib/podcast-title';
-import { latestEpisodes, loadPodcastEpisodes, shortDescription } from '../lib/podcast';
+import { PODCAST_APPLE_URL, PODCAST_SPOTIFY_URL, latestEpisodes, loadPodcastEpisodes, shortDescription } from '../lib/podcast';
 
 const episodes = latestEpisodes(await loadPodcastEpisodes()).map((episode) => ({
 	...episode,
@@ -14,7 +14,15 @@ const episodes = latestEpisodes(await loadPodcastEpisodes()).map((episode) => ({
 		<section class="podcast-strip light-nav-zone" id="podcast" aria-labelledby="podcast-strip-title">
 			<div class="podcast-strip-inner">
 				<div class="podcast-strip-head">
-					<h2 id="podcast-strip-title">Latest episodes</h2>
+					<div>
+						<h2 id="podcast-strip-title">Latest episodes</h2>
+						<p class="show-links">
+							Listen on{' '}
+							<a href={PODCAST_SPOTIFY_URL}>Spotify</a>
+							{' and '}
+							<a href={PODCAST_APPLE_URL}>Apple Podcasts</a>
+						</p>
+					</div>
 					<a class="text-link" href="/podcast">All episodes <span aria-hidden="true">↗</span></a>
 				</div>
 				<ul>
@@ -56,6 +64,17 @@ const episodes = latestEpisodes(await loadPodcastEpisodes()).map((episode) => ({
 		align-items: flex-end;
 		justify-content: space-between;
 		margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+	}
+
+	.show-links {
+		margin: 0.85rem 0 0;
+		color: var(--text-soft);
+		font-size: var(--text-sm);
+		line-height: var(--leading-body);
+	}
+
+	.show-links a {
+		color: var(--link-bright);
 	}
 
 	h2 {

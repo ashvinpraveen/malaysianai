@@ -1,4 +1,27 @@
+import { profiles } from '../data/profiles';
 import type { Resident } from '../data/residents';
+
+export type DirectoryPerson = {
+	name: string;
+	role: string;
+	href: string;
+};
+
+function companyKey(value: string): string {
+	return value.trim().toLowerCase();
+}
+
+/** People whose profile says they are building this company. Names and roles stay in profiles.ts. */
+export function peopleForCompany(resident: Pick<Resident, 'name'>): DirectoryPerson[] {
+	return profiles
+		.filter(profile => companyKey(profile.building) === companyKey(resident.name))
+		.map(profile => ({
+			name: profile.name,
+			role: profile.role,
+			href: `/residents/${profile.slug}`,
+		}))
+		.sort((a, b) => a.name.localeCompare(b.name, 'en'));
+}
 
 export type DirectoryFilters = {
 	q: string;
@@ -8,7 +31,7 @@ export type DirectoryFilters = {
 	tag: string;
 };
 
-type DirectoryResident = Pick<Resident, 'name' | 'tag' | 'description' | 'focus' | 'location' | 'cohort' | 'tags' | 'founders'>;
+type DirectoryResident = Pick<Resident, 'name' | 'tag' | 'description' | 'focus' | 'location' | 'cohort' | 'tags'>;
 
 export function residentSlug(name: string): string {
 	const slug = name
@@ -30,7 +53,6 @@ export function uniqueSorted(values: string[]): string[] {
 }
 
 export function residentSearchText(resident: DirectoryResident): string {
-	const founders = resident.founders ?? [];
 	return [
 		resident.name,
 		resident.tag,
@@ -39,7 +61,7 @@ export function residentSearchText(resident: DirectoryResident): string {
 		resident.location,
 		resident.cohort,
 		...resident.tags,
-		...founders.flatMap(founder => [founder.name, founder.role]),
+		...peopleForCompany(resident).flatMap(person => [person.name, person.role]),
 	].join(' ').toLowerCase();
 }
 

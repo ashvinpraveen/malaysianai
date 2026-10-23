@@ -1,6 +1,6 @@
 # Malaysian AI
 
-The public Malaysian AI community site, built with Astro and Bun. It generates static pages for the homepage, community profile, residency, residents, company directory, contact details, legal pages, and blog, plus an RSS feed and sitemap.
+The public Malaysian AI community site, built with Astro and Bun. It generates static pages for the homepage, community profile, residency, resident profiles, resident teams, company directory, contact details, legal pages, and blog, plus an RSS feed and sitemap.
 
 ## Development
 
@@ -40,7 +40,7 @@ GitHub Actions runs the same checks for pushes and pull requests.
 ## Editing content
 
 - `src/content/blog/` contains Markdown and MDX stories. Required frontmatter is defined in `src/content.config.ts`: title, description, publication date, author, and category. Images, image descriptions, and updated dates are optional.
-- `src/data/residents.ts` and `src/data/voices.ts` are the shared resident and testimonial lists.
+- `src/data/residents.ts` lists resident companies, `src/data/profiles.ts` lists the people, and `src/data/voices.ts` lists testimonials. The company directory links a person to `/residents/<slug>` when their profile names that company.
 - `src/consts.ts` contains the site description, application, event, WhatsApp, and venue URLs.
 - `src/pages/` defines public routes. Layouts and section components live in `src/layouts/` and `src/components/`.
 - The hero source lives in `src/assets/hero-fibonacci.png`. Astro generates responsive WebP variants during the build. Other public assets live in `public/`.

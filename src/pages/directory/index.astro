@@ -1,7 +1,7 @@
 ---
 import ResidentLogo from '../../components/ResidentLogo.astro';
 import { residents } from '../../data/residents';
-import { directoryPath, residentSlug, uniqueSorted } from '../../lib/directory';
+import { directoryPath, peopleForCompany, residentSlug, uniqueSorted } from '../../lib/directory';
 import InfoPage from '../../layouts/InfoPage.astro';
 
 const cohorts = uniqueSorted(residents.map(resident => resident.cohort));
@@ -10,7 +10,7 @@ const locations = uniqueSorted(residents.map(resident => resident.location));
 const tags = uniqueSorted(residents.flatMap(resident => resident.tags));
 ---
 
-<InfoPage title="Company directory" description="Search Malaysian AI companies and the founders building them.">
+<InfoPage title="Company directory" description="Search Malaysian AI companies and the people building them.">
 	<div data-directory>
 		<form class="directory-controls" action="/directory" method="get" role="search">
 			<label class="search">
@@ -55,7 +55,7 @@ const tags = uniqueSorted(residents.flatMap(resident => resident.tags));
 
 		<ul class="company-list">
 			{residents.map(resident => {
-				const founders = resident.founders ?? [];
+				const people = peopleForCompany(resident);
 				return (
 					<li class="company-card" data-company data-slug={residentSlug(resident.name)}>
 						<div class="company-brand">
@@ -73,10 +73,12 @@ const tags = uniqueSorted(residents.flatMap(resident => resident.tags));
 						<ul class="tags">
 							{resident.tags.map(tag => <li>{tag}</li>)}
 						</ul>
-						{founders.length > 0 && (
-							<p class="founders">
-								{founders.map(founder => `${founder.name} · ${founder.role}`).join(', ')}
-							</p>
+						{people.length > 0 && (
+							<ul class="people">
+								{people.map(person => (
+									<li><a href={person.href}>{person.name}</a></li>
+								))}
+							</ul>
 						)}
 						<a class="website" href={resident.website}>Visit {resident.name} <span aria-hidden="true">↗</span></a>
 					</li>
@@ -180,7 +182,19 @@ const tags = uniqueSorted(residents.flatMap(resident => resident.tags));
 	.company-card h2 a::after { position: absolute; inset: 0; content: ''; }
 	.company-card h2 a:hover,
 	.company-card h2 a:focus-visible { color: var(--text-hover); text-decoration: underline; text-underline-offset: 0.18em; }
-	.tagline, .founders { margin: 0.3rem 0 0; color: var(--page-text); font-size: var(--text-sm); line-height: 1.45; }
+	.tagline { margin: 0.3rem 0 0; color: var(--page-text); font-size: var(--text-sm); line-height: 1.45; }
+	.people {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem 0.9rem;
+		padding: 0;
+		margin: 0;
+		list-style: none;
+		color: var(--page-text);
+		font-size: var(--text-sm);
+	}
+	.people a { position: relative; z-index: 1; color: var(--page-text); }
+	.people a:hover, .people a:focus-visible { color: var(--text-hover); }
 	.meta { display: flex; flex-wrap: wrap; gap: 0.35rem 0.9rem; margin: 0; color: var(--page-text); }
 	.meta div { display: flex; gap: 0.35rem; align-items: baseline; }
 	.meta dt, .meta dd { color: var(--page-text); }

@@ -1,11 +1,3 @@
-export type Founder = {
-	name: string;
-	role: string;
-	photo?: string;
-	linkedin?: string;
-	x?: string;
-};
-
 export type Resident = {
 	name: string;
 	tag: string;
@@ -19,8 +11,6 @@ export type Resident = {
 	tags: string[];
 	logo?: string;
 	tile: 'light' | 'dark';
-	/** Verified from this repo only. Leave empty when founder details are not recorded here. */
-	founders?: Founder[];
 };
 
 export const residents: Resident[] = [
@@ -36,8 +26,6 @@ export const residents: Resident[] = [
 			'Personal AI content assistant that learns from your notes, emails, and social profiles. Cleve helps users capture ideas and turn them into posts, blogs, and scripts in their own voice.',
 		tags: ['RAG', 'Operations', 'Search'],
 		tile: 'light',
-		// Podcast episode 1 calls Ashvin co-founder and CEO of Cleve; src/lib/podcast.ts gives the full name.
-		founders: [{ name: 'Ashvin Praveen', role: 'Co-founder and CEO' }],
 	},
 	{
 		name: 'ReplyrAI',
@@ -52,7 +40,6 @@ export const residents: Resident[] = [
 			'AI growth platform for clinics that turns inbound chats into booked patients. It combines AI chat, lead follow-up, and appointment workflows to help teams convert more enquiries.',
 		tags: ['Support', 'Automation', 'B2B'],
 		tile: 'light',
-		founders: [],
 	},
 	{
 		name: 'DocuAsk',
@@ -67,7 +54,6 @@ export const residents: Resident[] = [
 			'No-code document chatbot platform that turns company files into searchable AI assistants. Teams can upload manuals, PDFs, and internal content so customers and staff can chat with their knowledge base.',
 		tags: ['Analysis', 'Knowledge', 'Workflow'],
 		tile: 'light',
-		founders: [],
 	},
 	{
 		name: 'Seavoice',
@@ -81,7 +67,6 @@ export const residents: Resident[] = [
 			'Enterprise voice AI platform for customer support, outbound sales, and appointment booking. Seavoice deploys human-like call agents with CRM and telephony integrations, including local-language conversations.',
 		tags: ['Voice', 'Assistive', 'Real-time'],
 		tile: 'light',
-		founders: [],
 	},
 	{
 		name: 'Klovr',
@@ -96,7 +81,6 @@ export const residents: Resident[] = [
 			'AI assistant for real estate sales teams that runs directly inside WhatsApp. Klovr captures top-agent playbooks from chat activity and gives junior agents instant reply guidance to improve conversions.',
 		tags: ['Coaching', 'Personalization', 'Community'],
 		tile: 'dark',
-		founders: [],
 	},
 	{
 		name: 'Kelas Sekejap',
@@ -111,7 +95,6 @@ export const residents: Resident[] = [
 			'Malaysia-first AI English app focused on learning by speaking, not memorisation. Kelas Sekejap uses guided real-world conversations and instant feedback to build practical confidence.',
 		tags: ['Learning', 'Content', 'Growth'],
 		tile: 'light',
-		founders: [],
 	},
 	{
 		name: 'A47 Media',
@@ -125,7 +108,6 @@ export const residents: Resident[] = [
 			'Agentic newsroom for digital publishers that monitors and verifies sources, writes in each publication’s voice, produces stories in multiple formats, and publishes across channels.',
 		tags: ['Publishing', 'Content', 'Automation'],
 		tile: 'dark',
-		founders: [],
 	},
 	{
 		name: 'CodeKite',
@@ -139,6 +121,5 @@ export const residents: Resident[] = [
 			'API monitoring platform that tracks changes across API providers, finds affected code in your integrations, and prepares fixes for review. CodeKite helps engineering teams avoid unexpected breakage from provider updates.',
 		tags: ['API', 'Integration', 'Monitoring'],
 		tile: 'light',
-		founders: [],
 	},
 ];

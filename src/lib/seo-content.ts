@@ -49,7 +49,12 @@ export const seoContentByPath: Record<string, Partial<Pick<PageMetadata, 'title'
 		keywords: ['Malaysian AI', 'AI residency Malaysia', 'founder accountability', 'accountability group Kuala Lumpur', 'startup accountability session', 'plank to push-up calculator'],
 	},
 	'/residents': {
-		title: 'AI Startups Malaysia | Meet the Residents',
+		title: 'AI Founders & Builders in Malaysia | Meet the Residents',
+		description: 'Meet the founders, engineers and researchers in the Malaysian AI residency in Kuala Lumpur, with a profile of each person and what they are building.',
+		keywords: ['Malaysian AI', 'AI founders Malaysia', 'AI residency Malaysia'],
+	},
+	'/resident-teams': {
+		title: 'AI Startups Malaysia | Meet the Resident Teams',
 		description: 'Meet the AI startups, founders and teams building products at Malaysian AI. Explore resident companies in our Kuala Lumpur AI residency.',
 		keywords: ['Malaysian AI', 'AI startups Malaysia', 'AI residency Malaysia'],
 	},

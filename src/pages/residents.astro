@@ -1,26 +1,79 @@
 ---
-import ResidentLogo from '../components/ResidentLogo.astro';
 import InfoPage from '../layouts/InfoPage.astro';
-import { residents } from '../data/residents';
+import { profiles } from '../data/profiles';
+
+const people = [...profiles].sort((a, b) => a.name.localeCompare(b.name));
 ---
-<InfoPage title="Meet the residents" description="The founders and teams building at Malaysian AI.">
-	<div class="resident-grid">
-		{residents.map(resident => (
-			<section class="resident">
-				<div class="resident-brand"><ResidentLogo resident={resident} /></div>
-				<h2><a href={resident.website}>{resident.name}</a></h2>
-				<p class="tag">{resident.tag}</p>
-				<p>{resident.description}</p>
-				<a href={resident.website}>Visit {resident.name} <span aria-hidden="true">↗</span></a>
-			</section>
+<InfoPage title="Meet the residents" description="The people building at Malaysian AI.">
+	<ul class="people">
+		{people.map(profile => (
+			<li>
+				<a
+					class="person"
+					href={`/residents/${profile.slug}`}
+					style={`--person-accent-dark: ${profile.accent.dark}; --person-accent-light: ${profile.accent.light}`}
+				>
+					<span class="person-portraits">
+						{profile.portraits.map(portrait => (
+							<img src={portrait.src} width={portrait.width} height={portrait.height} alt="" loading="lazy" decoding="async" />
+						))}
+					</span>
+					<h2>{profile.name}</h2>
+					<p class="person-building">Building {profile.building}</p>
+					<p class="person-role">{profile.role}</p>
+				</a>
+			</li>
 		))}
+	</ul>
+	<div class="actions">
+		<a class="site-button" href="/residency">Explore the residency</a>
+		<a href="/resident-teams">Meet the resident teams <span aria-hidden="true">↗</span></a>
+		<a href="/directory">Browse the company directory</a>
 	</div>
-	<div class="actions"><a class="site-button" href="/residency">Explore the residency</a><a href="/directory">Browse the company directory</a></div>
 </InfoPage>
 <style>
-	.resident-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); gap: 1.5rem; }
-	.resident { padding: 1.5rem; border: 1px solid var(--page-border); border-radius: 0.75rem; background: var(--card-background); }
-	.resident h2 { margin-top: 0; }
-	.tag { color: var(--page-text); }
-	.resident-brand { margin-bottom: 1.25rem; }
+	.people {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+		gap: 1.5rem;
+		margin: 0 0 1.5rem;
+		padding: 0;
+		list-style: none;
+	}
+
+	.person {
+		--person-accent: var(--person-accent-dark);
+		display: grid;
+		justify-items: center;
+		align-content: start;
+		gap: 0.4rem;
+		height: 100%;
+		padding: 1.75rem 1.5rem;
+		border: 1px solid var(--page-border);
+		border-radius: 0.75rem;
+		background: var(--card-background);
+		text-align: center;
+		text-decoration: none;
+		transition: border-color 160ms ease;
+	}
+
+	@media (prefers-color-scheme: light) {
+		:global(html:not([data-theme='dark'])) .person { --person-accent: var(--person-accent-light); }
+	}
+
+	:global(html[data-theme='light']) .person { --person-accent: var(--person-accent-light); }
+
+	.person:hover { border-color: var(--person-accent); }
+
+	/* Shown at 1x so the pixels stay whole; a pair may shrink on the narrowest screens. */
+	.person-portraits { display: flex; justify-content: center; gap: 0.5rem; max-width: 100%; margin-bottom: 1rem; }
+	.person-portraits img { display: block; min-width: 0; max-width: 100%; height: auto; image-rendering: pixelated; }
+
+	.person h2 { margin: 0; color: var(--text-heading); font: 400 1.6rem / 1.1 var(--font-display); letter-spacing: -0.02em; }
+	.person-building { margin: 0; color: var(--person-accent); font-size: var(--text-sm); }
+	.person-role { margin: 0; color: var(--text-soft, var(--page-text)); font-size: var(--text-sm); line-height: 1.45; }
+
+	@media (prefers-reduced-motion: reduce) {
+		.person { transition: none; }
+	}
 </style>

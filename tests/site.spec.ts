@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { displayTitle } from '../src/lib/podcast-title';
+import { profiles } from '../src/data/profiles';
 
 // Keep tests deterministic and avoid making requests to event/payment providers.
 test.beforeEach(async ({ page }) => {
@@ -11,7 +12,7 @@ test('public destinations load and the hero uses responsive images', async ({ pa
 	page.on('pageerror', error => errors.push(error.message));
 	for (const [path, heading] of [
 		['/', 'Learn, build and'], ['/residency', 'Join the Malaysian.ai residency'], ['/residency/accountability', 'Accountability Mondays'],
-		['/residents', 'Meet the residents'], ['/directory', 'Company directory'], ['/contact', 'Get in touch'], ['/brand', 'Brand'], ['/blog', 'Malaysian AI Blog'],
+		['/residents', 'Meet the residents'], ['/resident-teams', 'Meet the resident teams'], ['/residents/andrew-gostishchev', 'Andrew Gostishchev'], ['/directory', 'Company directory'], ['/contact', 'Get in touch'], ['/brand', 'Brand'], ['/blog', 'Malaysian AI Blog'],
 		['/podcast', 'Malaysian AI podcast'],
 	]) {
 		const response = await page.goto(path);
@@ -32,8 +33,33 @@ test('public destinations load and the hero uses responsive images', async ({ pa
 	expect(errors).toEqual([]);
 });
 
-test('resident directory lists A47 Media with its website and logo', async ({ page }) => {
+test('every resident profile shows its portraits and links without overflowing', async ({ page }) => {
+	for (const profile of profiles) {
+		const response = await page.goto(`/residents/${profile.slug}`);
+		expect(response?.status()).toBe(200);
+		await expect(page.getByRole('heading', { level: 1 })).toHaveText(profile.name);
+		const portraits = page.locator('.profile-portrait');
+		await expect(portraits).toHaveCount(profile.portraits.length);
+		expect(await portraits.evaluateAll((images: HTMLImageElement[]) => images.every(image => image.complete && image.naturalWidth > 0))).toBe(true);
+		await expect(page.locator('.profile-links a')).toHaveCount(profile.workLinks.length + profile.profileLinks.length);
+		expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
+	}
+});
+
+test('residents page links every resident to their profile', async ({ page }) => {
 	await page.goto('/residents');
+	await expect(page.locator('.person')).toHaveCount(profiles.length);
+	for (const profile of profiles) {
+		const card = page.locator(`a.person[href="/residents/${profile.slug}"]`);
+		await expect(card.getByRole('heading', { level: 2 })).toHaveText(profile.name);
+		await expect(card.locator('img')).toHaveCount(profile.portraits.length);
+	}
+	await expect(page.getByRole('link', { name: 'Meet the resident teams' })).toHaveAttribute('href', '/resident-teams');
+	expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
+});
+
+test('resident teams page lists A47 Media with its website and logo', async ({ page }) => {
+	await page.goto('/resident-teams');
 	const resident = page.locator('.resident').filter({ hasText: 'A47 Media' });
 	await expect(resident).toHaveCount(1);
 	await expect(resident.getByRole('link', { name: 'A47 Media', exact: true })).toHaveAttribute('href', 'https://a47media.com');
@@ -448,17 +474,25 @@ test('podcast card titles drop a trailing show name', () => {
 test('podcast lists episodes behind a click-to-play player and the homepage links to them', async ({ page }) => {
 	await page.goto('/podcast');
 	const lede = page.locator('.lede');
-	await expect(lede).toHaveText('Conversations with the people building Malaysia’s AI scene. Watch every episode on our YouTube channel.');
+	await expect(lede).toHaveText('Conversations with the people building Malaysia’s AI scene. Watch every episode on our YouTube channel, or listen on Spotify and Apple Podcasts.');
 	await expect(lede.getByRole('link', { name: 'YouTube channel' })).toHaveAttribute('href', 'https://www.youtube.com/channel/UCgshDGIYMQd7Yvk1ZhML4zw');
+	await expect(lede.getByRole('link', { name: 'Spotify' })).toHaveAttribute('href', 'https://open.spotify.com/show/7uE9K5hkF7ymBFaMx5ReXL');
+	await expect(lede.getByRole('link', { name: 'Apple Podcasts' })).toHaveAttribute('href', 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077');
 	await expect(lede).not.toContainText(/\b(deploy|feed|RSS|cache)\b/i);
 	await expect(page.locator('.page-heading .eyebrow')).toHaveCount(0);
 	await expect(page.locator('.hosts')).toHaveCount(0);
 	await expect(page.getByText('Hosted by')).toHaveCount(0);
 	await expect(page.locator('iframe')).toHaveCount(0);
 	const episodes = page.locator('.episodes article');
-	await expect(episodes).not.toHaveCount(0);
+	await expect(episodes.first()).toHaveAttribute('id', 'episode-Bj-8pQvkLa4');
+	await expect(page.getByRole('heading', { name: 'The Era of Agents Replacing Humans could finally be here', exact: true })).toBeVisible();
+	await expect(page.getByRole('heading', { name: '0 to 100k Users in 4 Weeks: How Cleve Got Funded and Went Viral', exact: true })).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Inside Malaysia\'s Biggest AI Learn-A-Thon', exact: true })).toBeVisible();
 	await expect(page.locator('.episodes')).not.toContainText('| Malaysian AI Podcast');
+	await expect(episodes.first().getByRole('link', { name: 'Listen on Spotify' })).toHaveCount(0);
+	const funded = page.locator('#episode-BAs18i68zvc');
+	await expect(funded.getByRole('link', { name: 'Listen on Spotify' })).toHaveAttribute('href', 'https://open.spotify.com/episode/7t3X7PEr1ruHsNeD40OAM2');
+	await expect(funded.getByRole('link', { name: 'Listen on Apple Podcasts' })).toHaveAttribute('href', 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000796940907');
 	await page.locator('.yt-facade').first().click();
 	await expect(page.locator('.player iframe')).toHaveAttribute('src', /youtube-nocookie\.com\/embed\/[A-Za-z0-9_-]{11}\?autoplay=1/);
 	await expect(page.locator('.footer-link-group').getByRole('link', { name: 'Podcast' })).toHaveAttribute('href', '/podcast');
@@ -466,15 +500,20 @@ test('podcast lists episodes behind a click-to-play player and the homepage link
 	await page.goto('/');
 	const strip = page.locator('#podcast');
 	await expect(strip.getByRole('heading', { name: 'Latest episodes' })).toBeVisible();
+	await expect(strip.locator('.show-links')).toHaveText('Listen on Spotify and Apple Podcasts');
+	await expect(strip.getByRole('link', { name: 'Spotify' })).toHaveAttribute('href', 'https://open.spotify.com/show/7uE9K5hkF7ymBFaMx5ReXL');
+	await expect(strip.getByRole('link', { name: 'Apple Podcasts' })).toHaveAttribute('href', 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077');
 	await expect(strip.locator('.eyebrow')).toHaveCount(0);
 	await expect(strip.locator('.hosts')).toHaveCount(0);
 	await expect(strip.getByText('Hosted by')).toHaveCount(0);
 	await expect(strip.getByRole('link', { name: /All episodes/ })).toHaveAttribute('href', '/podcast');
 	const cards = strip.locator('a.episode-card');
 	await expect(cards).toHaveCount(3);
+	await expect(cards.first()).toContainText('The Era of Agents Replacing Humans could finally be here');
+	await expect(cards.nth(1)).toContainText('0 to 100k Users in 4 Weeks: How Cleve Got Funded and Went Viral');
 	await expect(strip.getByText('Inside Malaysia\'s Biggest AI Learn-A-Thon', { exact: true })).toBeVisible();
 	await expect(strip).not.toContainText('| Malaysian AI Podcast');
-	await expect(cards.first()).toHaveAttribute('href', /\/podcast#episode-/);
+	await expect(cards.first()).toHaveAttribute('href', '/podcast#episode-Bj-8pQvkLa4');
 	expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
 });
 

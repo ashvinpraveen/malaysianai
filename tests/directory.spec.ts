@@ -25,9 +25,16 @@ test('company directory lists residents and filters through the URL', async ({ p
 	}
 
 	const cleve = page.locator('[data-company]').filter({ hasText: 'Cleve' });
-	await expect(cleve.locator('.founders')).toContainText('Ashvin Praveen · Co-founder and CEO');
+	await expect(cleve.getByRole('link', { name: 'Lizzie Tan' })).toHaveAttribute('href', '/residents/lizzie-tan');
 	await expect(cleve.getByRole('link', { name: 'Visit Cleve' })).toHaveAttribute('href', 'https://cleve.ai');
-	await expect(page.locator('[data-company]').filter({ hasText: 'ReplyrAI' }).locator('.founders')).toHaveCount(0);
+	await expect(page.locator('[data-company]').filter({ hasText: 'ReplyrAI' }).locator('.people')).toHaveCount(0);
+	await expect(page.getByRole('link', { name: 'Klovr', exact: true })).toBeVisible();
+
+	await page.getByRole('searchbox', { name: 'Search companies' }).fill('lizzie');
+	await expect(page).toHaveURL(/[?&]q=lizzie/);
+	await expect(page.locator('[data-company]:not([hidden])')).toHaveCount(1);
+	await expect(page.locator('[data-company]:not([hidden])')).toContainText('Cleve');
+	await page.getByRole('button', { name: 'Clear filters' }).click();
 
 	await page.getByRole('searchbox', { name: 'Search companies' }).fill('penang');
 	await expect(page).toHaveURL(/[?&]q=penang/);
@@ -61,22 +68,34 @@ test('company directory lists residents and filters through the URL', async ({ p
 	expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
 });
 
-test('company pages show verified founders and hide an empty founders section', async ({ page }) => {
+test('company pages link people to resident profiles and hide an empty people section', async ({ page }) => {
 	await page.goto('/directory?cohort=01');
 	await page.getByRole('link', { name: 'Cleve', exact: true }).click();
 	await expect(page).toHaveURL(/\/directory\/cleve$/);
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Cleve');
-	await expect(page.getByRole('heading', { name: 'Founders' })).toBeVisible();
-	await expect(page.getByText('Ashvin Praveen')).toBeVisible();
-	await expect(page.getByText('Co-founder and CEO')).toBeVisible();
+	await expect(page.getByRole('heading', { name: 'People' })).toBeVisible();
+	await expect(page.getByRole('link', { name: 'Lizzie Tan' })).toHaveAttribute('href', '/residents/lizzie-tan');
+	await expect(page.getByText('Co-founder of Cleve')).toBeVisible();
 	await expect(page.getByRole('link', { name: 'Visit Cleve' })).toHaveAttribute('href', 'https://cleve.ai');
+	await page.getByRole('link', { name: 'Lizzie Tan' }).click();
+	await expect(page).toHaveURL(/\/residents\/lizzie-tan$/);
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Lizzie Tan');
+	await page.goBack();
+	await expect(page).toHaveURL(/\/directory\/cleve$/);
 	await page.goBack();
 	await expect(page).toHaveURL(/cohort=01/);
 	await expect(page.locator('[data-company]:not([hidden])')).toHaveCount(cohort01.length);
 
+	await page.goto(directoryPath('CodeKite'));
+	await expect(page.getByRole('link', { name: 'Hong Bing' })).toHaveAttribute('href', '/residents/hong-bing');
+	await page.goto(directoryPath('A47 Media'));
+	await expect(page.getByRole('link', { name: 'Andre Teow' })).toHaveAttribute('href', '/residents/andre-teow');
+	await expect(page.getByRole('link', { name: 'Ken Ooi' })).toHaveAttribute('href', '/residents/ken-ooi');
+	await expect(page.getByRole('link', { name: 'Leong Shi Wei' })).toHaveAttribute('href', '/residents/leong-shi-wei');
+
 	await page.goto(directoryPath('ReplyrAI'));
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText('ReplyrAI');
-	await expect(page.getByRole('heading', { name: 'Founders' })).toHaveCount(0);
+	await expect(page.getByRole('heading', { name: 'People' })).toHaveCount(0);
 	await page.getByRole('link', { name: 'All companies' }).click();
 	await expect(page).toHaveURL(/\/directory$/);
 

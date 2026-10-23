@@ -1,7 +1,7 @@
 ---
 import ResidentLogo from '../../components/ResidentLogo.astro';
 import { residents, type Resident } from '../../data/residents';
-import { residentSlug } from '../../lib/directory';
+import { peopleForCompany, residentSlug } from '../../lib/directory';
 import InfoPage from '../../layouts/InfoPage.astro';
 
 export function getStaticPaths() {
@@ -19,7 +19,7 @@ interface Props {
 }
 
 const { resident } = Astro.props;
-const founders = resident.founders ?? [];
+const people = peopleForCompany(resident);
 ---
 
 <InfoPage
@@ -41,21 +41,14 @@ const founders = resident.founders ?? [];
 		{resident.tags.map(tag => <li>{tag}</li>)}
 	</ul>
 	<p class="actions"><a class="site-button" href={resident.website}>Visit {resident.name} <span aria-hidden="true">↗</span></a></p>
-	{founders.length > 0 && (
-		<section aria-labelledby="founders-heading">
-			<h2 id="founders-heading">Founders</h2>
-			<ul class="founder-list">
-				{founders.map(founder => (
+	{people.length > 0 && (
+		<section aria-labelledby="people-heading">
+			<h2 id="people-heading">People</h2>
+			<ul class="people-list">
+				{people.map(person => (
 					<li>
-						{founder.photo && <img class="founder-photo" src={founder.photo} alt="" width="48" height="48" />}
-						<p class="founder-name">{founder.name}</p>
-						<p class="founder-role">{founder.role}</p>
-						{(founder.linkedin || founder.x) && (
-							<p class="founder-links">
-								{founder.linkedin && <a href={founder.linkedin}>LinkedIn</a>}
-								{founder.x && <a href={founder.x}>X</a>}
-							</p>
-						)}
+						<p class="person-name"><a href={person.href}>{person.name}</a></p>
+						<p class="person-role">{person.role}</p>
 					</li>
 				))}
 			</ul>
@@ -76,11 +69,9 @@ const founders = resident.founders ?? [];
 	.meta dd { margin: 0; }
 	.tags { display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0; margin: 0 0 1.5rem; list-style: none; }
 	.tags li { padding: 0.2rem 0.55rem; border: 1px solid var(--page-border); border-radius: 999px; color: var(--page-text); font-size: var(--text-xs); }
-	.founder-list { display: grid; gap: 0.75rem; padding: 0; margin: 0; list-style: none; }
-	.founder-list li { display: grid; gap: 0.15rem; padding: 1rem; border: 1px solid var(--page-border); border-radius: 0.75rem; background: var(--card-background); color: var(--page-text); }
-	.founder-photo { width: 3rem; height: 3rem; margin-bottom: 0.4rem; object-fit: cover; border-radius: 999px; }
-	.founder-name, .founder-role, .founder-links { margin: 0; color: var(--page-text); }
-	.founder-links { display: flex; gap: 0.9rem; margin-top: 0.45rem; }
-	.founder-links a { color: var(--page-text); }
-	.founder-links a:hover, .founder-links a:focus-visible { color: var(--text-hover); }
+	.people-list { display: grid; gap: 0.75rem; padding: 0; margin: 0; list-style: none; }
+	.people-list li { display: grid; gap: 0.15rem; padding: 1rem; border: 1px solid var(--page-border); border-radius: 0.75rem; background: var(--card-background); color: var(--page-text); }
+	.person-name, .person-role { margin: 0; color: var(--page-text); }
+	.person-name a { color: var(--page-text); }
+	.person-name a:hover, .person-name a:focus-visible { color: var(--text-hover); }
 </style>

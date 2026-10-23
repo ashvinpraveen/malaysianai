@@ -328,6 +328,8 @@ test('event autoplay advances over the background and resumes after card interac
 	if (isMobile) {
 		await thirdCard.tap();
 		await expect(title).toHaveText('Anthropic × Cursor Hackathon Malaysia');
+		// The pointer can remain over a card after the carousel moves, which pauses autoplay.
+		await page.mouse.move(8, 8);
 		await expect(title).toHaveText('Workshops', { timeout: 6500 });
 	} else {
 		await thirdCard.hover();

@@ -484,12 +484,15 @@ test('podcast lists episodes behind a click-to-play player and the homepage link
 	await expect(page.getByText('Hosted by')).toHaveCount(0);
 	await expect(page.locator('iframe')).toHaveCount(0);
 	const episodes = page.locator('.episodes article');
-	await expect(episodes.first()).toHaveAttribute('id', 'episode-Bj-8pQvkLa4');
+	await expect(episodes.first()).toHaveAttribute('id', 'episode-0Mw1esXX1yo');
+	await expect(page.getByRole('heading', { name: 'Intern to CTO: Taking On a $10B Silicon Valley Giant from Malaysia', exact: true })).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'The Era of Agents Replacing Humans could finally be here', exact: true })).toBeVisible();
 	await expect(page.getByRole('heading', { name: '0 to 100k Users in 4 Weeks: How Cleve Got Funded and Went Viral', exact: true })).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Inside Malaysia\'s Biggest AI Learn-A-Thon', exact: true })).toBeVisible();
 	await expect(page.locator('.episodes')).not.toContainText('| Malaysian AI Podcast');
-	await expect(episodes.first().getByRole('link', { name: 'Listen on Spotify' })).toHaveCount(0);
+	await expect(page.locator('#episode-Bj-8pQvkLa4').getByRole('link', { name: 'Listen on Spotify' })).toHaveCount(0);
+	await expect(episodes.first().getByRole('link', { name: 'Listen on Spotify' })).toHaveAttribute('href', 'https://open.spotify.com/episode/34t0Xi7pJKXxKt8WoZzFU0');
+	await expect(episodes.first().getByRole('link', { name: 'Listen on Apple Podcasts' })).toHaveAttribute('href', 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000797928202');
 	const funded = page.locator('#episode-BAs18i68zvc');
 	await expect(funded.getByRole('link', { name: 'Listen on Spotify' })).toHaveAttribute('href', 'https://open.spotify.com/episode/7t3X7PEr1ruHsNeD40OAM2');
 	await expect(funded.getByRole('link', { name: 'Listen on Apple Podcasts' })).toHaveAttribute('href', 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000796940907');
@@ -509,11 +512,11 @@ test('podcast lists episodes behind a click-to-play player and the homepage link
 	await expect(strip.getByRole('link', { name: /All episodes/ })).toHaveAttribute('href', '/podcast');
 	const cards = strip.locator('a.episode-card');
 	await expect(cards).toHaveCount(3);
-	await expect(cards.first()).toContainText('The Era of Agents Replacing Humans could finally be here');
-	await expect(cards.nth(1)).toContainText('0 to 100k Users in 4 Weeks: How Cleve Got Funded and Went Viral');
-	await expect(strip.getByText('Inside Malaysia\'s Biggest AI Learn-A-Thon', { exact: true })).toBeVisible();
+	await expect(cards.first()).toContainText('Intern to CTO: Taking On a $10B Silicon Valley Giant from Malaysia');
+	await expect(cards.nth(1)).toContainText('The Era of Agents Replacing Humans could finally be here');
+	await expect(cards.nth(2)).toContainText('0 to 100k Users in 4 Weeks: How Cleve Got Funded and Went Viral');
 	await expect(strip).not.toContainText('| Malaysian AI Podcast');
-	await expect(cards.first()).toHaveAttribute('href', '/podcast#episode-Bj-8pQvkLa4');
+	await expect(cards.first()).toHaveAttribute('href', '/podcast#episode-0Mw1esXX1yo');
 	expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
 });
 

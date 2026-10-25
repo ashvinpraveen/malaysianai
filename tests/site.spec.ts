@@ -490,7 +490,9 @@ test('podcast lists episodes behind a click-to-play player and the homepage link
 	await expect(page.getByRole('heading', { name: '0 to 100k Users in 4 Weeks: How Cleve Got Funded and Went Viral', exact: true })).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Inside Malaysia\'s Biggest AI Learn-A-Thon', exact: true })).toBeVisible();
 	await expect(page.locator('.episodes')).not.toContainText('| Malaysian AI Podcast');
-	await expect(page.locator('#episode-Bj-8pQvkLa4').getByRole('link', { name: 'Listen on Spotify' })).toHaveCount(0);
+	const agents = page.locator('#episode-Bj-8pQvkLa4');
+	await expect(agents.getByRole('link', { name: 'Listen on Spotify' })).toHaveAttribute('href', 'https://open.spotify.com/episode/3ZWS1sE3CwqijPTCLMAZTS');
+	await expect(agents.getByRole('link', { name: 'Listen on Apple Podcasts' })).toHaveAttribute('href', 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000797595119');
 	await expect(episodes.first().getByRole('link', { name: 'Listen on Spotify' })).toHaveAttribute('href', 'https://open.spotify.com/episode/34t0Xi7pJKXxKt8WoZzFU0');
 	await expect(episodes.first().getByRole('link', { name: 'Listen on Apple Podcasts' })).toHaveAttribute('href', 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000797928202');
 	const funded = page.locator('#episode-BAs18i68zvc');

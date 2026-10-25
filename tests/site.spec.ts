@@ -315,13 +315,20 @@ test('community directory lists every partner without overflowing', async ({ pag
 });
 
 test('event autoplay advances over the background and resumes after card interaction', async ({ page, isMobile }) => {
+	// Keep the build's calendar snapshot. A live list that differs from it
+	// resizes the section above and shifts the cards mid-test.
+	await page.route('**/api/luma-events', route => route.abort());
 	await page.emulateMedia({ reducedMotion: 'no-preference' });
 	await page.goto('/');
 	const section = page.locator('#events');
 	await section.scrollIntoViewIfNeeded();
-	const box = await section.boundingBox();
-	expect(box).not.toBeNull();
-	await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2);
+	// A parked mouse would hover whichever card a tap scrolls under it and
+	// pause autoplay, which a touch-only phone never does.
+	if (!isMobile) {
+		const box = await section.boundingBox();
+		expect(box).not.toBeNull();
+		await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2);
+	}
 	const title = page.locator('[data-event-title]');
 	await expect(title).toHaveText('AIMTO Learnathon', { timeout: 6500 });
 	const thirdCard = page.locator('[data-event-card]').nth(2);

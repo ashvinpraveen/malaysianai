@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2.5 -2.5 12 12" width="64" height="64">
+  <defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="-2.5" y1="-2.5" x2="9.5" y2="9.5"><stop offset="0" stop-color="#2297DF"/><stop offset="1" stop-color="#1A6FD1"/></linearGradient></defs>
+  <rect x="-2.5" y="-2.5" width="12" height="12" rx="2.6" fill="url(#g)"/>
+  <defs><rect id="c" width="0.84" height="0.84" rx="0.06"/></defs>
+  <g transform="translate(0.08 0.08)">
+    <g fill="#FFFFFF">
+      <use href="#c" x="0" y="0"/><use href="#c" x="1" y="0"/><use href="#c" x="0" y="1"/><use href="#c" x="1" y="1"/>
+      <use href="#c" x="0" y="2"/><use href="#c" x="1" y="2"/><use href="#c" x="0" y="3"/><use href="#c" x="1" y="3"/>
+      <use href="#c" x="0" y="4"/><use href="#c" x="1" y="4"/><use href="#c" x="0" y="5"/><use href="#c" x="1" y="5"/>
+      <use href="#c" x="0" y="6"/><use href="#c" x="1" y="6"/>
+    </g>
+    <g fill="#FFFFFF">
+      <use href="#c" x="5" y="0"/><use href="#c" x="6" y="0"/><use href="#c" x="5" y="1"/><use href="#c" x="6" y="1"/>
+      <use href="#c" x="5" y="2"/><use href="#c" x="6" y="2"/><use href="#c" x="5" y="3"/><use href="#c" x="6" y="3"/>
+      <use href="#c" x="5" y="4"/><use href="#c" x="6" y="4"/><use href="#c" x="5" y="5"/><use href="#c" x="6" y="5"/>
+      <use href="#c" x="5" y="6"/><use href="#c" x="6" y="6"/>
+    </g>
+    <g fill="#FFFFFF">
+      <use href="#c" x="2" y="3"/><use href="#c" x="4" y="3"/><use href="#c" x="3" y="2"/><use href="#c" x="3" y="4"/>
+    </g>
+    <use href="#c" x="3" y="3" fill="#FFFFFF"/>
+  </g>
+</svg>

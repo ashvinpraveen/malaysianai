@@ -130,7 +130,7 @@ Seven companies. Fields: name, description, focus, location, cohort, status, tag
 | DocuAsk | Document AI | Johor Bahru | 02 | https://docuask.com |
 | Blue Bolt Labs | Industry 4.0 | Shah Alam | 02 | https://blueboltlabs.com |
 | Seavoice | Voice & Speech | Kota Kinabalu | 01 | https://seavoice.ai |
-| Klovr | Education | Petaling Jaya | 02 | https://klovr.co/ |
+| Hover Team | Operations | Kuala Lumpur | 02 | https://www.hover.team/ |
 | Kelas Sekejap | Education | Kuala Lumpur | 01 | https://kelassekejap.com |
 
 All were marked Active. ReplyrAI, Cleve, and DocuAsk used inline SVG logos. The others used image files. In the new CMS, every resident should be an image upload. No special-case logo components.

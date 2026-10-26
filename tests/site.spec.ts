@@ -52,7 +52,7 @@ test('residents page links every resident to their profile', async ({ page }) =>
 	for (const profile of profiles) {
 		const card = page.locator(`a.person[href="/residents/${profile.slug}"]`);
 		await expect(card.getByRole('heading', { level: 2 })).toHaveText(profile.name);
-		await expect(card.locator('img')).toHaveCount(profile.portraits.length);
+		await expect(card.locator('img:not(.person-portrait-light)')).toHaveCount(profile.portraits.length);
 	}
 	await expect(page.getByRole('link', { name: 'Meet the resident teams' })).toHaveAttribute('href', '/resident-teams');
 	expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);

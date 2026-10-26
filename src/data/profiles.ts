@@ -147,8 +147,7 @@ export const profiles: Profile[] = [
 		building: 'Cleve',
 		summary:
 			'Ashvin Praveen is the co-founder and CEO of Cleve, an AI second brain for people and teams, and helps run the Malaysian AI community and podcast.',
-		// No pixel portrait yet; the profile and residents card render without one.
-		portraits: [],
+		portraits: [{ name: 'Ashvin Praveen', src: '/images/residents/ashvin-praveen.png', width: 120, height: 120 }],
 		about: [
 			'I’m Ashvin. I grew up in Miri and Bintulu in Sarawak and studied mechanical engineering at the University of Sheffield on a scholarship. I’m not a coder by training, and I don’t come from a business family. What I had was the willingness to be wrong quickly and keep going.',
 			'Before Cleve, Lizzie and I ran *whacked*, a personal branding agency where we wrote for 40+ founders. That’s where I learned that the core of content isn’t the writing, it’s the message behind it.',

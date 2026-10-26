@@ -30,6 +30,7 @@ export type Profile = {
 };
 
 const a47Accent = { dark: '#f0806e', light: '#973126' };
+const cleveAccent = { dark: '#7fb0ee', light: '#1d4f9a' };
 
 export const profiles: Profile[] = [
 	{
@@ -136,7 +137,35 @@ export const profiles: Profile[] = [
 			{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/lizzietan' },
 			{ label: 'Instagram', href: 'https://www.instagram.com/lizzietanqi' },
 		],
-		accent: { dark: '#7fb0ee', light: '#1d4f9a' },
+		accent: cleveAccent,
+	},
+	{
+		slug: 'ashvin-praveen',
+		name: 'Ashvin Praveen',
+		firstName: 'Ashvin',
+		role: 'Co-founder and CEO of Cleve, and community lead at Malaysian AI',
+		building: 'Cleve',
+		summary:
+			'Ashvin Praveen is the co-founder and CEO of Cleve, an AI second brain for people and teams, and helps run the Malaysian AI community and podcast.',
+		// No pixel portrait yet; the profile and residents card render without one.
+		portraits: [],
+		about: [
+			'I’m Ashvin. I grew up in Miri and Bintulu in Sarawak and studied mechanical engineering at the University of Sheffield on a scholarship. I’m not a coder by training, and I don’t come from a business family. What I had was the willingness to be wrong quickly and keep going.',
+			'Before Cleve, Lizzie and I ran *whacked*, a personal branding agency where we wrote for 40+ founders. That’s where I learned that the core of content isn’t the writing, it’s the message behind it.',
+			'These days I also help run the Malaysian AI community, co-host the Malaysian AI podcast with Ken, and still make music and videos when I can.',
+		],
+		work: [
+			'Cleve started as a LinkedIn writing tool trained on your past posts. Our LinkedIn Wrapped campaign brought in over 100,000 users in four weeks, and along the way we realised the memory layer was the real product.',
+			'Today Cleve is a second brain for you and your team. Your docs and notes live in one place and your AI works from all of it, so it isn’t starting day one every time you open a chat.',
+			'A lot of my time goes into being Cleve’s first trainer: teaching people and teams to set up AI systems that actually know their work.',
+		],
+		workLinks: [{ label: 'Cleve website', href: 'https://www.cleve.ai/' }],
+		profileLinks: [
+			{ label: 'Personal site', href: 'https://ashvinpraveen.com/' },
+			{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/ashvinpraveen' },
+			{ label: 'Instagram', href: 'https://www.instagram.com/ashvinpraveen' },
+		],
+		accent: cleveAccent,
 	},
 	{
 		slug: 'mohtasham-murshid-madani',

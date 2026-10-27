@@ -15,7 +15,12 @@ const people = [...profiles].sort((a, b) => a.name.localeCompare(b.name));
 				>
 					<span class="person-portraits">
 						{profile.portraits.map(portrait => (
-							<img src={portrait.src} width={portrait.width} height={portrait.height} alt="" loading="lazy" decoding="async" />
+							<>
+								<img class:list={{ 'has-light-version': portrait.lightSrc }} src={portrait.src} width={portrait.width} height={portrait.height} alt="" loading="lazy" decoding="async" />
+								{portrait.lightSrc && (
+									<img class="person-portrait-light" src={portrait.lightSrc} width={portrait.width} height={portrait.height} alt="" loading="lazy" decoding="async" />
+								)}
+							</>
 						))}
 					</span>
 					<h2>{profile.name}</h2>
@@ -68,6 +73,9 @@ const people = [...profiles].sort((a, b) => a.name.localeCompare(b.name));
 	/* Shown at 1x so the pixels stay whole; a pair may shrink on the narrowest screens. */
 	.person-portraits { display: flex; justify-content: center; gap: 0.5rem; max-width: 100%; margin-bottom: 1rem; }
 	.person-portraits img { display: block; min-width: 0; max-width: 100%; height: auto; image-rendering: pixelated; }
+	.person-portraits .person-portrait-light { display: none; }
+	:global(html[data-theme='light']) .person-portraits .has-light-version { display: none; }
+	:global(html[data-theme='light']) .person-portraits .person-portrait-light { display: block; }
 
 	.person h2 { margin: 0; color: var(--text-heading); font: 400 1.6rem / 1.1 var(--font-display); letter-spacing: -0.02em; }
 	.person-building { margin: 0; color: var(--person-accent); font-size: var(--text-sm); }

@@ -54,14 +54,26 @@ const structuredData = {
 			{profile.portraits.length > 0 && (
 				<div class="profile-portraits">
 					{profile.portraits.map(portrait => (
-						<img
-							class="profile-portrait"
-							src={portrait.src}
-							width={portrait.width * portraitScale}
-							height={portrait.height * portraitScale}
-							alt={`Pixel-art portrait of ${portrait.name}`}
-							decoding="async"
-						/>
+						<>
+							<img
+								class:list={['profile-portrait', { 'has-light-version': portrait.lightSrc }]}
+								src={portrait.src}
+								width={portrait.width * portraitScale}
+								height={portrait.height * portraitScale}
+								alt={`Pixel-art portrait of ${portrait.name}`}
+								decoding="async"
+							/>
+							{portrait.lightSrc && (
+								<img
+									class="profile-portrait-light"
+									src={portrait.lightSrc}
+									width={portrait.width * portraitScale}
+									height={portrait.height * portraitScale}
+									alt={`Pixel-art portrait of ${portrait.name}`}
+									decoding="async"
+								/>
+							)}
+						</>
 					))}
 				</div>
 			)}
@@ -163,13 +175,18 @@ const structuredData = {
 	}
 
 	/* A pair shares the column, so each portrait may shrink below its whole-number size on narrow screens. */
-	.profile-portrait {
+	.profile-portrait,
+	.profile-portrait-light {
 		display: block;
 		min-width: 0;
 		max-width: 100%;
 		height: auto;
 		image-rendering: pixelated;
 	}
+
+	.profile-portrait-light { display: none; }
+	:global(html[data-theme='light']) .profile-portrait.has-light-version { display: none; }
+	:global(html[data-theme='light']) .profile-portrait-light { display: block; }
 
 	.profile-kicker {
 		display: flex;

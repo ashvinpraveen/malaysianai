@@ -21,6 +21,14 @@ export const PODCAST_FEED_URL = `https://www.youtube.com/feeds/videos.xml?channe
 
 /** Episodes published on the Spotify and Apple shows, keyed by YouTube video id. */
 const EPISODE_LISTEN_LINKS: Record<string, { spotify: string; apple: string }> = {
+	'0Mw1esXX1yo': {
+		spotify: 'https://open.spotify.com/episode/34t0Xi7pJKXxKt8WoZzFU0',
+		apple: 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000797928202',
+	},
+	'Bj-8pQvkLa4': {
+		spotify: 'https://open.spotify.com/episode/3ZWS1sE3CwqijPTCLMAZTS',
+		apple: 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000797595119',
+	},
 	BAs18i68zvc: {
 		spotify: 'https://open.spotify.com/episode/7t3X7PEr1ruHsNeD40OAM2',
 		apple: 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000796940907',

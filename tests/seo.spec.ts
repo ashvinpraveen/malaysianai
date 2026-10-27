@@ -2,10 +2,14 @@ import sharp from 'sharp';
 import hosting from '../vercel.json' with { type: 'json' };
 import { test, expect } from '@playwright/test';
 import { profiles } from '../src/data/profiles';
+import { residents } from '../src/data/residents';
+import { directoryPath } from '../src/lib/directory';
 
 const origin = 'https://www.malaysian.ai';
 const pages = [
-	'/', '/about', '/brand', '/residency', '/residency/accountability', '/residents', '/resident-teams', '/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon', '/podcast',
+	'/', '/about', '/brand', '/residency', '/residency/accountability', '/residents', '/resident-teams', '/directory',
+	...residents.map(resident => directoryPath(resident)),
+	'/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon', '/podcast',
 	...profiles.map(profile => `/residents/${profile.slug}`),
 ];
 const expectedCommunityNames = [
@@ -62,6 +66,11 @@ const expectedMetadata = [
 		description: 'Meet the AI startups, founders and teams building products at Malaysian AI. Explore resident companies in our Kuala Lumpur AI residency.',
 	},
 	{
+		path: '/directory',
+		title: 'Malaysia AI Company Directory | Malaysian AI',
+		description: 'Search the companies in the Malaysian AI residency. Explore products, meet their builders, and filter by cohort, industry, location or tag.',
+	},
+	{
 		path: '/blog',
 		title: 'Malaysia AI Community Stories & Updates | Malaysian AI',
 		description: 'Read stories from the Malaysia AI community: AI events, hands-on learning, builder projects and updates from the Malaysian AI residency.',
@@ -102,6 +111,8 @@ for (const { path, title, description } of expectedMetadata) {
 }
 
 test('public pages have consistent production metadata and valid share images', async ({ page, request }) => {
+	// Visit and decode images for every public route, including all company and people pages.
+	test.setTimeout(pages.length * 2_000);
 	const titles = new Set<string>();
 	for (const path of pages) {
 		const response = await page.goto(path);

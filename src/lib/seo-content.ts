@@ -58,6 +58,11 @@ export const seoContentByPath: Record<string, Partial<Pick<PageMetadata, 'title'
 		description: 'Meet the AI startups, founders and teams building products at Malaysian AI. Explore resident companies in our Kuala Lumpur AI residency.',
 		keywords: ['Malaysian AI', 'AI startups Malaysia', 'AI residency Malaysia'],
 	},
+	'/directory': {
+		title: 'Malaysia AI Company Directory',
+		description: 'Search the companies in the Malaysian AI residency. Explore products, meet their builders, and filter by cohort, industry, location or tag.',
+		keywords: ['Malaysian AI', 'AI startups Malaysia', 'Malaysia AI companies', 'AI founders Malaysia', 'AI residency Malaysia'],
+	},
 	'/blog': {
 		title: 'Malaysia AI Community Stories & Updates',
 		description: 'Read stories from the Malaysia AI community: AI events, hands-on learning, builder projects and updates from the Malaysian AI residency.',

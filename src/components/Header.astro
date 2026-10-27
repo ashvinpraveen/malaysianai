@@ -7,9 +7,11 @@ const current = Astro.url.pathname.startsWith('/blog')
 		? 'podcast'
 		: Astro.url.pathname === '/about'
 			? 'about'
-			: Astro.url.pathname.startsWith('/residency')
-				? 'residency'
-				: undefined;
+			: Astro.url.pathname.startsWith('/directory')
+				? 'directory'
+				: Astro.url.pathname.startsWith('/residency')
+					? 'residency'
+					: undefined;
 ---
 
 <div class="site-header">

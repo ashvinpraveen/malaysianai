@@ -1,0 +1,131 @@
+---
+import CompanyCard from '../../components/CompanyCard.astro';
+import ResidentLogo from '../../components/ResidentLogo.astro';
+import DirectoryPortrait from '../../components/DirectoryPortrait.astro';
+import { SITE_TITLE } from '../../consts';
+import type { Resident } from '../../data/residents';
+import { directoryPath } from '../../lib/directory';
+import { directoryCompanies, peopleForCompany } from '../../lib/directory-data';
+import { serializeJsonLd } from '../../lib/seo';
+import Layout from '../../layouts/Layout.astro';
+
+export function getStaticPaths() {
+	return directoryCompanies.map(resident => ({ params: { slug: resident.slug }, props: { resident } }));
+}
+interface Props { resident: Resident }
+const { resident } = Astro.props;
+const people = peopleForCompany(resident);
+const website = new URL(resident.website).hostname.replace(/^www\./, '');
+const related = directoryCompanies.filter(company => company.slug !== resident.slug)
+	.map(company => ({ company, score: (company.focus === resident.focus ? 3 : 0) + company.tags.filter(tag => resident.tags.includes(tag)).length }))
+	.sort((a, b) => b.score - a.score || a.company.name.localeCompare(b.company.name, 'en'))
+	.slice(0, 2).map(({ company }) => company);
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'Organization',
+	name: resident.name,
+	description: resident.description,
+	url: resident.website,
+	mainEntityOfPage: new URL(directoryPath(resident), Astro.site).href,
+};
+const breadcrumbs = {
+	'@context': 'https://schema.org', '@type': 'BreadcrumbList',
+	itemListElement: [
+		{ '@type': 'ListItem', position: 1, name: 'Company directory', item: new URL('/directory', Astro.site).href },
+		{ '@type': 'ListItem', position: 2, name: resident.name, item: new URL(directoryPath(resident), Astro.site).href },
+	],
+};
+---
+<Layout title={`${resident.name} | ${SITE_TITLE}`} description={resident.description} keywords={['Malaysian AI', resident.name, resident.focus, 'AI startups Malaysia']} neutral>
+	<article class="company-page">
+		<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/directory"><span aria-hidden="true">←</span> All companies</a><span aria-hidden="true">/</span><span aria-current="page">{resident.name}</span></nav>
+		<header class="company-header">
+			<div class="identity"><ResidentLogo resident={resident} /></div>
+			<p class="eyebrow">Malaysian AI residency · Cohort {resident.cohort}</p>
+			<h1>{resident.name}</h1>
+			<p class="tagline">{resident.tag}</p>
+		</header>
+		<div class="company-body">
+			<div class="company-story">
+				<section class="overview" aria-labelledby="overview-heading">
+					<h2 id="overview-heading">What they’re building</h2>
+					<p>{resident.description}</p>
+					<ul class="tags" aria-label="Explore company tags">{resident.tags.map(tag => <li><a href={`/directory?tag=${encodeURIComponent(tag)}`}>{tag} <span aria-hidden="true">↗</span></a></li>)}</ul>
+				</section>
+				{people.length > 0 && <section class="team-section" aria-labelledby="people-heading">
+					<div class="section-heading"><h2 id="people-heading">People</h2><span>Meet the builders</span></div>
+					<ul class="team-list">
+						{people.map(person => <li><a href={`/residents/${person.slug}`}>
+							{person.portraits[0] && <DirectoryPortrait portrait={person.portraits[0]} size={72} />}
+							<div><h3>{person.name}</h3><p>{person.role}</p><span class="read-profile">Read profile</span></div>
+							<span class="person-arrow" aria-hidden="true">↗</span>
+						</a></li>)}
+					</ul>
+				</section>}
+			</div>
+			<aside class="company-snapshot" aria-labelledby="snapshot-heading">
+				<h2 id="snapshot-heading">At a glance</h2>
+				<dl>
+					<div><dt>Industry</dt><dd><a href={`/directory?focus=${encodeURIComponent(resident.focus)}`}>{resident.focus}</a></dd></div>
+					<div><dt>Based in</dt><dd><a href={`/directory?location=${encodeURIComponent(resident.location)}`}>{resident.location}</a></dd></div>
+					<div><dt>Residency cohort</dt><dd><a href={`/directory?cohort=${encodeURIComponent(resident.cohort)}`}>Cohort {resident.cohort}</a></dd></div>
+					<div><dt>Website</dt><dd><a href={resident.website}>{website} <span aria-hidden="true">↗</span></a></dd></div>
+				</dl>
+				<a class="site-button" href={resident.website}>Visit {resident.name} <span aria-hidden="true">↗</span></a>
+			</aside>
+		</div>
+		<section class="explore" aria-labelledby="explore-heading">
+			<div class="section-heading"><h2 id="explore-heading">Explore more companies</h2><a href="/directory">View directory <span aria-hidden="true">→</span></a></div>
+			<ul class="related-companies">{related.map(company => <CompanyCard company={company} headingLevel="h3" />)}</ul>
+		</section>
+	</article>
+	<script is:inline type="application/ld+json" set:html={serializeJsonLd(structuredData)} />
+	<script is:inline type="application/ld+json" set:html={serializeJsonLd(breadcrumbs)} />
+</Layout>
+<style>
+	.company-page { max-width: 76rem; margin-inline: auto; padding: 2.5rem 1.5rem 5rem; color: var(--page-text); }
+	.breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; font-size: var(--text-sm); }
+	.breadcrumb a { text-decoration: none; }
+	.company-header { padding: clamp(2rem, 5vw, 4rem) 0; border-bottom: 1px solid var(--page-border); }
+	.identity { display: flex; align-items: center; margin-bottom: 2rem; min-height: 4.5rem; }
+	.eyebrow { margin: 0 0 1rem; font-size: var(--text-xs); letter-spacing: 0.04em; }
+	h1 { margin: 0; font: 400 clamp(3rem, 6vw, 5rem) / 1 var(--font-display); letter-spacing: -0.045em; }
+	.tagline { max-width: 42rem; margin: 1rem 0 0; font-size: clamp(1.2rem, 2.5vw, 1.5rem); line-height: 1.4; }
+	.company-body { display: grid; grid-template-columns: minmax(0, 1fr) 19rem; gap: clamp(2rem, 6vw, 5rem); align-items: start; padding-top: 2.5rem; }
+	h2 { margin: 0; font: 400 var(--text-section-title) / 1.15 var(--font-display); letter-spacing: -0.02em; }
+	.overview > p { max-width: 42rem; margin: 1.25rem 0; font-size: 1.1rem; line-height: 1.75; }
+	a:not(.site-button) { color: var(--page-text); text-underline-offset: 0.2em; }
+	a:not(.site-button):hover { color: var(--text-hover); }
+	a:focus-visible { outline: 2px solid var(--focus-color); outline-offset: 4px; }
+	.tags { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 1.5rem 0 0; list-style: none; }
+	.tags a { display: block; padding: 0.5rem 0.75rem; border: 1px solid var(--page-border); border-radius: 0.4rem; text-decoration: none; font-size: var(--text-sm); }
+	.company-snapshot { padding: 1.5rem; border: 1px solid var(--page-border); border-radius: 0.8rem; background: var(--card-background); }
+	.company-snapshot h2 { font-size: 1.4rem; }
+	.company-snapshot dl { display: grid; gap: 1.25rem; margin: 1.5rem 0; }
+	.company-snapshot dt { margin-bottom: 0.4rem; font-size: var(--text-xs); }
+	.company-snapshot dd { margin: 0; font-size: var(--text-sm); line-height: 1.5; overflow-wrap: anywhere; }
+	.company-snapshot .site-button { width: 100%; min-height: 2.75rem; font-size: var(--text-sm); }
+	.team-section { margin-top: 3rem; }
+	.section-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.75rem; margin-bottom: 1.25rem; }
+	.section-heading > span, .section-heading > a { font-size: var(--text-sm); }
+	.team-list { margin: 0; padding: 0; list-style: none; }
+	.team-list li { border-top: 1px solid var(--page-border); }
+	.team-list li:last-child { border-bottom: 1px solid var(--page-border); }
+	.team-list a { display: flex; align-items: center; gap: 1.25rem; padding-block: 1.25rem; text-decoration: none; }
+	.team-list h3 { margin: 0; font: 400 1.4rem / 1.2 var(--font-display); }
+	.team-list p { margin: 0.4rem 0; font-size: var(--text-sm); line-height: 1.5; }
+	.read-profile { font-size: var(--text-xs); text-decoration: underline; }
+	.person-arrow { margin-left: auto; }
+	.explore { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--page-border); }
+	.related-companies { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; margin: 0; padding: 0; list-style: none; }
+	@media (max-width: 800px) {
+		.company-body { grid-template-columns: 1fr; }
+		.company-snapshot { grid-row: 1; }
+		.company-snapshot dl { grid-template-columns: 1fr 1fr; }
+	}
+	@media (max-width: 600px) {
+		.company-page { padding-inline: 1rem; }
+		.related-companies { grid-template-columns: 1fr; }
+		.team-list a { gap: 0.75rem; }
+	}
+</style>

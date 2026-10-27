@@ -1,6 +1,6 @@
 # Malaysian AI
 
-The public Malaysian AI community site, built with Astro and Bun. It generates static pages for the homepage, community profile, residency, residents, contact details, legal pages, and blog, plus an RSS feed and sitemap.
+The public Malaysian AI community site, built with Astro and Bun. It generates static pages for the homepage, community profile, residency, resident profiles, resident teams, company directory, contact details, legal pages, and blog, plus an RSS feed and sitemap.
 
 ## Development
 
@@ -40,7 +40,7 @@ GitHub Actions runs the same checks for pushes and pull requests.
 ## Editing content
 
 - `src/content/blog/` contains Markdown and MDX stories. Required frontmatter is defined in `src/content.config.ts`: title, description, publication date, author, and category. Images, image descriptions, and updated dates are optional.
-- `src/data/residents.ts` and `src/data/voices.ts` are the shared resident and testimonial lists.
+- `src/data/residents.ts` lists resident companies, `src/data/profiles.ts` lists the people, and `src/data/voices.ts` lists testimonials. Company `slug` values define stable `/directory/<slug>` URLs. A profile’s optional `companySlug` explicitly links that person to a company; changing its display name does not break that link. Invalid company slugs and missing company references fail the build.
 - `src/consts.ts` contains the site description, application, event, WhatsApp, and venue URLs.
 - `src/pages/` defines public routes. Layouts and section components live in `src/layouts/` and `src/components/`.
 - The hero source lives in `src/assets/hero-fibonacci.png`. Astro generates responsive WebP variants during the build. Other public assets live in `public/`.
@@ -49,9 +49,11 @@ Upcoming Luma events render as ordinary page links, so the calendar has no neste
 
 `docs/site-inventory.md` records the previous site's content and routes. It is historical context, not a list of currently implemented pages.
 
+The company directory is rendered in full at build time. JavaScript progressively adds word-based search, alphabetical or newest-cohort sorting, and filters with contextual counts. Filters are shareable through the URL and preserve unrelated campaign parameters. `src/lib/directory-data.ts` owns content joins and the compact search index; `src/lib/directory.ts` contains browser-safe search logic. Full resident profiles are never bundled into the directory script.
+
 ## Styling
 
-`src/styles/tokens.css` owns shared fonts, text sizes, colors, and button values. Appearance follows `prefers-color-scheme` by default; the footer appearance control can lock light or dark. Dark colors live on `:root` and `html[data-theme='dark']`. Light colors live in the light media query and on `html[data-theme='light']`, so Tizen can switch without `light-dark()`. `Layout` accepts `neutral` for residency, residents, and contact; the `html.neutral-page` overrides define those pages in both themes. Change these values here when updating several pages together.
+`src/styles/tokens.css` owns shared fonts, text sizes, colors, and button values. Appearance follows `prefers-color-scheme` by default; the footer appearance control can lock light or dark. Dark colors live on `:root` and `html[data-theme='dark']`. Light colors live in the light media query and on `html[data-theme='light']`, so Tizen can switch without `light-dark()`. `Layout` accepts `neutral` for residency, residents, the company directory, and contact; the `html.neutral-page` overrides define those pages in both themes. Change these values here when updating several pages together.
 
 `src/styles/global.css` loads the tokens and fonts, then defines resets, shared buttons, and page transitions. Keep section layout, responsive rules, and animation styles in their Astro component. Hero and calendar styles live in `HeroSection.astro` and `MissionSection.astro`; `src/pages/index.astro` composes the homepage sections.
 

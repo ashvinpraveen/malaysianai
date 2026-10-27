@@ -1,0 +1,66 @@
+---
+import ResidentLogo from './ResidentLogo.astro';
+import DirectoryPortrait from './DirectoryPortrait.astro';
+import type { Resident } from '../data/residents';
+import { directoryPath } from '../lib/directory';
+import { peopleForCompany } from '../lib/directory-data';
+interface Props { company: Resident; headingLevel?: 'h2' | 'h3' }
+const { company, headingLevel: Heading = 'h2' } = Astro.props;
+const people = peopleForCompany(company);
+---
+<li class="company-card" data-company data-slug={company.slug}>
+	<div class="brand-row">
+		<div class="logo-tile"><ResidentLogo resident={company} /></div>
+		<div class="company-heading">
+			<Heading><a href={directoryPath(company)}>{company.name} <span aria-hidden="true">→</span></a></Heading>
+			<p class="tagline">{company.tag}</p>
+		</div>
+	</div>
+	<p class="description">{company.description}</p>
+	<p class="meta"><span>{company.location}</span> <span aria-hidden="true">·</span> <span>{company.focus}</span><a class="cohort" href={`/directory?cohort=${encodeURIComponent(company.cohort)}`}>Cohort {company.cohort}</a></p>
+	<ul class="tags" aria-label={`${company.name} tags`}>
+		{company.tags.map(tag => <li><a href={`/directory?tag=${encodeURIComponent(tag)}`} data-directory-tag={tag}>{tag}</a></li>)}
+	</ul>
+	<div class="card-footer">
+		{people.length > 0 ? (
+			<ul class="people" aria-label={`People building ${company.name}`}>
+				{people.map(person => (
+					<li><a href={`/residents/${person.slug}`}>
+						{person.portraits[0] && <DirectoryPortrait portrait={person.portraits[0]} size={28} />}
+						<span>{person.name}</span>
+					</a></li>
+				))}
+			</ul>
+		) : <a class="profile-link" href={directoryPath(company)}>Company profile <span aria-hidden="true">→</span></a>}
+		<a class="website" href={company.website} aria-label={`Visit ${company.name}`}><span aria-hidden="true">↗</span></a>
+	</div>
+</li>
+<style>
+	.company-card { display: flex; flex-direction: column; min-width: 0; gap: 1rem; padding: clamp(1.25rem, 2.5vw, 1.75rem); border: 1px solid var(--page-border); border-radius: 0.8rem; background: var(--card-background); }
+	.company-card[hidden] { display: none; }
+	.brand-row { display: flex; align-items: center; gap: 1.25rem; }
+	.logo-tile { display: flex; align-items: center; flex: 0 0 6.25rem; min-height: 4.5rem; }
+	.company-heading { flex: 1; min-width: 0; }
+	.cohort { margin-left: auto; font-size: var(--text-xs); white-space: nowrap; text-decoration: none; }
+	h2, h3 { margin: 0; font: 400 clamp(1.65rem, 2.5vw, 2rem) / 1.15 var(--font-display); letter-spacing: -0.03em; }
+	h2 a, h3 a { display: flex; align-items: center; justify-content: space-between; gap: 1rem; text-decoration: none; }
+	h2 span, h3 span { font: 400 1.1rem / 1 var(--font-body); }
+	p { margin: 0; line-height: 1.6; }
+	.tagline { margin-top: 0.4rem; font-size: var(--text-base); }
+	.description { font-size: var(--text-sm); }
+	.meta { display: flex; flex-wrap: wrap; gap: 0.5rem; font-size: var(--text-xs); align-items: baseline; }
+	.tags { display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0; margin: 0 0 0.5rem; list-style: none; }
+	.tags a { display: block; padding: 0.35rem 0.6rem; border: 1px solid var(--page-border); border-radius: 0.35rem; font-size: var(--text-xs); text-decoration: none; }
+	.card-footer { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--page-border); }
+	.people { display: flex; flex-wrap: wrap; gap: 0.6rem 1rem; padding: 0; margin: 0; list-style: none; }
+	.people a { display: inline-flex; align-items: center; gap: 0.4rem; font-size: var(--text-xs); text-decoration: none; }
+	.profile-link { font-size: var(--text-sm); text-decoration: none; }
+	.website { display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: 2.75rem; height: 2.75rem; border: 1px solid var(--page-border); border-radius: 50%; font-size: 1.2rem; text-decoration: none; }
+	a { color: var(--page-text); text-underline-offset: 0.2em; }
+	a:hover { color: var(--text-hover); text-decoration: underline; }
+	a:focus-visible { outline: 2px solid var(--focus-color); outline-offset: 4px; }
+	@media (max-width: 600px) {
+		.brand-row { gap: 1rem; }
+		.logo-tile { flex-basis: 4.5rem; }
+	}
+</style>

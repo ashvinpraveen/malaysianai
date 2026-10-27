@@ -1,0 +1,153 @@
+---
+import CompanyCard from '../../components/CompanyCard.astro';
+import { SITE_TITLE } from '../../consts';
+import { directoryCompanies, directoryIndex } from '../../lib/directory-data';
+import { companyCountLabel, filterKeys, filterLabels, uniqueSorted } from '../../lib/directory';
+import { serializeJsonLd } from '../../lib/seo';
+import Layout from '../../layouts/Layout.astro';
+
+const options = {
+	cohort: uniqueSorted(directoryCompanies.map(company => company.cohort)),
+	focus: uniqueSorted(directoryCompanies.map(company => company.focus)),
+	location: uniqueSorted(directoryCompanies.map(company => company.location)),
+	tag: uniqueSorted(directoryCompanies.flatMap(company => company.tags)),
+};
+const allLabels = { cohort: 'All cohorts', focus: 'All industries', location: 'All locations', tag: 'All tags' };
+---
+<Layout title={`Company directory | ${SITE_TITLE}`} description="Discover the companies building in the Malaysian AI residency. Explore their products and meet the people behind them." neutral>
+	<div class="directory-page" data-directory>
+		<header class="directory-header">
+			<div>
+				<p class="eyebrow"><a href="/residency">Malaysian AI residency</a> / The companies</p>
+				<h1>Company directory</h1>
+				<p class="intro">Built here. Going everywhere.</p>
+				<p class="lede">Explore the products taking shape in our residency and meet the people building them.</p>
+			</div>
+			<div class="header-aside">
+				<dl class="directory-stats">
+					<div><dt>Companies</dt><dd>{directoryCompanies.length}</dd></div>
+					<div><dt>Cohorts</dt><dd>{options.cohort.length}</dd></div>
+					<div><dt>Cities</dt><dd>{options.location.length}</dd></div>
+				</dl>
+				<a class="people-link" href="/residents">Meet the people behind them <span aria-hidden="true">↗</span></a>
+			</div>
+		</header>
+
+		<form class="directory-controls" action="/directory" method="get" role="search" aria-label="Company directory" hidden>
+			<div class="search-row">
+				<label class="search">
+					<span>Search companies</span>
+					<div class="search-field"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 5 5" /></svg><input type="search" name="q" placeholder="Try a product, a person, or a city…" autocomplete="off" enterkeyhint="search" aria-controls="company-results" /></div>
+				</label>
+				<label class="sort"><span>Sort by</span><select name="sort" aria-controls="company-results"><option value="name">Name: A–Z</option><option value="cohort">Newest cohort</option></select></label>
+			</div>
+			<details class="filters">
+				<summary>Filter companies <span data-filter-summary>All companies</span></summary>
+				<div class="filter-row">
+					{filterKeys.map(key => <label><span>{filterLabels[key]}</span><select name={key} aria-controls="company-results">
+						<option value="">{allLabels[key]}</option>
+						{options[key].map(value => <option value={value}>{value}</option>)}
+					</select></label>)}
+				</div>
+			</details>
+		</form>
+		<noscript><p>Browse every company below. Enable JavaScript to search, filter and sort.</p></noscript>
+		<div class="results-toolbar">
+			<p class="count" data-count role="status" aria-live="polite" aria-atomic="true">{companyCountLabel(directoryCompanies.length)}</p>
+			<button type="button" class="clear" data-clear hidden>Clear filters</button>
+		</div>
+		<div class="active-filters" data-active-filters role="group" aria-label="Active filters" hidden></div>
+		<div class="empty" data-empty hidden>
+			<h2>No companies found</h2>
+			<p>No companies match these filters. Try fewer filters or a different search.</p>
+			<button type="button" class="site-button" data-clear>Clear all filters</button>
+		</div>
+		<ul class="company-list" id="company-results" aria-label="Companies">
+			{directoryCompanies.map(company => <CompanyCard company={company} />)}
+		</ul>
+		<aside class="directory-note">
+			<p>This directory features companies from the Malaysian AI residency.</p>
+			<a href="/residency">Building something with AI? Explore the residency <span aria-hidden="true">→</span></a>
+		</aside>
+		<script is:inline type="application/json" data-directory-index set:html={serializeJsonLd(directoryIndex)} />
+	</div>
+</Layout>
+<script>
+	import { mountDirectory } from '../../lib/directory-page';
+	let stop = () => {};
+	function start() {
+		stop();
+		const root = document.querySelector<HTMLElement>('[data-directory]');
+		stop = root ? mountDirectory(root) : () => {};
+	}
+	document.addEventListener('astro:page-load', start);
+	document.addEventListener('astro:before-swap', () => stop());
+</script>
+<style>
+	.directory-page { max-width: 76rem; min-height: 65svh; margin-inline: auto; padding: clamp(2rem, 4vw, 3rem) 1.5rem 5rem; color: var(--page-text); }
+	.directory-header { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: end; padding-bottom: 2rem; }
+	.eyebrow { margin: 0 0 1.5rem; font-size: var(--text-xs); letter-spacing: 0.04em; }
+	.eyebrow a { text-decoration: none; }
+	h1 { margin: 0; font: 400 clamp(2.75rem, 5vw, 4.5rem) / 1 var(--font-display); letter-spacing: -0.045em; }
+	.intro { margin: 1.2rem 0 0.5rem; font-size: 1.2rem; }
+	.lede { max-width: 36rem; margin: 0; font-size: var(--text-base); line-height: var(--leading-body); }
+	.header-aside { display: grid; gap: 1.5rem; }
+	.directory-stats { display: flex; gap: 2rem; margin: 0; }
+	.directory-stats div { display: flex; flex-direction: column; gap: 0.3rem; }
+	.directory-stats dd { order: -1; margin: 0; font: 400 2.5rem / 1 var(--font-display); }
+	.directory-stats dt { font-size: var(--text-xs); }
+	.people-link { font-size: var(--text-sm); }
+	a { color: var(--page-text); text-underline-offset: 0.2em; }
+	a:hover { color: var(--text-hover); }
+	a:focus-visible, input:focus-visible, select:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--focus-color); outline-offset: 4px; }
+	.directory-controls { display: grid; gap: 1.25rem; padding: 1.5rem; border: 1px solid var(--page-border); border-radius: 0.8rem; background: var(--card-background); }
+	.directory-controls[hidden] { display: none; }
+	.search-row { display: grid; grid-template-columns: 1fr 12rem; gap: 1.5rem; align-items: end; }
+	label { display: grid; gap: 0.6rem; min-width: 0; }
+	label > span { font-size: var(--text-xs); }
+	.search-field { position: relative; }
+	.search-field > svg { position: absolute; top: 50%; left: 0.85rem; transform: translateY(-50%); font-size: 1.5rem; pointer-events: none; }
+	input, select { width: 100%; min-height: 3rem; padding: 0.65rem 0.8rem; border: 1px solid var(--page-border); border-radius: 0.4rem; color: var(--page-text); background: var(--page-background); font: 400 var(--text-sm) / 1.4 var(--font-body); }
+	input { padding-left: 2.6rem; }
+	input::placeholder { color: var(--page-text); opacity: 0.65; }
+	.filters { border-top: 1px solid var(--page-border); padding-top: 1.1rem; }
+	summary { cursor: pointer; font-size: var(--text-sm); }
+	summary span { margin-left: 0.8rem; font-size: var(--text-xs); }
+	.filter-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; padding-top: 1.25rem; }
+	.results-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; min-height: 3.5rem; }
+	.count { margin: 0; font-size: var(--text-sm); }
+	.clear { min-height: 2.75rem; padding: 0.4rem 0; border: 0; color: var(--page-text); background: transparent; font: 400 var(--text-sm) / 1.4 var(--font-body); text-decoration: underline; text-underline-offset: 0.2em; cursor: pointer; }
+	.active-filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+	.active-filters[hidden] { display: none; }
+	.active-filters :global(button) { max-width: 100%; min-height: 2.75rem; padding: 0.5rem 0.8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border: 1px solid var(--page-border); border-radius: 0.4rem; color: var(--page-text); background: var(--card-background); font: 400 var(--text-sm) / 1.4 var(--font-body); cursor: pointer; }
+	.active-filters :global(button:focus-visible) { outline: 2px solid var(--focus-color); outline-offset: 3px; }
+	.company-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; margin: 0; padding: 0; list-style: none; }
+	.company-list[hidden] { display: none; }
+	.empty { padding: 3rem 1.5rem; margin-bottom: 1.5rem; border: 1px dashed var(--page-border); border-radius: 0.8rem; text-align: center; }
+	.empty h2 { margin: 0; font: 400 2rem / 1.1 var(--font-display); }
+	.empty p { line-height: var(--leading-body); }
+	.empty .site-button { min-height: 2.75rem; font-size: var(--text-sm); }
+	.directory-note { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; justify-content: space-between; padding-top: 2rem; margin-top: 2rem; border-top: 1px solid var(--page-border); font-size: var(--text-sm); line-height: 1.6; }
+	.directory-note p { margin: 0; }
+	@media (max-width: 900px) {
+		.directory-header { grid-template-columns: 1fr; }
+		.header-aside { display: flex; flex-wrap: wrap; gap: 1.5rem 2rem; justify-content: space-between; align-items: end; }
+	}
+	@media (max-width: 600px) {
+		.directory-page { padding: 1.5rem 1rem 4rem; }
+		.directory-header { gap: 1rem; padding-bottom: 1.25rem; }
+		.eyebrow { margin-bottom: 0.75rem; }
+		.intro { margin-top: 0.8rem; }
+		.header-aside { gap: 0.75rem; }
+		.directory-stats { gap: 1.25rem; }
+		.directory-stats div { flex-direction: row; align-items: baseline; gap: 0.35rem; }
+		.directory-stats dd { font-size: 1.25rem; }
+		.directory-controls { padding: 1rem; gap: 1rem; }
+		.search-row { grid-template-columns: 1fr; gap: 1rem; }
+		.sort { grid-template-columns: auto 1fr; align-items: center; }
+		.sort select { justify-self: end; max-width: 12rem; }
+		.filter-row { grid-template-columns: 1fr 1fr; }
+		.company-list { grid-template-columns: 1fr; }
+		input, select { font-size: 1rem; }
+	}
+</style>

@@ -1,0 +1,20 @@
+---
+import type { Portrait } from '../data/profiles';
+interface Props { portrait: Portrait; size: number }
+const { portrait, size } = Astro.props;
+---
+<span class:list={['portrait', { 'has-light': portrait.lightSrc }]} style={`--portrait-size: ${size}px`} aria-hidden="true">
+	<img class="default" src={portrait.src} alt="" width={size} height={size} loading="lazy" decoding="async" />
+	{portrait.lightSrc && <img class="light" src={portrait.lightSrc} alt="" width={size} height={size} loading="lazy" decoding="async" />}
+</span>
+<style>
+	.portrait { display: inline-flex; flex-shrink: 0; width: var(--portrait-size); height: var(--portrait-size); }
+	img { display: block; width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
+	.light { display: none; }
+	:global(html[data-theme='light']) .portrait.has-light .default { display: none; }
+	:global(html[data-theme='light']) .light { display: block; }
+	@media (prefers-color-scheme: light) {
+		:global(html:not([data-theme='dark'])) .portrait.has-light .default { display: none; }
+		:global(html:not([data-theme='dark'])) .light { display: block; }
+	}
+</style>

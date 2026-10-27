@@ -40,7 +40,7 @@ GitHub Actions runs the same checks for pushes and pull requests.
 ## Editing content
 
 - `src/content/blog/` contains Markdown and MDX stories. Required frontmatter is defined in `src/content.config.ts`: title, description, publication date, author, and category. Images, image descriptions, and updated dates are optional.
-- `src/data/residents.ts` lists resident companies, `src/data/profiles.ts` lists the people, and `src/data/voices.ts` lists testimonials. The company directory links a person to `/residents/<slug>` when their profile names that company.
+- `src/data/residents.ts` lists resident companies, `src/data/profiles.ts` lists the people, and `src/data/voices.ts` lists testimonials. Company `slug` values define stable `/directory/<slug>` URLs. A profile’s optional `companySlug` explicitly links that person to a company; changing its display name does not break that link. Invalid company slugs and missing company references fail the build.
 - `src/consts.ts` contains the site description, application, event, WhatsApp, and venue URLs.
 - `src/pages/` defines public routes. Layouts and section components live in `src/layouts/` and `src/components/`.
 - The hero source lives in `src/assets/hero-fibonacci.png`. Astro generates responsive WebP variants during the build. Other public assets live in `public/`.
@@ -48,6 +48,8 @@ GitHub Actions runs the same checks for pushes and pull requests.
 Upcoming Luma events render as ordinary page links, so the calendar has no nested scroll area. The build fetches a public calendar snapshot; browsers refresh it through `/api/luma-events` when the section approaches the viewport. Vercel proxies this fixed route to Luma, and the dev server uses the same route. The static production preview uses the build snapshot. Failed refreshes preserve unexpired snapshot events and the calendar link. This public Luma endpoint is also used by Luma's embed, but is not their versioned API. Applications open the configured application page, and contact links open WhatsApp. This repository does not process submissions.
 
 `docs/site-inventory.md` records the previous site's content and routes. It is historical context, not a list of currently implemented pages.
+
+The company directory is rendered in full at build time. JavaScript progressively adds word-based search, alphabetical or newest-cohort sorting, and filters with contextual counts. Filters are shareable through the URL and preserve unrelated campaign parameters. `src/lib/directory-data.ts` owns content joins and the compact search index; `src/lib/directory.ts` contains browser-safe search logic. Full resident profiles are never bundled into the directory script.
 
 ## Styling
 

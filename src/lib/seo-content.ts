@@ -60,7 +60,7 @@ export const seoContentByPath: Record<string, Partial<Pick<PageMetadata, 'title'
 	},
 	'/directory': {
 		title: 'Malaysia AI Company Directory',
-		description: 'Search Malaysian AI companies and their founders. Filter residency startups by cohort, industry, location and tags.',
+		description: 'Search the companies in the Malaysian AI residency. Explore products, meet their builders, and filter by cohort, industry, location or tag.',
 		keywords: ['Malaysian AI', 'AI startups Malaysia', 'Malaysia AI companies', 'AI founders Malaysia', 'AI residency Malaysia'],
 	},
 	'/blog': {

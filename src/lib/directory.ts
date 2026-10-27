@@ -1,78 +1,59 @@
-import { profiles } from '../data/profiles';
-import type { Resident } from '../data/residents';
-
-export type DirectoryPerson = {
-	name: string;
-	role: string;
-	href: string;
+// Shared search logic. Keep content imports out of this module: it also runs in the browser.
+export const filterKeys = ['cohort', 'focus', 'location', 'tag'] as const;
+export type FilterKey = typeof filterKeys[number];
+export const filterLabels: Record<FilterKey, string> = {
+	cohort: 'Cohort', focus: 'Industry', location: 'Location', tag: 'Tag',
 };
-
-function companyKey(value: string): string {
-	return value.trim().toLowerCase();
-}
-
-/** People whose profile says they are building this company. Names and roles stay in profiles.ts. */
-export function peopleForCompany(resident: Pick<Resident, 'name'>): DirectoryPerson[] {
-	return profiles
-		.filter(profile => companyKey(profile.building) === companyKey(resident.name))
-		.map(profile => ({
-			name: profile.name,
-			role: profile.role,
-			href: `/residents/${profile.slug}`,
-		}))
-		.sort((a, b) => a.name.localeCompare(b.name, 'en'));
-}
-
-export type DirectoryFilters = {
-	q: string;
+export type DirectoryFilters = Record<FilterKey | 'q', string> & { sort: 'name' | 'cohort' };
+export type DirectoryEntry = {
+	slug: string;
+	name: string;
 	cohort: string;
 	focus: string;
 	location: string;
-	tag: string;
+	tags: string[];
+	searchText: string;
 };
 
-type DirectoryResident = Pick<Resident, 'name' | 'tag' | 'description' | 'focus' | 'location' | 'cohort' | 'tags'>;
-
-export function residentSlug(name: string): string {
-	const slug = name
-		.normalize('NFKD')
-		.replace(/[\u0300-\u036f]/g, '')
-		.toLowerCase()
-		.replace(/[^a-z0-9]+/g, '-')
-		.replace(/^-+|-+$/g, '');
-	if (!slug) throw new Error(`Cannot slug resident name: ${name}`);
-	return slug;
-}
-
-export function directoryPath(name: string): string {
-	return `/directory/${residentSlug(name)}`;
+export function directoryPath(company: { slug: string }): string {
+	return `/directory/${company.slug}`;
 }
 
 export function uniqueSorted(values: string[]): string[] {
 	return [...new Set(values)].sort((a, b) => a.localeCompare(b, 'en'));
 }
 
-export function residentSearchText(resident: DirectoryResident): string {
-	return [
-		resident.name,
-		resident.tag,
-		resident.description,
-		resident.focus,
-		resident.location,
-		resident.cohort,
-		...resident.tags,
-		...peopleForCompany(resident).flatMap(person => [person.name, person.role]),
-	].join(' ').toLowerCase();
+/** Accent, case and punctuation insensitive; query words can appear in any order. */
+export function normalizeSearch(value: string): string {
+	return value.normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+		.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
 }
 
-export function residentMatches(resident: DirectoryResident, filters: DirectoryFilters): boolean {
-	if (filters.cohort && resident.cohort !== filters.cohort) return false;
-	if (filters.focus && resident.focus !== filters.focus) return false;
-	if (filters.location && resident.location !== filters.location) return false;
-	if (filters.tag && !resident.tags.includes(filters.tag)) return false;
-	const query = filters.q.trim().toLowerCase();
-	if (!query) return true;
-	return residentSearchText(resident).includes(query);
+export function residentMatches(entry: DirectoryEntry, filters: DirectoryFilters, omit?: FilterKey): boolean {
+	for (const key of filterKeys) {
+		if (key === omit || !filters[key]) continue;
+		if (key === 'tag' ? !entry.tags.includes(filters[key]) : entry[key] !== filters[key]) return false;
+	}
+	return normalizeSearch(filters.q).split(/\s+/).every(word => entry.searchText.includes(word));
+}
+
+/** Counts ignore their own facet, so users can see alternatives before switching it. */
+export function facetCounts(entries: DirectoryEntry[], filters: DirectoryFilters, key: FilterKey): Map<string, number> {
+	const counts = new Map<string, number>();
+	for (const entry of entries) {
+		if (!residentMatches(entry, filters, key)) continue;
+		for (const value of key === 'tag' ? entry.tags : [entry[key]]) {
+			counts.set(value, (counts.get(value) ?? 0) + 1);
+		}
+	}
+	return counts;
+}
+
+export function sortDirectory(entries: DirectoryEntry[], sort: DirectoryFilters['sort']): DirectoryEntry[] {
+	return [...entries].sort((a, b) =>
+		(sort === 'cohort' ? b.cohort.localeCompare(a.cohort, 'en', { numeric: true }) : 0)
+		|| a.name.localeCompare(b.name, 'en'),
+	);
 }
 
 export function parseDirectoryFilters(params: URLSearchParams): DirectoryFilters {
@@ -82,17 +63,18 @@ export function parseDirectoryFilters(params: URLSearchParams): DirectoryFilters
 		focus: params.get('focus') ?? '',
 		location: params.get('location') ?? '',
 		tag: params.get('tag') ?? '',
+		sort: params.get('sort') === 'cohort' ? 'cohort' : 'name',
 	};
 }
 
-export function directoryQueryString(filters: DirectoryFilters): string {
-	const params = new URLSearchParams();
-	const query = filters.q.trim();
-	if (query) params.set('q', query);
-	if (filters.cohort) params.set('cohort', filters.cohort);
-	if (filters.focus) params.set('focus', filters.focus);
-	if (filters.location) params.set('location', filters.location);
-	if (filters.tag) params.set('tag', filters.tag);
+/** Preserve unrelated query parameters (e.g. campaign attribution). */
+export function directoryQueryString(filters: DirectoryFilters, existing = new URLSearchParams()): string {
+	const params = new URLSearchParams(existing);
+	for (const key of ['q', ...filterKeys, 'sort'] as const) {
+		params.delete(key);
+		const value = key === 'q' ? filters.q.trim() : filters[key];
+		if (value && !(key === 'sort' && value === 'name')) params.set(key, value);
+	}
 	const serialized = params.toString();
 	return serialized ? `?${serialized}` : '';
 }

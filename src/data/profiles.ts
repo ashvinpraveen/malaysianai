@@ -15,6 +15,8 @@ export type Profile = {
 	firstName: string;
 	role: string;
 	building: string;
+	/** Optional link to a company in residents.ts, independent of its display name. */
+	companySlug?: string;
 	/** Search and share description. The page itself only shows the person's own words. */
 	summary: string;
 	/** Pixel portraits stored at 1x; the page scales them up by a whole number with nearest-neighbour. A pair gets one each. */
@@ -67,6 +69,7 @@ export const profiles: Profile[] = [
 		firstName: 'Andre',
 		role: 'Co-founder of A47 Media and co-lead of the residency',
 		building: 'A47 Media',
+		companySlug: 'a47-media',
 		summary:
 			'Andre Teow co-founded A47 Media, an AI content team that turns your industry’s news into ready-to-approve posts, and runs Build with AI, Malaysia’s most active builders community.',
 		portraits: [{ name: 'Andre Teow', src: '/images/residents/andre-teow.png', width: 120, height: 120 }],
@@ -94,6 +97,7 @@ export const profiles: Profile[] = [
 		firstName: 'Hong Bing',
 		role: 'Founder, student builder and community lead',
 		building: 'CodeKite',
+		companySlug: 'codekite',
 		summary:
 			'Hong Bing is a Malaysian founder building CodeKite, AI agents that repair software when third-party APIs change, and co-founder of the AI Hackerdorm builder community.',
 		portraits: [{ name: 'Hong Bing', src: '/images/residents/hong-bing.png', width: 120, height: 120 }],
@@ -119,6 +123,7 @@ export const profiles: Profile[] = [
 		firstName: 'Lizzie',
 		role: 'Co-founder of Cleve',
 		building: 'Cleve',
+		companySlug: 'cleve',
 		summary:
 			'Lizzie Tan is the co-founder of Cleve, an AI second brain that keeps your docs and notes in one place so your AI always works from your full context.',
 		portraits: [{ name: 'Lizzie Tan', src: '/images/residents/lizzie-tan.png', width: 120, height: 120 }],
@@ -173,6 +178,7 @@ export const profiles: Profile[] = [
 		firstName: 'Ken',
 		role: 'Product manager with a master’s in mechanical engineering with mechatronics',
 		building: 'A47 Media',
+		companySlug: 'a47-media',
 		summary:
 			'Ken Ooi is a product manager and mechatronics engineer building A47 Media, which gives creators and video editors full control over what they make with AI.',
 		portraits: [{ name: 'Ken Ooi', src: '/images/residents/ken-ooi.png', width: 120, height: 120 }],
@@ -193,6 +199,7 @@ export const profiles: Profile[] = [
 		firstName: 'Shi Wei',
 		role: 'Software engineer at A47 Media',
 		building: 'A47 Media',
+		companySlug: 'a47-media',
 		summary:
 			'Leong Shi Wei is a software engineer at A47 Media, a content studio run with autonomous agents, and maintains Lostopedia, a campus lost and found app.',
 		portraits: [{ name: 'Leong Shi Wei', src: '/images/residents/leong-shi-wei.png', width: 120, height: 120 }],
@@ -278,6 +285,7 @@ export const profiles: Profile[] = [
 		firstName: 'Maxine',
 		role: 'Co-founder of Hover Team',
 		building: 'Hover Team',
+		companySlug: 'hover-team',
 		summary:
 			'Maxine Lai is the co-founder of Hover Team, which gives companies a clear view of what’s going on in their business, built on the chats, email and spreadsheets they already use.',
 		portraits: [{ name: 'Maxine Lai', src: '/images/residents/maxine-lai.png', lightSrc: '/images/residents/maxine-lai-light.png', width: 120, height: 120 }],

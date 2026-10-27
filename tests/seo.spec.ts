@@ -8,7 +8,7 @@ import { directoryPath } from '../src/lib/directory';
 const origin = 'https://www.malaysian.ai';
 const pages = [
 	'/', '/about', '/brand', '/residency', '/residency/accountability', '/residents', '/resident-teams', '/directory',
-	...residents.map(resident => directoryPath(resident.name)),
+	...residents.map(resident => directoryPath(resident)),
 	'/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon', '/podcast',
 	...profiles.map(profile => `/residents/${profile.slug}`),
 ];
@@ -68,7 +68,7 @@ const expectedMetadata = [
 	{
 		path: '/directory',
 		title: 'Malaysia AI Company Directory | Malaysian AI',
-		description: 'Search Malaysian AI companies and their founders. Filter residency startups by cohort, industry, location and tags.',
+		description: 'Search the companies in the Malaysian AI residency. Explore products, meet their builders, and filter by cohort, industry, location or tag.',
 	},
 	{
 		path: '/blog',
@@ -111,6 +111,8 @@ for (const { path, title, description } of expectedMetadata) {
 }
 
 test('public pages have consistent production metadata and valid share images', async ({ page, request }) => {
+	// Visit and decode images for every public route, including all company and people pages.
+	test.setTimeout(pages.length * 2_000);
 	const titles = new Set<string>();
 	for (const path of pages) {
 		const response = await page.goto(path);

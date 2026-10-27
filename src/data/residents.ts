@@ -1,4 +1,6 @@
 export type Resident = {
+	/** Stable public URL identifier; keep it when the company is renamed. */
+	slug: string;
 	name: string;
 	tag: string;
 	logoClass?: string;
@@ -15,6 +17,7 @@ export type Resident = {
 
 export const residents: Resident[] = [
 	{
+		slug: 'cleve',
 		name: 'Cleve',
 		tag: 'Personal AI content assistant',
 		logo: '/cleve-logo.svg',
@@ -28,6 +31,7 @@ export const residents: Resident[] = [
 		tile: 'light',
 	},
 	{
+		slug: 'replyrai',
 		name: 'ReplyrAI',
 		tag: 'AI growth platform for clinics',
 		logo: '/replyr-logo.png',
@@ -42,6 +46,7 @@ export const residents: Resident[] = [
 		tile: 'light',
 	},
 	{
+		slug: 'docuask',
 		name: 'DocuAsk',
 		tag: 'Chat with your documents',
 		logo: '/docuask-logo.png',
@@ -56,6 +61,7 @@ export const residents: Resident[] = [
 		tile: 'light',
 	},
 	{
+		slug: 'seavoice',
 		name: 'Seavoice',
 		tag: 'Enterprise voice AI agents',
 		logo: '/seavoice_icon.png',
@@ -69,6 +75,7 @@ export const residents: Resident[] = [
 		tile: 'light',
 	},
 	{
+		slug: 'hover-team',
 		name: 'Hover Team',
 		tag: 'See what your business is telling you',
 		logo: '/hover-logo.svg',
@@ -82,6 +89,7 @@ export const residents: Resident[] = [
 		tile: 'light',
 	},
 	{
+		slug: 'kelas-sekejap',
 		name: 'Kelas Sekejap',
 		tag: 'Learn English by speaking',
 		logo: '/kelassekejaplogo.svg',
@@ -96,6 +104,7 @@ export const residents: Resident[] = [
 		tile: 'light',
 	},
 	{
+		slug: 'a47-media',
 		name: 'A47 Media',
 		tag: 'AI-powered content operations for publishers',
 		logo: '/a47media-icon.png',
@@ -109,6 +118,7 @@ export const residents: Resident[] = [
 		tile: 'dark',
 	},
 	{
+		slug: 'codekite',
 		name: 'CodeKite',
 		tag: 'Self-maintaining API integrations',
 		logo: '/codekite-logo.svg',

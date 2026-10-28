@@ -51,7 +51,7 @@ test('Hong Bing profile links his personal site without outdated project details
 	await expect(page.locator('.profile-links').getByRole('link', { name: /Personal site/ })).toHaveAttribute('href', 'https://hong.build');
 	await expect(page.locator('.profile-links').getByRole('link', { name: /AI Hackerdorm/ })).toHaveAttribute('href', 'https://www.aihackerdorm.com/');
 	await expect(page.locator('.profile-links').getByRole('link', { name: /LinkedIn/ })).toHaveAttribute('href', 'https://www.linkedin.com/in/hong-bing');
-	await expect(page.locator('.profile-kicker')).toHaveCount(0);
+	await expect(page.locator('.profile-kicker')).toHaveText('Building in stealth');
 	await expect(page.locator('[aria-labelledby="work-title"]')).toHaveCount(0);
 	expect(await page.content()).not.toMatch(/codekite|third-party APIs|broken integrations/i);
 	const person = await page.locator('script[type="application/ld+json"]').evaluateAll(scripts =>
@@ -60,7 +60,7 @@ test('Hong Bing profile links his personal site without outdated project details
 	await page.getByRole('link', { name: 'All residents' }).click();
 	const card = page.locator('a.person[href="/residents/hong-bing"]');
 	await expect(card).not.toContainText('CodeKite');
-	await expect(card.locator('.person-building')).toHaveCount(0);
+	await expect(card.locator('.person-building')).toHaveText('Building in stealth');
 	await expect(card.getByRole('heading', { name: 'Hong Bing' })).toBeVisible();
 });
 

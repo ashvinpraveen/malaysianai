@@ -24,7 +24,7 @@ const people = [...profiles].sort((a, b) => a.name.localeCompare(b.name));
 						))}
 					</span>
 					<h2>{profile.name}</h2>
-					<p class="person-building">Building {profile.building}</p>
+					{profile.building && <p class="person-building">Building {profile.building}</p>}
 					<p class="person-role">{profile.role}</p>
 				</a>
 			</li>

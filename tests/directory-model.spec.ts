@@ -10,7 +10,7 @@ const filters = (query = '') => parseDirectoryFilters(new URLSearchParams(query)
 test('search handles accents, punctuation, spacing, people and unordered words', () => {
 	expect(normalizeSearch('  LÍZZIE—Tán  ')).toBe('lizzie tan');
 	expect(directoryIndex.filter(entry => residentMatches(entry, filters('q=tan+cléve'))).map(entry => entry.slug)).toEqual(['cleve']);
-	expect(directoryIndex.filter(entry => residentMatches(entry, filters('q=API+Hong+Bing'))).map(entry => entry.slug)).toEqual(['codekite']);
+	expect(directoryIndex.filter(entry => residentMatches(entry, filters('q=API+Hong+Bing'))).map(entry => entry.slug)).toEqual([]);
 	expect(directoryIndex.filter(entry => residentMatches(entry, filters('q=---')))).toHaveLength(directoryCompanies.length);
 });
 
@@ -38,6 +38,7 @@ test('company URLs and people links remain stable across display-name changes', 
 	expect(directoryPath(renamed)).toBe('/directory/cleve');
 	expect(peopleForCompany(renamed).map(person => person.slug)).toEqual(['lizzie-tan']);
 	expect(peopleForCompany({ slug: 'replyrai' })).toEqual([]);
+	expect(peopleForCompany({ slug: 'codekite' })).toEqual([]);
 });
 
 test('sorting keeps the search index intact and orders cohort ties alphabetically', () => {

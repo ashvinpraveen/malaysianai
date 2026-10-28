@@ -103,7 +103,7 @@ export const profiles: Profile[] = [
 		portraits: [{ name: 'Hong Bing', src: '/images/residents/hong-bing.png', width: 120, height: 120 }],
 		about: [
 			'I’m Hong Bing, a Malaysian founder and builder. I started coding at 12 and now build AI products, organise communities and bring people together to turn ideas into working projects.',
-			'I co-founded AI Hackerdorm and grew it to 500+ builders across four university chapters in Malaysia. My teams earned prizes across 15+ hackathons, including a wider track record of international wins such as HackMIT’s hardware special prize. I also founded and chaired KiyokoCon, bringing together a team, sponsors and partners to run a student-led convention. After winning Student Builder Champion at the ASEAN AI Summit, I was invited by Khailee Ng to join 500 Global’s AI residency.',
+			'I co-founded AI Hackerdorm and grew it to 700+ builders across four university chapters in Malaysia. My teams earned prizes across 15+ hackathons, including a wider track record of international wins such as HackMIT’s hardware special prize. I also founded and chaired KiyokoCon, bringing together a team, sponsors and partners to run a student-led convention. After winning Student Builder Champion at the ASEAN AI Summit, I was invited by Khailee Ng to join 500 Global’s AI residency.',
 			'Today, I’m building in stealth and helping grow Malaysia’s AI builder community: more people building, sharing what they learn and taking their ideas beyond campus.',
 		],
 		work: [],

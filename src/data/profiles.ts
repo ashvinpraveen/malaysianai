@@ -14,7 +14,7 @@ export type Profile = {
 	name: string;
 	firstName: string;
 	role: string;
-	building: string;
+	building?: string;
 	/** Optional link to a company in residents.ts, independent of its display name. */
 	companySlug?: string;
 	/** Search and share description. The page itself only shows the person's own words. */
@@ -97,25 +97,25 @@ export const profiles: Profile[] = [
 		name: 'Hong Bing',
 		firstName: 'Hong Bing',
 		role: 'Founder, student builder and community lead',
-		building: 'CodeKite',
-		companySlug: 'codekite',
+		building: 'in stealth',
 		summary:
-			'Hong Bing is a Malaysian founder building CodeKite, AI agents that repair software when third-party APIs change, and co-founder of the AI Hackerdorm builder community.',
+			'Hong Bing is a Malaysian founder and builder, and co-founder of the AI Hackerdorm builder community.',
 		portraits: [{ name: 'Hong Bing', src: '/images/residents/hong-bing.png', width: 120, height: 120 }],
 		about: [
-			'I’m Hong Bing, a Malaysian founder and builder. I started coding at 12 and now build AI products, organise communities and bring people together to turn ideas into working projects.',
-			'I co-founded AI Hackerdorm and grew it to 500+ builders across four university chapters in Malaysia. My teams earned prizes across 15+ hackathons, including a wider track record of international wins such as HackMIT’s hardware special prize. I also founded and chaired KiyokoCon, bringing together a team, sponsors and partners to run a student-led convention. After winning Student Builder Champion at the ASEAN AI Summit, I was invited by Khailee Ng to join 500 Global’s AI residency.',
-			'Today, I’m building CodeKite and helping grow Malaysia’s AI builder community: more people building, sharing what they learn and taking their ideas beyond campus.',
+			'I\'m Hong Bing, a Malaysian founder and builder. I started coding at 12 and now build AI products, organise communities and bring people together to turn ideas into working projects.',
+			'I co-founded AI Hackerdorm, now 700+ builders across four university chapters in Malaysia, to help more students access opportunities beyond campus. I also founded and chaired one of Malaysia\'s largest student-led conventions.',
+			'Alongside organising, I compete in hackathons. I\'ve earned 19 competition awards, including a hardware special prize at HackMIT. After winning Student Builder Champion at the ASEAN AI Summit, one of the judges, Khailee Ng, invited me into 500 Global\'s AI residency.',
+			'Today, I\'m building in stealth and helping grow Malaysia\'s AI builder community: more people building, sharing what they learn and taking their ideas beyond campus.',
 		],
-		work: [
-			'CodeKite helps engineering teams repair software when third-party APIs change. We’re building AI agents that identify affected code, propose fixes and verify that the user workflow still works, giving developers reviewable changes with evidence attached.',
-			'The goal is simple: keep your uptime, spend less time fixing broken integrations and more time building products.',
-		],
+		work: [],
 		workLinks: [
-			{ label: 'CodeKite website', href: 'https://codekite.app/' },
+			{ label: 'Personal site', href: 'https://hong.build' },
+		],
+		profileLinks: [
+			{ label: 'Personal site', href: 'https://hong.build' },
+			{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/hong-bing' },
 			{ label: 'AI Hackerdorm', href: 'https://www.aihackerdorm.com/' },
 		],
-		profileLinks: [{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/hong-bing' }],
 		accent: { dark: '#a19cf2', light: '#5148c4' },
 	},
 	{

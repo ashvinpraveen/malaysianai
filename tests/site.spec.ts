@@ -41,9 +41,29 @@ test('every resident profile shows its portraits and links without overflowing',
 		const portraits = page.locator('.profile-portrait');
 		await expect(portraits).toHaveCount(profile.portraits.length);
 		expect(await portraits.evaluateAll((images: HTMLImageElement[]) => images.every(image => image.complete && image.naturalWidth > 0))).toBe(true);
-		await expect(page.locator('.profile-links a')).toHaveCount(profile.workLinks.length + profile.profileLinks.length);
+		await expect(page.locator('.profile-links a')).toHaveCount(new Set([...profile.workLinks, ...profile.profileLinks].map(link => link.href)).size);
 		expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
 	}
+});
+
+test('Hong Bing profile links his personal site without outdated project details', async ({ page }) => {
+	await page.goto('/residents/hong-bing');
+	await expect(page.locator('.profile-links').getByRole('link', { name: /Personal site/ })).toHaveAttribute('href', 'https://hong.build');
+	await expect(page.locator('.profile-links').getByRole('link', { name: /AI Hackerdorm/ })).toHaveAttribute('href', 'https://www.aihackerdorm.com/');
+	await expect(page.locator('.profile-links').getByRole('link', { name: /LinkedIn/ })).toHaveAttribute('href', 'https://www.linkedin.com/in/hong-bing');
+	await expect(page.locator('.profile-links .profile-link-label')).toHaveText(['Personal site', 'LinkedIn', 'AI Hackerdorm']);
+	await expect(page.locator('.profile-actions .site-button')).toHaveAttribute('href', 'https://hong.build');
+	await expect(page.locator('.profile-kicker')).toHaveText('Building in stealth');
+	await expect(page.locator('[aria-labelledby="work-title"]')).toHaveCount(0);
+	expect(await page.content()).not.toMatch(/codekite|third-party APIs|broken integrations/i);
+	const person = await page.locator('script[type="application/ld+json"]').evaluateAll(scripts =>
+		scripts.map(script => JSON.parse(script.textContent || '{}')).find(data => data['@type'] === 'ProfilePage').mainEntity);
+	expect(person.sameAs).toContain('https://hong.build');
+	await page.getByRole('link', { name: 'All residents' }).click();
+	const card = page.locator('a.person[href="/residents/hong-bing"]');
+	await expect(card).not.toContainText('CodeKite');
+	await expect(card.locator('.person-building')).toHaveText('Building in stealth');
+	await expect(card.getByRole('heading', { name: 'Hong Bing' })).toBeVisible();
 });
 
 test('residents page links every resident to their profile', async ({ page }) => {

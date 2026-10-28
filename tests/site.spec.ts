@@ -41,7 +41,7 @@ test('every resident profile shows its portraits and links without overflowing',
 		const portraits = page.locator('.profile-portrait');
 		await expect(portraits).toHaveCount(profile.portraits.length);
 		expect(await portraits.evaluateAll((images: HTMLImageElement[]) => images.every(image => image.complete && image.naturalWidth > 0))).toBe(true);
-		await expect(page.locator('.profile-links a')).toHaveCount(profile.workLinks.length + profile.profileLinks.length);
+		await expect(page.locator('.profile-links a')).toHaveCount(new Set([...profile.workLinks, ...profile.profileLinks].map(link => link.href)).size);
 		expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
 	}
 });

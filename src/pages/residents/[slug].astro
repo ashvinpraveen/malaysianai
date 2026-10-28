@@ -14,7 +14,7 @@ const { profile } = Astro.props;
 // Pixel art only stays crisp at whole-number scales.
 const portraitScale = 2;
 const [mainLink, secondLink] = profile.workLinks;
-const links = [...profile.workLinks, ...profile.profileLinks];
+const links = [...profile.workLinks, ...profile.profileLinks].filter((link, index, all) => all.findIndex(item => item.href === link.href) === index);
 const keywords = [...new Set(['Malaysian AI', 'AI residency Malaysia', profile.name, ...profile.portraits.map(portrait => portrait.name), ...(profile.building ? [profile.building] : [])])];
 const shortURL = (href: string) => {
 	const url = new URL(href);

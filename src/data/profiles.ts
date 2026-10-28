@@ -109,11 +109,12 @@ export const profiles: Profile[] = [
 		],
 		work: [],
 		workLinks: [
-			{ label: 'AI Hackerdorm', href: 'https://www.aihackerdorm.com/' },
+			{ label: 'Personal site', href: 'https://hong.build' },
 		],
 		profileLinks: [
 			{ label: 'Personal site', href: 'https://hong.build' },
 			{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/hong-bing' },
+			{ label: 'AI Hackerdorm', href: 'https://www.aihackerdorm.com/' },
 		],
 		accent: { dark: '#a19cf2', light: '#5148c4' },
 	},

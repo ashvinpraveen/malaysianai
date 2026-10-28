@@ -51,6 +51,8 @@ test('Hong Bing profile links his personal site without outdated project details
 	await expect(page.locator('.profile-links').getByRole('link', { name: /Personal site/ })).toHaveAttribute('href', 'https://hong.build');
 	await expect(page.locator('.profile-links').getByRole('link', { name: /AI Hackerdorm/ })).toHaveAttribute('href', 'https://www.aihackerdorm.com/');
 	await expect(page.locator('.profile-links').getByRole('link', { name: /LinkedIn/ })).toHaveAttribute('href', 'https://www.linkedin.com/in/hong-bing');
+	await expect(page.locator('.profile-links .profile-link-label')).toHaveText(['Personal site', 'LinkedIn', 'AI Hackerdorm']);
+	await expect(page.locator('.profile-actions .site-button')).toHaveAttribute('href', 'https://hong.build');
 	await expect(page.locator('.profile-kicker')).toHaveText('Building in stealth');
 	await expect(page.locator('[aria-labelledby="work-title"]')).toHaveCount(0);
 	expect(await page.content()).not.toMatch(/codekite|third-party APIs|broken integrations/i);

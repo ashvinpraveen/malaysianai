@@ -13,7 +13,7 @@
   "redirects": [
     {
       "source": "/pivot",
-      "destination": "https://luma.com/01d8h02p",
+      "destination": "https://luma.com/01d8h02p?utm_source=malaysianai&utm_medium=redirect&utm_campaign=pivot",
       "statusCode": 302
     },
     {

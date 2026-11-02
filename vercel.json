@@ -12,6 +12,11 @@
   ],
   "redirects": [
     {
+      "source": "/pivot",
+      "destination": "https://luma.com/01d8h02p?utm_source=malaysianai&utm_medium=redirect&utm_campaign=pivot",
+      "statusCode": 302
+    },
+    {
       "source": "/aimto",
       "destination": "https://aimto.my/",
       "statusCode": 301

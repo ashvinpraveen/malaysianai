@@ -10,6 +10,8 @@ const pages = [
 	'/', '/about', '/brand', '/residency', '/residency/accountability', '/residents', '/resident-teams', '/directory',
 	...residents.map(resident => directoryPath(resident)),
 	'/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon', '/podcast',
+	'/podcast/how-to-win-a-hackathon', '/podcast/joseph-chin', '/podcast/isaac-tan', '/podcast/the-era-of-agents', '/podcast/how-cleve-got-funded',
+	'/podcast/ai-learn-a-thon', '/podcast/malaysias-ai-scene', '/podcast/level-1-to-level-5',
 	...profiles.map(profile => `/residents/${profile.slug}`),
 ];
 const expectedCommunityNames = [
@@ -234,9 +236,10 @@ test('known retired routes retain redirect fallbacks and AIMTO has a host wildca
 	for (const rule of hosting.redirects.filter(rule => !rule.source.includes(':'))) {
 		const response = await request.get(rule.source);
 		const html = await response.text();
-		expect(html).toContain(`url=${rule.destination}`);
+		expect(html.replaceAll('&amp;', '&')).toContain(`url=${rule.destination}`);
 		expect(html).toContain('name="robots" content="noindex"');
-		expect(rule.statusCode).toBe(301);
+		// /pivot is a temporary campaign link. Retired routes stay permanent.
+		expect(rule.statusCode).toBe(rule.source === '/pivot' ? 302 : 301);
 		if (rule.destination.startsWith('/')) {
 			expect((await request.get(rule.destination.split('#')[0])).status()).toBe(200);
 		}

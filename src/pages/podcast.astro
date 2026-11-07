@@ -7,32 +7,73 @@ import { displayTitle } from '../lib/podcast-title';
 import { serializeJsonLd } from '../lib/seo';
 import {
 	PODCAST_APPLE_URL,
+	PODCAST_AUDIO_FEED_URL,
+	PODCAST_CADENCE,
 	PODCAST_CHANNEL_URL,
 	PODCAST_DESCRIPTION,
 	PODCAST_SPOTIFY_URL,
 	episodeListenLinks,
+	episodeNumbers,
+	guestName,
 	loadPodcastEpisodes,
 	shortDescription,
+	thumbnailURL,
 } from '../lib/podcast';
 
-const episodes = (await loadPodcastEpisodes()).map((episode) => ({
+const site = Astro.site;
+if (!site) throw new Error('Configure the production site URL in astro.config.mjs.');
+const loaded = await loadPodcastEpisodes();
+const numbers = episodeNumbers(loaded);
+const episodes = loaded.map((episode, index) => ({
 	...episode,
 	title: displayTitle(episode.title),
-	summary: shortDescription(episode.description),
+	number: numbers.get(episode.id),
+	guest: guestName(episode),
 	listen: episodeListenLinks(episode.id),
+	summary: shortDescription(episode.description, index === 0 ? 360 : 200),
 }));
 const description = PODCAST_DESCRIPTION;
-const itemList = {
+
+function episodeLinks(episode: (typeof episodes)[number]) {
+	return [
+		{ href: episode.url, label: 'Watch on YouTube' },
+		...(episode.listen?.spotify ? [{ href: episode.listen.spotify, label: 'Listen on Spotify' }] : []),
+		...(episode.listen?.apple ? [{ href: episode.listen.apple, label: 'Listen on Apple Podcasts' }] : []),
+	];
+}
+
+const series = {
 	'@context': 'https://schema.org',
-	'@type': 'ItemList',
-	name: 'Malaysian AI Podcast',
-	itemListOrder: 'https://schema.org/ItemListOrderDescending',
-	numberOfItems: episodes.length,
-	itemListElement: episodes.map((episode, index) => ({
-		'@type': 'ListItem',
-		position: index + 1,
-		url: episode.url,
+	'@type': 'PodcastSeries',
+	'@id': new URL('/podcast#series', site).href,
+	name: 'The Malaysian.ai Podcast',
+	description: `${PODCAST_DESCRIPTION} ${PODCAST_CADENCE}`,
+	url: new URL('/podcast', site).href,
+	inLanguage: 'en-MY',
+	webFeed: PODCAST_AUDIO_FEED_URL,
+	sameAs: [PODCAST_CHANNEL_URL, PODCAST_SPOTIFY_URL, PODCAST_APPLE_URL],
+	author: [
+		{ '@type': 'Person', name: 'Ashvin Praveen' },
+		{ '@type': 'Person', name: 'Ken Ooi' },
+	],
+	episode: episodes.map(episode => ({
+		'@type': 'PodcastEpisode',
+		'@id': new URL(`/podcast#episode-${episode.id}`, site).href,
 		name: episode.title,
+		description: shortDescription(episode.description, 500),
+		datePublished: episode.published,
+		url: new URL(`/podcast#episode-${episode.id}`, site).href,
+		...(episode.number ? { episodeNumber: episode.number } : {}),
+		...(episode.guest ? { actor: [{ '@type': 'Person', name: episode.guest }] } : {}),
+		associatedMedia: {
+			'@type': 'VideoObject',
+			name: episode.title,
+			description: shortDescription(episode.description, 500),
+			thumbnailUrl: thumbnailURL(episode.id),
+			uploadDate: episode.published,
+			embedUrl: `https://www.youtube-nocookie.com/embed/${episode.id}`,
+			contentUrl: episode.url,
+		},
 	})),
 };
 ---
@@ -41,13 +82,13 @@ const itemList = {
 	<section class="podcast-page" aria-labelledby="podcast-title">
 		<header class="page-heading">
 			<h1 id="podcast-title">Malaysian AI podcast</h1>
-			<p class="lede">
-				Conversations with the people building Malaysia’s AI scene. Watch every episode on our{' '}
-				<a href={PODCAST_CHANNEL_URL}>YouTube channel</a>, or listen on{' '}
-				<a href={PODCAST_SPOTIFY_URL}>Spotify</a>
-				{' and '}
-				<a href={PODCAST_APPLE_URL}>Apple Podcasts</a>.
-			</p>
+			<p class="lede">Conversations with the people building Malaysia’s AI scene. {PODCAST_CADENCE}</p>
+			<nav class="subscribe" aria-label="Subscribe">
+				<span class="subscribe-label">Subscribe</span>
+				<a class="site-button" href={PODCAST_CHANNEL_URL}>YouTube</a>
+				<a class="site-button" href={PODCAST_SPOTIFY_URL}>Spotify</a>
+				<a class="site-button" href={PODCAST_APPLE_URL}>Apple Podcasts</a>
+			</nav>
 		</header>
 
 		{
@@ -56,21 +97,23 @@ const itemList = {
 			) : (
 				<ol class="episodes">
 					{episodes.map((episode, index) => (
-						<li>
+						<li class:list={{ 'is-latest': index === 0 }}>
+							{index === 0 && <p class="latest-label">Latest episode</p>}
 							<article id={`episode-${episode.id}`}>
 								<YouTubeFacade id={episode.id} title={episode.title} eager={index === 0} />
 								<div class="episode-copy">
-									<p class="eyebrow"><FormattedDate date={new Date(episode.published)} /></p>
+									<p class="eyebrow">
+										{episode.number && <span>Episode {episode.number}</span>}
+										{episode.number && <span class="dot" aria-hidden="true">·</span>}
+										<FormattedDate date={new Date(episode.published)} />
+									</p>
 									<h2>{episode.title}</h2>
-									{episode.summary && <p>{episode.summary}</p>}
+									{episode.guest && <p class="guest">With {episode.guest}</p>}
+									{episode.summary && <p class="summary">{episode.summary}</p>}
 									<p class="listen-links">
-										<a class="text-link" href={episode.url}>Watch on YouTube <span aria-hidden="true">↗</span></a>
-										{episode.listen && (
-											<>
-												<a class="text-link" href={episode.listen.spotify}>Listen on Spotify <span aria-hidden="true">↗</span></a>
-												<a class="text-link" href={episode.listen.apple}>Listen on Apple Podcasts <span aria-hidden="true">↗</span></a>
-											</>
-										)}
+										{episodeLinks(episode).map(link => (
+											<a class={index === 0 ? 'site-button' : 'text-link'} href={link.href}>{link.label}</a>
+										))}
 									</p>
 								</div>
 							</article>
@@ -80,7 +123,7 @@ const itemList = {
 			)
 		}
 	</section>
-	{episodes.length > 0 && <script is:inline type="application/ld+json" set:html={serializeJsonLd(itemList)} />}
+	{episodes.length > 0 && <script is:inline type="application/ld+json" set:html={serializeJsonLd(series)} />}
 </Layout>
 
 <style>
@@ -99,15 +142,28 @@ const itemList = {
 
 	.page-heading {
 		max-width: 46rem;
-		margin-bottom: clamp(2rem, 4vw, 3.5rem);
+		margin-bottom: clamp(2rem, 4vw, 3.25rem);
 	}
 
-	.eyebrow {
+	.latest-label,
+	.eyebrow,
+	.subscribe-label {
 		margin: 0;
 		color: var(--text-muted);
 		font-size: var(--text-xs);
-		letter-spacing: 0.06em;
+		letter-spacing: 0.08em;
 		text-transform: uppercase;
+	}
+
+	.latest-label {
+		margin-bottom: 0.75rem;
+	}
+
+	.eyebrow {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		align-items: baseline;
 	}
 
 	h1 {
@@ -127,8 +183,16 @@ const itemList = {
 		line-height: var(--leading-body);
 	}
 
-	.lede a {
-		color: var(--link-bright);
+	.subscribe {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+		align-items: center;
+		margin-top: 1.4rem;
+	}
+
+	.subscribe-label {
+		margin-right: 0.15rem;
 	}
 
 	.empty {
@@ -138,31 +202,56 @@ const itemList = {
 
 	.episodes {
 		display: grid;
-		gap: clamp(2.5rem, 5vw, 4rem);
+		gap: clamp(1.75rem, 3vw, 2.75rem);
 		margin: 0;
 		padding: 0;
 		list-style: none;
 	}
 
 	article {
-		display: grid;
-		grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.75fr);
-		gap: clamp(1.25rem, 3vw, 2.5rem);
-		align-items: center;
 		scroll-margin-top: 6.5rem;
+	}
+
+	.is-latest article {
+		display: grid;
+		grid-template-columns: minmax(0, 1.4fr) minmax(16rem, 0.72fr);
+		gap: clamp(1.15rem, 2.5vw, 2.25rem);
+		align-items: center;
+		padding: clamp(0.8rem, 1.5vw, 1.15rem);
+		background: var(--card-background);
+		border-radius: calc(var(--radius-media) + 0.35rem);
+	}
+
+	.episodes > li:not(.is-latest) article {
+		display: grid;
+		grid-template-columns: minmax(0, 17.5rem) minmax(0, 1fr);
+		gap: clamp(1rem, 2vw, 1.75rem);
+		align-items: center;
+		padding-top: clamp(1.25rem, 2vw, 1.75rem);
+		border-top: 1px solid var(--hairline-soft);
 	}
 
 	.episode-copy h2 {
 		margin: 0.7rem 0 0;
 		font-family: var(--font-display);
-		font-size: clamp(1.7rem, 2.4vw, 2.4rem);
+		font-size: clamp(1.45rem, 2vw, 1.9rem);
 		font-weight: 400;
 		letter-spacing: -0.04em;
-		line-height: 1.05;
+		line-height: 1.08;
 	}
 
-	.episode-copy p:not(.eyebrow) {
-		margin: 1rem 0 0;
+	.is-latest h2 {
+		font-size: clamp(1.85rem, 3vw, 2.8rem);
+	}
+
+	.guest {
+		margin: 0.8rem 0 0;
+		color: var(--text-heading);
+		font-size: var(--text-sm);
+	}
+
+	.summary {
+		margin: 0.85rem 0 0;
 		color: var(--text-soft);
 		font-size: var(--text-base);
 		line-height: var(--leading-body);
@@ -171,24 +260,40 @@ const itemList = {
 	.listen-links {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.85rem 1.25rem;
-		margin-top: 1.25rem;
+		gap: 0.65rem 0.85rem;
+		align-items: center;
+		margin: 1.15rem 0 0;
 	}
 
 	.text-link {
 		display: inline-flex;
 		gap: 0.45rem;
 		padding-bottom: 0.2rem;
-		border-bottom: 1px solid var(--border-color);
-		color: var(--link-bright);
+		border-bottom: 1px solid var(--hairline);
+		color: var(--text-heading);
 		font-size: 0.85rem;
 		text-decoration: none;
 	}
 
+	.text-link:hover,
+	.text-link:focus-visible {
+		color: var(--text-hover);
+	}
+
+	.text-link:focus-visible {
+		outline: 2px solid var(--focus-color);
+		outline-offset: 3px;
+	}
+
 	@media (max-width: 800px) {
-		article {
+		.is-latest article,
+		.episodes > li:not(.is-latest) article {
 			grid-template-columns: 1fr;
-			gap: 1rem;
+			align-items: start;
+		}
+
+		.is-latest article {
+			padding: 0.7rem;
 		}
 	}
 </style>

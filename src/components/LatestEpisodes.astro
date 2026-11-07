@@ -1,11 +1,14 @@
 ---
 import FormattedDate from './FormattedDate.astro';
 import { displayTitle } from '../lib/podcast-title';
-import { PODCAST_APPLE_URL, PODCAST_SPOTIFY_URL, latestEpisodes, loadPodcastEpisodes, shortDescription } from '../lib/podcast';
+import { PODCAST_APPLE_URL, PODCAST_SPOTIFY_URL, episodeNumbers, latestEpisodes, loadPodcastEpisodes, shortDescription } from '../lib/podcast';
 
-const episodes = latestEpisodes(await loadPodcastEpisodes()).map((episode) => ({
+const allEpisodes = await loadPodcastEpisodes();
+const numbers = episodeNumbers(allEpisodes);
+const episodes = latestEpisodes(allEpisodes).map((episode) => ({
 	...episode,
 	title: displayTitle(episode.title),
+	number: numbers.get(episode.id),
 }));
 ---
 
@@ -33,7 +36,10 @@ const episodes = latestEpisodes(await loadPodcastEpisodes()).map((episode) => ({
 									<img src={`https://i.ytimg.com/vi/${episode.id}/hqdefault.jpg`} alt="" width="480" height="360" loading="lazy" decoding="async" />
 								</span>
 								<span class="copy">
-									<FormattedDate date={new Date(episode.published)} />
+									<span class="meta">
+										{episode.number && <span>Episode {episode.number}</span>}
+										<FormattedDate date={new Date(episode.published)} />
+									</span>
 									<strong>{episode.title}</strong>
 									<em>{shortDescription(episode.description, 140)}</em>
 								</span>
@@ -144,11 +150,18 @@ const episodes = latestEpisodes(await loadPodcastEpisodes()).map((episode) => ({
 		gap: 0.45rem;
 	}
 
-	.copy :global(time) {
+	.meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem 0.55rem;
 		color: var(--text-muted);
 		font-size: var(--text-xs);
 		letter-spacing: 0.04em;
 		text-transform: uppercase;
+	}
+
+	.meta :global(time) {
+		color: inherit;
 	}
 
 	.copy strong {

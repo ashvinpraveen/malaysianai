@@ -234,9 +234,10 @@ test('known retired routes retain redirect fallbacks and AIMTO has a host wildca
 	for (const rule of hosting.redirects.filter(rule => !rule.source.includes(':'))) {
 		const response = await request.get(rule.source);
 		const html = await response.text();
-		expect(html).toContain(`url=${rule.destination}`);
+		expect(html.replaceAll('&amp;', '&')).toContain(`url=${rule.destination}`);
 		expect(html).toContain('name="robots" content="noindex"');
-		expect(rule.statusCode).toBe(301);
+		// /pivot is a temporary campaign link. Retired routes stay permanent.
+		expect(rule.statusCode).toBe(rule.source === '/pivot' ? 302 : 301);
 		if (rule.destination.startsWith('/')) {
 			expect((await request.get(rule.destination.split('#')[0])).status()).toBe(200);
 		}

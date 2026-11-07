@@ -1,10 +1,11 @@
 ---
+import { getCollection } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
-import YouTubeFacade from '../components/YouTubeFacade.astro';
 import Layout from '../layouts/Layout.astro';
 import { SITE_TITLE } from '../consts';
 import { displayTitle } from '../lib/podcast-title';
 import { serializeJsonLd } from '../lib/seo';
+import { thumbnailURL } from '../lib/podcast';
 import {
 	PODCAST_APPLE_URL,
 	PODCAST_AUDIO_FEED_URL,
@@ -12,36 +13,30 @@ import {
 	PODCAST_CHANNEL_URL,
 	PODCAST_DESCRIPTION,
 	PODCAST_SPOTIFY_URL,
-	episodeListenLinks,
 	episodeNumbers,
 	guestName,
 	loadPodcastEpisodes,
 	shortDescription,
-	thumbnailURL,
 } from '../lib/podcast';
 
 const site = Astro.site;
 if (!site) throw new Error('Configure the production site URL in astro.config.mjs.');
+const stories = await getCollection('blog');
 const loaded = await loadPodcastEpisodes();
 const numbers = episodeNumbers(loaded);
-const episodes = loaded.map((episode, index) => ({
-	...episode,
-	title: displayTitle(episode.title),
-	number: numbers.get(episode.id),
-	guest: guestName(episode),
-	listen: episodeListenLinks(episode.id),
-	summary: shortDescription(episode.description, index === 0 ? 360 : 200),
-}));
-const description = PODCAST_DESCRIPTION;
 
-function episodeLinks(episode: (typeof episodes)[number]) {
-	return [
-		{ href: episode.url, label: 'Watch on YouTube' },
-		...(episode.listen?.spotify ? [{ href: episode.listen.spotify, label: 'Listen on Spotify' }] : []),
-		...(episode.listen?.apple ? [{ href: episode.listen.apple, label: 'Listen on Apple Podcasts' }] : []),
-	];
-}
-
+const episodes = loaded.map(episode => {
+	const story = stories.find(item => item.data.category === 'podcast' && item.data.youtubeId === episode.id);
+	return {
+		...episode,
+		title: displayTitle(episode.title),
+		number: numbers.get(episode.id),
+		guest: story?.data.guest ?? guestName(episode),
+		summary: shortDescription(episode.description, 220),
+		href: story ? `/podcast/${story.id}` : `/podcast#episode-${episode.id}`,
+	};
+});
+const [featured, ...archive] = episodes;
 const series = {
 	'@context': 'https://schema.org',
 	'@type': 'PodcastSeries',
@@ -58,11 +53,11 @@ const series = {
 	],
 	episode: episodes.map(episode => ({
 		'@type': 'PodcastEpisode',
-		'@id': new URL(`/podcast#episode-${episode.id}`, site).href,
+		'@id': new URL(episode.href, site).href,
 		name: episode.title,
 		description: shortDescription(episode.description, 500),
 		datePublished: episode.published,
-		url: new URL(`/podcast#episode-${episode.id}`, site).href,
+		url: new URL(episode.href, site).href,
 		...(episode.number ? { episodeNumber: episode.number } : {}),
 		...(episode.guest ? { actor: [{ '@type': 'Person', name: episode.guest }] } : {}),
 		associatedMedia: {
@@ -78,16 +73,15 @@ const series = {
 };
 ---
 
-<Layout title={`Podcast | ${SITE_TITLE}`} description={description}>
-	<section class="podcast-page" aria-labelledby="podcast-title">
+<Layout title={`Podcast | ${SITE_TITLE}`} description={PODCAST_DESCRIPTION}>
+	<section class="show" aria-labelledby="podcast-title">
 		<header class="page-heading">
-			<h1 id="podcast-title">Malaysian AI podcast</h1>
+			<h1 id="podcast-title">The Malaysian AI podcast</h1>
 			<p class="lede">Conversations with the people building Malaysia’s AI scene. {PODCAST_CADENCE}</p>
 			<nav class="subscribe" aria-label="Subscribe">
-				<span class="subscribe-label">Subscribe</span>
-				<a class="site-button" href={PODCAST_CHANNEL_URL}>YouTube</a>
-				<a class="site-button" href={PODCAST_SPOTIFY_URL}>Spotify</a>
-				<a class="site-button" href={PODCAST_APPLE_URL}>Apple Podcasts</a>
+				<a href={PODCAST_CHANNEL_URL}>YouTube</a>
+				<a href={PODCAST_SPOTIFY_URL}>Spotify</a>
+				<a href={PODCAST_APPLE_URL}>Apple Podcasts</a>
 			</nav>
 		</header>
 
@@ -95,31 +89,43 @@ const series = {
 			episodes.length === 0 ? (
 				<p class="empty">Episodes will show up here soon.</p>
 			) : (
-				<ol class="episodes">
-					{episodes.map((episode, index) => (
-						<li class:list={{ 'is-latest': index === 0 }}>
-							{index === 0 && <p class="latest-label">Latest episode</p>}
-							<article id={`episode-${episode.id}`}>
-								<YouTubeFacade id={episode.id} title={episode.title} eager={index === 0} />
-								<div class="episode-copy">
-									<p class="eyebrow">
+				<>
+					{featured && (
+						<article class="featured" id={`episode-${featured.id}`}>
+							<a class="featured-still" href={featured.href}>
+								<img src={thumbnailURL(featured.id)} alt="" width="480" height="360" />
+							</a>
+							<div class="featured-copy">
+								<p class="meta">
+									{featured.number && <span>Episode {featured.number}</span>}
+									{featured.number && <span aria-hidden="true">·</span>}
+									<FormattedDate date={new Date(featured.published)} />
+								</p>
+								<h2><a href={featured.href}>{featured.title}</a></h2>
+								{featured.guest && <p class="guest">{featured.guest}</p>}
+								{featured.summary && <p class="dek">{featured.summary}</p>}
+								<a class="read" href={featured.href}>Read this episode</a>
+							</div>
+						</article>
+					)}
+					<ol class="episodes">
+						{archive.map(episode => (
+							<li>
+								<article id={`episode-${episode.id}`}>
+									<p class="meta">
 										{episode.number && <span>Episode {episode.number}</span>}
-										{episode.number && <span class="dot" aria-hidden="true">·</span>}
 										<FormattedDate date={new Date(episode.published)} />
 									</p>
-									<h2>{episode.title}</h2>
-									{episode.guest && <p class="guest">With {episode.guest}</p>}
-									{episode.summary && <p class="summary">{episode.summary}</p>}
-									<p class="listen-links">
-										{episodeLinks(episode).map(link => (
-											<a class={index === 0 ? 'site-button' : 'text-link'} href={link.href}>{link.label}</a>
-										))}
-									</p>
-								</div>
-							</article>
-						</li>
-					))}
-				</ol>
+									<div>
+										<h2><a href={episode.href}>{episode.title}</a></h2>
+										{episode.guest && <p class="guest">{episode.guest}</p>}
+										{episode.summary && <p class="dek">{episode.summary}</p>}
+									</div>
+								</article>
+							</li>
+						))}
+					</ol>
+				</>
 			)
 		}
 	</section>
@@ -127,56 +133,28 @@ const series = {
 </Layout>
 
 <style>
-	.podcast-page {
-		padding: clamp(1.25rem, 2vw, 2rem) clamp(1.25rem, 5vw, 4rem) clamp(5rem, 10vw, 8rem);
+	.show {
+		padding: clamp(2rem, 5vw, 4rem) clamp(1.25rem, 5vw, 4rem) clamp(5rem, 10vw, 8rem);
 		color: var(--text-heading);
 		background: var(--page-background);
 	}
 
-	.page-heading,
-	.episodes,
-	.empty {
-		width: min(100%, 76rem);
-		margin-inline: auto;
-	}
-
 	.page-heading {
-		max-width: 46rem;
-		margin-bottom: clamp(2rem, 4vw, 3.25rem);
-	}
-
-	.latest-label,
-	.eyebrow,
-	.subscribe-label {
-		margin: 0;
-		color: var(--text-muted);
-		font-size: var(--text-xs);
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-	}
-
-	.latest-label {
-		margin-bottom: 0.75rem;
-	}
-
-	.eyebrow {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.4rem;
-		align-items: baseline;
+		width: min(100%, 38rem);
+		margin: 0 auto clamp(3rem, 6vw, 4.5rem);
+		text-align: center;
 	}
 
 	h1 {
 		margin: 0;
 		font-family: var(--font-display);
-		font-size: var(--text-page-title);
+		font-size: clamp(2.8rem, 6vw, 4.6rem);
 		font-weight: 400;
 		letter-spacing: -0.04em;
-		line-height: 1;
+		line-height: 0.96;
 	}
 
 	.lede {
-		max-width: 38rem;
 		margin: 1.25rem 0 0;
 		color: var(--text-soft);
 		font-size: var(--text-base);
@@ -186,114 +164,147 @@ const series = {
 	.subscribe {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.6rem;
-		align-items: center;
-		margin-top: 1.4rem;
+		justify-content: center;
+		gap: 0.4rem 1.25rem;
+		margin-top: 1.35rem;
 	}
 
-	.subscribe-label {
-		margin-right: 0.15rem;
+	.subscribe a,
+	.read,
+	h2 a {
+		color: var(--text-heading);
+		text-decoration: none;
 	}
 
+	.subscribe a {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+		text-decoration-thickness: 1px;
+	}
+
+	.featured,
+	.episodes,
 	.empty {
+		width: min(100%, 68rem);
+		margin-inline: auto;
+	}
+
+	.featured {
+		display: grid;
+		grid-template-columns: minmax(0, 1.15fr) minmax(16rem, 0.85fr);
+		gap: clamp(1.5rem, 4vw, 3.5rem);
+		align-items: end;
+		margin-bottom: clamp(3rem, 6vw, 4.5rem);
+	}
+
+	.featured-still {
+		display: block;
+		overflow: hidden;
+		aspect-ratio: 16 / 9;
+		background: var(--image-background);
+	}
+
+	.featured-still img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem 0.7rem;
 		margin: 0;
 		color: var(--text-soft);
-	}
-
-	.episodes {
-		display: grid;
-		gap: clamp(1.75rem, 3vw, 2.75rem);
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-
-	article {
-		scroll-margin-top: 6.5rem;
-	}
-
-	.is-latest article {
-		display: grid;
-		grid-template-columns: minmax(0, 1.4fr) minmax(16rem, 0.72fr);
-		gap: clamp(1.15rem, 2.5vw, 2.25rem);
-		align-items: center;
-		padding: clamp(0.8rem, 1.5vw, 1.15rem);
-		background: var(--card-background);
-		border-radius: calc(var(--radius-media) + 0.35rem);
-	}
-
-	.episodes > li:not(.is-latest) article {
-		display: grid;
-		grid-template-columns: minmax(0, 17.5rem) minmax(0, 1fr);
-		gap: clamp(1rem, 2vw, 1.75rem);
-		align-items: center;
-		padding-top: clamp(1.25rem, 2vw, 1.75rem);
-		border-top: 1px solid var(--hairline-soft);
-	}
-
-	.episode-copy h2 {
-		margin: 0.7rem 0 0;
-		font-family: var(--font-display);
-		font-size: clamp(1.45rem, 2vw, 1.9rem);
-		font-weight: 400;
-		letter-spacing: -0.04em;
-		line-height: 1.08;
-	}
-
-	.is-latest h2 {
-		font-size: clamp(1.85rem, 3vw, 2.8rem);
-	}
-
-	.guest {
-		margin: 0.8rem 0 0;
-		color: var(--text-heading);
 		font-size: var(--text-sm);
 	}
 
-	.summary {
-		margin: 0.85rem 0 0;
+	h2 {
+		margin: 0.55rem 0 0;
+		font-family: var(--font-display);
+		font-size: clamp(1.7rem, 3vw, 2.7rem);
+		font-weight: 400;
+		letter-spacing: -0.035em;
+		line-height: 1.05;
+	}
+
+	.guest {
+		margin: 0.7rem 0 0;
+	}
+
+	.dek {
+		margin: 0.9rem 0 0;
 		color: var(--text-soft);
 		font-size: var(--text-base);
 		line-height: var(--leading-body);
 	}
 
-	.listen-links {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.65rem 0.85rem;
-		align-items: center;
-		margin: 1.15rem 0 0;
+	.read {
+		display: inline-block;
+		margin-top: 1.25rem;
+		border-bottom: 1px solid var(--text-heading);
+		padding-bottom: 0.12rem;
 	}
 
-	.text-link {
-		display: inline-flex;
-		gap: 0.45rem;
-		padding-bottom: 0.2rem;
-		border-bottom: 1px solid var(--hairline);
-		color: var(--text-heading);
-		font-size: 0.85rem;
-		text-decoration: none;
+	.episodes {
+		width: min(100%, 46rem);
+		margin: 0 auto;
+		padding: 0;
+		list-style: none;
 	}
 
-	.text-link:hover,
-	.text-link:focus-visible {
-		color: var(--text-hover);
+	.episodes article {
+		display: grid;
+		grid-template-columns: 8.5rem minmax(0, 1fr);
+		gap: 1.25rem;
+		padding: 1.35rem 0;
+		border-top: 1px solid var(--hairline-soft);
+		scroll-margin-top: 6.5rem;
 	}
 
-	.text-link:focus-visible {
+	.episodes h2 {
+		font-size: clamp(1.35rem, 2vw, 1.7rem);
+	}
+
+	.episodes .dek {
+		margin-top: 0.45rem;
+		font-size: var(--text-sm);
+	}
+
+	.episodes .meta {
+		flex-direction: column;
+		gap: 0.2rem;
+	}
+
+	h2 a:hover,
+	h2 a:focus-visible,
+	.read:hover,
+	.read:focus-visible,
+	.featured-still:focus-visible {
+		text-decoration: underline;
+	}
+
+	h2 a:focus-visible,
+	.read:focus-visible,
+	.subscribe a:focus-visible,
+	.featured-still:focus-visible {
 		outline: 2px solid var(--focus-color);
 		outline-offset: 3px;
 	}
 
+	.empty {
+		color: var(--text-soft);
+	}
+
 	@media (max-width: 800px) {
-		.is-latest article,
-		.episodes > li:not(.is-latest) article {
+		.featured,
+		.episodes article {
 			grid-template-columns: 1fr;
-			align-items: start;
 		}
 
-		.is-latest article {
-			padding: 0.7rem;
+		.episodes .meta {
+			flex-direction: row;
 		}
 	}
 </style>

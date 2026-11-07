@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import cachedEpisodes from '../src/data/podcast-cache.json' with { type: 'json' };
+import { parseChapters, proseFromDescription } from '../src/lib/podcast-chapters';
 import {
 	episodeListenLinks,
 	episodeNumbers,
@@ -34,6 +35,7 @@ test('podcast episode numbers follow publish order after the first episode', () 
 	expect(numbers.get('Bj-8pQvkLa4')).toBe(4);
 	expect(numbers.get('0Mw1esXX1yo')).toBe(5);
 	expect(numbers.get('_QhWfpW1c6o')).toBe(6);
+	expect(numbers.get('LZLV5uvrsuQ')).toBe(7);
 	expect(numbers.has('NMNndtAwYdc')).toBe(false);
 	expect(explicitEpisodeNumber(episodes.find(item => item.id === 'BAs18i68zvc')!)).toBe(3);
 	expect(explicitEpisodeNumber(episodes.find(item => item.id === 'tWTAF6PK4hM')!)).toBe(1);
@@ -95,6 +97,22 @@ test('channel and watch page parsers read the published video', () => {
 		description: 'When GPT-3 came out.\n\nSecond paragraph',
 		url: 'https://www.youtube.com/watch?v=_QhWfpW1c6o',
 	});
+});
+
+test('chapter lines come out of the YouTube description and leave the prose', () => {
+	const joseph = episodes.find(item => item.id === '_QhWfpW1c6o');
+	expect(joseph).toBeTruthy();
+	const chapters = parseChapters(joseph?.description ?? '');
+	expect(chapters[0]).toMatchObject({ at: '0:00', seconds: 0, title: 'Quitting After GPT-3' });
+	expect(chapters.at(-1)?.title).toBe('Where to Follow VideoClaw');
+	expect(parseChapters('0:00:00 Show and Tell\n1:15:59 Communities')).toEqual([
+		{ at: '0:00:00', seconds: 0, title: 'Show and Tell' },
+		{ at: '1:15:59', seconds: 4559, title: 'Communities' },
+	]);
+	expect(parseChapters('00:00 - Cold open')).toEqual([{ at: '0:00', seconds: 0, title: 'Cold open' }]);
+	const prose = proseFromDescription(joseph?.description ?? '');
+	expect(prose[0]).toContain('Joseph Chin was a software engineer');
+	expect(prose.join('\n')).not.toContain('Quitting After GPT-3');
 });
 
 test('the Atom feed parser keeps a real entry and skips a bad id', () => {

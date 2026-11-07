@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { SITE_DESCRIPTION } from '../consts';
 import { communities } from '../data/communities';
+import { storyHref } from '../lib/story-href';
 
 export const GET: APIRoute = async ({ site }) => {
 	if (!site) throw new Error('The production site URL is required for llms.txt.');
@@ -30,7 +31,7 @@ export const GET: APIRoute = async ({ site }) => {
 		link('Events', '/#events', 'Community events and a link to the Luma calendar.'),
 		link('Communities', '/#communities', `Malaysia's AI communities and events directory, including ${communityNames}.`), '',
 		'## Blog posts', '',
-		...posts.map(post => link(post.data.title, `/blog/${post.id}`, post.data.description)), '',
+		...posts.map(post => link(post.data.title, storyHref(post), post.data.description)), '',
 		'## Source', '',
 		'This website is open source at github.com/ashvinpraveen/malaysianai.', '',
 	].join('\n');

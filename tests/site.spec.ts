@@ -204,7 +204,7 @@ test('image dialog contains keyboard focus, closes and survives page navigation'
 	await expect(cover).toBeFocused();
 	await page.getByRole('link', { name: 'Back to all stories' }).click();
 	await expect(page).toHaveURL(/\/blog\/?$/);
-	await page.locator('.lead-image').click();
+	await page.getByRole('link', { name: "We did it: Malaysia's largest AI Learn-a-thon" }).click();
 	await cover.click();
 	await expect(dialog).toBeVisible();
 	await page.keyboard.press('Escape');
@@ -496,6 +496,16 @@ test('podcast card titles drop a trailing show name', () => {
 });
 
 test('podcast lists episodes behind a click-to-play player and the homepage links to them', async ({ page }) => {
+	const episodeSlugs: Record<string, string> = {
+		LZLV5uvrsuQ: 'how-to-win-a-hackathon',
+		_QhWfpW1c6o: 'joseph-chin',
+		'0Mw1esXX1yo': 'isaac-tan',
+		'Bj-8pQvkLa4': 'the-era-of-agents',
+		BAs18i68zvc: 'how-cleve-got-funded',
+		OYqACwQJY9w: 'ai-learn-a-thon',
+		tWTAF6PK4hM: 'malaysias-ai-scene',
+		NMNndtAwYdc: 'level-1-to-level-5',
+	};
 	const episodes = cachedEpisodes as PodcastEpisode[];
 	const numbers = episodeNumbers(episodes);
 	await page.goto('/podcast');
@@ -510,35 +520,26 @@ test('podcast lists episodes behind a click-to-play player and the homepage link
 	await expect(page.locator('.hosts')).toHaveCount(0);
 	await expect(page.getByText('Hosted by')).toHaveCount(0);
 	await expect(page.locator('iframe')).toHaveCount(0);
-	const articles = page.locator('.episodes article');
+	const articles = page.locator('article[id^="episode-"]');
 	await expect(articles).toHaveCount(episodes.length);
 	for (const [index, episode] of episodes.entries()) {
 		const article = articles.nth(index);
 		await expect(article).toHaveAttribute('id', `episode-${episode.id}`);
 		await expect(article.getByRole('heading', { level: 2 })).toHaveText(displayTitle(episode.title));
 	}
-	await expect(page.locator('.episodes')).not.toContainText('| Malaysian AI Podcast');
+	await expect(page.locator('.show')).not.toContainText('| Malaysian AI Podcast');
 	await expect(page.getByRole('heading', { name: 'I Thought AI Would End My Career. Then I Built An AI App To 160,000 Users', exact: true })).toBeVisible();
 	const joseph = page.locator('#episode-_QhWfpW1c6o');
-	await expect(joseph.locator('.eyebrow')).toContainText('Episode 6');
-	await expect(joseph).toContainText('With Joseph Chin');
-	await expect(joseph.getByRole('link', { name: 'Watch on YouTube' })).toHaveAttribute('href', 'https://www.youtube.com/watch?v=_QhWfpW1c6o');
-	await expect(joseph.getByRole('link', { name: 'Listen on Spotify' })).toHaveAttribute('href', 'https://open.spotify.com/episode/7qX8DTIfY1m2tjnPXDoEZK');
-	await expect(joseph.getByRole('link', { name: 'Listen on Apple Podcasts' })).toHaveCount(0);
+	await expect(joseph.locator('.meta')).toContainText('Episode 6');
+	await expect(joseph).toContainText('Joseph Chin');
+	await expect(joseph.getByRole('link', { name: 'I Thought AI Would End My Career. Then I Built An AI App To 160,000 Users' })).toHaveAttribute('href', '/podcast/joseph-chin');
 	const isaac = page.locator('#episode-0Mw1esXX1yo');
-	await expect(isaac).toContainText('With Isaac Tan');
-	await expect(isaac.getByRole('link', { name: 'Listen on Spotify' })).toHaveAttribute('href', 'https://open.spotify.com/episode/34t0Xi7pJKXxKt8WoZzFU0');
-	await expect(isaac.getByRole('link', { name: 'Listen on Apple Podcasts' })).toHaveAttribute('href', 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000797928202');
+	await expect(isaac).toContainText('Isaac Tan');
 	const agents = page.locator('#episode-Bj-8pQvkLa4');
 	await expect(agents.locator('.guest')).toHaveCount(0);
-	await expect(agents.getByRole('link', { name: 'Listen on Spotify' })).toHaveAttribute('href', 'https://open.spotify.com/episode/3ZWS1sE3CwqijPTCLMAZTS');
-	await expect(agents.getByRole('link', { name: 'Listen on Apple Podcasts' })).toHaveAttribute('href', 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000797595119');
-	const funded = page.locator('#episode-BAs18i68zvc');
-	await expect(funded.getByRole('link', { name: 'Listen on Spotify' })).toHaveAttribute('href', 'https://open.spotify.com/episode/7t3X7PEr1ruHsNeD40OAM2');
-	await expect(funded.getByRole('link', { name: 'Listen on Apple Podcasts' })).toHaveAttribute('href', 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000796940907');
 	const ama = page.locator('#episode-NMNndtAwYdc');
-	await expect(ama.locator('.eyebrow')).not.toContainText('Episode');
-	await expect(ama).toContainText('With Khailee Ng');
+	await expect(ama.locator('.meta')).not.toContainText('Episode');
+	await expect(ama).toContainText('Khailee Ng');
 	const structured = await page.locator('script[type="application/ld+json"]').evaluateAll(scripts =>
 		scripts.map(script => JSON.parse(script.textContent || '{}')),
 	);
@@ -549,9 +550,31 @@ test('podcast lists episodes behind a click-to-play player and the homepage link
 	const josephEpisode = series.episode.find((episode: { name?: string }) => episode.name?.includes('160,000'));
 	expect(josephEpisode?.['@type']).toBe('PodcastEpisode');
 	expect(josephEpisode?.episodeNumber).toBe(6);
-	await page.locator('.yt-facade').first().click();
-	await expect(page.locator('.player iframe')).toHaveAttribute('src', new RegExp(`youtube-nocookie\\.com\\/embed\\/${episodes[0]?.id}\\?autoplay=1`));
+	expect(josephEpisode?.url).toBe('https://www.malaysian.ai/podcast/joseph-chin');
 	await expect(page.locator('.footer-link-group').getByRole('link', { name: 'Podcast' })).toHaveAttribute('href', '/podcast');
+
+	await page.goto('/podcast/joseph-chin');
+	await expect(page.getByRole('heading', { level: 1, name: 'I Thought AI Would End My Career. Then I Built An AI App To 160,000 Users' })).toBeVisible();
+	await expect(page.locator('.meta')).toContainText('Episode 6');
+	await expect(page.locator('.guest')).toHaveText('Joseph Chin');
+	await expect(page.getByRole('heading', { name: 'In this episode we discuss' })).toBeVisible();
+	await expect(page.getByRole('link', { name: 'Quitting After GPT-3' })).toHaveCount(0);
+	await expect(page.locator('.chapters')).toContainText('Quitting After GPT-3');
+	await expect(page.locator('.listen').getByRole('link', { name: 'Spotify' })).toHaveAttribute('href', 'https://open.spotify.com/episode/7qX8DTIfY1m2tjnPXDoEZK');
+	await expect(page.locator('.listen').getByRole('link', { name: 'Apple Podcasts' })).toHaveCount(0);
+	await expect(page.getByRole('heading', { name: 'Transcript' })).toHaveCount(0);
+	await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://www.malaysian.ai/podcast/joseph-chin');
+	await expect(page.locator('iframe')).toHaveCount(0);
+	await page.locator('.yt-facade').click();
+	await expect(page.locator('.player iframe')).toHaveAttribute('src', /youtube-nocookie\.com\/embed\/_QhWfpW1c6o\?autoplay=1/);
+
+	await page.goto('/podcast/isaac-tan');
+	await expect(page.locator('.listen').getByRole('link', { name: 'Spotify' })).toHaveAttribute('href', 'https://open.spotify.com/episode/34t0Xi7pJKXxKt8WoZzFU0');
+	await expect(page.locator('.listen').getByRole('link', { name: 'Apple Podcasts' })).toHaveAttribute('href', 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000797928202');
+	await page.goto('/podcast/the-era-of-agents');
+	await expect(page.locator('.listen').getByRole('link', { name: 'Apple Podcasts' })).toHaveAttribute('href', 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000797595119');
+	await page.goto('/podcast/how-cleve-got-funded');
+	await expect(page.locator('.listen').getByRole('link', { name: 'Apple Podcasts' })).toHaveAttribute('href', 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000796940907');
 
 	await page.goto('/');
 	const strip = page.locator('#podcast');
@@ -568,7 +591,7 @@ test('podcast lists episodes behind a click-to-play player and the homepage link
 	for (const [index, episode] of episodes.slice(0, 3).entries()) {
 		await expect(cards.nth(index)).toContainText(displayTitle(episode.title));
 		await expect(cards.nth(index)).toContainText(`Episode ${numbers.get(episode.id)}`);
-		await expect(cards.nth(index)).toHaveAttribute('href', `/podcast#episode-${episode.id}`);
+		await expect(cards.nth(index)).toHaveAttribute('href', `/podcast/${episodeSlugs[episode.id]}`);
 	}
 	await expect(strip).not.toContainText('| Malaysian AI Podcast');
 	expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);

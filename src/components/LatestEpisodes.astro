@@ -1,7 +1,16 @@
 ---
+import { getCollection } from 'astro:content';
 import FormattedDate from './FormattedDate.astro';
 import { displayTitle } from '../lib/podcast-title';
 import { PODCAST_APPLE_URL, PODCAST_SPOTIFY_URL, episodeNumbers, latestEpisodes, loadPodcastEpisodes, shortDescription } from '../lib/podcast';
+import { storyHref } from '../lib/story-href';
+
+const stories = await getCollection('blog');
+
+function episodeHref(id: string) {
+	const story = stories.find(item => item.data.category === 'podcast' && item.data.youtubeId === id);
+	return story ? storyHref(story) : `/podcast#episode-${id}`;
+}
 
 const allEpisodes = await loadPodcastEpisodes();
 const numbers = episodeNumbers(allEpisodes);
@@ -31,7 +40,7 @@ const episodes = latestEpisodes(allEpisodes).map((episode) => ({
 				<ul>
 					{episodes.map((episode) => (
 						<li>
-							<a class="episode-card" href={`/podcast#episode-${episode.id}`}>
+							<a class="episode-card" href={episodeHref(episode.id)}>
 								<span class="thumb">
 									<img src={`https://i.ytimg.com/vi/${episode.id}/hqdefault.jpg`} alt="" width="480" height="360" loading="lazy" decoding="async" />
 								</span>

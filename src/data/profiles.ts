@@ -29,12 +29,42 @@ export type Profile = {
 	profileLinks: ProfileLink[];
 	/** Accent per theme, taken from the person's own site where they have one. */
 	accent: { dark: string; light: string };
+	/** Listed before everyone else on the residents page, which is otherwise alphabetical. */
+	pinned?: boolean;
 };
 
 const a47Accent = { dark: '#f0806e', light: '#973126' };
 const cleveAccent = { dark: '#7fb0ee', light: '#1d4f9a' };
 
 export const profiles: Profile[] = [
+	{
+		slug: 'isaac-tan',
+		name: 'Isaac Tan Heng Wai',
+		firstName: 'Isaac',
+		role: 'Co-founder of Kelas Sekejap and the Malaysian.ai residency',
+		building: 'Kelas Sekejap',
+		summary:
+			'Isaac Tan Heng Wai co-founded Kelas Sekejap, an AI tutor that teaches Malaysians by speaking, starting with English, and the Malaysian.ai residency. He previously co-founded SUPA, an AI data company acquired by TDCX.',
+		portraits: [{ name: 'Isaac Tan Heng Wai', src: '/images/residents/isaac-tan.png', width: 120, height: 120 }],
+		about: [
+			'I’m Isaac. I’ve spent a decade in the messy middle of AI: the data, the labels and the pipelines that decide whether a model is actually useful.',
+			'I joined SUPA as an intern and stayed 10 years, ending as co-founder. We built one of Southeast Asia’s largest AI data companies, with 15,000+ expert annotators delivering more than a million data points a week to frontier research labs and autonomous-driving teams. SUPA was acquired by TDCX.',
+			'Today I co-run the Malaysian.ai residency with 500 Global, home to some of Malaysia’s best AI builders, and I build hyper-local instead of global.',
+		],
+		work: [
+			'*Kelas Sekejap* is an AI app that teaches Malaysians anything, starting with English. You learn by speaking, not memorising: guided, real-world conversations set in Malaysia, with instant feedback that builds practical confidence.',
+			'The bet is that an AI tutor can do what a classroom never could. It meets every learner where they are, on their schedule and in their language. English is the door. The bigger goal is anything anyone wants to learn, for Malaysia and the rest of the region.',
+			'I co-founded it with Khairy Jamaluddin and Sharil Hamdan. It’s live in Malaysia.',
+		],
+		workLinks: [{ label: 'Kelas Sekejap website', href: 'https://kelassekejap.com/' }],
+		profileLinks: [
+			{ label: 'Personal site', href: 'https://isaactanhw.xyz/' },
+			{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/isaachwtan' },
+			{ label: 'Instagram', href: 'https://www.instagram.com/isaachwt' },
+		],
+		accent: { dark: '#b9a3e0', light: '#5b3b8c' },
+		pinned: true,
+	},
 	{
 		slug: 'andrew-gostishchev',
 		name: 'Andrew Gostishchev',

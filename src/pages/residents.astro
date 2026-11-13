@@ -2,7 +2,7 @@
 import InfoPage from '../layouts/InfoPage.astro';
 import { profiles } from '../data/profiles';
 
-const people = [...profiles].sort((a, b) => a.name.localeCompare(b.name));
+const people = [...profiles].sort((a, b) => Number(Boolean(b.pinned)) - Number(Boolean(a.pinned)) || a.name.localeCompare(b.name));
 ---
 <InfoPage title="Meet the residents" description="The people building at Malaysian AI.">
 	<ul class="people">

@@ -1,8 +1,8 @@
 /**
  * Build downloadable brand kit variants from the official Sept 2026 masters:
- * - public/malaysian-ai-mark.png (black mark, transparent)
- * - public/malaysian-ai-logo-light.png (white horizontal lockup for dark fields)
- * - public/malaysian-ai-logo-dark.png (black horizontal lockup for light fields)
+ * - public/brand/source/malaysian-ai-mark.png (black mark, transparent)
+ * - public/brand/source/malaysian-ai-logo-light.png (white horizontal lockup for dark fields)
+ * - public/brand/source/malaysian-ai-logo-dark.png (black horizontal lockup for light fields)
  *
  * Horizontal lockups are recomposed with a tighter mark→wordmark gap
  * (HORIZONTAL_GAP_RATIO), then written back to the site masters and /brand exports.
@@ -14,9 +14,9 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 
 mkdirSync('public/brand', { recursive: true });
 
-const MARK_SRC = 'public/malaysian-ai-mark.png';
-const LOCKUP_ON_DARK_SRC = 'public/malaysian-ai-logo-light.png'; // white logo
-const LOCKUP_ON_LIGHT_SRC = 'public/malaysian-ai-logo-dark.png'; // black logo
+const MARK_SRC = 'public/brand/source/malaysian-ai-mark.png';
+const LOCKUP_ON_DARK_SRC = 'public/brand/source/malaysian-ai-logo-light.png'; // white logo
+const LOCKUP_ON_LIGHT_SRC = 'public/brand/source/malaysian-ai-logo-dark.png'; // black logo
 const BG_DARK = '#06090f';
 const BG_LIGHT = '#f4efe6';
 /** Mark→wordmark gap as a fraction of mark width (approved brand sample). */
@@ -24,7 +24,7 @@ const HORIZONTAL_GAP_RATIO = 0.16;
 /** Clear space around the lockup as a fraction of mark height. */
 const HORIZONTAL_PAD_RATIO = 0.04;
 
-const wordmarkSource = readFileSync('public/malaysian-ai-wordmark.svg', 'utf8');
+const wordmarkSource = readFileSync('public/brand/source/malaysian-ai-wordmark.svg', 'utf8');
 const BRAND_WORDMARK_PATH = wordmarkSource.match(/<path d="([^"]+)"/)?.[1];
 if (!BRAND_WORDMARK_PATH) throw new Error('Could not read the Malaysian AI wordmark path.');
 

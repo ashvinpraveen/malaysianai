@@ -84,7 +84,7 @@ test('resident teams page lists A47 Media with its website and logo', async ({ p
 	await expect(resident).toHaveCount(1);
 	await expect(resident.getByRole('link', { name: 'A47 Media', exact: true })).toHaveAttribute('href', 'https://a47media.com');
 	const logo = resident.locator('img');
-	await expect(logo).toHaveAttribute('src', '/a47media-icon.png');
+	await expect(logo).toHaveAttribute('src', '/images/companies/a47media.png');
 	await expect.poll(() => logo.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBeGreaterThanOrEqual(128);
 });
 

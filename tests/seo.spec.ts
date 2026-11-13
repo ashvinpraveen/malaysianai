@@ -230,14 +230,16 @@ test('About navigation updates metadata and unknown URLs show the custom 404', a
 });
 
 
+const campaignShortLinks = new Set(['/pivot']);
+
 test('known retired routes retain redirect fallbacks and AIMTO has a host wildcard', async ({ request }) => {
 	for (const rule of hosting.redirects.filter(rule => !rule.source.includes(':'))) {
 		const response = await request.get(rule.source);
 		const html = await response.text();
 		expect(html).toContain(`url=${rule.destination.replaceAll('&', '&amp;')}`);
 		expect(html).toContain('name="robots" content="noindex"');
-		// Campaign short links such as /pivot are temporary (302); retired routes are permanent (301).
-		expect([301, 302]).toContain(rule.statusCode);
+		// Campaign short links are temporary (302); retired routes are permanent (301).
+		expect(rule.statusCode).toBe(campaignShortLinks.has(rule.source) ? 302 : 301);
 		if (rule.destination.startsWith('/')) {
 			expect((await request.get(rule.destination.split('#')[0])).status()).toBe(200);
 		}

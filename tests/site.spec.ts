@@ -84,7 +84,7 @@ test('resident teams page lists A47 Media with its website and logo', async ({ p
 	await expect(resident).toHaveCount(1);
 	await expect(resident.getByRole('link', { name: 'A47 Media', exact: true })).toHaveAttribute('href', 'https://a47media.com');
 	const logo = resident.locator('img');
-	await expect(logo).toHaveAttribute('src', '/a47media-icon.png');
+	await expect(logo).toHaveAttribute('src', '/images/companies/a47media.png');
 	await expect.poll(() => logo.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBeGreaterThanOrEqual(128);
 });
 
@@ -506,7 +506,11 @@ test('podcast lists episodes behind a click-to-play player and the homepage link
 	await expect(page.getByText('Hosted by')).toHaveCount(0);
 	await expect(page.locator('iframe')).toHaveCount(0);
 	const episodes = page.locator('.episodes article');
-	await expect(episodes.first()).toHaveAttribute('id', 'episode-0Mw1esXX1yo');
+	// New episodes arrive from the live feed, so check order by date instead of pinning the newest one.
+	const published = await episodes.locator('time').evaluateAll(times => times.map(time => Date.parse(time.getAttribute('datetime')!)));
+	expect(published.length).toBeGreaterThan(3);
+	expect(published).toEqual([...published].sort((a, b) => b - a));
+	const internToCto = page.locator('#episode-0Mw1esXX1yo');
 	await expect(page.getByRole('heading', { name: 'Intern to CTO: Taking On a $10B Silicon Valley Giant from Malaysia', exact: true })).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'The Era of Agents Replacing Humans could finally be here', exact: true })).toBeVisible();
 	await expect(page.getByRole('heading', { name: '0 to 100k Users in 4 Weeks: How Cleve Got Funded and Went Viral', exact: true })).toBeVisible();
@@ -515,8 +519,8 @@ test('podcast lists episodes behind a click-to-play player and the homepage link
 	const agents = page.locator('#episode-Bj-8pQvkLa4');
 	await expect(agents.getByRole('link', { name: 'Listen on Spotify' })).toHaveAttribute('href', 'https://open.spotify.com/episode/3ZWS1sE3CwqijPTCLMAZTS');
 	await expect(agents.getByRole('link', { name: 'Listen on Apple Podcasts' })).toHaveAttribute('href', 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000797595119');
-	await expect(episodes.first().getByRole('link', { name: 'Listen on Spotify' })).toHaveAttribute('href', 'https://open.spotify.com/episode/34t0Xi7pJKXxKt8WoZzFU0');
-	await expect(episodes.first().getByRole('link', { name: 'Listen on Apple Podcasts' })).toHaveAttribute('href', 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000797928202');
+	await expect(internToCto.getByRole('link', { name: 'Listen on Spotify' })).toHaveAttribute('href', 'https://open.spotify.com/episode/34t0Xi7pJKXxKt8WoZzFU0');
+	await expect(internToCto.getByRole('link', { name: 'Listen on Apple Podcasts' })).toHaveAttribute('href', 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000797928202');
 	const funded = page.locator('#episode-BAs18i68zvc');
 	await expect(funded.getByRole('link', { name: 'Listen on Spotify' })).toHaveAttribute('href', 'https://open.spotify.com/episode/7t3X7PEr1ruHsNeD40OAM2');
 	await expect(funded.getByRole('link', { name: 'Listen on Apple Podcasts' })).toHaveAttribute('href', 'https://podcasts.apple.com/us/podcast/the-malaysian-ai-podcast/id6824252077?i=1000796940907');
@@ -536,11 +540,17 @@ test('podcast lists episodes behind a click-to-play player and the homepage link
 	await expect(strip.getByRole('link', { name: /All episodes/ })).toHaveAttribute('href', '/podcast');
 	const cards = strip.locator('a.episode-card');
 	await expect(cards).toHaveCount(3);
-	await expect(cards.first()).toContainText('Intern to CTO: Taking On a $10B Silicon Valley Giant from Malaysia');
-	await expect(cards.nth(1)).toContainText('The Era of Agents Replacing Humans could finally be here');
-	await expect(cards.nth(2)).toContainText('0 to 100k Users in 4 Weeks: How Cleve Got Funded and Went Viral');
+	// The homepage strip shows the three newest episodes from the podcast page, in the same order.
+	await page.goto('/podcast');
+	const newest = await page.locator('.episodes article').evaluateAll(articles =>
+		articles.slice(0, 3).map(article => ({ id: article.id, title: article.querySelector('h2')!.textContent!.trim() })),
+	);
+	await page.goto('/');
+	for (const [index, { id, title }] of newest.entries()) {
+		await expect(cards.nth(index)).toContainText(title);
+		await expect(cards.nth(index)).toHaveAttribute('href', `/podcast#${id}`);
+	}
 	await expect(strip).not.toContainText('| Malaysian AI Podcast');
-	await expect(cards.first()).toHaveAttribute('href', '/podcast#episode-0Mw1esXX1yo');
 	expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
 });
 

@@ -81,13 +81,16 @@ const upcoming = nextEvents(events);
 		const observer = new IntersectionObserver(async entries => {
 			if (!entries.some(entry => entry.isIntersecting)) return;
 			observer.disconnect();
+			// A timer, not AbortSignal.any/timeout: those need Chrome 116/103, and
+			// the SMART boards run Chromium 89.
+			const timeout = window.setTimeout(() => controller.abort(), 8000);
 			try {
-				const response = await fetch('/api/luma-events', {
-					signal: AbortSignal.any([controller.signal, AbortSignal.timeout(8000)]),
-				});
+				const response = await fetch('/api/luma-events', { signal: controller.signal });
 				if (response.ok && !controller.signal.aborted) render(parseUpcomingEvents(await response.json()));
 			} catch {
 				// Keep the current build snapshot and the direct calendar link on failure.
+			} finally {
+				window.clearTimeout(timeout);
 			}
 		}, { rootMargin: '400px' });
 		observer.observe(calendar);

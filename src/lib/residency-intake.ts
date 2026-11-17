@@ -24,14 +24,17 @@ async function refresh() {
   if (pending || Date.now() - lastFetch < 60_000) return pending;
   lastFetch = Date.now();
   pending = (async () => {
+    // A timer, not AbortSignal.timeout: that needs Chrome 103, and the SMART boards run Chromium 89.
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 10_000);
     try {
-      const response = await fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ path: 'cohorts:catalog', args: {}, format: 'json' }), signal: AbortSignal.timeout(10_000) });
+      const response = await fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ path: 'cohorts:catalog', args: {}, format: 'json' }), signal: controller.signal });
       if (!response.ok) return;
       const result = await response.json() as { status: string; value?: Intake[] };
       const current = result.status === 'success' && Array.isArray(result.value) ? result.value.find(row => row.current) : undefined;
       if (current && Number.isInteger(current.number) && current.number >= 1 && typeof current.enabled === 'boolean' && (current.closesAt === null || Number.isFinite(current.closesAt)) && (current.opensAt === null || Number.isFinite(current.opensAt)) && typeof current.residencyStart === 'string' && typeof current.residencyEnd === 'string') { latest = current; render(); }
     } catch { /* Keep the platform link available if programme dates cannot be loaded. */ }
-    finally { pending = undefined; }
+    finally { window.clearTimeout(timeout); pending = undefined; }
   })();
   return pending;
 }

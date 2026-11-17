@@ -411,6 +411,17 @@ const dayFallback = await getImage({ src: heroArtDay, widths: [640, 1024, 1672],
 		animation: hero-settle 1.8s 0.05s cubic-bezier(0.2, 0.72, 0.2, 1) both;
 	}
 
+	/* Chrome before 104 (SMART boards run 89) has no `scale` property. Mirror with
+	   transform instead and skip the settle, which would animate the transform. */
+	@supports not (scale: 1) {
+		@media (min-width: 701px) {
+			.hero-art {
+				transform: scaleX(-1);
+				animation: none;
+			}
+		}
+	}
+
 	/* Mobile only: dims to black as the first paragraph scrolls in (src/lib/scroll-fades.ts). */
 	.hero-dim {
 		position: absolute;

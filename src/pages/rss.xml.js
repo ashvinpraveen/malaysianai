@@ -1,6 +1,7 @@
 import { getCollection } from 'astro:content';
 import rss from '@astrojs/rss';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { storyHref } from '../lib/story-href';
 
 export async function GET(context) {
 	const posts = await getCollection('blog');
@@ -13,7 +14,7 @@ export async function GET(context) {
 			title: post.data.title,
 			description: post.data.description,
 			pubDate: post.data.pubDate,
-			link: `/blog/${post.id}`,
+			link: storyHref(post),
 		})),
 	});
 }

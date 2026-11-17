@@ -24,6 +24,7 @@ const { id, title, eager = false } = Astro.props;
 			width="480"
 			height="360"
 			loading={eager ? 'eager' : 'lazy'}
+			fetchpriority={eager ? 'high' : 'low'}
 			decoding="async"
 		/>
 		<span class="yt-play" aria-hidden="true"></span>

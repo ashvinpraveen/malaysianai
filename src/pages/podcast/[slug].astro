@@ -1,0 +1,291 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import FormattedDate from '../../components/FormattedDate.astro';
+import YouTubeFacade from '../../components/YouTubeFacade.astro';
+import Layout from '../../layouts/Layout.astro';
+import { linkParts, parseChapters, proseFromDescription } from '../../lib/podcast-chapters';
+import {
+	episodeListenLinks,
+	episodeNumbers,
+	guestName,
+	loadPodcastEpisodes,
+	thumbnailURL,
+} from '../../lib/podcast';
+import { displayTitle } from '../../lib/podcast-title';
+import { serializeJsonLd } from '../../lib/seo';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+	return posts
+		.filter(post => post.data.category === 'podcast')
+		.map(post => ({ params: { slug: post.id }, props: post }));
+}
+
+type Props = CollectionEntry<'blog'>;
+
+const post = Astro.props;
+const { Content } = await render(post);
+const site = Astro.site;
+if (!site) throw new Error('Configure the production site URL in astro.config.mjs.');
+const youtubeId = post.data.youtubeId ?? '';
+const episodes = await loadPodcastEpisodes();
+const episode = episodes.find(item => item.id === youtubeId);
+const number = episodeNumbers(episodes).get(youtubeId);
+const guest = post.data.guest ?? (episode ? guestName(episode) : undefined);
+const title = displayTitle(post.data.title);
+const published = episode ? new Date(episode.published) : post.data.pubDate;
+const watchUrl = episode?.url ?? `https://www.youtube.com/watch?v=${youtubeId}`;
+const listen = episodeListenLinks(youtubeId);
+const platforms = [
+	{ href: watchUrl, label: 'YouTube' },
+	...(listen?.spotify ? [{ href: listen.spotify, label: 'Spotify' }] : []),
+	...(listen?.apple ? [{ href: listen.apple, label: 'Apple Podcasts' }] : []),
+];
+const chapters = parseChapters(episode?.description ?? '');
+const prose = proseFromDescription(episode?.description ?? '');
+const pageUrl = new URL(`/podcast/${post.id}`, site).href;
+const keywords = ['Malaysian AI', 'Malaysian AI podcast', ...(guest ? [guest] : [])];
+const structured = {
+	'@context': 'https://schema.org',
+	'@type': 'PodcastEpisode',
+	'@id': `${pageUrl}#episode`,
+	name: title,
+	description: post.data.description,
+	datePublished: published.toISOString(),
+	url: pageUrl,
+	...(number ? { episodeNumber: number } : {}),
+	...(guest ? { actor: [{ '@type': 'Person', name: guest }] } : {}),
+	partOfSeries: { '@type': 'PodcastSeries', name: 'The Malaysian.ai Podcast', url: new URL('/podcast', site).href },
+	associatedMedia: {
+		'@type': 'VideoObject',
+		name: title,
+		description: post.data.description,
+		thumbnailUrl: thumbnailURL(youtubeId),
+		uploadDate: published.toISOString(),
+		embedUrl: `https://www.youtube-nocookie.com/embed/${youtubeId}`,
+		contentUrl: watchUrl,
+	},
+};
+---
+
+<Layout title={title} description={post.data.description} keywords={keywords}>
+	<article class="episode" aria-labelledby="episode-title">
+		<header class="episode-header">
+			<a class="back" href="/podcast">All episodes</a>
+			<p class="meta">
+				{number && <span>Episode {number}</span>}
+				{number && <span aria-hidden="true">·</span>}
+				<FormattedDate date={published} />
+			</p>
+			<h1 id="episode-title">{title}</h1>
+			{guest && <p class="guest">{guest}</p>}
+		</header>
+
+		<div class="intro">
+			{post.data.complete ? <Content /> : prose.map(paragraph => (
+				<p>
+					{linkParts(paragraph).map(part => part.href ? <a href={part.href}>{part.text}</a> : part.text)}
+				</p>
+			))}
+		</div>
+
+		<p class="listen">
+			Listen on
+			{platforms.map((platform, index) => (
+				<>
+					{index === 0 ? ' ' : index === platforms.length - 1 ? (platforms.length > 2 ? ', or ' : ' or ') : ', '}
+					<a href={platform.href}>{platform.label}</a>
+				</>
+			))}
+		</p>
+
+		<YouTubeFacade id={youtubeId} title={title} eager />
+
+		{post.data.takeaways && post.data.takeaways.length > 0 && (
+			<section class="block" aria-labelledby="discuss-title">
+				<h2 id="discuss-title">In this episode we discuss</h2>
+				<ol class="takeaways">
+					{post.data.takeaways.map(item => <li>{item}</li>)}
+				</ol>
+			</section>
+		)}
+
+		{chapters.length > 0 && (
+			<section class="block" aria-labelledby="chapters-title">
+				<h2 id="chapters-title">Chapters</h2>
+				<ol class="chapters">
+					{chapters.map(chapter => (
+						<li>
+							<a href={`${watchUrl}&t=${chapter.seconds}s`}>{chapter.at}</a>
+							<span>{chapter.title}</span>
+						</li>
+					))}
+				</ol>
+			</section>
+		)}
+
+		{post.data.references && post.data.references.length > 0 && (
+			<section class="block" aria-labelledby="references-title">
+				<h2 id="references-title">Referenced</h2>
+				<ul>
+					{post.data.references.map(item => (
+						<li><a href={item.href}>{item.label}</a></li>
+					))}
+				</ul>
+			</section>
+		)}
+
+		{guest && post.data.guestLinks && post.data.guestLinks.length > 0 && (
+			<section class="block" aria-labelledby="guest-links-title">
+				<h2 id="guest-links-title">Where to find {guest}</h2>
+				<ul>
+					{post.data.guestLinks.map(item => (
+						<li><a href={item.href}>{item.label}</a></li>
+					))}
+				</ul>
+			</section>
+		)}
+	</article>
+	<script is:inline type="application/ld+json" set:html={serializeJsonLd(structured)} />
+</Layout>
+
+<style>
+	.episode {
+		width: min(100% - 2.5rem, 40rem);
+		margin: 0 auto;
+		padding: clamp(1.5rem, 3vw, 2.5rem) 0 clamp(5rem, 10vw, 8rem);
+		color: var(--text-heading);
+	}
+
+	.back {
+		color: var(--text-heading);
+		font-size: var(--text-sm);
+		text-decoration: underline;
+		text-underline-offset: 0.18em;
+	}
+
+	.meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		margin: 1.75rem 0 0;
+		color: var(--text-soft);
+		font-size: var(--text-sm);
+	}
+
+	h1 {
+		margin: 0.7rem 0 0;
+		font-family: var(--font-display);
+		font-size: clamp(2.15rem, 5vw, 3.35rem);
+		font-weight: 400;
+		letter-spacing: -0.035em;
+		line-height: 1.02;
+	}
+
+	.guest {
+		margin: 0.85rem 0 0;
+		font-size: var(--text-base);
+	}
+
+	.intro {
+		margin-top: 1.75rem;
+	}
+
+	.intro :global(p),
+	.intro p {
+		margin: 0 0 1rem;
+		color: var(--text-soft);
+		font-size: 1.05rem;
+		line-height: 1.65;
+	}
+
+	.intro a,
+	.listen a,
+	.chapters a,
+	.block a {
+		color: var(--text-heading);
+		text-underline-offset: 0.16em;
+	}
+
+	.listen {
+		margin: 0.5rem 0 1.5rem;
+		font-size: var(--text-base);
+	}
+
+	.block {
+		margin-top: 2.75rem;
+	}
+
+	h2 {
+		margin: 0 0 0.9rem;
+		font-family: var(--font-display);
+		font-size: 1.65rem;
+		font-weight: 400;
+		letter-spacing: -0.03em;
+		line-height: 1.1;
+	}
+
+	.takeaways,
+	.block ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.takeaways li,
+	.block ul li {
+		margin: 0;
+		padding: 0.55rem 0;
+		border-top: 1px solid var(--hairline-soft);
+		color: var(--text-soft);
+		line-height: 1.5;
+	}
+
+	.takeaways {
+		counter-reset: takeaway;
+	}
+
+	.takeaways li {
+		display: grid;
+		grid-template-columns: 1.6rem minmax(0, 1fr);
+		gap: 0.65rem;
+	}
+
+	.takeaways li::before {
+		counter-increment: takeaway;
+		content: counter(takeaway);
+		color: var(--text-heading);
+	}
+
+	.chapters {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.chapters li {
+		display: grid;
+		grid-template-columns: 4.6rem minmax(0, 1fr);
+		gap: 0.75rem;
+		padding: 0.45rem 0;
+		border-top: 1px solid var(--hairline-soft);
+		color: var(--text-soft);
+		line-height: 1.4;
+	}
+
+	.chapters a {
+		font-variant-numeric: tabular-nums;
+		text-decoration: none;
+	}
+
+	.chapters a:hover,
+	.chapters a:focus-visible,
+	.block a:hover,
+	.block a:focus-visible,
+	.listen a:hover,
+	.listen a:focus-visible,
+	.back:hover,
+	.back:focus-visible {
+		text-decoration: underline;
+	}
+</style>

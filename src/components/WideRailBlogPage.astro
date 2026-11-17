@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import FormattedDate from './FormattedDate.astro';
 import Layout from '../layouts/Layout.astro';
 import { SITE_TITLE } from '../consts';
+import { storyHref } from '../lib/story-href';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -18,8 +19,9 @@ const [featuredPost, ...otherPosts] = posts;
 		</header>
 
 		{featuredPost && (
-			<article class="lead-story">
-				<a class="lead-image" href={`/blog/${featuredPost.id}`} aria-label={`Read ${featuredPost.data.title}`}>
+			<article class:list={['lead-story', { 'text-lead': !featuredPost.data.image }]}>
+				{featuredPost.data.image && (
+				<a class="lead-image" href={storyHref(featuredPost)} aria-label={`Read ${featuredPost.data.title}`}>
 					{featuredPost.data.image ? (
 						<Image
 							src={featuredPost.data.image}
@@ -33,14 +35,15 @@ const [featuredPost, ...otherPosts] = posts;
 						/>
 					) : null}
 				</a>
+				)}
 
 				<div class="lead-copy">
 					<p class="eyebrow">
-						Latest story <span aria-hidden="true">/</span> <FormattedDate date={featuredPost.data.pubDate} />
+						{featuredPost.data.category === 'podcast' ? 'Podcast' : 'Latest story'} <span aria-hidden="true">/</span> <FormattedDate date={featuredPost.data.pubDate} />
 					</p>
-					<h2><a href={`/blog/${featuredPost.id}`}>{featuredPost.data.title}</a></h2>
+					<h2><a href={storyHref(featuredPost)}>{featuredPost.data.title}</a></h2>
 					<p class="description">{featuredPost.data.description}</p>
-					<a class="text-link" href={`/blog/${featuredPost.id}`}>Read the story <span aria-hidden="true">↗</span></a>
+					<a class="text-link" href={storyHref(featuredPost)}>{featuredPost.data.category === 'podcast' ? 'Listen to the episode' : 'Read the story'} <span aria-hidden="true">↗</span></a>
 				</div>
 			</article>
 		)}
@@ -50,7 +53,8 @@ const [featuredPost, ...otherPosts] = posts;
 				<div class="archive-grid">
 					{otherPosts.map((post) => (
 						<article class="archive-row">
-							<h3><a href={`/blog/${post.id}`}>{post.data.title}</a></h3>
+							{post.data.category === 'podcast' && <p class="kicker">Podcast</p>}
+							<h3><a href={storyHref(post)}>{post.data.title}</a></h3>
 							<FormattedDate date={post.data.pubDate} />
 						</article>
 					))}
@@ -94,6 +98,18 @@ const [featuredPost, ...otherPosts] = posts;
 		grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
 		gap: clamp(2rem, 4.5vw, 5rem);
 		align-items: center;
+	}
+
+	.lead-story.text-lead {
+		grid-template-columns: minmax(0, 42rem);
+	}
+
+	.kicker {
+		margin: 0 0 0.4rem;
+		color: var(--text-soft);
+		font-size: var(--text-xs);
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
 	}
 
 	.lead-image {

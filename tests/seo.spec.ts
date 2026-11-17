@@ -10,6 +10,8 @@ const pages = [
 	'/', '/about', '/brand', '/residency', '/residency/accountability', '/residents', '/resident-teams', '/directory',
 	...residents.map(resident => directoryPath(resident)),
 	'/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon', '/podcast',
+	'/podcast/how-to-win-a-hackathon', '/podcast/joseph-chin', '/podcast/isaac-tan', '/podcast/the-era-of-agents', '/podcast/how-cleve-got-funded',
+	'/podcast/ai-learn-a-thon', '/podcast/malaysias-ai-scene', '/podcast/level-1-to-level-5',
 	...profiles.map(profile => `/residents/${profile.slug}`),
 ];
 const expectedCommunityNames = [

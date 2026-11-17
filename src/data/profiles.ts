@@ -369,4 +369,33 @@ export const profiles: Profile[] = [
 		],
 		accent: { dark: '#2297df', light: '#1a6fd1' },
 	},
+	{
+		slug: 'nathan-hor',
+		name: 'Nathan Hor',
+		firstName: 'Nathan',
+		role: 'Co-founder of Fovea',
+		building: 'Quipus',
+		summary:
+			'Co-founder of Fovea, building Quipus, a personal assistant for business developers and sales reps.',
+		portraits: [{ name: 'Nathan Hor', src: '/images/residents/nathan-hor.png', width: 120, height: 120 }],
+		about: [
+			'At Fovea, we build for life away from the screen. Put your phone down, get the work done and have time for the people you care about.',
+			'We create AR products, software agents and ESP32-powered hardware. We won the XR Pacific Portal Hackathon. *Persephone*, our event wearable, placed in the top five of more than 400 projects at Agentic AI Build Week Vietnam. *Jaga*, our anti-scam hardware project, placed third at OpenAI Build Week. I am an Agora Ambassador.',
+		],
+		work: [
+			'Quipus is the personal assistant that lets you focus on the person in front of you, without losing track of what happens next. We are building it for business developers and sales reps.',
+			'Your phone can record a conversation. You still have to remember to pull it out, open an app and press record.',
+			'We are designing Quipus to feel at home on your wrist and at the meeting table: a watch-sized assistant that slides out of its strap and sits alongside the conversation. The aim is less setup, your phone out of the way, and help following through once the meeting ends.',
+			'The wearable is our starting point; our ambition is an assistant that is not tied to one device. Quipus is in prototype and beta testing.',
+		],
+		workLinks: [
+			{ label: 'Try the Quipus sample', href: 'https://quipus-sales-rep-assistant.vercel.app/' },
+			{ label: 'Fovea', href: 'https://www.fovea.space/' },
+		],
+		profileLinks: [
+			{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/nathan-hor' },
+			{ label: 'Fovea', href: 'https://www.fovea.space/' },
+		],
+		accent: { dark: '#5fd0b8', light: '#0f766e' },
+	},
 ];

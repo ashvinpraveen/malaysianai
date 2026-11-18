@@ -1,0 +1,214 @@
+---
+import { Image } from 'astro:assets';
+import learnathon from '../assets/training/aimto-learnathon-floor.jpg';
+import pivot from '../assets/training/pivot-build-lab.jpg';
+
+const examples = [
+	{
+		title: 'PIVOT 2026: Build with AI',
+		image: pivot,
+		alt: 'A PIVOT participant using Kelas AI during the Build Lab',
+		description: 'Our residency mentors helped finance professionals and students build with Kelas AI at a workshop organised by the AICB Centre of Excellence and 500 Global. Participants built tools for tasks like turning spreadsheets into monthly reports, then shared prototypes in a Show & Tell.',
+		result: 'Platform partner Kelas Sekejap reports 210 apps built on the day.',
+		href: 'https://kelassekejap.com/articles/210-apps-in-one-day-malaysians-build-with-ai-pivot-2026/',
+		linkLabel: 'Read the PIVOT recap from Kelas Sekejap',
+	},
+	{
+		title: 'AIMTO 2026 Learn-a-thon',
+		image: learnathon,
+		alt: 'An overhead view of workshop tables and participants at the AIMTO 2026 Learn-a-thon',
+		position: 'center 20%',
+		description: 'At AI Malaysia Takeover in Ampang, we helped design a public Learn-a-thon and brought in mentors from the builder community. Participants chose a problem, got help when they hit a snag and showed what they made.',
+		result: 'Close to 700 people joined the record session and built nearly 90 working apps and agents.',
+		href: '/blog/largest-ai-learnathon',
+		linkLabel: 'Read how we ran the Learn-a-thon',
+	},
+];
+---
+
+<training-examples>
+	<section aria-labelledby="training-examples-title">
+		<div class="examples-heading">
+			<h2 id="training-examples-title">Training in practice</h2>
+			<div class="controls" data-controls hidden>
+				<button type="button" aria-label="Previous case study" aria-controls="training-case-studies" data-previous>
+					<span aria-hidden="true">←</span>
+				</button>
+				<button type="button" aria-label="Next case study" aria-controls="training-case-studies" data-next>
+					<span aria-hidden="true">→</span>
+				</button>
+			</div>
+		</div>
+		<ul class="case-studies" id="training-case-studies" aria-label="Training case studies" role="list" tabindex="0">
+			{examples.map(example => (
+				<li class="case-card">
+					<Image
+						src={example.image}
+						alt={example.alt}
+						style={example.position ? { objectPosition: example.position } : undefined}
+						widths={[400, 640, 960, 1280]}
+						sizes="(max-width: 775px) calc(88vw - 2.64rem), 640px"
+						format="webp"
+						loading="lazy"
+					/>
+					<div class="case-copy">
+						<h3>{example.title}</h3>
+						<p>{example.description}</p>
+						<p>{example.result}</p>
+						<a href={example.href}>{example.linkLabel}</a>
+					</div>
+				</li>
+			))}
+		</ul>
+	</section>
+</training-examples>
+
+<script>
+	class TrainingExamples extends HTMLElement {
+		private observer?: ResizeObserver;
+
+		connectedCallback() {
+			const track = this.querySelector<HTMLUListElement>('.case-studies');
+			const controls = this.querySelector<HTMLElement>('[data-controls]');
+			const previous = this.querySelector<HTMLButtonElement>('[data-previous]');
+			const next = this.querySelector<HTMLButtonElement>('[data-next]');
+			const firstCard = track?.firstElementChild;
+			if (!track || !controls || !previous || !next || !firstCard) return;
+
+			const updateControls = () => {
+				const end = track.scrollWidth - track.clientWidth;
+				controls.hidden = end <= 1;
+				previous.setAttribute('aria-disabled', String(track.scrollLeft <= 1));
+				next.setAttribute('aria-disabled', String(track.scrollLeft >= end - 1));
+			};
+			const move = (direction: number) => {
+				const width = firstCard.getBoundingClientRect().width;
+				const gap = parseFloat(getComputedStyle(track).columnGap);
+				track.scrollBy({ left: direction * (width + gap) });
+			};
+
+			previous.onclick = () => move(-1);
+			next.onclick = () => move(1);
+			track.onscroll = updateControls;
+			track.onkeydown = (event) => {
+				if (event.target !== track || (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight')) return;
+				event.preventDefault();
+				move(event.key === 'ArrowLeft' ? -1 : 1);
+			};
+			this.observer = new ResizeObserver(updateControls);
+			this.observer.observe(track);
+			updateControls();
+		}
+
+		disconnectedCallback() {
+			this.observer?.disconnect();
+		}
+	}
+
+	customElements.define('training-examples', TrainingExamples);
+</script>
+
+<style>
+	training-examples {
+		display: block;
+		margin-top: clamp(2.75rem, 7vw, 6rem);
+		padding-top: clamp(2.75rem, 7vw, 5rem);
+		border-top: 1px solid var(--page-border);
+	}
+
+	.examples-heading {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+		margin-bottom: 1.25rem;
+	}
+
+	.examples-heading h2 {
+		margin: 0;
+	}
+
+	.controls:not([hidden]) {
+		display: flex;
+		gap: 0.5rem;
+	}
+
+	.controls button {
+		width: 2.75rem;
+		height: 2.75rem;
+		border: 1px solid var(--page-border);
+		border-radius: var(--button-radius);
+		color: var(--page-text);
+		background: var(--card-background);
+		font: 1.2rem var(--font-body);
+		cursor: pointer;
+	}
+
+	.controls button[aria-disabled='true'] {
+		opacity: 0.55;
+		cursor: default;
+	}
+
+	.controls button:focus-visible,
+	.case-studies:focus-visible {
+		outline: 2px solid var(--focus-color);
+		outline-offset: 2px;
+	}
+
+	.case-studies {
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: min(88%, 40rem);
+		gap: 1rem;
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		scroll-behavior: smooth;
+		margin: 0;
+		padding: 0 0 0.75rem;
+		list-style: none;
+	}
+
+	.case-card {
+		display: flex;
+		flex-direction: column;
+		scroll-snap-align: start;
+		border: 1px solid var(--page-border);
+		border-radius: var(--radius-media);
+		background: var(--card-background);
+	}
+
+	.case-card img {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 16 / 9;
+		object-fit: cover;
+		border-radius: var(--radius-media) var(--radius-media) 0 0;
+	}
+
+	.case-copy {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		padding: clamp(1rem, 3vw, 1.75rem);
+	}
+
+	.case-copy h3 {
+		margin: 0;
+		font: 400 var(--text-section-title) / 1.1 var(--font-display);
+	}
+
+	.case-copy p {
+		margin: 0.75rem 0 0;
+	}
+
+	.case-copy a {
+		align-self: flex-start;
+		margin-top: auto;
+		padding-top: 1rem;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.case-studies { scroll-behavior: auto; }
+	}
+</style>

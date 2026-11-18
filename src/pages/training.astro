@@ -1,0 +1,147 @@
+---
+import { Image } from 'astro:assets';
+import mentor from '../../public/images/blog/largest-ai-learnathon/mentor-on-floor.webp';
+import workshop from '../assets/training/team-workshop.jpg';
+import TrainingExamples from '../components/TrainingExamples.astro';
+import { CONTACT_WHATSAPP } from '../consts';
+import InfoPage from '../layouts/InfoPage.astro';
+
+const enquiry = new URL(CONTACT_WHATSAPP);
+enquiry.searchParams.set('text', "Hi Malaysian AI, I'd like to discuss AI training for my team.");
+---
+
+<InfoPage
+	title="AI training for teams"
+	description="Bring a task your team does every week. We’ll help them build and test an AI workflow for it."
+	neutral={false}
+	noindex
+>
+	<div slot="header-actions" class="actions">
+		<a class="site-button" href="#enquire">Discuss training for your team</a>
+		<a href="#workshop">See how a workshop works</a>
+	</div>
+
+	<figure class="training-hero">
+		<Image
+			src={mentor}
+			alt="A volunteer mentor leans over a table to help participants at the AIMTO 2026 Learn-a-thon"
+			widths={[480, 800, 1104, 1600]}
+			sizes="(max-width: 1152px) calc(100vw - 3rem), 1104px"
+			format="webp"
+			loading="eager"
+			fetchpriority="high"
+		/>
+		<figcaption>On the workshop floor at AI Malaysia Takeover 2026.</figcaption>
+	</figure>
+
+	<section class="training-section" id="workshop" aria-labelledby="workshop-title">
+		<div class="section-copy">
+			<h2 id="workshop-title">What happens in a workshop</h2>
+			<p>We start with the work your team knows. An operations team, for example, could turn site notes into an action list and check each action against the original notes before sharing it.</p>
+			<ol class="workshop-steps">
+				<li>
+					<strong>Pick one task.</strong> Agree on what goes in, what a good result looks like and where someone needs to review it.
+				</li>
+				<li>
+					<strong>Build a first version.</strong> Work in small groups with a facilitator nearby. Start with a sample your team can use in the workshop.
+				</li>
+				<li>
+					<strong>Test it on another example.</strong> Compare the results, fix what breaks and decide what to try back at work.
+				</li>
+			</ol>
+		</div>
+		<figure>
+			<Image
+				src={workshop}
+				alt="Participants working together on laptops around tables at a recent training session"
+				widths={[400, 640, 960]}
+				sizes="(max-width: 700px) calc(100vw - 3rem), 480px"
+				format="webp"
+				loading="lazy"
+			/>
+			<figcaption>Small-group work at a recent training session.</figcaption>
+		</figure>
+	</section>
+
+	<TrainingExamples />
+
+	<section class="training-enquiry" id="enquire" aria-labelledby="enquiry-title">
+		<h2 id="enquiry-title">Tell us about your team</h2>
+		<p>Share what your team does, roughly how many people would join and one task you’d like them to try with AI. We’ll use that to suggest a workshop scope.</p>
+		<a class="site-button" href={enquiry.href}>Enquire on WhatsApp</a>
+	</section>
+</InfoPage>
+
+<style>
+	figure {
+		margin: 0;
+		min-width: 0;
+	}
+
+	figure img {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: var(--radius-media);
+		object-fit: cover;
+	}
+
+	figcaption {
+		margin-top: 0.75rem;
+		font-size: var(--text-xs);
+		line-height: var(--leading-body);
+	}
+
+	.training-hero img {
+		aspect-ratio: 2.2;
+		object-position: center 50%;
+	}
+
+	.training-section {
+		display: grid;
+		grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+		gap: clamp(1.5rem, 5vw, 4rem);
+		align-items: center;
+		margin-top: clamp(2.75rem, 7vw, 6rem);
+		padding-top: clamp(2.75rem, 7vw, 5rem);
+		border-top: 1px solid var(--page-border);
+	}
+
+	.training-section img {
+		aspect-ratio: 1.06;
+		object-position: center 48%;
+	}
+
+	.training-section h2, .training-enquiry h2 {
+		margin-top: 0;
+	}
+
+	.workshop-steps {
+		display: grid;
+		gap: 0.8rem;
+		padding-inline-start: 1.35rem;
+	}
+
+	.training-enquiry {
+		margin-top: clamp(2.75rem, 7vw, 6rem);
+		padding: clamp(1.5rem, 5vw, 3rem);
+		border: 1px solid var(--page-border);
+		border-radius: var(--radius-media);
+		background: var(--card-background);
+	}
+
+	.training-enquiry p {
+		max-width: 36rem;
+		margin-bottom: 1.5rem;
+	}
+
+	@media (max-width: 700px) {
+		.training-hero img {
+			aspect-ratio: 4 / 3;
+		}
+
+		.training-section {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+</style>

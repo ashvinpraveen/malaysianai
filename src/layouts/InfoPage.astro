@@ -6,7 +6,11 @@ const { title, description, noindex = false, neutral = true } = Astro.props;
 ---
 <Layout title={`${title} | ${SITE_TITLE}`} description={description} noindex={noindex} neutral={neutral}>
 	<article class="info-page">
-		<header><h1>{title}</h1><p>{description}</p></header>
+		<header>
+			<h1>{title}</h1>
+			<p>{description}</p>
+			<slot name="header-actions" />
+		</header>
 		<slot />
 	</article>
 </Layout>

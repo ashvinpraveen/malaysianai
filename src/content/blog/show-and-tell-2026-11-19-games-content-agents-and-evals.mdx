@@ -1,0 +1,140 @@
+---
+title: "KL AI Show & Tell: Multiplayer Games, Content Agents, and Evals (19 Nov 2026)"
+description: "Seven Kuala Lumpur builders shared a local-multiplayer game, AI employee evals, creator and engineering content agents, Bahasa Malaysia TTS, and a QR tool."
+image: "../../../public/images/blog/show-and-tell-2026-11-19-games-content-agents-and-evals/03-khalil-nooh.jpg"
+imageAlt: "Khalil Nooh gesturing toward the Kuala Lumpur Show & Tell audience beside a large display showing his AI Employee evaluation page titled Evaluate completed work."
+pubDate: 2026-11-19
+author: "Malaysian AI Team"
+authorType: 'Organization'
+category: show-and-tell
+eventDate: 2026-11-19
+eventLocation: "Kuala Lumpur, Malaysia"
+nextEventUrl: "https://luma.com/0bbtuq5k"
+nextEventLabel: "Weekly Show & Tell @TheMalaysian.ai Residency, Thu, 26 Nov 2026, 12:00 pm MYT at Kuala Lumpur, Malaysia"
+tags:
+  - "Malaysian AI"
+  - "Show & Tell"
+  - "Kuala Lumpur"
+  - "AI Agents"
+  - "AI Evaluations"
+  - "Creator Tools"
+speakers:
+  - name: "Nathan hor"
+    role: "I tinker with hardware. Building a wearable sales and business development assistant"
+    talkTitle: "TOMATO RIOT! local-multiplayer game"
+    summary: "Nathan Hor demonstrated the lobby, room-hosting, and results interfaces for TOMATO RIOT!, an eight-player local-multiplayer game built overnight with a coding agent. He shared that while the agent handled setup quickly, animation nuances and graphics still needed explicit human guidance."
+    link: "https://nathanhor.com/"
+    linkedin: "https://www.linkedin.com/in/nathan-hor"
+  - name: "Gabriel Yong"
+    talkTitle: "Content research and creator workflows"
+    summary: "Gabriel Yong walked through his desktop Instagram saving and research workflow alongside a content helper interface with breakdowns, transcripts, and filters. He also discussed testing high-volume versus high-quality content strategies."
+    link: "https://www.polystream.xyz/"
+    linkedin: "https://www.linkedin.com/in/gabriel-yong-ting-qian"
+  - name: "Khalil Nooh"
+    role: "The Future Is Solo"
+    talkTitle: "AI employee evaluations and systems-learning build"
+    summary: "Khalil Nooh revisited private evaluations adapted from public benchmarks for trusting AI employees and shared a 20-chapter single-page systems-learning LMS built from three known books with traceable citations."
+    link: "https://khalilnooh.com/"
+    linkedin: "https://www.linkedin.com/in/khalilnooh"
+  - name: "Braden"
+    role: "Marketer at The Marketers"
+    talkTitle: "Positioning, ventures, and founder communication"
+    summary: "Braden Tan shared his framework for category-based brand positioning, his mentoring and consulting initiatives, and practical advice for founders on explaining their business in one clear sentence."
+    linkedin: "https://www.linkedin.com/in/braden-tan-"
+  - name: "Puviin Varman"
+    role: "Applied AI & Workflow Automation Builder | Mechanical Engineer"
+    talkTitle: "Spot-the-error engineering video"
+    summary: "Puviin Varman presented an agent-assisted social-media experiment targeting construction and oil-and-gas audiences, featuring illustrated engineering comics, a CO2 absorber explainer, and spot-the-error mechanical videos."
+    link: "https://puviin.com/"
+    linkedin: "https://www.linkedin.com/in/puviin"
+  - name: "Muhammad Hazwan Azman"
+    role: "coo at neuramerge sdn bhd"
+    talkTitle: "Social-media agents and creator tools"
+    summary: "Muhammad Hazwan Azman described an experimental 20-agent social-media workflow and cloud video rendering pipeline, and showed a Bahasa Malaysia voice-sample gallery with 30 voices built on Gemini 3.8 Flash TTS."
+    link: "https://knowledge.myneuramerge.com/"
+    linkedin: "https://www.linkedin.com/in/hazwanhasasn"
+  - name: "Ashvin Praveen"
+    role: "ceo & co-founder cleve"
+    talkTitle: "Simple QR code generator"
+    summary: "Ashvin Praveen introduced a simple, ad-free QR code generator he built after running into annoying ads and slow redirects on existing online generators at events."
+    link: "https://ashvinpraveen.com/"
+    linkedin: "https://www.linkedin.com/in/ashvinpraveen"
+---
+
+import StoryPhoto from '../../components/StoryPhoto.astro';
+import photo01 from '../../../public/images/blog/show-and-tell-2026-11-19-games-content-agents-and-evals/01-nathan-hor.jpg';
+import photo07 from '../../../public/images/blog/show-and-tell-2026-11-19-games-content-agents-and-evals/07-ashvin-praveen.jpg';
+import photo03 from '../../../public/images/blog/show-and-tell-2026-11-19-games-content-agents-and-evals/03-khalil-nooh.jpg';
+import photo02 from '../../../public/images/blog/show-and-tell-2026-11-19-games-content-agents-and-evals/02-gabriel-yong.jpg';
+import photo05 from '../../../public/images/blog/show-and-tell-2026-11-19-games-content-agents-and-evals/05-puviin-varman.jpg';
+import photo06 from '../../../public/images/blog/show-and-tell-2026-11-19-games-content-agents-and-evals/06-muhammad-hazwan-azman.jpg';
+import photo04 from '../../../public/images/blog/show-and-tell-2026-11-19-games-content-agents-and-evals/04-braden.jpg';
+
+Seven builders shared works in progress at our 19 Nov 2026 Weekly Show & Tell in Kuala Lumpur. Across the room, a few clear threads stood out: pairing coding agents with explicit human taste, grounding AI outputs in known sources and evaluations, and testing where automated content workflows actually hold up.
+
+## Overnight Prototyping and Scratch-Your-Own-Itch Tools
+
+Nathan Hor opened with TOMATO RIOT!, a local-multiplayer game inspired by Splatoon and informed by his AR and VR event software work. The concept supports up to eight players who scan a QR code to join a host room, pick a color, and throw tomatoes at each other once the countdown ends. On screen, Nathan walked through the title screen, host-room lobby, player list, countdown, results view, and an open-source repository README. He noted that live gameplay could not be run on the laptop during the demo.
+
+The practical lesson from his build was about where coding agents still need a firm hand. Nathan built the initial version the night before and refined it right before presenting, noting that an earlier version looked poor until he gave explicit animation guidance and swapped in his own graphics. During Q&A, he also compared model versions, pointing out that the newer iteration used fewer tokens for a similar experience and ran much faster, even though visual polish still fell back on his own assets.
+
+<figure>
+	<StoryPhoto src={photo01} fullSrc="/images/blog/show-and-tell-2026-11-19-games-content-agents-and-evals/01-nathan-hor.jpg" alt="Nathan Hor standing at a lectern with his laptop beside a large display showing the TOMATO RIOT! game title screen with a cartoon tomato character and Host a Room button." />
+	<figcaption>Nathan Hor introducing TOMATO RIOT!, an eight-player local-multiplayer game built overnight with a coding agent.</figcaption>
+</figure>
+
+Closing out the night on the opposite end of complexity, Ashvin Praveen introduced a simple QR code generator he put together after getting annoyed by ads and slow redirects on existing online generators at events. It was a quick reminder that small, single-purpose utilities built to remove daily friction are still worth shipping.
+
+<figure>
+	<StoryPhoto src={photo07} fullSrc="/images/blog/show-and-tell-2026-11-19-games-content-agents-and-evals/07-ashvin-praveen.jpg" alt="Ashvin Praveen smiling at his laptop beside a display showing a Free QR code generator webpage with a QR code preview." />
+	<figcaption>Ashvin Praveen sharing a straightforward, ad-free QR code generator built for event use.</figcaption>
+</figure>
+
+## Evaluations, Citations, and Systems Learning
+
+Khalil Nooh split his slot between two related themes: how to trust AI work, and how to learn deeply with known sources. First, he revisited his work on AI employee evaluations, showing a page headed "Evaluate completed work" that adapts public benchmarks (including AutomationBench, GDPval, and SentinelBench) into private checks. He also pointed to a video on formal verification in production ("Review Proof, Not Code") as a direction worth watching.
+
+Second, Khalil walked through a single-page systems-learning LMS he assembled from three books recommended on X. Rather than letting an AI system pull from opaque web research, he fed in sources he already trusted and structured the output into 20 chapters with labs, small activities, tutorials, and explicit references. His core takeaway: citations matter because you need to trace any sentence or idea back to the exact section of a book.
+
+<figure>
+	<StoryPhoto src={photo03} fullSrc="/images/blog/show-and-tell-2026-11-19-games-content-agents-and-evals/03-khalil-nooh.jpg" alt="Khalil Nooh gesturing to the audience from behind a lectern beside a display titled AI Employee: Evaluate completed work." />
+	<figcaption>Khalil Nooh discussing private evaluations for AI employees and citation-grounded learning systems.</figcaption>
+</figure>
+
+## Content Agents, Engineering Explainers, and Bahasa Malaysia TTS
+
+Three presenters dug into AI-assisted media and creator workflows from very different angles.
+
+Gabriel Yong shared how he saves Instagram posts while browsing on desktop to research and digest topics for new content. He showed a content helper interface featuring dark content cards, filters, transcript and breakdown views, and audio panels, and confirmed in Q&A that Apify feeds part of the collection queue. Gabriel was candid about the open trade-off he is still testing: whether to chase high-volume posting across multiple accounts or invest in fewer, higher-quality pieces.
+
+<figure>
+	<StoryPhoto src={photo02} fullSrc="/images/blog/show-and-tell-2026-11-19-games-content-agents-and-evals/02-gabriel-yong.jpg" alt="Gabriel Yong gesturing while speaking to the audience beside a display showing an Instagram vertical video post and its comments panel." />
+	<figcaption>Gabriel Yong walking through his desktop Instagram content research workflow and creator tools.</figcaption>
+</figure>
+
+Puviin Varman approached social media from a mechanical engineering and consultancy perspective, aiming to reach construction and oil-and-gas audiences. After finding that posting twice a week was not gaining traction, he began using an agent workflow to research topics and draft recurring formats. On screen, he walked through illustrated engineering comics (including a gearbox fit-check strip), a vertical absorber explainer explaining how amine captures CO2 from flue gas, and "spot the error" pipe-and-pump videos that prompt viewers to comment their guesses. His practical note for builders: once you repeatedly review an agent's output for the same issues, turn that checklist into a reusable skill.
+
+<figure>
+	<StoryPhoto src={photo05} fullSrc="/images/blog/show-and-tell-2026-11-19-games-content-agents-and-evals/05-puviin-varman.jpg" alt="Puviin Varman standing at the lectern beside a large screen playing a vertical engineering video of a pipe and pump assembly with the caption Answer tomorrow. Comment your guess." />
+	<figcaption>Puviin Varman showing a spot-the-error mechanical engineering video created for his oil-and-gas content experiment.</figcaption>
+</figure>
+
+Muhammad Hazwan Azman presented an experimental 20-agent social-media setup alongside a week-long Facebook video schedule and cloud-rendered video examples. He noted a very real operational headache in multistep agent flows: when a long run hits a timeout at step 21 and fails to restart cleanly, reliability breaks down fast. Alongside the agent pipeline, Hazwan showed a Bahasa Malaysia voice-sample gallery built on Gemini 3.8 Flash TTS with 30 voices (15 male and 15 female) so video creators can audition options at roughly one cent per voice.
+
+<figure>
+	<StoryPhoto src={photo06} fullSrc="/images/blog/show-and-tell-2026-11-19-games-content-agents-and-evals/06-muhammad-hazwan-azman.jpg" alt="Muhammad Hazwan Azman speaking to the audience beside a dark blue screen displaying a Gemini 3.8 Flash TTS interface for 30 Bahasa Melayu Malaysia voices." />
+	<figcaption>Muhammad Hazwan Azman presenting his 30-voice Bahasa Malaysia TTS gallery alongside his social-media agent experiments.</figcaption>
+</figure>
+
+## Positioning for Founders Entering New Markets
+
+Stepping back from code and prompts, Braden Tan spoke about category-based brand positioning and his work mentoring startups, launching a consumer-brand community, and partnering with a positioning consultancy. Drawing on local examples like bootstrapped eyewear brand Pop Glasses, Braden pointed out that even experienced founders doing meaningful revenue struggle to position themselves when entering a new market. His advice to builders in the room was direct: practice explaining what you do in one clear sentence so an investor or partner knows where to place you and how to carry the conversation forward.
+
+<figure>
+	<StoryPhoto src={photo04} fullSrc="/images/blog/show-and-tell-2026-11-19-games-content-agents-and-evals/04-braden.jpg" alt="Braden Tan gesturing toward the audience beside a slide titled What I'm doing now showing four colored initiative cards." />
+	<figcaption>Braden Tan sharing his current positioning initiatives and advice on clear founder communication.</figcaption>
+</figure>
+
+## Join the Next Show & Tell
+
+If you are building an AI project, hardware tinker, or workflow experiment in Kuala Lumpur, come share what actually worked and what broke. Our next session is Weekly Show & Tell @TheMalaysian.ai Residency on Thu, 26 Nov 2026 at 12:00 pm MYT in Kuala Lumpur. RSVP at https://luma.com/0bbtuq5k.

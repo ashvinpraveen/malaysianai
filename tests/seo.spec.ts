@@ -1,3 +1,5 @@
+import { readdirSync, readFileSync } from 'node:fs';
+import { basename, extname, join } from 'node:path';
 import sharp from 'sharp';
 import hosting from '../vercel.json' with { type: 'json' };
 import { test, expect } from '@playwright/test';
@@ -6,12 +8,22 @@ import { residents } from '../src/data/residents';
 import { directoryPath } from '../src/lib/directory';
 
 const origin = 'https://www.malaysian.ai';
+const contentBlogDir = join(process.cwd(), 'src/content/blog');
+const contentStoryPaths = readdirSync(contentBlogDir)
+	.filter(file => ['.md', '.mdx'].includes(extname(file)))
+	.sort()
+	.map(file => {
+		const slug = basename(file, extname(file));
+		const source = readFileSync(join(contentBlogDir, file), 'utf8');
+		const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? '';
+		const isPodcast = /^category:\s*['"]?podcast['"]?\s*$/m.test(frontmatter);
+		return isPodcast ? `/podcast/${slug}` : `/blog/${slug}`;
+	});
 const pages = [
 	'/', '/about', '/brand', '/residency', '/residency/accountability', '/residents', '/resident-teams', '/directory',
 	...residents.map(resident => directoryPath(resident)),
-	'/contact', '/privacy', '/terms', '/blog', '/show-and-tell', '/blog/largest-ai-learnathon', '/podcast',
-	'/podcast/how-to-win-a-hackathon', '/podcast/joseph-chin', '/podcast/isaac-tan', '/podcast/the-era-of-agents', '/podcast/how-cleve-got-funded',
-	'/podcast/ai-learn-a-thon', '/podcast/malaysias-ai-scene', '/podcast/level-1-to-level-5',
+	'/contact', '/privacy', '/terms', '/blog', '/show-and-tell', '/podcast',
+	...contentStoryPaths,
 	...profiles.map(profile => `/residents/${profile.slug}`),
 ];
 const expectedCommunityNames = [

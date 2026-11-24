@@ -68,6 +68,18 @@ export const seoContentByPath: Record<string, Partial<Pick<PageMetadata, 'title'
 		description: 'Read stories from the Malaysia AI community: AI events, hands-on learning, builder projects and updates from the Malaysian AI residency.',
 		keywords: ['Malaysian AI', 'Malaysia AI community', 'AI events Malaysia', 'AI workshops Malaysia'],
 	},
+	'/show-and-tell': {
+		title: 'Show & Tell | Weekly AI Demos in Kuala Lumpur',
+		description: 'Recaps and speaker notes from Malaysian AI Show & Tell, our weekly Thursday AI meetup in Kuala Lumpur for builders sharing live demos at 500 Global.',
+		keywords: [
+			'Malaysian AI',
+			'Malaysian AI Show & Tell',
+			'AI meetup Kuala Lumpur',
+			'AI demos Kuala Lumpur',
+			'AI events Malaysia',
+			'Malaysia AI community',
+		],
+	},
 	'/podcast': {
 		title: 'Malaysian AI Podcast',
 		description: PODCAST_DESCRIPTION,

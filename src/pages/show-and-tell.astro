@@ -1,0 +1,784 @@
+---
+import { Image, getImage } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import showAndTellPhoto from '../assets/events/show-and-tell-supabase-ceo.jpg';
+import FaqSection from '../components/FaqSection.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import { LUMA_URL, SITE_TITLE, VENUE_ADDRESS, VENUE_MAPS_URL, VENUE_WAZE_URL } from '../consts';
+import { showAndTellFaqs } from '../data/faq';
+import Layout from '../layouts/Layout.astro';
+import { canonicalURL, serializeJsonLd } from '../lib/seo';
+import { storyHref } from '../lib/story-href';
+
+const site = Astro.site;
+if (!site) throw new Error('Configure the production site URL in astro.config.mjs.');
+
+const recaps = (await getCollection('blog'))
+	.filter(post => post.data.category === 'show-and-tell')
+	.sort((a, b) => (b.data.eventDate ?? b.data.pubDate).valueOf() - (a.data.eventDate ?? a.data.pubDate).valueOf());
+
+const [featuredRecap, ...archiveRecaps] = recaps;
+
+const pageDescription =
+	'Recaps and speaker notes from Malaysian AI Show & Tell, our weekly Thursday AI meetup in Kuala Lumpur for builders sharing live demos at 500 Global.';
+
+const shareSource = featuredRecap?.data.image ?? showAndTellPhoto;
+const shareAlt =
+	featuredRecap?.data.imageAlt ??
+	'Builders gathered at 500 Global in Kuala Lumpur for a Malaysian AI Show & Tell session';
+const shareImage = await getImage({ src: shareSource, width: 1200, format: 'webp', quality: 82 });
+
+const pageUrl = canonicalURL('/show-and-tell', site).href;
+const websiteId = new URL('#website', site).href;
+const organizationId = new URL('#organization', site).href;
+const eventSeriesId = `${pageUrl}#event-series`;
+const itemListId = `${pageUrl}#recaps`;
+
+const collectionPageData = {
+	'@context': 'https://schema.org',
+	'@type': 'CollectionPage',
+	'@id': `${pageUrl}#collection`,
+	name: 'Malaysian AI Show & Tell',
+	description: pageDescription,
+	url: pageUrl,
+	inLanguage: 'en-MY',
+	isPartOf: { '@id': websiteId },
+	about: { '@id': eventSeriesId },
+	...(recaps.length > 0 ? { mainEntity: { '@id': itemListId } } : {}),
+};
+
+const eventSeriesData = {
+	'@context': 'https://schema.org',
+	'@type': 'EventSeries',
+	'@id': eventSeriesId,
+	name: 'Malaysian AI Show & Tell',
+	description:
+		'Weekly Thursday AI demo meetup in Kuala Lumpur where builders present 4-minute live demos of working software, models, and experiments at 500 Global, Bangunan AICB.',
+	url: pageUrl,
+	eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+	eventStatus: 'https://schema.org/EventScheduled',
+	isAccessibleForFree: true,
+	eventSchedule: {
+		'@type': 'Schedule',
+		repeatFrequency: 'P1W',
+		byDay: 'https://schema.org/Thursday',
+		scheduleTimezone: 'Asia/Kuala_Lumpur',
+	},
+	location: {
+		'@type': 'Place',
+		name: '500 Global, Bangunan AICB',
+		address: {
+			'@type': 'PostalAddress',
+			streetAddress: VENUE_ADDRESS,
+			addressLocality: 'Kuala Lumpur',
+			postalCode: '50480',
+			addressCountry: 'MY',
+		},
+	},
+	organizer: { '@id': organizationId },
+	offers: {
+		'@type': 'Offer',
+		price: '0',
+		priceCurrency: 'MYR',
+		url: LUMA_URL,
+	},
+};
+
+const itemListData = recaps.length > 0
+	? {
+		'@context': 'https://schema.org',
+		'@type': 'ItemList',
+		'@id': itemListId,
+		name: 'Show & Tell session recaps',
+		numberOfItems: recaps.length,
+		itemListElement: recaps.map((post, index) => ({
+			'@type': 'ListItem',
+			position: index + 1,
+			name: post.data.title,
+			url: canonicalURL(storyHref(post), site).href,
+		})),
+	}
+	: undefined;
+
+const howItWorks = [
+	{
+		step: '01',
+		title: 'Arrive early and build',
+		body: 'Many builders drop into 500 Global at Bangunan AICB earlier on Thursday to cowork, debug models, and finish demos before the room gathers.',
+	},
+	{
+		step: '02',
+		title: 'Four minutes of working demos',
+		body: 'Every presenter gets four minutes to show live software, code, or an experiment they built that week. No sales decks or abstract slides.',
+	},
+	{
+		step: '03',
+		title: 'Direct questions from the room',
+		body: 'After each demo, builders ask practical questions on architecture, evals, and distribution, then stay afterwards to trade notes.',
+	},
+];
+
+function demoCountLabel(count: number) {
+	return `${count} ${count === 1 ? 'demo' : 'demos'}`;
+}
+---
+
+<Layout
+	title={`Show & Tell | ${SITE_TITLE}`}
+	description={pageDescription}
+	image={{
+		src: shareImage.src,
+		width: shareImage.attributes.width,
+		height: shareImage.attributes.height,
+		alt: shareAlt,
+	}}
+	breadcrumbs={[
+		{ name: 'Home', path: '/' },
+		{ name: 'Show & Tell', path: '/show-and-tell' },
+	]}
+>
+	<div class="st-page">
+		<section class="st-hero" aria-labelledby="st-title">
+			<header class="page-heading">
+				<h1 id="st-title">Malaysian AI Show &amp; Tell</h1>
+				<p class="lede">
+					Every Thursday in Kuala Lumpur, AI builders meet at 500 Global in Bangunan AICB for 4-minute live demos
+					and honest feedback on real work.
+				</p>
+				<div class="hero-actions">
+					<a class="site-button" href={LUMA_URL}>RSVP for Thursday Show &amp; Tell</a>
+					<a class="secondary-link" href="/blog">All community stories <span aria-hidden="true">→</span></a>
+				</div>
+			</header>
+
+			<dl class="facts-strip" aria-label="Show & Tell details">
+				<div>
+					<dt>When</dt>
+					<dd>Every Thursday, Kuala Lumpur</dd>
+				</div>
+				<div>
+					<dt>Format</dt>
+					<dd>4-minute live demos + Q&amp;A</dd>
+				</div>
+				<div>
+					<dt>Venue</dt>
+					<dd>500 Global, Bangunan AICB</dd>
+				</div>
+				<div>
+					<dt>Entry</dt>
+					<dd>Free, register on Luma</dd>
+				</div>
+			</dl>
+		</section>
+
+		<section class="st-recaps" aria-labelledby="recaps-title">
+			<div class="section-head">
+				<h2 id="recaps-title">Session recaps</h2>
+				<p>
+					{recaps.length > 0
+						? `${recaps.length} published ${recaps.length === 1 ? 'recap' : 'recaps'} from Thursday sessions.`
+						: 'Notes, builder links, and photos from Thursday sessions.'}
+				</p>
+			</div>
+
+			{featuredRecap ? (
+				<>
+					<article class:list={['lead-recap', { 'text-lead': !featuredRecap.data.image }]}>
+						{featuredRecap.data.image && (
+							<a class="lead-image" href={storyHref(featuredRecap)} aria-label={`Read ${featuredRecap.data.title}`}>
+								<Image
+									src={featuredRecap.data.image}
+									alt={featuredRecap.data.imageAlt ?? ''}
+									widths={[640, 960, 1280, 1600]}
+									sizes="(max-width: 860px) 100vw, min(58vw, 46rem)"
+									format="webp"
+									quality={82}
+									loading="eager"
+									fetchpriority="high"
+								/>
+							</a>
+						)}
+
+						<div class="lead-copy">
+							<p class="eyebrow">
+								<span>Latest recap</span>
+								<span aria-hidden="true">/</span>
+								<FormattedDate date={featuredRecap.data.eventDate ?? featuredRecap.data.pubDate} />
+								{featuredRecap.data.speakers && featuredRecap.data.speakers.length > 0 && (
+									<>
+										<span aria-hidden="true">·</span>
+										<span>{demoCountLabel(featuredRecap.data.speakers.length)}</span>
+									</>
+								)}
+							</p>
+							<h3><a href={storyHref(featuredRecap)}>{featuredRecap.data.title}</a></h3>
+							<p class="description">{featuredRecap.data.description}</p>
+							{featuredRecap.data.tags && featuredRecap.data.tags.length > 0 && (
+								<ul class="tag-list" aria-label="Topics">
+									{featuredRecap.data.tags.slice(0, 5).map(tag => <li>{tag}</li>)}
+								</ul>
+							)}
+							<a class="text-link" href={storyHref(featuredRecap)}>
+								Read the recap <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</article>
+
+					{archiveRecaps.length > 0 && (
+						<div class="archive-grid">
+							{archiveRecaps.map(post => (
+								<article class="archive-card">
+									{post.data.image && (
+										<a class="archive-thumb" href={storyHref(post)} aria-label={`Read ${post.data.title}`}>
+											<Image
+												src={post.data.image}
+												alt={post.data.imageAlt ?? ''}
+												widths={[480, 760, 1080]}
+												sizes="(max-width: 720px) 100vw, 38rem"
+												format="webp"
+												quality={82}
+												loading="lazy"
+											/>
+										</a>
+									)}
+									<div class="archive-copy">
+										<p class="card-meta">
+											<FormattedDate date={post.data.eventDate ?? post.data.pubDate} />
+											{post.data.speakers && post.data.speakers.length > 0 && (
+												<>
+													<span aria-hidden="true">·</span>
+													<span>{demoCountLabel(post.data.speakers.length)}</span>
+												</>
+											)}
+										</p>
+										<h3><a href={storyHref(post)}>{post.data.title}</a></h3>
+										<p class="card-desc">{post.data.description}</p>
+										{post.data.tags && post.data.tags.length > 0 && (
+											<ul class="tag-list" aria-label="Topics">
+												{post.data.tags.slice(0, 4).map(tag => <li>{tag}</li>)}
+											</ul>
+										)}
+									</div>
+								</article>
+							))}
+						</div>
+					)}
+				</>
+			) : (
+				<div class="empty-recaps">
+					<figure class="empty-photo">
+						<Image
+							src={showAndTellPhoto}
+							alt="Builders gathered at 500 Global in Kuala Lumpur for a Malaysian AI Show & Tell session"
+							widths={[640, 960, 1280, 1600]}
+							sizes="(max-width: 860px) calc(100vw - 2.5rem), 42rem"
+							format="webp"
+							quality={85}
+							loading="eager"
+							fetchpriority="high"
+						/>
+						<figcaption>Builders packing the room at 500 Global, Bangunan AICB for Show &amp; Tell.</figcaption>
+					</figure>
+					<div class="empty-copy">
+						<p class="eyebrow">First recaps coming soon</p>
+						<h3>Weekly writeups are on the way</h3>
+						<p>
+							We publish recaps covering every 4-minute demo, speaker notes, and project links from Thursday sessions in
+							Kuala Lumpur. Until the first recap lands here, grab a seat for next Thursday or read our latest community
+							stories.
+						</p>
+						<div class="empty-actions">
+							<a class="site-button" href={LUMA_URL}>See upcoming sessions</a>
+							<a class="secondary-link" href="/blog">Read community stories <span aria-hidden="true">→</span></a>
+						</div>
+					</div>
+				</div>
+			)}
+		</section>
+
+		<section class="st-format" aria-labelledby="format-title">
+			<div class="section-head">
+				<h2 id="format-title">How Show &amp; Tell works</h2>
+				<p>Built for engineers, researchers, and founders shipping AI software in Malaysia.</p>
+			</div>
+
+			<ol class="format-steps">
+				{howItWorks.map(item => (
+					<li>
+						<span class="step-num" aria-hidden="true">{item.step}</span>
+						<h3>{item.title}</h3>
+						<p>{item.body}</p>
+					</li>
+				))}
+			</ol>
+
+			<div class="venue-bar">
+				<div>
+					<p class="venue-label">Location</p>
+					<address>{VENUE_ADDRESS}</address>
+				</div>
+				<nav class="venue-links" aria-label="Venue directions">
+					<a href={VENUE_MAPS_URL}>Google Maps <span aria-hidden="true">↗</span></a>
+					<a href={VENUE_WAZE_URL}>Waze <span aria-hidden="true">↗</span></a>
+					<a href="/residency">About the residency <span aria-hidden="true">→</span></a>
+				</nav>
+			</div>
+		</section>
+
+		<div class="st-faq-wrap">
+			<FaqSection items={showAndTellFaqs} title="Questions about Show & Tell" id="show-and-tell-faq" variant="page" />
+		</div>
+	</div>
+
+	<script is:inline type="application/ld+json" set:html={serializeJsonLd(collectionPageData)} />
+	<script is:inline type="application/ld+json" set:html={serializeJsonLd(eventSeriesData)} />
+	{itemListData && <script is:inline type="application/ld+json" set:html={serializeJsonLd(itemListData)} />}
+</Layout>
+
+<style>
+	.st-page {
+		padding: clamp(2rem, 4.5vw, 3.75rem) clamp(1.25rem, 5vw, 4rem) clamp(5rem, 9vw, 8rem);
+		color: var(--text-heading);
+		background: var(--page-background);
+	}
+
+	.st-hero,
+	.st-recaps,
+	.st-format,
+	.st-faq-wrap {
+		width: min(100%, 72rem);
+		margin-inline: auto;
+	}
+
+	.page-heading {
+		width: min(100%, 44rem);
+		margin: 0 auto;
+		text-align: center;
+	}
+
+	h1 {
+		margin: 0;
+		font-family: var(--font-display);
+		font-size: clamp(2.5rem, 5.5vw, 4.25rem);
+		font-weight: 400;
+		letter-spacing: -0.04em;
+		line-height: 0.96;
+		text-wrap: balance;
+	}
+
+	.lede {
+		margin: 1.25rem auto 0;
+		max-width: 38rem;
+		color: var(--text-soft);
+		font-size: clamp(1rem, 1.3vw, 1.12rem);
+		line-height: var(--leading-body);
+	}
+
+	.hero-actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: center;
+		gap: 0.9rem 1.5rem;
+		margin-top: 1.75rem;
+	}
+
+	.secondary-link {
+		color: var(--text-link);
+		font-size: var(--text-sm);
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.24em;
+	}
+
+	.secondary-link:hover,
+	.secondary-link:focus-visible {
+		color: var(--text-hover);
+	}
+
+	.secondary-link:focus-visible,
+	.lead-image:focus-visible,
+	.archive-thumb:focus-visible,
+	.lead-copy h3 a:focus-visible,
+	.archive-copy h3 a:focus-visible,
+	.text-link:focus-visible,
+	.venue-links a:focus-visible {
+		outline: 2px solid var(--focus-color);
+		outline-offset: 4px;
+	}
+
+	.facts-strip {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 1.25rem 2rem;
+		margin: clamp(2.5rem, 5vw, 3.75rem) 0 0;
+		padding: 1.5rem 0;
+		border-top: 1px solid var(--hairline-soft);
+		border-bottom: 1px solid var(--hairline-soft);
+	}
+
+	.facts-strip dt {
+		margin: 0;
+		color: var(--text-muted);
+		font-size: var(--text-xs);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+
+	.facts-strip dd {
+		margin: 0.4rem 0 0;
+		color: var(--text-heading);
+		font-size: var(--text-sm);
+		line-height: 1.45;
+	}
+
+	.st-recaps,
+	.st-format {
+		margin-top: clamp(3.5rem, 7vw, 5.5rem);
+	}
+
+	.section-head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 0.5rem 2rem;
+		margin-bottom: clamp(1.75rem, 3.5vw, 2.5rem);
+	}
+
+	.section-head h2 {
+		margin: 0;
+		font-family: var(--font-display);
+		font-size: clamp(1.9rem, 3.2vw, 2.75rem);
+		font-weight: 400;
+		letter-spacing: -0.035em;
+		line-height: 1;
+	}
+
+	.section-head p {
+		margin: 0;
+		color: var(--text-soft);
+		font-size: var(--text-sm);
+		line-height: var(--leading-body);
+	}
+
+	.lead-recap {
+		display: grid;
+		grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr);
+		gap: clamp(1.75rem, 4vw, 4rem);
+		align-items: center;
+	}
+
+	.lead-recap.text-lead {
+		grid-template-columns: minmax(0, 44rem);
+	}
+
+	.lead-image,
+	.archive-thumb {
+		display: block;
+		overflow: hidden;
+		border-radius: var(--radius-media);
+		background: var(--image-background);
+	}
+
+	.lead-image {
+		aspect-ratio: 3 / 2;
+	}
+
+	.archive-thumb {
+		aspect-ratio: 16 / 10;
+		margin-bottom: 1.1rem;
+	}
+
+	.lead-image img,
+	.archive-thumb img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 320ms ease;
+	}
+
+	.lead-image:hover img,
+	.lead-image:focus-visible img,
+	.archive-thumb:hover img,
+	.archive-thumb:focus-visible img {
+		transform: scale(1.018);
+	}
+
+	.eyebrow,
+	.card-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.45rem;
+		margin: 0;
+		color: var(--text-muted);
+		font-size: var(--text-xs);
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+	}
+
+	.lead-copy h3 {
+		margin: 0.85rem 0 0;
+		font-family: var(--font-display);
+		font-size: clamp(1.85rem, 3vw, 2.75rem);
+		font-weight: 400;
+		letter-spacing: -0.035em;
+		line-height: 1.04;
+	}
+
+	.lead-copy h3 a,
+	.archive-copy h3 a,
+	.text-link {
+		color: var(--text-heading);
+		text-decoration: none;
+	}
+
+	.lead-copy h3 a:hover,
+	.lead-copy h3 a:focus-visible,
+	.archive-copy h3 a:hover,
+	.archive-copy h3 a:focus-visible,
+	.text-link:hover,
+	.text-link:focus-visible {
+		color: var(--text-link);
+	}
+
+	.description {
+		margin: 1rem 0 0;
+		color: var(--text-soft);
+		font-size: var(--text-base);
+		line-height: var(--leading-body);
+	}
+
+	.tag-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		padding: 0;
+		margin: 1rem 0 0;
+		list-style: none;
+	}
+
+	.tag-list li {
+		padding: 0.18rem 0.6rem;
+		border: 1px solid var(--hairline-soft);
+		border-radius: 999px;
+		color: var(--text-muted);
+		font-size: var(--text-xs);
+		line-height: 1.3;
+	}
+
+	.text-link {
+		display: inline-flex;
+		gap: 0.5rem;
+		margin-top: 1.4rem;
+		padding-bottom: 0.2rem;
+		border-bottom: 1px solid var(--border-color);
+		color: var(--link-bright);
+		font-size: var(--text-sm);
+	}
+
+	.archive-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: clamp(2rem, 4.5vw, 3.75rem);
+		margin-top: clamp(2.5rem, 5vw, 4rem);
+		padding-top: clamp(2rem, 4vw, 3rem);
+		border-top: 1px solid var(--hairline-soft);
+	}
+
+	.archive-copy h3 {
+		margin: 0.6rem 0 0;
+		font-family: var(--font-display);
+		font-size: var(--text-section-title);
+		font-weight: 400;
+		letter-spacing: -0.025em;
+		line-height: 1.1;
+	}
+
+	.card-desc {
+		margin: 0.65rem 0 0;
+		color: var(--text-soft);
+		font-size: var(--text-sm);
+		line-height: var(--leading-body);
+	}
+
+	.empty-recaps {
+		display: grid;
+		grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr);
+		gap: clamp(1.75rem, 4vw, 3.5rem);
+		align-items: center;
+		padding: clamp(1.25rem, 2.5vw, 2rem);
+		border: 1px solid var(--hairline-soft);
+		border-radius: var(--radius-media);
+		background: var(--card-background);
+	}
+
+	.empty-photo {
+		margin: 0;
+	}
+
+	.empty-photo img {
+		display: block;
+		width: 100%;
+		aspect-ratio: 3 / 2;
+		object-fit: cover;
+		border-radius: calc(var(--radius-media) - 0.15rem);
+		background: var(--image-background);
+	}
+
+	.empty-photo figcaption {
+		margin-top: 0.65rem;
+		color: var(--text-faint);
+		font-size: var(--text-xs);
+		line-height: 1.45;
+	}
+
+	.empty-copy h3 {
+		margin: 0.7rem 0 0;
+		font-family: var(--font-display);
+		font-size: clamp(1.65rem, 2.6vw, 2.25rem);
+		font-weight: 400;
+		letter-spacing: -0.03em;
+		line-height: 1.06;
+	}
+
+	.empty-copy > p:not(.eyebrow) {
+		margin: 0.9rem 0 0;
+		color: var(--text-soft);
+		font-size: var(--text-base);
+		line-height: var(--leading-body);
+	}
+
+	.empty-actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.85rem 1.35rem;
+		margin-top: 1.5rem;
+	}
+
+	.format-steps {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1.75rem 2.5rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.format-steps li {
+		padding-top: 1.25rem;
+		border-top: 1px solid var(--hairline-soft);
+	}
+
+	.step-num {
+		display: block;
+		color: var(--text-muted);
+		font-size: var(--text-xs);
+		letter-spacing: 0.08em;
+	}
+
+	.format-steps h3 {
+		margin: 0.65rem 0 0;
+		font-family: var(--font-display);
+		font-size: clamp(1.3rem, 2vw, 1.65rem);
+		font-weight: 400;
+		letter-spacing: -0.025em;
+		line-height: 1.12;
+	}
+
+	.format-steps p {
+		margin: 0.65rem 0 0;
+		color: var(--text-soft);
+		font-size: var(--text-sm);
+		line-height: var(--leading-body);
+	}
+
+	.venue-bar {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem 2rem;
+		margin-top: clamp(2.25rem, 4vw, 3rem);
+		padding: 1.35rem 1.5rem;
+		border: 1px solid var(--hairline-soft);
+		border-radius: var(--radius-media);
+		background: var(--card-background);
+	}
+
+	.venue-label {
+		margin: 0;
+		color: var(--text-muted);
+		font-size: var(--text-xs);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+
+	.venue-bar address {
+		margin: 0.35rem 0 0;
+		color: var(--text-heading);
+		font-style: normal;
+		font-size: var(--text-sm);
+		line-height: 1.5;
+	}
+
+	.venue-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem 1.4rem;
+	}
+
+	.venue-links a {
+		color: var(--text-link);
+		font-size: var(--text-sm);
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.22em;
+	}
+
+	.venue-links a:hover,
+	.venue-links a:focus-visible {
+		color: var(--text-hover);
+	}
+
+	.st-faq-wrap {
+		margin-top: clamp(2.5rem, 5vw, 4rem);
+	}
+
+	@media (max-width: 860px) {
+		.facts-strip {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.lead-recap,
+		.empty-recaps,
+		.format-steps {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 620px) {
+		.archive-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.facts-strip {
+			grid-template-columns: 1fr;
+			gap: 1rem;
+		}
+
+		.hero-actions {
+			flex-direction: column;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.lead-image img,
+		.archive-thumb img {
+			transition: none;
+		}
+	}
+</style>

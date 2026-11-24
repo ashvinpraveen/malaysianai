@@ -6,7 +6,7 @@ import { canonicalURL, defaultShareImage, serializeJsonLd, type PageMetadata } f
 import { communityDescription, seoContentByPath } from '../lib/seo-content';
 
 type Props = PageMetadata;
-const { image = defaultShareImage, article, noindex = false } = Astro.props;
+const { image = defaultShareImage, article, breadcrumbs, noindex = false } = Astro.props;
 if (!Astro.site) throw new Error('Configure the production site URL in astro.config.mjs.');
 const site = Astro.site;
 const canonical = canonicalURL(Astro.url.pathname, site);
@@ -56,6 +56,18 @@ const structuredData = {
 		}] : []),
 	],
 };
+const breadcrumbData = breadcrumbs?.length
+	? {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: breadcrumbs.map((crumb, index) => ({
+			'@type': 'ListItem',
+			position: index + 1,
+			name: crumb.name,
+			item: canonicalURL(crumb.path, site).href,
+		})),
+	}
+	: undefined;
 ---
 
 <meta charset="utf-8" />
@@ -113,3 +125,4 @@ const structuredData = {
 <meta name="twitter:image" content={imageURL} />
 {image.alt && <meta name="twitter:image:alt" content={image.alt} />}
 {!noindex && <script is:inline type="application/ld+json" set:html={serializeJsonLd(structuredData)} />}
+{!noindex && breadcrumbData && <script is:inline type="application/ld+json" set:html={serializeJsonLd(breadcrumbData)} />}

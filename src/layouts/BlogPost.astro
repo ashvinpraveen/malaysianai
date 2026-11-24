@@ -3,26 +3,66 @@ import { Image, getImage } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import fallbackCover from '../assets/blog-placeholder-2.jpg';
 import FormattedDate from '../components/FormattedDate.astro';
+import { LUMA_URL } from '../consts';
 import Layout from './Layout.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, image, pubDate, author, authorType, imageAlt, updatedDate } = Astro.props;
+const {
+	title,
+	description,
+	image,
+	pubDate,
+	author,
+	authorType,
+	imageAlt,
+	updatedDate,
+	category,
+	eventDate,
+	eventLocation,
+	nextEventUrl,
+	nextEventLabel,
+	tags,
+	speakers,
+} = Astro.props;
+const isShowAndTell = category === 'show-and-tell';
+const normalizedTags = tags?.map(tag => tag.trim()).filter(Boolean) ?? [];
+const articleKeywords = normalizedTags.length > 0
+	? (normalizedTags.some(tag => /malaysian ai/i.test(tag)) ? normalizedTags : ['Malaysian AI', ...normalizedTags])
+	: isShowAndTell
+		? ['Malaysian AI', 'Show & Tell', 'AI meetup Kuala Lumpur', 'AI events Malaysia']
+		: undefined;
+const breadcrumbs = isShowAndTell
+	? [
+		{ name: 'Home', path: '/' },
+		{ name: 'Show & Tell', path: '/show-and-tell' },
+		{ name: title, path: Astro.url.pathname },
+	]
+	: undefined;
 const shareImage = image ? await getImage({ src: image, width: 1200, format: 'webp', quality: 82 }) : undefined;
 ---
 
 <Layout
 	title={title}
 	description={description}
+	keywords={articleKeywords}
+	breadcrumbs={breadcrumbs}
 	image={shareImage ? { src: shareImage.src, width: shareImage.attributes.width, height: shareImage.attributes.height, alt: imageAlt } : undefined}
 	article={{ published: pubDate, modified: updatedDate, author, authorType }}
 >
 	<article class="story-page">
 		<header class="story-header">
-			<a class="back-link" href="/blog" aria-label="Back to all stories">
-				<span aria-hidden="true">←</span>
-				<span class="back-label">All stories</span>
-			</a>
+			{isShowAndTell ? (
+				<a class="back-link" href="/show-and-tell" aria-label="Back to Show & Tell recaps">
+					<span aria-hidden="true">←</span>
+					<span class="back-label">Show &amp; Tell recaps</span>
+				</a>
+			) : (
+				<a class="back-link" href="/blog" aria-label="Back to all stories">
+					<span aria-hidden="true">←</span>
+					<span class="back-label">All stories</span>
+				</a>
+			)}
 			<div class="story-heading">
 				<h1>{title}</h1>
 				<p class="story-description">{description}</p>
@@ -30,7 +70,24 @@ const shareImage = image ? await getImage({ src: image, width: 1200, format: 'we
 					<span>By {author}</span>
 					<span aria-hidden="true">/</span>
 					<FormattedDate date={pubDate} />
+					{isShowAndTell && eventDate && (
+						<>
+							<span aria-hidden="true">/</span>
+							<span>Held <FormattedDate date={eventDate} /></span>
+						</>
+					)}
+					{isShowAndTell && eventLocation && (
+						<>
+							<span aria-hidden="true">/</span>
+							<span>{eventLocation}</span>
+						</>
+					)}
 				</div>
+				{isShowAndTell && normalizedTags.length > 0 && (
+					<ul class="story-tags" aria-label="Topics">
+						{normalizedTags.map(tag => <li>{tag}</li>)}
+					</ul>
+				)}
 			</div>
 		</header>
 
@@ -57,9 +114,59 @@ const shareImage = image ? await getImage({ src: image, width: 1200, format: 'we
 			<slot />
 		</div>
 
+		{isShowAndTell && speakers && speakers.length > 0 && (
+			<section class="story-speakers" aria-labelledby="story-speakers-title">
+				<div class="story-speakers-head">
+					<h2 id="story-speakers-title">Featured speakers &amp; demos</h2>
+					<p>{speakers.length} {speakers.length === 1 ? 'builder' : 'builders'} demoed during this session.</p>
+				</div>
+				<ol class="speaker-list">
+					{speakers.map(speaker => (
+						<li class="speaker-card">
+							<div class="speaker-meta">
+								<p class="speaker-name">{speaker.name}</p>
+								{speaker.role && <p class="speaker-role">{speaker.role}</p>}
+							</div>
+							<div class="speaker-content">
+								<h3>{speaker.talkTitle}</h3>
+								<p>{speaker.summary}</p>
+								{(speaker.link || speaker.linkedin) && (
+									<div class="speaker-links">
+										{speaker.link && (
+											<a href={speaker.link}>Project <span aria-hidden="true">↗</span></a>
+										)}
+										{speaker.linkedin && (
+											<a href={speaker.linkedin}>LinkedIn <span aria-hidden="true">↗</span></a>
+										)}
+									</div>
+								)}
+							</div>
+						</li>
+					))}
+				</ol>
+			</section>
+		)}
+
 		<footer class="story-end">
-			<p>Keep reading what Malaysia's AI community is building and learning.</p>
-			<a class="site-button" href="/blog">More stories</a>
+			{isShowAndTell ? (
+				<>
+					<div class="story-end-copy">
+						<p>Bring something you built to our next Thursday Show &amp; Tell in Kuala Lumpur.</p>
+						<nav class="story-end-links" aria-label="More reading">
+							<a href="/show-and-tell">Show &amp; Tell recaps</a>
+							<a href="/blog">All stories</a>
+						</nav>
+					</div>
+					<a class="site-button" href={nextEventUrl ?? LUMA_URL}>
+						{nextEventLabel ?? 'Join the next Show & Tell'}
+					</a>
+				</>
+			) : (
+				<>
+					<p>Keep reading what Malaysia's AI community is building and learning.</p>
+					<a class="site-button" href="/blog">More stories</a>
+				</>
+			)}
 		</footer>
 
 		<dialog class="image-viewer" data-image-viewer aria-label="Full-screen image viewer">
@@ -370,6 +477,120 @@ const shareImage = image ? await getImage({ src: image, width: 1200, format: 'we
 		display: none;
 	}
 
+	.story-tags {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.45rem;
+		padding: 0;
+		margin: 1rem 0 0;
+		list-style: none;
+	}
+
+	.story-tags li {
+		padding: 0.2rem 0.65rem;
+		border: 1px solid var(--hairline-soft);
+		border-radius: 999px;
+		color: var(--text-muted);
+		font-size: var(--text-xs);
+		line-height: 1.3;
+	}
+
+	.story-speakers {
+		width: min(calc(100% - var(--story-inline-gap) - var(--story-inline-gap)), var(--story-width));
+		margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+		padding-top: clamp(2rem, 4vw, 3rem);
+		border-top: 1px solid var(--hairline-soft);
+	}
+
+	.story-speakers-head h2 {
+		margin: 0;
+		color: var(--text-heading);
+		font-family: var(--font-display);
+		font-size: clamp(1.85rem, 3.4vw, 2.6rem);
+		font-weight: 400;
+		letter-spacing: -0.035em;
+		line-height: 1.02;
+	}
+
+	.story-speakers-head p {
+		margin: 0.65rem 0 0;
+		color: var(--text-soft);
+		font-size: var(--text-sm);
+		line-height: var(--leading-body);
+	}
+
+	.speaker-list {
+		margin: clamp(1.5rem, 3vw, 2.25rem) 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.speaker-card {
+		display: grid;
+		grid-template-columns: minmax(10rem, 13.5rem) minmax(0, 1fr);
+		gap: 0.85rem 2rem;
+		padding: 1.35rem 0;
+		border-top: 1px solid var(--hairline-soft);
+	}
+
+	.speaker-name {
+		margin: 0;
+		color: var(--text-heading);
+		font-size: var(--text-base);
+		font-weight: 700;
+		line-height: 1.35;
+	}
+
+	.speaker-role {
+		margin: 0.25rem 0 0;
+		color: var(--text-muted);
+		font-size: var(--text-xs);
+		line-height: 1.45;
+	}
+
+	.speaker-content h3 {
+		margin: 0;
+		color: var(--text-heading);
+		font-family: var(--font-display);
+		font-size: clamp(1.25rem, 2vw, 1.55rem);
+		font-weight: 400;
+		letter-spacing: -0.025em;
+		line-height: 1.15;
+	}
+
+	.speaker-content p {
+		margin: 0.5rem 0 0;
+		color: var(--story-copy);
+		font-size: var(--text-sm);
+		line-height: var(--leading-body);
+	}
+
+	.speaker-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 1.25rem;
+		margin-top: 0.75rem;
+	}
+
+	.speaker-links a {
+		color: var(--text-link);
+		font-size: var(--text-sm);
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.22em;
+	}
+
+	.speaker-links a:hover,
+	.speaker-links a:focus-visible {
+		color: var(--text-hover);
+	}
+
+	.speaker-links a:focus-visible {
+		outline: 2px solid var(--focus-color);
+		outline-offset: 3px;
+	}
+
 	.story-end {
 		display: flex;
 		align-items: center;
@@ -378,6 +599,36 @@ const shareImage = image ? await getImage({ src: image, width: 1200, format: 'we
 		width: min(100% - 2.5rem, 72rem);
 		padding: clamp(2rem, 4vw, 3rem) 0 clamp(5rem, 8vw, 7rem);
 		margin-inline: auto;
+		border-top: 1px solid var(--hairline-soft);
+	}
+
+	.story-end-copy {
+		display: grid;
+		gap: 0.85rem;
+	}
+
+	.story-end-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 1.25rem;
+	}
+
+	.story-end-links a {
+		color: var(--text-link);
+		font-size: var(--text-sm);
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.22em;
+	}
+
+	.story-end-links a:hover,
+	.story-end-links a:focus-visible {
+		color: var(--text-hover);
+	}
+
+	.story-end-links a:focus-visible {
+		outline: 2px solid var(--focus-color);
+		outline-offset: 3px;
 	}
 
 	.story-end p {
@@ -481,6 +732,11 @@ const shareImage = image ? await getImage({ src: image, width: 1200, format: 'we
 		.story-end {
 			align-items: flex-start;
 			flex-direction: column;
+		}
+
+		.speaker-card {
+			grid-template-columns: 1fr;
+			gap: 0.55rem;
 		}
 	}
 </style>

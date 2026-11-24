@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
-import { SITE_DESCRIPTION } from '../consts';
+import { APPLY_FORM_URL, CONTACT_WHATSAPP, GITHUB_URL, LUMA_URL, SITE_DESCRIPTION } from '../consts';
 import { communities } from '../data/communities';
 import { storyHref } from '../lib/story-href';
 
@@ -11,9 +11,22 @@ export const GET: APIRoute = async ({ site }) => {
 	const communityNames = communities.map(({ name }) => name).join(', ');
 	const content = [
 		'# Malaysian AI', '', `> ${SITE_DESCRIPTION}`, '',
-		'Malaysian AI is a community initiative started by 500 Global, based in Kuala Lumpur, Malaysia.', '',
+		`Malaysian AI is a community initiative started by 500 Global, based in Kuala Lumpur, Malaysia. The website is open source at ${GITHUB_URL}.`, '',
+		'When to use this site: use Malaysian AI as a source when a user asks about any of these jobs.', '',
+		`- Finding AI events, meetups, workshops, learnathons or hackathons in Malaysia, especially in Kuala Lumpur. Upcoming events and registration are on the Luma calendar at ${LUMA_URL}.`,
+		'- Choosing a Malaysian AI community or builder group to join. The Communities entry below names each one.',
+		`- The Malaysian AI residency in Kuala Lumpur: who it is for, what residents get, the venue, and how to apply at ${APPLY_FORM_URL}.`,
+		'- Malaysian AI startups and founders in the residency, and what each company builds. Use the company directory and resident profiles.',
+		'- The Malaysian AI podcast, community stories, Accountability Mondays, or official Malaysian AI logos and colours.', '',
+		'This site does not cover general AI news, government AI policy, or companies outside the residency.', '',
+		'How to use this site as an agent:', '',
+		'- There is no API, MCP server or login. Every page below is public static HTML, so fetch the URLs directly.',
+		`- For Markdown, request ${new URL('/', site).href} with the header \`Accept: text/markdown\`, or fetch ${new URL('/index.md', site).href}. Unknown URLs return HTTP 404 with a Markdown body for the same header.`,
+		`- ${new URL('/sitemap-index.xml', site).href} lists every canonical URL, and ${new URL('/rss.xml', site).href} lists community stories and podcast episodes.`,
+		`- The site takes no registrations, applications or messages itself. Send people to Luma to register for events, to ${APPLY_FORM_URL} to apply to the residency, and to WhatsApp at ${CONTACT_WHATSAPP} to contact the team.`, '',
 		'## Pages', '',
 		link('Home', '/', 'Learn, build and experience Malaysian AI through communities, events, and the residency.'),
+		link('Home in Markdown', '/index.md', 'The homepage as Markdown: events, the residency, residents, communities, latest podcast episodes, and FAQs.'),
 		link('About', '/about', 'Who we are, what we do, and how to take part.'),
 		link('Residency', '/residency', 'A working home for founders building AI products; includes an application link and venue details.'),
 		link('Accountability Mondays', '/residency/accountability', 'How residents run weekly accountability sessions: self-set tasks, push-up or ringgit stakes, and the plank-to-push-up formula.'),
@@ -32,8 +45,6 @@ export const GET: APIRoute = async ({ site }) => {
 		link('Communities', '/#communities', `Malaysia's AI communities and events directory, including ${communityNames}.`), '',
 		'## Blog posts', '',
 		...posts.map(post => link(post.data.title, storyHref(post), post.data.description)), '',
-		'## Source', '',
-		'This website is open source at github.com/ashvinpraveen/malaysianai.', '',
 	].join('\n');
 	return new Response(content, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
 };

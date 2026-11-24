@@ -1,5 +1,6 @@
 ---
 import InfoPage from '../layouts/InfoPage.astro';
+import { PRIVACY_EMAIL } from '../consts';
 // Policy copy preserved from the published site and src/views/Privacy.tsx at 9f16a4a.
 ---
 <InfoPage title="Privacy Policy" description="This policy explains how The Malaysian AI Residency collects, uses, and protects personal information.">
@@ -18,7 +19,7 @@ import InfoPage from '../layouts/InfoPage.astro';
 		<p>By attending our events or participating in the residency, you consent to being photographed, filmed, or recorded. We may use your image, likeness, and voice in our materials (including the website, social media, and other communications) without compensation. If you prefer not to be recorded, let us know in advance and we will do our best to accommodate.</p>
 		<h2 id="contact">Contact</h2>
 		<p>Contact us with questions about privacy or data requests.</p>
-		<a href="mailto:privacy@malaysianai.org">privacy@malaysianai.org</a>
+		<a href={`mailto:${PRIVACY_EMAIL}`}>{PRIVACY_EMAIL}</a>
 	</div>
 </InfoPage>
 <style>.policy-copy { max-width: 44rem; }</style>

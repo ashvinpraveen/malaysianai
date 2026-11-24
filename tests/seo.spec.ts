@@ -196,12 +196,39 @@ test('crawl documents list live canonical URLs and exclude retired pages', async
 	expect(listed.some(url => url.pathname === '/about')).toBe(true);
 	expect(listed.some(url => url.pathname === '/brand')).toBe(true);
 	expect(listed.some(url => url.pathname === '/residency/apply')).toBe(false);
+	expect(listed.some(url => url.pathname === '/index.md')).toBe(true);
+	// llmstxt.org: free-form guidance sits before the first H2, and each H2 holds a link list.
+	const [preamble, ...sections] = llmsText.split(/^## /m);
+	expect(preamble).toMatch(/^When to use this site: /m);
+	expect(preamble).toContain('Accept: text/markdown');
+	expect(preamble).toContain('https://platform.malaysian.ai/application');
+	expect(preamble.split('\n').filter(line => line.startsWith('#'))).toEqual(['# Malaysian AI']);
+	for (const section of sections) {
+		const lines = section.split('\n').slice(1).filter(Boolean);
+		expect(lines.every(line => /^- \[[^\]]+\]\(https:[^)]+\)(: .+)?$/.test(line)), section.split('\n')[0]).toBe(true);
+	}
 	const communityLine = llmsText.match(/^- \[Communities\]\([^)]+\): .*including (.+)\.$/m)?.[1];
 	expect(communityLine?.split(', ')).toEqual(expectedCommunityNames);
 	const rss = await request.get('/rss.xml');
 	const feed = await rss.text();
 	expect(feed).toContain(`${origin}/blog/largest-ai-learnathon`);
 	expect(feed).not.toMatch(/https:\/\/www\.malaysian\.ai\/blog\/[^<]+\/<\/link>/);
+});
+
+test('Organization structured data has a postal address and contact points', async ({ page }) => {
+	await page.goto('/contact');
+	const graph = await page.locator('script[type="application/ld+json"]').evaluateAll(scripts =>
+		scripts.map(script => JSON.parse(script.textContent || '{}')).find(entry => Array.isArray(entry['@graph']))['@graph']);
+	const organization = graph.find((item: { '@type': string }) => item['@type'] === 'Organization');
+	expect(organization.address).toMatchObject({ '@type': 'PostalAddress', addressLocality: 'Kuala Lumpur', addressCountry: 'MY' });
+	expect(organization.contactPoint).toEqual([
+		{ '@type': 'ContactPoint', contactType: 'community and residency enquiries', telephone: '+60109847954', url: 'https://wa.me/60109847954', areaServed: 'MY' },
+		{ '@type': 'ContactPoint', contactType: 'privacy enquiries', email: 'privacy@malaysianai.org' },
+	]);
+	// The published contact details match the visible links.
+	await expect(page.locator('#contact-whatsapp')).toHaveAttribute('href', organization.contactPoint[0].url);
+	await page.goto('/privacy');
+	await expect(page.locator(`a[href="mailto:${organization.contactPoint[1].email}"]`)).toHaveText(organization.contactPoint[1].email);
 });
 
 test('About navigation updates metadata and unknown URLs show the custom 404', async ({ page }) => {

@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { SITE_TITLE, VENUE_ADDRESS } from '../consts';
+import { CONTACT_TELEPHONE, CONTACT_WHATSAPP, PRIVACY_EMAIL, SITE_TITLE, VENUE_ADDRESS } from '../consts';
 import { BRAND_MARK_SRC } from '../lib/brand';
 import { canonicalURL, defaultShareImage, serializeJsonLd, type PageMetadata } from '../lib/seo';
 import { communityDescription, seoContentByPath } from '../lib/seo-content';
@@ -29,6 +29,13 @@ const structuredData = {
 			description: communityDescription,
 			logo: new URL(BRAND_MARK_SRC, site).href,
 			address: { '@type': 'PostalAddress', streetAddress: VENUE_ADDRESS, addressLocality: 'Kuala Lumpur', addressCountry: 'MY' },
+			contactPoint: [
+				{
+					'@type': 'ContactPoint', contactType: 'community and residency enquiries',
+					telephone: CONTACT_TELEPHONE, url: CONTACT_WHATSAPP, areaServed: 'MY',
+				},
+				{ '@type': 'ContactPoint', contactType: 'privacy enquiries', email: PRIVACY_EMAIL },
+			],
 		},
 		{
 			'@type': 'WebSite', '@id': websiteId,

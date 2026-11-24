@@ -4,6 +4,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig, fontProviders } from 'astro/config';
 import hosting from './vercel.json' with { type: 'json' };
+import { SITE_URL } from './src/consts.ts';
 
 // Vercel owns HTTP redirects. Generate static fallbacks for the known old URLs too.
 const redirects = Object.fromEntries(hosting.redirects
@@ -11,7 +12,7 @@ const redirects = Object.fromEntries(hosting.redirects
 	.map(rule => [rule.source, rule.destination]));
 
 export default defineConfig({
-	site: 'https://www.malaysian.ai',
+	site: SITE_URL,
 	trailingSlash: 'never',
 	redirects,
 	integrations: [mdx(), sitemap({ filter: page => {

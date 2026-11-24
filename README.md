@@ -61,7 +61,7 @@ Use the shared text sizes for ordinary page headings and copy. Keep intentional 
 
 ## Deployment
 
-Run `bun run build` and serve `dist/` with a static host that resolves directory URLs to `index.html`. The canonical site URL is configured in `astro.config.mjs`. No server runtime is needed after the build.
+Run `bun run build` and serve `dist/` with a static host that resolves directory URLs to `index.html`. The canonical site URL is `SITE_URL` in `src/consts.ts`, which `astro.config.mjs` reads. The pages need no server runtime. On Vercel, two small functions add Markdown for AI agents; see [Markdown for agents](#markdown-for-agents).
 
 `vercel.json` configures the Astro build, removes trailing slashes, and sends retired AIMTO URLs to `https://aimto.my/` with HTTP 301 redirects. The `/aimto/:path*` rule covers arbitrary subpaths. Other retired routes point to the residency page or the communities section. Keep `/residency`, `/residents`, and `/contact` as pages.
 
@@ -75,6 +75,23 @@ Search-only titles, descriptions and keyword targets live in `src/lib/seo-conten
 
 Blog authors default to `Organization` because the current posts are credited to editorial teams. Set `authorType: Person` for an individual author. When adding a cover image, supply `imageAlt`, `imageWidth`, and `imageHeight` in frontmatter so share metadata matches the asset. `updatedDate` is optional and should reflect a substantive content update.
 
-`robots.txt` and `llms.txt` are generated endpoints; the latter gets blog URLs from the content collection. The sitemap excludes redirects and the 404 page. Browser checks cover canonical URLs, actual share-image dimensions, structured data, crawl documents, and metadata updates during navigation.
+`robots.txt` and `llms.txt` are generated endpoints; the latter gets blog URLs from the content collection. `llms.txt` follows [llmstxt.org](https://llmstxt.org/): guidance for agents, including when to use the site, goes before the first `##` heading, and each `##` section is a link list. Organization data includes the address and `contactPoint` entries for WhatsApp and privacy email. The sitemap excludes redirects and the 404 page. Browser checks cover canonical URLs, actual share-image dimensions, structured data, crawl documents, and metadata updates during navigation.
+
+## Markdown for agents
+
+A request for `/` whose `Accept` header prefers `text/markdown` gets the Markdown homepage. Unknown URLs get a Markdown 404 for the same header. Browsers keep receiving HTML.
+
+- `src/pages/index.md.ts` builds `/index.md` from the same data files as the homepage. When you change homepage copy in `src/components/`, update it there too. `tests/agent-markdown.spec.ts` fails when headings, ledes, residents or FAQs drift.
+- `middleware.ts` is Vercel Routing Middleware matched only on `/`. It serves `/index.md` with `Content-Type: text/markdown; charset=utf-8` and `Vary: Accept`. It returns 406 when the client accepts neither HTML nor Markdown, and passes every other request on to the static page. A `vercel.json` rewrite cannot do this, because Vercel applies rewrites only after a static file fails to match.
+- `api/markdown-not-found.ts` returns the 404 body. The last `vercel.json` rewrite sends it requests that no static file matched and whose `Accept` header names `text/markdown`. Every response keeps status 404.
+- `src/lib/markdown-negotiation.ts` parses `Accept` with q-values, following [acceptmarkdown.com](https://acceptmarkdown.com/guides/accept-parsing). Vercel compiles the middleware and `api/` to Node ESM one file at a time, so their relative imports end in `.js`.
+
+`astro preview` runs neither function. The tests call them directly against the preview build. After deployment, check the production host:
+
+```sh
+curl -sS -L -i -H 'Accept: text/markdown' https://malaysian.ai/
+curl -sS -L -i -H 'Accept: text/html' https://malaysian.ai/
+curl -sS -L -i -H 'Accept: text/markdown' https://malaysian.ai/some-path-that-does-not-exist
+```
 
 Privacy and terms copy was carried over from the published site and the former `src/views/Privacy.tsx` and `src/views/Terms.tsx` at commit `9f16a4a`, retaining the February 3, 2026 date and contact addresses. This migration changes their presentation, not their policy terms.

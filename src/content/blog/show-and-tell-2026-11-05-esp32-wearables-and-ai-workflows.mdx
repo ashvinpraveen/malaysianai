@@ -1,0 +1,227 @@
+---
+title: "ESP32 Robotics, Wearables, and Agent Workflows: KL Show & Tell (5 Nov 2026)"
+description: "Recap of 12 demos from Malaysian AI's 5 Nov 2026 Kuala Lumpur Show & Tell, from ESP32 LiDAR and Kubernetes builds to smart glasses, MCP tools, and video AI."
+image: "../../../public/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/02-syukri-arabi.jpg"
+imageAlt: "Syukri Arabi holds a wired ESP32-S3 board beside a large screen displaying the ESP Presenter title slide and hardware illustration at Malaysian AI Show & Tell in Kuala Lumpur."
+pubDate: 2026-11-05
+author: "Malaysian AI Team"
+authorType: 'Organization'
+category: show-and-tell
+eventDate: 2026-11-05
+eventLocation: "Kuala Lumpur, Malaysia"
+nextEventUrl: "https://luma.com/0bbtuq5k"
+nextEventLabel: "Weekly Show & Tell @TheMalaysian.ai Residency, Thu, 26 Nov 2026, 12:00 pm MYT at Kuala Lumpur, Malaysia"
+tags:
+  - "Malaysian AI"
+  - "Show & Tell"
+  - "Kuala Lumpur"
+  - "ESP32"
+  - "AI Agents"
+  - "Hardware"
+speakers:
+  - name: "Jack Min Ong"
+    role: "ML / AI Engineer"
+    talkTitle: "Even Realities Even G2 smart glasses"
+    summary: "Jack Min Ong shared his experience using Even Realities Even G2 smart glasses for live Chinese and Malay translation, news, and talk transcription. He also answered audience questions on pricing, prescription lead times, and how dual-eye displays compare with Meta smart glasses."
+    linkedin: "https://www.linkedin.com/in/jackminong"
+  - name: "Syukri Arabi"
+    role: "Senior Manager at TEGAS Sarawak"
+    talkTitle: "ESP Presenter wireless slide controller"
+    summary: "Syukri Arabi demonstrated an Android app and ESP32-S3 Bluetooth-to-HID setup for controlling slides, spotlight effects, drawings, and preset commands on TVs without installing software on a Mac. He built the project with Codex in about two hours as a low-cost alternative to commercial clickers."
+    linkedin: "https://www.linkedin.com/in/syukri-arabi-54283062"
+  - name: "Nathan hor"
+    role: "I tinker with hardware. Building a wearable sales and business development assistant"
+    talkTitle: "Portable business assistant and client dashboard"
+    summary: "Nathan Hor presented a portable voice assistant and browser dashboard for researching clients before meetings, recording conversations, and tracking follow-ups. In Q&A, he discussed keeping search scoped to LinkedIn over Facebook for privacy and handling chunked transcription."
+    link: "https://nathanhor.com/"
+    linkedin: "https://www.linkedin.com/in/nathan-hor"
+  - name: "Frankie"
+    talkTitle: "Neighbourhood journey co-creation"
+    summary: "Frankie presented a neighbourhood co-creation concept for residents and urban planners to map everyday walking journeys, rank priorities like market crossings and bus stops, and visualise street improvements for decision-makers."
+  - name: "Jun"
+    talkTitle: "ESP32 and LiDAR autonomous vehicle"
+    summary: "Jun walked through his ESP32-S3, RPLIDAR A1, and wheel-encoder SLAM vehicle powered by Nav2 on a PC, estimating core parts at RM300 and a full build under RM500. He also explained how Wi-Fi lag and missed encoder readings cause map overlap during rotation."
+  - name: "Andrew"
+    role: "Uptime guy at Malaysian AI — event organiser (production check-in test)"
+    talkTitle: "Kubernetes on ESP32: neural nets and Doom"
+    summary: "Andrew described porting Kubernetes across ESP32 boards to run a distributed neural-network app and multiplayer Doom across microcontrollers and a browser. He noted Wi-Fi interference during the live Doom run."
+    link: "https://al.arteriali.st/"
+    linkedin: "https://www.linkedin.com/in/arterialist"
+  - name: "Amara"
+    role: "Founder at InclusiTech"
+    talkTitle: "Yes-or-no Arduino decision device"
+    summary: "Amara showed a wired Arduino yes-or-no decision device built from a Lazada kit with Claude's instructions as a playful aid for solo-founder task paralysis. The build also served as a test project for a planned female robotics workshop."
+    linkedin: "https://www.linkedin.com/in/alyshabaig"
+  - name: "Mohtasham Murshid Madani"
+    role: "Founder • AI Engineer • Open source • SpaceXAI ambassador"
+    talkTitle: "Distributed compute for coding agents"
+    summary: "Mohtasham Murshid Madani described linking a MacBook Air, Google Cloud VM, newly acquired office Mac Mini, Windows PC, and serverless bot over Tailscale so coding agents can operate across three locations without Kubernetes."
+    link: "https://mohtasham.dev/"
+    linkedin: "https://www.linkedin.com/in/mohtashammurshid"
+  - name: "Lesly Leon Lee"
+    role: "Videographer/Editor at Luma Events"
+    talkTitle: "AI-assisted event-video editing app"
+    summary: "Lesly Leon Lee demonstrated Event Prepass v2.3, a Windows app he built with Claude and Gemini to condense 1.5 to 2 hours of event footage into short edits guided by reference videos and event presets."
+    linkedin: "https://www.linkedin.com/in/leslyleonlee"
+  - name: "Devansh Panchal"
+    role: "Software Engineer"
+    talkTitle: "upright fall and accident detection app"
+    summary: "Devansh Panchal introduced upright, an on-device fall and accident detection app sampling phone sensors 50 times per second, waiting 60 seconds before alerting a chosen contact, and filtering nearby hospitals for emergency care."
+  - name: "Khalil Nooh"
+    role: "The Future Is Solo"
+    talkTitle: "Proto BMC and external-memory workspace"
+    summary: "Khalil Nooh demonstrated Proto under TFIS, a Business Model Canvas workspace connected to free ChatGPT through Codex-built MCP plugins and OAuth so users can review proposed updates while owning their external memory."
+    link: "https://khalilnooh.com/"
+    linkedin: "https://www.linkedin.com/in/khalilnooh"
+  - name: "Faris Irfan"
+    role: "CEO at Rizqey Labs"
+    talkTitle: "Creative-design model and studio website"
+    summary: "Faris Irfan introduced his vertical foundation model for creative design and shared a mobile marketing-studio site built from client PDFs and brand colours, offering free pilot access alongside pay-as-you-go pricing."
+    link: "https://startupfounda.vercel.app/"
+    linkedin: "https://www.linkedin.com/in/faris-irfan-rizqey"
+---
+
+import StoryPhoto from '../../components/StoryPhoto.astro';
+import photo02 from '../../../public/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/02-syukri-arabi.jpg';
+import photo05 from '../../../public/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/05-jun.jpg';
+import photo06 from '../../../public/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/06-andrew.jpg';
+import photo07 from '../../../public/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/07-amara.jpg';
+import photo01 from '../../../public/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/01-jack-min-ong.jpg';
+import photo03 from '../../../public/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/03-nathan-hor.jpg';
+import photo10 from '../../../public/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/10-devansh-panchal.jpg';
+import photo08 from '../../../public/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/08-mohtasham-murshid-madani.jpg';
+import photo11 from '../../../public/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/11-khalil-nooh.jpg';
+import photo09 from '../../../public/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/09-lesly-leon-lee.jpg';
+import photo12 from '../../../public/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/12-faris-irfan.jpg';
+import photo04 from '../../../public/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/04-frankie.jpg';
+
+Twelve builders gathered in Kuala Lumpur on 5 November 2026 for Malaysian AI's weekly Show & Tell. Hardware dominated the room, with multiple ESP32 and Arduino builds alongside smart glasses, on-device phone sensors, multi-machine coding setups, and domain-specific AI workflows.
+
+## ESP32 hardware, robotics, and microcontroller builds
+
+### Syukri Arabi: ESP Presenter
+
+Physical laser pointers do not show up well on TV screens, and commercial tools like a roughly RM300 Logitech Spotlight require installing companion software on the host computer. Syukri built ESP Presenter to solve both problems using an Android phone and an ESP32-S3 board.
+
+The Android APK sends commands over Bluetooth to the ESP32-S3, which acts as a USB keyboard for a Mac so nothing needs to be installed on the presentation machine. During the live demo, he used the phone's volume buttons to change slides, moved a circular spotlight and red laser dot across the TV, drew and cleared annotations, and triggered embedded device scripts to open Claude Code and Codex. He said he built the project with Codex in about two hours, spending most of that time fixing the mobile UI.
+
+<figure>
+	<StoryPhoto src={photo02} fullSrc="/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/02-syukri-arabi.jpg" alt="Syukri Arabi stands at the podium holding a wired ESP32-S3 board while the TV behind him shows the ESP Presenter title slide and board graphic." />
+	<figcaption>Syukri Arabi holding up his ESP32-S3 bridge beside the ESP Presenter demo screen.</figcaption>
+</figure>
+
+### Jun: ESP32 and LiDAR autonomous vehicle
+
+Jun walked through his open-source GitHub documentation for a SLAM robot built with an ESP32-S3, an RPLIDAR A1, wheel encoders, a DRV8833 motor driver, motors, and a battery. In his architecture, the ESP32 collects sensor data while a PC handles mapping calculations and navigation using Nav2.
+
+A practical lesson from his build was how much encoder timing matters: slow Wi-Fi and dropped encoder readings during rotation cause map overlap, which can warp a square room into a circle. Asked about beginner costs, he broke down the core parts at around RM300 (two encoders at RM25 each, a budget LiDAR around RM200, and an ESP32-S3 board at RM50), estimating a full build under RM500 before adding a camera.
+
+<figure>
+	<StoryPhoto src={photo05} fullSrc="/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/05-jun.jpg" alt="Jun stands at the podium pointing toward a large TV showing the ESP32-LIDAR-SLAM-Car GitHub README with hardware and power notes." />
+	<figcaption>Jun explaining the RPLIDAR A1, wheel encoder, and capacitor notes on his GitHub repo.</figcaption>
+</figure>
+
+### Andrew: Kubernetes on ESP32 for distributed neural networks and Doom
+
+To move beyond single-microcontroller demos, Andrew described porting Kubernetes to three ESP32 boards. He walked through two deployments: a distributed neural-network setup across two nodes and five pods (keyword recognition, a diffusion model, and a small story-writing LLM) designed to migrate workloads to his Mac or another node if a device drops out, followed by multiplayer Doom across ESP32 boards with a second player joining from a browser. Room Wi-Fi interference made the live Doom run choppy, and the HDMI feed eventually dropped, a familiar reminder of live hardware demo constraints.
+
+<figure>
+	<StoryPhoto src={photo06} fullSrc="/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/06-andrew.jpg" alt="Andrew smiles at his sticker-covered laptop while the TV behind him shows a desktop with a terminal running kubectl commands." />
+	<figcaption>Andrew running kubectl commands against his ESP32 Kubernetes cluster.</figcaption>
+</figure>
+
+### Amara: Yes-or-no decision device
+
+Amara brought a small wired Arduino prototype with a blue button that works like a Magic 8 Ball for solo-founder task paralysis, returning answers like "Very doubtful" or "Reply hazy, try again." She assembled it from an Arduino starter kit bought on Lazada for 70 using instructions from Claude. Beyond being a playful desk tool (with a necklace suggested as a possible future form factor during Q&A), it served as a test build for a female robotics workshop she is planning.
+
+<figure>
+	<StoryPhoto src={photo07} fullSrc="/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/07-amara.jpg" alt="Amara smiles while holding her small wired Arduino decision device between both hands at the podium." />
+	<figcaption>Amara demonstrating her wired Arduino yes-or-no decision device.</figcaption>
+</figure>
+
+## Wearables, voice assistants, and on-device sensors
+
+### Jack Min Ong: Even Realities Even G2 smart glasses
+
+Jack brought a pair of Even Realities Even G2 smart glasses he bought primarily for live translation, noting that they detect language switches such as Chinese and Malay and also support news, stock graphs, calendars, to-do lists, and talk transcription. In Q&A, he explained that the glasses are a one-off purchase with currently free app and AI usage (though he noted that might not stay free forever) and prescription lenses take about three weeks. Comparing them with Meta's glasses, he preferred a dual-eye display over speaker-based translation because listening to both a speaker and audio translation at once makes it hard to catch up, though he felt Meta's wristband gesture controls were stronger.
+
+<figure>
+	<StoryPhoto src={photo01} fullSrc="/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/01-jack-min-ong.jpg" alt="Jack Min Ong wears Even Realities smart glasses and gestures beside his sticker-covered laptop and a large TV displaying a macOS desktop with a mirrored phone window." />
+	<figcaption>Jack Min Ong wearing the Even Realities Even G2 smart glasses during his Q&amp;A.</figcaption>
+</figure>
+
+### Nathan Hor: Portable business assistant and client dashboard
+
+Nathan presented a portable voice assistant aimed at helping business users research clients before meetings, record conversations, and track follow-ups in a browser dashboard showing connections, conversations, follow-ups, speaker cards, and audio recordings. He described using it on a car dashboard while his phone runs navigation, and noted that voice lookups are still rough around the edges and speaker attribution can miss. During Q&A, he shared a practical privacy boundary: he keeps people search tied to public LinkedIn profiles first after an early Facebook search surfaced family members.
+
+<figure>
+	<StoryPhoto src={photo03} fullSrc="/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/03-nathan-hor.jpg" alt="Portrait of Nathan Hor wearing glasses and a red polo shirt while presenting his portable business assistant." />
+	<figcaption>Nathan Hor answering questions about his portable client-research assistant.</figcaption>
+</figure>
+
+### Devansh Panchal: upright fall and accident detection
+
+Devansh introduced upright, a phone app designed to detect falls and accidents using a small on-device sensor model trained with Claude on fall-detection datasets. He explained that the app samples phone sensors 50 times per second without needing internet access and waits 60 seconds after a fall before alerting a chosen friend rather than calling an ambulance directly. On screen, the live dashboard displayed g-force readings and a red "Are you OK?" countdown dialog. He also described filtering hospital data to exclude non-emergency clinics such as eye care and IVF centres.
+
+<figure>
+	<StoryPhoto src={photo10} fullSrc="/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/10-devansh-panchal.jpg" alt="Devansh Panchal holds his phone and looks toward the TV displaying the upright app with a 1.01g readout and a red 'Are you OK?' countdown at 4 seconds." />
+	<figcaption>Devansh Panchal testing the 'Are you OK?' countdown prompt in upright.</figcaption>
+</figure>
+
+## Multi-machine agents and owned external memory
+
+### Mohtasham Murshid Madani: Distributed compute for coding agents
+
+Mohtasham walked through his personal Tailscale network connecting a MacBook Air, a Google Cloud VM, a newly acquired office Mac Mini, a home Windows PC, and a serverless bot. Rather than running Kubernetes, he uses Tailscale so he can launch coding agent threads across three separate locations and still keep two nodes online if one site loses power. He is currently migrating workloads from his GCP VM to the Mac Mini, with services configured to restart on login.
+
+<figure>
+	<StoryPhoto src={photo08} fullSrc="/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/08-mohtasham-murshid-madani.jpg" alt="Mohtasham Murshid Madani stands at his laptop explaining a Tailnet architecture diagram displayed on the large screen behind him." />
+	<figcaption>Mohtasham Murshid Madani walking through his multi-machine Tailscale diagram.</figcaption>
+</figure>
+
+### Khalil Nooh: Proto BMC and external-memory workspace
+
+Following a Business Model Canvas masterclass, Khalil built Proto under TFIS for non-technical builders and knowledge workers who use multiple AI tools, including free ChatGPT accounts. Using Codex, he built MCP plugins with OAuth sign-in so ChatGPT can pull workspace context and submit structured canvas updates back to Proto for human review and approval. The goal is to keep accumulated project memory and judgment in an external system the user owns instead of locked inside one chat provider.
+
+<figure>
+	<StoryPhoto src={photo11} fullSrc="/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/11-khalil-nooh.jpg" alt="Khalil Nooh gestures beside his laptop while the TV displays a dark ChatGPT interface confirming a TFIS Business Model Canvas proposal submitted to Proto." />
+	<figcaption>Khalil Nooh showing ChatGPT submitting a Business Model Canvas update to Proto via MCP.</figcaption>
+</figure>
+
+## Creative production and civic co-creation
+
+### Lesly Leon Lee: AI-assisted event-video editing app
+
+As an event videographer who routinely cuts 1.5 to 2 hours of footage into 30 to 60 second highlights, Lesly found plenty of tools for talking-head clips but very few for editing real event footage. He started building Event Prepass (now v2.3) on Windows with Claude and Gemini, using event presets and reference videos to guide shot tagging. He shared a roughly 20-second Chinese banquet cut generated in one pass, noting that because he used a boxing-event video as the reference, the pacing came out very fast, and mentioned linking the workflow to his video editor via a Claude connector for manual tweaks.
+
+<figure>
+	<StoryPhoto src={photo09} fullSrc="/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/09-lesly-leon-lee.jpg" alt="Lesly Leon Lee stands beside his laptop while the large screen displays the Event Prepass v2.3 Windows interface and dark terminal log." />
+	<figcaption>Lesly Leon Lee showing the Event Prepass v2.3 settings and processing log.</figcaption>
+</figure>
+
+### Faris Irfan: Creative-design foundation model and marketing-studio site
+
+Faris discussed his work on a vertical foundation model for creative design and showed a mobile website built for a marketing agency that previously had only PDFs, brand colours, and WhatsApp groups. He described how the tool structured portfolio sections and designed a brand-coloured play button while avoiding generic vibe-coded colour palettes, though the earlier version did not load for a side-by-side comparison and the client CRM stayed private. He recommended pairing design tools with ChatGPT and Claude, and offered free pilot access alongside pay-as-you-go pricing to gather more real projects.
+
+<figure>
+	<StoryPhoto src={photo12} fullSrc="/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/12-faris-irfan.jpg" alt="Faris Irfan holds his phone and gestures while explaining a mirrored mobile webpage displayed on the TV behind him." />
+	<figcaption>Faris Irfan walking through the mobile web output from his creative-design tool.</figcaption>
+</figure>
+
+### Frankie: Neighbourhood journey co-creation
+
+Frankie walked through a civic design concept for residents and urban planners to map difficult everyday journeys together. His screens showed an illustrated neighbourhood map connecting homes, a bus stop, and a market hall, along with a "Review priorities" view and visualisations of proposed street improvements. He proposed feeding saved community input into a live dashboard so decision-makers can spot recurring neighbourhood complaints and test built-environment changes.
+
+<figure>
+	<StoryPhoto src={photo04} fullSrc="/images/blog/show-and-tell-2026-11-05-esp32-wearables-and-ai-workflows/04-frankie.jpg" alt="Frankie gestures at the right edge of the frame beside a large yellow screen showing an illustrated neighbourhood walking map titled 'Make everyday journeys easier.'" />
+	<figcaption>Frankie walking through the neighbourhood journey map and community priority flow.</figcaption>
+</figure>
+
+## Join the next Show & Tell in Kuala Lumpur
+
+If you are building with AI, hardware, or developer tools in Malaysia, come demo what is working (and what is still breaking) at the next session:
+
+- **Event:** Weekly Show & Tell @TheMalaysian.ai Residency
+- **Date and time:** Thu, 26 Nov 2026, 12:00 pm MYT
+- **Location:** Kuala Lumpur, Malaysia
+- **RSVP:** [https://luma.com/0bbtuq5k](https://luma.com/0bbtuq5k)

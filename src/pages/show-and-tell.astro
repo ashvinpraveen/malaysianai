@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 import showAndTellPhoto from '../assets/events/show-and-tell-supabase-ceo.jpg';
 import FaqSection from '../components/FaqSection.astro';
 import FormattedDate from '../components/FormattedDate.astro';
-import { LUMA_URL, SITE_TITLE, VENUE_ADDRESS, VENUE_MAPS_URL, VENUE_WAZE_URL } from '../consts';
+import { LUMA_URL, PLATFORM_KNOWLEDGE_URL, SITE_TITLE, VENUE_ADDRESS, VENUE_MAPS_URL, VENUE_WAZE_URL } from '../consts';
 import { showAndTellFaqs } from '../data/faq';
 import Layout from '../layouts/Layout.astro';
 import { canonicalURL, serializeJsonLd } from '../lib/seo';
@@ -147,6 +147,7 @@ function demoCountLabel(count: number) {
 				</p>
 				<div class="hero-actions">
 					<a class="site-button" href={LUMA_URL}>RSVP for Thursday Show &amp; Tell</a>
+					<a class="secondary-link" href={PLATFORM_KNOWLEDGE_URL}>Knowledge Base <span aria-hidden="true">↗</span></a>
 					<a class="secondary-link" href="/blog">All community stories <span aria-hidden="true">→</span></a>
 				</div>
 			</header>

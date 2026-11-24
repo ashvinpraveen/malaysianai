@@ -3,7 +3,7 @@ import { Image, getImage } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import fallbackCover from '../assets/blog-placeholder-2.jpg';
 import FormattedDate from '../components/FormattedDate.astro';
-import { LUMA_URL } from '../consts';
+import { LUMA_URL, PLATFORM_KNOWLEDGE_URL } from '../consts';
 import Layout from './Layout.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
@@ -118,7 +118,11 @@ const shareImage = image ? await getImage({ src: image, width: 1200, format: 'we
 			<section class="story-speakers" aria-labelledby="story-speakers-title">
 				<div class="story-speakers-head">
 					<h2 id="story-speakers-title">Featured speakers &amp; demos</h2>
-					<p>{speakers.length} {speakers.length === 1 ? 'builder' : 'builders'} demoed during this session.</p>
+					<p>
+						{speakers.length} {speakers.length === 1 ? 'builder' : 'builders'} demoed during this session.
+						{' '}
+						<a href={PLATFORM_KNOWLEDGE_URL}>Browse full talk notes and Q&amp;A in the Knowledge Base <span aria-hidden="true">↗</span></a>
+					</p>
 				</div>
 				<ol class="speaker-list">
 					{speakers.map(speaker => (
@@ -130,16 +134,15 @@ const shareImage = image ? await getImage({ src: image, width: 1200, format: 'we
 							<div class="speaker-content">
 								<h3>{speaker.talkTitle}</h3>
 								<p>{speaker.summary}</p>
-								{(speaker.link || speaker.linkedin) && (
-									<div class="speaker-links">
-										{speaker.link && (
-											<a href={speaker.link}>Project <span aria-hidden="true">↗</span></a>
-										)}
-										{speaker.linkedin && (
-											<a href={speaker.linkedin}>LinkedIn <span aria-hidden="true">↗</span></a>
-										)}
-									</div>
-								)}
+								<div class="speaker-links">
+									<a href={speaker.knowledgeUrl ?? PLATFORM_KNOWLEDGE_URL}>Knowledge Base <span aria-hidden="true">↗</span></a>
+									{speaker.link && (
+										<a href={speaker.link}>Project <span aria-hidden="true">↗</span></a>
+									)}
+									{speaker.linkedin && (
+										<a href={speaker.linkedin}>LinkedIn <span aria-hidden="true">↗</span></a>
+									)}
+								</div>
 							</div>
 						</li>
 					))}
@@ -153,6 +156,7 @@ const shareImage = image ? await getImage({ src: image, width: 1200, format: 'we
 					<div class="story-end-copy">
 						<p>Bring something you built to our next Thursday Show &amp; Tell in Kuala Lumpur.</p>
 						<nav class="story-end-links" aria-label="More reading">
+							<a href={PLATFORM_KNOWLEDGE_URL}>Knowledge Base <span aria-hidden="true">↗</span></a>
 							<a href="/show-and-tell">Show &amp; Tell recaps</a>
 							<a href="/blog">All stories</a>
 						</nav>
@@ -518,6 +522,17 @@ const shareImage = image ? await getImage({ src: image, width: 1200, format: 'we
 		color: var(--text-soft);
 		font-size: var(--text-sm);
 		line-height: var(--leading-body);
+	}
+
+	.story-speakers-head a {
+		color: var(--text-link);
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.2em;
+	}
+
+	.story-speakers-head a:hover,
+	.story-speakers-head a:focus-visible {
+		color: var(--text-hover);
 	}
 
 	.speaker-list {

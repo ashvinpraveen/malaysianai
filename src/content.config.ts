@@ -26,6 +26,7 @@ const blog = defineCollection({
 			summary: z.string(),
 			link: z.url().optional(),
 			linkedin: z.url().optional(),
+			knowledgeUrl: z.url().optional(),
 		})).optional(),
 		youtubeId: z.string().regex(/^[A-Za-z0-9_-]{11}$/).optional(),
 		guest: z.string().optional(),

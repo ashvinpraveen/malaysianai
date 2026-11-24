@@ -12,6 +12,7 @@ export const ADD_COMMUNITY_WHATSAPP =
 	`https://wa.me/${WHATSAPP_NUMBER}?text=` +
 	encodeURIComponent("Hi, I'd like to add my community to the directory.");
 export const APPLY_FORM_URL = 'https://platform.malaysian.ai/application';
+export const PLATFORM_KNOWLEDGE_URL = 'https://platform.malaysian.ai/knowledge';
 export const APPLY_EMBED_URL = 'https://airtable.com/embed/appBgmnpu1bJljnxX/pagEZn6n60tDty3lP';
 export const VENUE_ADDRESS = "500 Global, Bangunan AICB, 10 Jalan Dato' Onn, 50480 Kuala Lumpur";
 export const VENUE_MAPS_URL =

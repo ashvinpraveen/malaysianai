@@ -5,12 +5,18 @@ export interface ShareImage {
 	alt?: string;
 }
 
+export interface BreadcrumbItem {
+	name: string;
+	path: string;
+}
+
 export interface PageMetadata {
 	title: string;
 	description: string;
 	keywords?: string[];
 	image?: ShareImage;
 	noindex?: boolean;
+	breadcrumbs?: BreadcrumbItem[];
 	article?: {
 		published: Date;
 		modified?: Date;

@@ -105,3 +105,37 @@ export const residencyFaqs: FaqItem[] = [
 			'Malaysian AI is initiated by 500 Global. The residency sits inside that community programme, with the working home at 500 Global, Bangunan AICB in Kuala Lumpur.',
 	},
 ];
+
+/** Questions for the weekly Show & Tell hub page. */
+export const showAndTellFaqs: FaqItem[] = [
+	{
+		question: 'What happens at Malaysian AI Show & Tell?',
+		answer:
+			'Builders in Kuala Lumpur gather every Thursday to demo working AI products, agents, prototypes, and technical experiments. Each presenter gets four minutes to show what they built, followed by direct questions and feedback from the room.',
+	},
+	{
+		question: 'When and where is Show & Tell held in Kuala Lumpur?',
+		answer:
+			'Sessions run every Thursday at 500 Global, Bangunan AICB, 10 Jalan Dato\' Onn in Kuala Lumpur. Many attendees arrive earlier to cowork before demos begin in the late afternoon. Check the Luma listing each week for exact doors-open and demo times.',
+	},
+	{
+		question: 'Do I need to demo something to attend?',
+		answer:
+			'No. You are welcome to come watch, ask questions, and meet other builders in Malaysia. If you do want a demo slot, you can sign up on the day or via the event page.',
+	},
+	{
+		question: 'What makes a good 4-minute demo?',
+		answer:
+			'Show real software, code, evals, or an honest breakdown of what broke while building. Live demos work best, and short screen recordings are fine if a model takes minutes to run. Skip company pitch decks and generic marketing slides.',
+	},
+	{
+		question: 'Is Show & Tell free to attend?',
+		answer:
+			'Yes, weekly Show & Tell sessions are free and open to the community. Register on Luma ahead of time so the host team has an accurate headcount for building access and seating.',
+	},
+	{
+		question: 'Can beginners or non-founders join?',
+		answer:
+			'Yes. The room includes engineers, researchers, students, designers, solo builders, and startup founders. Watching how other people structure prompts, tools, and workflows is one of the fastest ways to pick up practical AI skills.',
+	},
+];

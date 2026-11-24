@@ -9,7 +9,7 @@ const origin = 'https://www.malaysian.ai';
 const pages = [
 	'/', '/about', '/brand', '/residency', '/residency/accountability', '/residents', '/resident-teams', '/directory',
 	...residents.map(resident => directoryPath(resident)),
-	'/contact', '/privacy', '/terms', '/blog', '/blog/largest-ai-learnathon', '/podcast',
+	'/contact', '/privacy', '/terms', '/blog', '/show-and-tell', '/blog/largest-ai-learnathon', '/podcast',
 	'/podcast/how-to-win-a-hackathon', '/podcast/joseph-chin', '/podcast/isaac-tan', '/podcast/the-era-of-agents', '/podcast/how-cleve-got-funded',
 	'/podcast/ai-learn-a-thon', '/podcast/malaysias-ai-scene', '/podcast/level-1-to-level-5',
 	...profiles.map(profile => `/residents/${profile.slug}`),
@@ -76,6 +76,11 @@ const expectedMetadata = [
 		path: '/blog',
 		title: 'Malaysia AI Community Stories & Updates | Malaysian AI',
 		description: 'Read stories from the Malaysia AI community: AI events, hands-on learning, builder projects and updates from the Malaysian AI residency.',
+	},
+	{
+		path: '/show-and-tell',
+		title: 'Show & Tell | Weekly AI Demos in Kuala Lumpur | Malaysian AI',
+		description: 'Recaps and speaker notes from Malaysian AI Show & Tell, our weekly Thursday AI meetup in Kuala Lumpur for builders sharing live demos at 500 Global.',
 	},
 	{
 		path: '/podcast',
@@ -154,7 +159,7 @@ test('public pages have consistent production metadata and valid share images', 
 		const graph = structured.find((entry) => Array.isArray(entry['@graph']))?.['@graph'];
 		expect(graph, path).toBeTruthy();
 		expect(graph.map((item: { '@type': string }) => item['@type'])).toEqual(path.startsWith('/blog/') ? ['Organization', 'WebSite', 'BlogPosting'] : ['Organization', 'WebSite']);
-		if (path === '/' || path === '/residency' || path === '/residency/accountability') {
+		if (path === '/' || path === '/residency' || path === '/residency/accountability' || path === '/show-and-tell') {
 			const faqPage = structured.find((entry) => entry['@type'] === 'FAQPage');
 			expect(faqPage, path).toBeTruthy();
 			expect(faqPage.mainEntity.length).toBeGreaterThan(5);

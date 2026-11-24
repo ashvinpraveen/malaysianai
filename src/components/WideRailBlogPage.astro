@@ -16,6 +16,9 @@ const [featuredPost, ...otherPosts] = posts;
 	<section class="split-blog" aria-labelledby="split-title">
 		<header class="page-heading">
 			<h1 id="split-title">Malaysian AI Blog</h1>
+			<nav class="blog-subnav" aria-label="Story collections">
+				<a href="/show-and-tell">Weekly Show &amp; Tell recaps <span aria-hidden="true">→</span></a>
+			</nav>
 		</header>
 
 		{featuredPost && (
@@ -39,11 +42,21 @@ const [featuredPost, ...otherPosts] = posts;
 
 				<div class="lead-copy">
 					<p class="eyebrow">
-						{featuredPost.data.category === 'podcast' ? 'Podcast' : 'Latest story'} <span aria-hidden="true">/</span> <FormattedDate date={featuredPost.data.pubDate} />
+						{featuredPost.data.category === 'podcast'
+							? 'Podcast'
+							: featuredPost.data.category === 'show-and-tell'
+								? 'Show & Tell'
+								: 'Latest story'} <span aria-hidden="true">/</span> <FormattedDate date={featuredPost.data.pubDate} />
 					</p>
 					<h2><a href={storyHref(featuredPost)}>{featuredPost.data.title}</a></h2>
 					<p class="description">{featuredPost.data.description}</p>
-					<a class="text-link" href={storyHref(featuredPost)}>{featuredPost.data.category === 'podcast' ? 'Listen to the episode' : 'Read the story'} <span aria-hidden="true">↗</span></a>
+					<a class="text-link" href={storyHref(featuredPost)}>
+						{featuredPost.data.category === 'podcast'
+							? 'Listen to the episode'
+							: featuredPost.data.category === 'show-and-tell'
+								? 'Read the recap'
+								: 'Read the story'} <span aria-hidden="true">↗</span>
+					</a>
 				</div>
 			</article>
 		)}
@@ -54,6 +67,7 @@ const [featuredPost, ...otherPosts] = posts;
 					{otherPosts.map((post) => (
 						<article class="archive-row">
 							{post.data.category === 'podcast' && <p class="kicker">Podcast</p>}
+							{post.data.category === 'show-and-tell' && <p class="kicker">Show &amp; Tell</p>}
 							<h3><a href={storyHref(post)}>{post.data.title}</a></h3>
 							<FormattedDate date={post.data.pubDate} />
 						</article>
@@ -91,6 +105,28 @@ const [featuredPost, ...otherPosts] = posts;
 		font-weight: 400;
 		letter-spacing: -0.04em;
 		line-height: 1;
+	}
+
+	.blog-subnav {
+		margin-top: 0.9rem;
+	}
+
+	.blog-subnav a {
+		color: var(--text-soft);
+		font-size: var(--text-sm);
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.24em;
+	}
+
+	.blog-subnav a:hover,
+	.blog-subnav a:focus-visible {
+		color: var(--text-hover);
+	}
+
+	.blog-subnav a:focus-visible {
+		outline: 2px solid var(--focus-color);
+		outline-offset: 4px;
 	}
 
 	.lead-story {

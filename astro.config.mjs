@@ -17,8 +17,8 @@ export default defineConfig({
 	redirects,
 	integrations: [mdx(), sitemap({ filter: page => {
 		const path = new URL(page).pathname.replace(/\/+$/, '');
-		// /residency2 is a draft messaging experiment — keep it out of the public sitemap.
-		return path !== '/404' && path !== '/residency2' && !Object.hasOwn(redirects, path);
+		const unlistedPages = ['/404', '/residency2', '/training'];
+		return !unlistedPages.includes(path) && !Object.hasOwn(redirects, path);
 	} })],
 	build: {
 		// A few pages, small CSS: inline it and skip the render-blocking requests.
